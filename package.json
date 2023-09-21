@@ -21,7 +21,7 @@
     "turbo": "latest"
   },
   "packageManager": "pnpm@7.15.0",
-  "name": "sairahut-it20",
+  "name": "bloodprompt",
   "dependencies": {
     "kolorist": "^1.8.0"
   }

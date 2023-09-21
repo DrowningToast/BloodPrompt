@@ -16,7 +16,7 @@ export const Medical_AccountsScalarFieldEnumSchema = z.enum(['id','blood_type','
 
 export const DonatorsScalarFieldEnumSchema = z.enum(['id','medical_account_id','image_src','first_name','last_name','phone_number','gender','dob','address','email','password','reward_point','created_at','updated_at']);
 
-export const Reward_TransactionsScalarFieldEnumSchema = z.enum(['id','donator_id','transaction_type','points','created_at','updated_at']);
+export const Reward_TransactionsScalarFieldEnumSchema = z.enum(['id','donator_id','points','created_at','updated_at']);
 
 export const Redemption_HistoryScalarFieldEnumSchema = z.enum(['id','status','used_points','redeem_amount','created_at','updated_at','donator_id','reward_id']);
 
@@ -58,7 +58,7 @@ export const QueryModeSchema = z.enum(['default','insensitive']);
 
 export const NullsOrderSchema = z.enum(['first','last']);
 
-export const BloodTypeSchema = z.enum(['A','B','O','AB']);
+export const BloodTypeSchema = z.enum(['A_POSITIVE','B_POSITIVE','O_POSITIVE','AB_POSITIVE','A_NEGATIVE','B_NEGATIVE','O_NEGATIVE','AB_NEGATIVE']);
 
 export type BloodTypeType = `${z.infer<typeof BloodTypeSchema>}`
 
@@ -69,10 +69,6 @@ export type AccountStatusType = `${z.infer<typeof AccountStatusSchema>}`
 export const GenderSchema = z.enum(['MALE','FEMALE']);
 
 export type GenderType = `${z.infer<typeof GenderSchema>}`
-
-export const TransactionTypeSchema = z.enum(['RECEIVE','DEDUCT']);
-
-export type TransactionTypeType = `${z.infer<typeof TransactionTypeSchema>}`
 
 export const RedemptionStatusSchema = z.enum(['REDEEMED','RECEIVED','CANCELLED']);
 
@@ -141,7 +137,6 @@ export type Donators = z.infer<typeof DonatorsSchema>
 /////////////////////////////////////////
 
 export const Reward_TransactionsSchema = z.object({
-  transaction_type: TransactionTypeSchema,
   id: z.string().cuid(),
   donator_id: z.string(),
   points: z.number().int(),
@@ -514,7 +509,6 @@ export const Reward_TransactionsArgsSchema: z.ZodType<Prisma.Reward_Transactions
 export const Reward_TransactionsSelectSchema: z.ZodType<Prisma.Reward_TransactionsSelect> = z.object({
   id: z.boolean().optional(),
   donator_id: z.boolean().optional(),
-  transaction_type: z.boolean().optional(),
   points: z.boolean().optional(),
   created_at: z.boolean().optional(),
   updated_at: z.boolean().optional(),
@@ -1150,7 +1144,6 @@ export const Reward_TransactionsWhereInputSchema: z.ZodType<Prisma.Reward_Transa
   NOT: z.union([ z.lazy(() => Reward_TransactionsWhereInputSchema),z.lazy(() => Reward_TransactionsWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   donator_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  transaction_type: z.union([ z.lazy(() => EnumTransactionTypeFilterSchema),z.lazy(() => TransactionTypeSchema) ]).optional(),
   points: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   created_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updated_at: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
@@ -1160,7 +1153,6 @@ export const Reward_TransactionsWhereInputSchema: z.ZodType<Prisma.Reward_Transa
 export const Reward_TransactionsOrderByWithRelationInputSchema: z.ZodType<Prisma.Reward_TransactionsOrderByWithRelationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   donator_id: z.lazy(() => SortOrderSchema).optional(),
-  transaction_type: z.lazy(() => SortOrderSchema).optional(),
   points: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
@@ -1174,7 +1166,6 @@ export const Reward_TransactionsWhereUniqueInputSchema: z.ZodType<Prisma.Reward_
 export const Reward_TransactionsOrderByWithAggregationInputSchema: z.ZodType<Prisma.Reward_TransactionsOrderByWithAggregationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   donator_id: z.lazy(() => SortOrderSchema).optional(),
-  transaction_type: z.lazy(() => SortOrderSchema).optional(),
   points: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
@@ -1191,7 +1182,6 @@ export const Reward_TransactionsScalarWhereWithAggregatesInputSchema: z.ZodType<
   NOT: z.union([ z.lazy(() => Reward_TransactionsScalarWhereWithAggregatesInputSchema),z.lazy(() => Reward_TransactionsScalarWhereWithAggregatesInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   donator_id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
-  transaction_type: z.union([ z.lazy(() => EnumTransactionTypeWithAggregatesFilterSchema),z.lazy(() => TransactionTypeSchema) ]).optional(),
   points: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
   created_at: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   updated_at: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
@@ -2342,7 +2332,6 @@ export const DonatorsUncheckedUpdateManyInputSchema: z.ZodType<Prisma.DonatorsUn
 
 export const Reward_TransactionsCreateInputSchema: z.ZodType<Prisma.Reward_TransactionsCreateInput> = z.object({
   id: z.string().cuid().optional(),
-  transaction_type: z.lazy(() => TransactionTypeSchema),
   points: z.number().int(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
@@ -2352,7 +2341,6 @@ export const Reward_TransactionsCreateInputSchema: z.ZodType<Prisma.Reward_Trans
 export const Reward_TransactionsUncheckedCreateInputSchema: z.ZodType<Prisma.Reward_TransactionsUncheckedCreateInput> = z.object({
   id: z.string().cuid().optional(),
   donator_id: z.string(),
-  transaction_type: z.lazy(() => TransactionTypeSchema),
   points: z.number().int(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable()
@@ -2360,7 +2348,6 @@ export const Reward_TransactionsUncheckedCreateInputSchema: z.ZodType<Prisma.Rew
 
 export const Reward_TransactionsUpdateInputSchema: z.ZodType<Prisma.Reward_TransactionsUpdateInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  transaction_type: z.union([ z.lazy(() => TransactionTypeSchema),z.lazy(() => EnumTransactionTypeFieldUpdateOperationsInputSchema) ]).optional(),
   points: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -2370,7 +2357,6 @@ export const Reward_TransactionsUpdateInputSchema: z.ZodType<Prisma.Reward_Trans
 export const Reward_TransactionsUncheckedUpdateInputSchema: z.ZodType<Prisma.Reward_TransactionsUncheckedUpdateInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   donator_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  transaction_type: z.union([ z.lazy(() => TransactionTypeSchema),z.lazy(() => EnumTransactionTypeFieldUpdateOperationsInputSchema) ]).optional(),
   points: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -2379,7 +2365,6 @@ export const Reward_TransactionsUncheckedUpdateInputSchema: z.ZodType<Prisma.Rew
 export const Reward_TransactionsCreateManyInputSchema: z.ZodType<Prisma.Reward_TransactionsCreateManyInput> = z.object({
   id: z.string().cuid().optional(),
   donator_id: z.string(),
-  transaction_type: z.lazy(() => TransactionTypeSchema),
   points: z.number().int(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable()
@@ -2387,7 +2372,6 @@ export const Reward_TransactionsCreateManyInputSchema: z.ZodType<Prisma.Reward_T
 
 export const Reward_TransactionsUpdateManyMutationInputSchema: z.ZodType<Prisma.Reward_TransactionsUpdateManyMutationInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  transaction_type: z.union([ z.lazy(() => TransactionTypeSchema),z.lazy(() => EnumTransactionTypeFieldUpdateOperationsInputSchema) ]).optional(),
   points: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -2396,7 +2380,6 @@ export const Reward_TransactionsUpdateManyMutationInputSchema: z.ZodType<Prisma.
 export const Reward_TransactionsUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Reward_TransactionsUncheckedUpdateManyInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   donator_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  transaction_type: z.union([ z.lazy(() => TransactionTypeSchema),z.lazy(() => EnumTransactionTypeFieldUpdateOperationsInputSchema) ]).optional(),
   points: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -3916,13 +3899,6 @@ export const IntWithAggregatesFilterSchema: z.ZodType<Prisma.IntWithAggregatesFi
   _max: z.lazy(() => NestedIntFilterSchema).optional()
 }).strict();
 
-export const EnumTransactionTypeFilterSchema: z.ZodType<Prisma.EnumTransactionTypeFilter> = z.object({
-  equals: z.lazy(() => TransactionTypeSchema).optional(),
-  in: z.union([ z.lazy(() => TransactionTypeSchema).array(),z.lazy(() => TransactionTypeSchema) ]).optional(),
-  notIn: z.union([ z.lazy(() => TransactionTypeSchema).array(),z.lazy(() => TransactionTypeSchema) ]).optional(),
-  not: z.union([ z.lazy(() => TransactionTypeSchema),z.lazy(() => NestedEnumTransactionTypeFilterSchema) ]).optional(),
-}).strict();
-
 export const DonatorsRelationFilterSchema: z.ZodType<Prisma.DonatorsRelationFilter> = z.object({
   is: z.lazy(() => DonatorsWhereInputSchema).optional().nullable(),
   isNot: z.lazy(() => DonatorsWhereInputSchema).optional().nullable()
@@ -3931,7 +3907,6 @@ export const DonatorsRelationFilterSchema: z.ZodType<Prisma.DonatorsRelationFilt
 export const Reward_TransactionsCountOrderByAggregateInputSchema: z.ZodType<Prisma.Reward_TransactionsCountOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   donator_id: z.lazy(() => SortOrderSchema).optional(),
-  transaction_type: z.lazy(() => SortOrderSchema).optional(),
   points: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.lazy(() => SortOrderSchema).optional()
@@ -3944,7 +3919,6 @@ export const Reward_TransactionsAvgOrderByAggregateInputSchema: z.ZodType<Prisma
 export const Reward_TransactionsMaxOrderByAggregateInputSchema: z.ZodType<Prisma.Reward_TransactionsMaxOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   donator_id: z.lazy(() => SortOrderSchema).optional(),
-  transaction_type: z.lazy(() => SortOrderSchema).optional(),
   points: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.lazy(() => SortOrderSchema).optional()
@@ -3953,7 +3927,6 @@ export const Reward_TransactionsMaxOrderByAggregateInputSchema: z.ZodType<Prisma
 export const Reward_TransactionsMinOrderByAggregateInputSchema: z.ZodType<Prisma.Reward_TransactionsMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   donator_id: z.lazy(() => SortOrderSchema).optional(),
-  transaction_type: z.lazy(() => SortOrderSchema).optional(),
   points: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.lazy(() => SortOrderSchema).optional()
@@ -3961,16 +3934,6 @@ export const Reward_TransactionsMinOrderByAggregateInputSchema: z.ZodType<Prisma
 
 export const Reward_TransactionsSumOrderByAggregateInputSchema: z.ZodType<Prisma.Reward_TransactionsSumOrderByAggregateInput> = z.object({
   points: z.lazy(() => SortOrderSchema).optional()
-}).strict();
-
-export const EnumTransactionTypeWithAggregatesFilterSchema: z.ZodType<Prisma.EnumTransactionTypeWithAggregatesFilter> = z.object({
-  equals: z.lazy(() => TransactionTypeSchema).optional(),
-  in: z.union([ z.lazy(() => TransactionTypeSchema).array(),z.lazy(() => TransactionTypeSchema) ]).optional(),
-  notIn: z.union([ z.lazy(() => TransactionTypeSchema).array(),z.lazy(() => TransactionTypeSchema) ]).optional(),
-  not: z.union([ z.lazy(() => TransactionTypeSchema),z.lazy(() => NestedEnumTransactionTypeWithAggregatesFilterSchema) ]).optional(),
-  _count: z.lazy(() => NestedIntFilterSchema).optional(),
-  _min: z.lazy(() => NestedEnumTransactionTypeFilterSchema).optional(),
-  _max: z.lazy(() => NestedEnumTransactionTypeFilterSchema).optional()
 }).strict();
 
 export const EnumRedemptionStatusFilterSchema: z.ZodType<Prisma.EnumRedemptionStatusFilter> = z.object({
@@ -5056,10 +5019,6 @@ export const DonatorsCreateNestedOneWithoutReward_TransactionsInputSchema: z.Zod
   connect: z.lazy(() => DonatorsWhereUniqueInputSchema).optional()
 }).strict();
 
-export const EnumTransactionTypeFieldUpdateOperationsInputSchema: z.ZodType<Prisma.EnumTransactionTypeFieldUpdateOperationsInput> = z.object({
-  set: z.lazy(() => TransactionTypeSchema).optional()
-}).strict();
-
 export const DonatorsUpdateOneRequiredWithoutReward_TransactionsNestedInputSchema: z.ZodType<Prisma.DonatorsUpdateOneRequiredWithoutReward_TransactionsNestedInput> = z.object({
   create: z.union([ z.lazy(() => DonatorsCreateWithoutReward_TransactionsInputSchema),z.lazy(() => DonatorsUncheckedCreateWithoutReward_TransactionsInputSchema) ]).optional(),
   connectOrCreate: z.lazy(() => DonatorsCreateOrConnectWithoutReward_TransactionsInputSchema).optional(),
@@ -6097,23 +6056,6 @@ export const NestedFloatFilterSchema: z.ZodType<Prisma.NestedFloatFilter> = z.ob
   not: z.union([ z.number(),z.lazy(() => NestedFloatFilterSchema) ]).optional(),
 }).strict();
 
-export const NestedEnumTransactionTypeFilterSchema: z.ZodType<Prisma.NestedEnumTransactionTypeFilter> = z.object({
-  equals: z.lazy(() => TransactionTypeSchema).optional(),
-  in: z.union([ z.lazy(() => TransactionTypeSchema).array(),z.lazy(() => TransactionTypeSchema) ]).optional(),
-  notIn: z.union([ z.lazy(() => TransactionTypeSchema).array(),z.lazy(() => TransactionTypeSchema) ]).optional(),
-  not: z.union([ z.lazy(() => TransactionTypeSchema),z.lazy(() => NestedEnumTransactionTypeFilterSchema) ]).optional(),
-}).strict();
-
-export const NestedEnumTransactionTypeWithAggregatesFilterSchema: z.ZodType<Prisma.NestedEnumTransactionTypeWithAggregatesFilter> = z.object({
-  equals: z.lazy(() => TransactionTypeSchema).optional(),
-  in: z.union([ z.lazy(() => TransactionTypeSchema).array(),z.lazy(() => TransactionTypeSchema) ]).optional(),
-  notIn: z.union([ z.lazy(() => TransactionTypeSchema).array(),z.lazy(() => TransactionTypeSchema) ]).optional(),
-  not: z.union([ z.lazy(() => TransactionTypeSchema),z.lazy(() => NestedEnumTransactionTypeWithAggregatesFilterSchema) ]).optional(),
-  _count: z.lazy(() => NestedIntFilterSchema).optional(),
-  _min: z.lazy(() => NestedEnumTransactionTypeFilterSchema).optional(),
-  _max: z.lazy(() => NestedEnumTransactionTypeFilterSchema).optional()
-}).strict();
-
 export const NestedEnumRedemptionStatusFilterSchema: z.ZodType<Prisma.NestedEnumRedemptionStatusFilter> = z.object({
   equals: z.lazy(() => RedemptionStatusSchema).optional(),
   in: z.union([ z.lazy(() => RedemptionStatusSchema).array(),z.lazy(() => RedemptionStatusSchema) ]).optional(),
@@ -6381,7 +6323,6 @@ export const Medical_AccountsCreateOrConnectWithoutDonatorsInputSchema: z.ZodTyp
 
 export const Reward_TransactionsCreateWithoutDonatorInputSchema: z.ZodType<Prisma.Reward_TransactionsCreateWithoutDonatorInput> = z.object({
   id: z.string().cuid().optional(),
-  transaction_type: z.lazy(() => TransactionTypeSchema),
   points: z.number().int(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable()
@@ -6389,7 +6330,6 @@ export const Reward_TransactionsCreateWithoutDonatorInputSchema: z.ZodType<Prism
 
 export const Reward_TransactionsUncheckedCreateWithoutDonatorInputSchema: z.ZodType<Prisma.Reward_TransactionsUncheckedCreateWithoutDonatorInput> = z.object({
   id: z.string().cuid().optional(),
-  transaction_type: z.lazy(() => TransactionTypeSchema),
   points: z.number().int(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable()
@@ -6508,7 +6448,6 @@ export const Reward_TransactionsScalarWhereInputSchema: z.ZodType<Prisma.Reward_
   NOT: z.union([ z.lazy(() => Reward_TransactionsScalarWhereInputSchema),z.lazy(() => Reward_TransactionsScalarWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   donator_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  transaction_type: z.union([ z.lazy(() => EnumTransactionTypeFilterSchema),z.lazy(() => TransactionTypeSchema) ]).optional(),
   points: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   created_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updated_at: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
@@ -8554,7 +8493,6 @@ export const DonatorsUncheckedUpdateManyWithoutDonatorsInputSchema: z.ZodType<Pr
 
 export const Reward_TransactionsCreateManyDonatorInputSchema: z.ZodType<Prisma.Reward_TransactionsCreateManyDonatorInput> = z.object({
   id: z.string().cuid().optional(),
-  transaction_type: z.lazy(() => TransactionTypeSchema),
   points: z.number().int(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable()
@@ -8581,7 +8519,6 @@ export const SessionCreateManyDonatorInputSchema: z.ZodType<Prisma.SessionCreate
 
 export const Reward_TransactionsUpdateWithoutDonatorInputSchema: z.ZodType<Prisma.Reward_TransactionsUpdateWithoutDonatorInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  transaction_type: z.union([ z.lazy(() => TransactionTypeSchema),z.lazy(() => EnumTransactionTypeFieldUpdateOperationsInputSchema) ]).optional(),
   points: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -8589,7 +8526,6 @@ export const Reward_TransactionsUpdateWithoutDonatorInputSchema: z.ZodType<Prism
 
 export const Reward_TransactionsUncheckedUpdateWithoutDonatorInputSchema: z.ZodType<Prisma.Reward_TransactionsUncheckedUpdateWithoutDonatorInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  transaction_type: z.union([ z.lazy(() => TransactionTypeSchema),z.lazy(() => EnumTransactionTypeFieldUpdateOperationsInputSchema) ]).optional(),
   points: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -8597,7 +8533,6 @@ export const Reward_TransactionsUncheckedUpdateWithoutDonatorInputSchema: z.ZodT
 
 export const Reward_TransactionsUncheckedUpdateManyWithoutReward_TransactionsInputSchema: z.ZodType<Prisma.Reward_TransactionsUncheckedUpdateManyWithoutReward_TransactionsInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  transaction_type: z.union([ z.lazy(() => TransactionTypeSchema),z.lazy(() => EnumTransactionTypeFieldUpdateOperationsInputSchema) ]).optional(),
   points: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),

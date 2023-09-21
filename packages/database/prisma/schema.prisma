@@ -13,10 +13,14 @@ datasource db {
 }
 
 enum BloodType {
-  A
-  B
-  O
-  AB
+  A_POSITIVE
+  B_POSITIVE
+  O_POSITIVE
+  AB_POSITIVE
+  A_NEGATIVE
+  B_NEGATIVE
+  O_NEGATIVE
+  AB_NEGATIVE
 }
 
 enum AccountStatus {
@@ -27,11 +31,6 @@ enum AccountStatus {
 enum Gender {
   MALE
   FEMALE
-}
-
-enum TransactionType {
-  RECEIVE
-  DEDUCT
 }
 
 enum RedemptionStatus {
@@ -72,13 +71,12 @@ model Donators {
 }
 
 model Reward_Transactions {
-  id               String          @id @unique @default(cuid())
-  Donator          Donators        @relation(fields: [donator_id], references: [id])
-  donator_id       String
-  transaction_type TransactionType
-  points           Int
-  created_at       DateTime        @default(now())
-  updated_at       DateTime?
+  id         String    @id @unique @default(cuid())
+  Donator    Donators  @relation(fields: [donator_id], references: [id])
+  donator_id String
+  points     Int
+  created_at DateTime  @default(now())
+  updated_at DateTime?
 }
 
 model Redemption_History {
