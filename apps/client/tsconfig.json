@@ -9,8 +9,7 @@
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"strict": true,
-		"rootDir": "./",
-		"types": ["vite-plugin-pwa/client", "vite-plugin-pwa/info"]
+		"rootDir": "./"
 	},
 	"exclude": [
 		"./node_modules/**",
