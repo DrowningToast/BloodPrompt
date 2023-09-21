@@ -200,6 +200,8 @@ model Session {
   updated_at       DateTime?
   Donator          Donators?      @relation(fields: [donator_id], references: [id])
   Medical_Staff    Medical_Staff? @relation(fields: [medical_staff_id], references: [id])
+  Moderator        Moderators?    @relation(fields: [moderator_id], references: [id])
+  moderator_id     String
   donator_id       String
   medical_staff_id String
 }
@@ -289,4 +291,16 @@ model Post_Feedback_Answers {
   feedback_id String @unique
   question_id String @unique
   choise_id   String @unique
+}
+
+model Moderators {
+  id           String    @id @unique @default(cuid())
+  first_name   String
+  last_name    String
+  phone_number String
+  email        String
+  password     String
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @default(now())
+  Session      Session[]
 }
