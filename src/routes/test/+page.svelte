@@ -38,8 +38,9 @@
 			phone_number: phoneNumberValue,
 			password: passwordValue
 		});
-		console.table(user);
-		console.table(session);
+
+		const uu = await trpc.auth.getUser.query();
+		console.log(uu);
 	};
 </script>
 

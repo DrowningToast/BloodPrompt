@@ -4,11 +4,22 @@ import { z } from 'zod';
 import prisma from '$lib/server/database';
 import { TRPCError } from '@trpc/server';
 import { sessionController } from '../database/controllers/sessionController';
+import { comparePassword } from '$lib/utils';
 
 export const authRouter = createRouter({
 	getUser: publicProcedure.query(async ({ ctx }) => {
-		const user = { ctx };
+		const { user } = ctx;
+		console.log('getUser(): ctx ');
 		return user;
+	}),
+	logout: publicProcedure.mutation(async ({ ctx }) => {
+		console.log(ctx.token);
+		await prisma.session.delete({
+			where: {
+				session_token: ctx.token
+			}
+		});
+		(ctx.session = {}), (ctx.user = {}), (ctx.token = '');
 	}),
 	donatorLogin: publicProcedure
 		.input(
@@ -23,8 +34,6 @@ export const authRouter = createRouter({
 			// Get phone_number and password from user input
 			const { phone_number, password } = input;
 
-			console.log('encodePassword (input)', phone_number, password);
-
 			// Get user with phone_number and password correct
 			const user = await prisma.donators.findUnique({
 				where: {
@@ -32,9 +41,9 @@ export const authRouter = createRouter({
 				}
 			});
 
-			console.log('encodedPassword (user): ', user);
+			const isPasswordMatch = await comparePassword(user?.password || '', password);
 
-			if (!user) {
+			if (!user || !isPasswordMatch) {
 				throw new TRPCError({
 					code: 'UNAUTHORIZED'
 				});
@@ -45,15 +54,13 @@ export const authRouter = createRouter({
 				donator: { connect: { id: user.id } }
 			});
 
-			console.log('donatorLogin (ctx): ', ctx);
-			console.log('donatorLogin (session): ', session);
-
 			if (session.session_token && user) {
-				//ctx.event.cookies.set('session-token', session.session_token);
+				ctx.session = session;
 				ctx.user = user;
+				ctx.token = session.session_token;
 			}
 
-			// console.log('ctx: ', ctx);
+			console.log('donatorLogin (ctx): ', ctx);
 
 			return { user, session };
 		})
