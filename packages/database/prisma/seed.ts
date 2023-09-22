@@ -1,3 +1,0 @@
-/**
- * FOR EMERGENCY USE ONLY
- */
