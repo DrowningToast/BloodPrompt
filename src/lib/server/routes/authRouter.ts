@@ -8,9 +8,8 @@ import { comparePassword } from '$lib/utils';
 
 export const authRouter = createRouter({
 	getUser: publicProcedure.query(async ({ ctx }) => {
-		const { user } = ctx;
-		console.log('getUser(): ctx ');
-		return user;
+		const { userContext } = ctx;
+		return userContext;
 	}),
 	logout: publicProcedure.mutation(async ({ ctx }) => {
 		console.log(ctx.token);
@@ -58,9 +57,8 @@ export const authRouter = createRouter({
 				ctx.session = session;
 				ctx.user = user;
 				ctx.token = session.session_token;
+				ctx.opts.resHeaders.append('Set-Cookie', `session-token=${session.session_token}`);
 			}
-
-			console.log('donatorLogin (ctx): ', ctx);
 
 			return { user, session };
 		})
