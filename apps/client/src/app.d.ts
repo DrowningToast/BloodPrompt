@@ -1,17 +1,4 @@
-// See https://kit.svelte.dev/docs/types#app
-/// <reference types="vite-plugin-pwa/client" />
-/// <reference types="vite-plugin-pwa/info" />
-
-import type { Session } from '@auth/core/types';
-import type {
-	Factions,
-	FreshmenDetails,
-	HintSlugs,
-	Hints,
-	Prisma,
-	SophomoreDetails,
-	User
-} from 'database';
+import type { Donators, Medical_Staff, Moderators, Session } from 'database';
 
 // for information about these interfaces
 declare global {
@@ -19,15 +6,7 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			session: Session | null;
-			user:
-				| (User & {
-						faction?: Factions | null;
-						sophomoreDetails?:
-							| SophomoreDetails
-							| null;
-						freshmenDetails?: FreshmenDetails | null;
-				  })
-				| null;
+			user: Donators | Medical_Staff | Moderators | null;
 		}
 		// interface PageData {}
 		// interface Platform {}

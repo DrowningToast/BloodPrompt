@@ -4,7 +4,7 @@ generator client {
 
 generator zod {
   provider = "zod-prisma-types"
-  output   = "../zod"
+  output   = "../generated-zod"
 }
 
 datasource db {
@@ -194,16 +194,16 @@ model Medical_Staff {
 
 model Session {
   id               String         @id @unique @default(cuid())
-  session_token    String
-  expires          DateTime
+  session_token    String?        @unique
+  expires          DateTime?
   created_at       DateTime       @default(now())
   updated_at       DateTime?
   Donator          Donators?      @relation(fields: [donator_id], references: [id])
   Medical_Staff    Medical_Staff? @relation(fields: [medical_staff_id], references: [id])
   Moderator        Moderators?    @relation(fields: [moderator_id], references: [id])
-  moderator_id     String
-  donator_id       String
-  medical_staff_id String
+  moderator_id     String?
+  donator_id       String?
+  medical_staff_id String?
 }
 
 enum ReservationStatus {

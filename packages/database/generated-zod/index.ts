@@ -34,7 +34,7 @@ export const Reservation_SlotsScalarFieldEnumSchema = z.enum(['id','reserve_date
 
 export const Medical_StaffScalarFieldEnumSchema = z.enum(['id','first_name','last_name','email','password','created_at','updated_at','place_id']);
 
-export const SessionScalarFieldEnumSchema = z.enum(['id','session_token','expires','created_at','updated_at','donator_id','medical_staff_id']);
+export const SessionScalarFieldEnumSchema = z.enum(['id','session_token','expires','created_at','updated_at','moderator_id','donator_id','medical_staff_id']);
 
 export const ReservationsScalarFieldEnumSchema = z.enum(['id','status','created_at','cancelled_at','updated_at','reservation_slot_id','pre_donation_fb_id']);
 
@@ -51,6 +51,8 @@ export const Donation_HistoryScalarFieldEnumSchema = z.enum(['id','rewarded_poin
 export const Post_Donation_FeedbacksScalarFieldEnumSchema = z.enum(['id','created_at']);
 
 export const Post_Feedback_AnswersScalarFieldEnumSchema = z.enum(['feedback_id','question_id','choise_id']);
+
+export const ModeratorsScalarFieldEnumSchema = z.enum(['id','first_name','last_name','phone_number','email','password','created_at','updated_at']);
 
 export const SortOrderSchema = z.enum(['asc','desc']);
 
@@ -291,12 +293,13 @@ export type Medical_Staff = z.infer<typeof Medical_StaffSchema>
 
 export const SessionSchema = z.object({
   id: z.string().cuid(),
-  session_token: z.string(),
-  expires: z.coerce.date(),
+  session_token: z.string().nullable(),
+  expires: z.coerce.date().nullable(),
   created_at: z.coerce.date(),
   updated_at: z.coerce.date().nullable(),
-  donator_id: z.string(),
-  medical_staff_id: z.string(),
+  moderator_id: z.string().nullable(),
+  donator_id: z.string().nullable(),
+  medical_staff_id: z.string().nullable(),
 })
 
 export type Session = z.infer<typeof SessionSchema>
@@ -409,6 +412,23 @@ export const Post_Feedback_AnswersSchema = z.object({
 })
 
 export type Post_Feedback_Answers = z.infer<typeof Post_Feedback_AnswersSchema>
+
+/////////////////////////////////////////
+// MODERATORS SCHEMA
+/////////////////////////////////////////
+
+export const ModeratorsSchema = z.object({
+  id: z.string().cuid(),
+  first_name: z.string(),
+  last_name: z.string(),
+  phone_number: z.string(),
+  email: z.string(),
+  password: z.string(),
+  created_at: z.coerce.date(),
+  updated_at: z.coerce.date(),
+})
+
+export type Moderators = z.infer<typeof ModeratorsSchema>
 
 /////////////////////////////////////////
 // SELECT & INCLUDE
@@ -779,6 +799,7 @@ export const Medical_StaffSelectSchema: z.ZodType<Prisma.Medical_StaffSelect> = 
 export const SessionIncludeSchema: z.ZodType<Prisma.SessionInclude> = z.object({
   Donator: z.union([z.boolean(),z.lazy(() => DonatorsArgsSchema)]).optional(),
   Medical_Staff: z.union([z.boolean(),z.lazy(() => Medical_StaffArgsSchema)]).optional(),
+  Moderator: z.union([z.boolean(),z.lazy(() => ModeratorsArgsSchema)]).optional(),
 }).strict()
 
 export const SessionArgsSchema: z.ZodType<Prisma.SessionArgs> = z.object({
@@ -792,10 +813,12 @@ export const SessionSelectSchema: z.ZodType<Prisma.SessionSelect> = z.object({
   expires: z.boolean().optional(),
   created_at: z.boolean().optional(),
   updated_at: z.boolean().optional(),
+  moderator_id: z.boolean().optional(),
   donator_id: z.boolean().optional(),
   medical_staff_id: z.boolean().optional(),
   Donator: z.union([z.boolean(),z.lazy(() => DonatorsArgsSchema)]).optional(),
   Medical_Staff: z.union([z.boolean(),z.lazy(() => Medical_StaffArgsSchema)]).optional(),
+  Moderator: z.union([z.boolean(),z.lazy(() => ModeratorsArgsSchema)]).optional(),
 }).strict()
 
 // RESERVATIONS
@@ -987,6 +1010,40 @@ export const Post_Feedback_AnswersSelectSchema: z.ZodType<Prisma.Post_Feedback_A
   feedback_id: z.boolean().optional(),
   question_id: z.boolean().optional(),
   choise_id: z.boolean().optional(),
+}).strict()
+
+// MODERATORS
+//------------------------------------------------------
+
+export const ModeratorsIncludeSchema: z.ZodType<Prisma.ModeratorsInclude> = z.object({
+  Session: z.union([z.boolean(),z.lazy(() => SessionFindManyArgsSchema)]).optional(),
+  _count: z.union([z.boolean(),z.lazy(() => ModeratorsCountOutputTypeArgsSchema)]).optional(),
+}).strict()
+
+export const ModeratorsArgsSchema: z.ZodType<Prisma.ModeratorsArgs> = z.object({
+  select: z.lazy(() => ModeratorsSelectSchema).optional(),
+  include: z.lazy(() => ModeratorsIncludeSchema).optional(),
+}).strict();
+
+export const ModeratorsCountOutputTypeArgsSchema: z.ZodType<Prisma.ModeratorsCountOutputTypeArgs> = z.object({
+  select: z.lazy(() => ModeratorsCountOutputTypeSelectSchema).nullish(),
+}).strict();
+
+export const ModeratorsCountOutputTypeSelectSchema: z.ZodType<Prisma.ModeratorsCountOutputTypeSelect> = z.object({
+  Session: z.boolean().optional(),
+}).strict();
+
+export const ModeratorsSelectSchema: z.ZodType<Prisma.ModeratorsSelect> = z.object({
+  id: z.boolean().optional(),
+  first_name: z.boolean().optional(),
+  last_name: z.boolean().optional(),
+  phone_number: z.boolean().optional(),
+  email: z.boolean().optional(),
+  password: z.boolean().optional(),
+  created_at: z.boolean().optional(),
+  updated_at: z.boolean().optional(),
+  Session: z.union([z.boolean(),z.lazy(() => SessionFindManyArgsSchema)]).optional(),
+  _count: z.union([z.boolean(),z.lazy(() => ModeratorsCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 
 
@@ -1705,40 +1762,46 @@ export const SessionWhereInputSchema: z.ZodType<Prisma.SessionWhereInput> = z.ob
   OR: z.lazy(() => SessionWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => SessionWhereInputSchema),z.lazy(() => SessionWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  session_token: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  expires: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  session_token: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  expires: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   created_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updated_at: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
-  donator_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  medical_staff_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  moderator_id: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  donator_id: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  medical_staff_id: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   Donator: z.union([ z.lazy(() => DonatorsRelationFilterSchema),z.lazy(() => DonatorsWhereInputSchema) ]).optional().nullable(),
   Medical_Staff: z.union([ z.lazy(() => Medical_StaffRelationFilterSchema),z.lazy(() => Medical_StaffWhereInputSchema) ]).optional().nullable(),
+  Moderator: z.union([ z.lazy(() => ModeratorsRelationFilterSchema),z.lazy(() => ModeratorsWhereInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const SessionOrderByWithRelationInputSchema: z.ZodType<Prisma.SessionOrderByWithRelationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  session_token: z.lazy(() => SortOrderSchema).optional(),
-  expires: z.lazy(() => SortOrderSchema).optional(),
+  session_token: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  expires: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
-  donator_id: z.lazy(() => SortOrderSchema).optional(),
-  medical_staff_id: z.lazy(() => SortOrderSchema).optional(),
+  moderator_id: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  donator_id: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  medical_staff_id: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   Donator: z.lazy(() => DonatorsOrderByWithRelationInputSchema).optional(),
-  Medical_Staff: z.lazy(() => Medical_StaffOrderByWithRelationInputSchema).optional()
+  Medical_Staff: z.lazy(() => Medical_StaffOrderByWithRelationInputSchema).optional(),
+  Moderator: z.lazy(() => ModeratorsOrderByWithRelationInputSchema).optional()
 }).strict();
 
 export const SessionWhereUniqueInputSchema: z.ZodType<Prisma.SessionWhereUniqueInput> = z.object({
-  id: z.string().cuid().optional()
+  id: z.string().cuid().optional(),
+  session_token: z.string().optional()
 }).strict();
 
 export const SessionOrderByWithAggregationInputSchema: z.ZodType<Prisma.SessionOrderByWithAggregationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  session_token: z.lazy(() => SortOrderSchema).optional(),
-  expires: z.lazy(() => SortOrderSchema).optional(),
+  session_token: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  expires: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
-  donator_id: z.lazy(() => SortOrderSchema).optional(),
-  medical_staff_id: z.lazy(() => SortOrderSchema).optional(),
+  moderator_id: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  donator_id: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  medical_staff_id: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => SessionCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => SessionMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => SessionMinOrderByAggregateInputSchema).optional()
@@ -1749,12 +1812,13 @@ export const SessionScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Sessi
   OR: z.lazy(() => SessionScalarWhereWithAggregatesInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => SessionScalarWhereWithAggregatesInputSchema),z.lazy(() => SessionScalarWhereWithAggregatesInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
-  session_token: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
-  expires: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  session_token: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  expires: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
   created_at: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   updated_at: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
-  donator_id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
-  medical_staff_id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  moderator_id: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  donator_id: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  medical_staff_id: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
 }).strict();
 
 export const ReservationsWhereInputSchema: z.ZodType<Prisma.ReservationsWhereInput> = z.object({
@@ -2131,6 +2195,65 @@ export const Post_Feedback_AnswersScalarWhereWithAggregatesInputSchema: z.ZodTyp
   feedback_id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   question_id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   choise_id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+}).strict();
+
+export const ModeratorsWhereInputSchema: z.ZodType<Prisma.ModeratorsWhereInput> = z.object({
+  AND: z.union([ z.lazy(() => ModeratorsWhereInputSchema),z.lazy(() => ModeratorsWhereInputSchema).array() ]).optional(),
+  OR: z.lazy(() => ModeratorsWhereInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => ModeratorsWhereInputSchema),z.lazy(() => ModeratorsWhereInputSchema).array() ]).optional(),
+  id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  first_name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  last_name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  phone_number: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  email: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  password: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  created_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  updated_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  Session: z.lazy(() => SessionListRelationFilterSchema).optional()
+}).strict();
+
+export const ModeratorsOrderByWithRelationInputSchema: z.ZodType<Prisma.ModeratorsOrderByWithRelationInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  first_name: z.lazy(() => SortOrderSchema).optional(),
+  last_name: z.lazy(() => SortOrderSchema).optional(),
+  phone_number: z.lazy(() => SortOrderSchema).optional(),
+  email: z.lazy(() => SortOrderSchema).optional(),
+  password: z.lazy(() => SortOrderSchema).optional(),
+  created_at: z.lazy(() => SortOrderSchema).optional(),
+  updated_at: z.lazy(() => SortOrderSchema).optional(),
+  Session: z.lazy(() => SessionOrderByRelationAggregateInputSchema).optional()
+}).strict();
+
+export const ModeratorsWhereUniqueInputSchema: z.ZodType<Prisma.ModeratorsWhereUniqueInput> = z.object({
+  id: z.string().cuid().optional()
+}).strict();
+
+export const ModeratorsOrderByWithAggregationInputSchema: z.ZodType<Prisma.ModeratorsOrderByWithAggregationInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  first_name: z.lazy(() => SortOrderSchema).optional(),
+  last_name: z.lazy(() => SortOrderSchema).optional(),
+  phone_number: z.lazy(() => SortOrderSchema).optional(),
+  email: z.lazy(() => SortOrderSchema).optional(),
+  password: z.lazy(() => SortOrderSchema).optional(),
+  created_at: z.lazy(() => SortOrderSchema).optional(),
+  updated_at: z.lazy(() => SortOrderSchema).optional(),
+  _count: z.lazy(() => ModeratorsCountOrderByAggregateInputSchema).optional(),
+  _max: z.lazy(() => ModeratorsMaxOrderByAggregateInputSchema).optional(),
+  _min: z.lazy(() => ModeratorsMinOrderByAggregateInputSchema).optional()
+}).strict();
+
+export const ModeratorsScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.ModeratorsScalarWhereWithAggregatesInput> = z.object({
+  AND: z.union([ z.lazy(() => ModeratorsScalarWhereWithAggregatesInputSchema),z.lazy(() => ModeratorsScalarWhereWithAggregatesInputSchema).array() ]).optional(),
+  OR: z.lazy(() => ModeratorsScalarWhereWithAggregatesInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => ModeratorsScalarWhereWithAggregatesInputSchema),z.lazy(() => ModeratorsScalarWhereWithAggregatesInputSchema).array() ]).optional(),
+  id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  first_name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  last_name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  phone_number: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  email: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  password: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  created_at: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  updated_at: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
 }).strict();
 
 export const Medical_AccountsCreateInputSchema: z.ZodType<Prisma.Medical_AccountsCreateInput> = z.object({
@@ -3052,70 +3175,76 @@ export const Medical_StaffUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Medic
 
 export const SessionCreateInputSchema: z.ZodType<Prisma.SessionCreateInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string(),
-  expires: z.coerce.date(),
+  session_token: z.string().optional().nullable(),
+  expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
   Donator: z.lazy(() => DonatorsCreateNestedOneWithoutSessionInputSchema).optional(),
-  Medical_Staff: z.lazy(() => Medical_StaffCreateNestedOneWithoutSessionInputSchema).optional()
+  Medical_Staff: z.lazy(() => Medical_StaffCreateNestedOneWithoutSessionInputSchema).optional(),
+  Moderator: z.lazy(() => ModeratorsCreateNestedOneWithoutSessionInputSchema).optional()
 }).strict();
 
 export const SessionUncheckedCreateInputSchema: z.ZodType<Prisma.SessionUncheckedCreateInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string(),
-  expires: z.coerce.date(),
+  session_token: z.string().optional().nullable(),
+  expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
-  donator_id: z.string(),
-  medical_staff_id: z.string()
+  moderator_id: z.string().optional().nullable(),
+  donator_id: z.string().optional().nullable(),
+  medical_staff_id: z.string().optional().nullable()
 }).strict();
 
 export const SessionUpdateInputSchema: z.ZodType<Prisma.SessionUpdateInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  session_token: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  expires: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   Donator: z.lazy(() => DonatorsUpdateOneWithoutSessionNestedInputSchema).optional(),
-  Medical_Staff: z.lazy(() => Medical_StaffUpdateOneWithoutSessionNestedInputSchema).optional()
+  Medical_Staff: z.lazy(() => Medical_StaffUpdateOneWithoutSessionNestedInputSchema).optional(),
+  Moderator: z.lazy(() => ModeratorsUpdateOneWithoutSessionNestedInputSchema).optional()
 }).strict();
 
 export const SessionUncheckedUpdateInputSchema: z.ZodType<Prisma.SessionUncheckedUpdateInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  session_token: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  expires: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  donator_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  medical_staff_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  moderator_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  donator_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  medical_staff_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const SessionCreateManyInputSchema: z.ZodType<Prisma.SessionCreateManyInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string(),
-  expires: z.coerce.date(),
+  session_token: z.string().optional().nullable(),
+  expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
-  donator_id: z.string(),
-  medical_staff_id: z.string()
+  moderator_id: z.string().optional().nullable(),
+  donator_id: z.string().optional().nullable(),
+  medical_staff_id: z.string().optional().nullable()
 }).strict();
 
 export const SessionUpdateManyMutationInputSchema: z.ZodType<Prisma.SessionUpdateManyMutationInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  session_token: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  expires: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const SessionUncheckedUpdateManyInputSchema: z.ZodType<Prisma.SessionUncheckedUpdateManyInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  session_token: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  expires: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  donator_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  medical_staff_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  moderator_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  donator_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  medical_staff_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const ReservationsCreateInputSchema: z.ZodType<Prisma.ReservationsCreateInput> = z.object({
@@ -3554,6 +3683,87 @@ export const Post_Feedback_AnswersUncheckedUpdateManyInputSchema: z.ZodType<Pris
   feedback_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   question_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   choise_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const ModeratorsCreateInputSchema: z.ZodType<Prisma.ModeratorsCreateInput> = z.object({
+  id: z.string().cuid().optional(),
+  first_name: z.string(),
+  last_name: z.string(),
+  phone_number: z.string(),
+  email: z.string(),
+  password: z.string(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional(),
+  Session: z.lazy(() => SessionCreateNestedManyWithoutModeratorInputSchema).optional()
+}).strict();
+
+export const ModeratorsUncheckedCreateInputSchema: z.ZodType<Prisma.ModeratorsUncheckedCreateInput> = z.object({
+  id: z.string().cuid().optional(),
+  first_name: z.string(),
+  last_name: z.string(),
+  phone_number: z.string(),
+  email: z.string(),
+  password: z.string(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional(),
+  Session: z.lazy(() => SessionUncheckedCreateNestedManyWithoutModeratorInputSchema).optional()
+}).strict();
+
+export const ModeratorsUpdateInputSchema: z.ZodType<Prisma.ModeratorsUpdateInput> = z.object({
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  first_name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  last_name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  phone_number: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  Session: z.lazy(() => SessionUpdateManyWithoutModeratorNestedInputSchema).optional()
+}).strict();
+
+export const ModeratorsUncheckedUpdateInputSchema: z.ZodType<Prisma.ModeratorsUncheckedUpdateInput> = z.object({
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  first_name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  last_name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  phone_number: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  Session: z.lazy(() => SessionUncheckedUpdateManyWithoutModeratorNestedInputSchema).optional()
+}).strict();
+
+export const ModeratorsCreateManyInputSchema: z.ZodType<Prisma.ModeratorsCreateManyInput> = z.object({
+  id: z.string().cuid().optional(),
+  first_name: z.string(),
+  last_name: z.string(),
+  phone_number: z.string(),
+  email: z.string(),
+  password: z.string(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional()
+}).strict();
+
+export const ModeratorsUpdateManyMutationInputSchema: z.ZodType<Prisma.ModeratorsUpdateManyMutationInput> = z.object({
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  first_name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  last_name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  phone_number: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const ModeratorsUncheckedUpdateManyInputSchema: z.ZodType<Prisma.ModeratorsUncheckedUpdateManyInput> = z.object({
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  first_name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  last_name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  phone_number: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const StringFilterSchema: z.ZodType<Prisma.StringFilter> = z.object({
@@ -4458,12 +4668,18 @@ export const Medical_StaffRelationFilterSchema: z.ZodType<Prisma.Medical_StaffRe
   isNot: z.lazy(() => Medical_StaffWhereInputSchema).optional().nullable()
 }).strict();
 
+export const ModeratorsRelationFilterSchema: z.ZodType<Prisma.ModeratorsRelationFilter> = z.object({
+  is: z.lazy(() => ModeratorsWhereInputSchema).optional().nullable(),
+  isNot: z.lazy(() => ModeratorsWhereInputSchema).optional().nullable()
+}).strict();
+
 export const SessionCountOrderByAggregateInputSchema: z.ZodType<Prisma.SessionCountOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   session_token: z.lazy(() => SortOrderSchema).optional(),
   expires: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.lazy(() => SortOrderSchema).optional(),
+  moderator_id: z.lazy(() => SortOrderSchema).optional(),
   donator_id: z.lazy(() => SortOrderSchema).optional(),
   medical_staff_id: z.lazy(() => SortOrderSchema).optional()
 }).strict();
@@ -4474,6 +4690,7 @@ export const SessionMaxOrderByAggregateInputSchema: z.ZodType<Prisma.SessionMaxO
   expires: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.lazy(() => SortOrderSchema).optional(),
+  moderator_id: z.lazy(() => SortOrderSchema).optional(),
   donator_id: z.lazy(() => SortOrderSchema).optional(),
   medical_staff_id: z.lazy(() => SortOrderSchema).optional()
 }).strict();
@@ -4484,6 +4701,7 @@ export const SessionMinOrderByAggregateInputSchema: z.ZodType<Prisma.SessionMinO
   expires: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.lazy(() => SortOrderSchema).optional(),
+  moderator_id: z.lazy(() => SortOrderSchema).optional(),
   donator_id: z.lazy(() => SortOrderSchema).optional(),
   medical_staff_id: z.lazy(() => SortOrderSchema).optional()
 }).strict();
@@ -4789,6 +5007,39 @@ export const Post_Feedback_AnswersMinOrderByAggregateInputSchema: z.ZodType<Pris
   feedback_id: z.lazy(() => SortOrderSchema).optional(),
   question_id: z.lazy(() => SortOrderSchema).optional(),
   choise_id: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const ModeratorsCountOrderByAggregateInputSchema: z.ZodType<Prisma.ModeratorsCountOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  first_name: z.lazy(() => SortOrderSchema).optional(),
+  last_name: z.lazy(() => SortOrderSchema).optional(),
+  phone_number: z.lazy(() => SortOrderSchema).optional(),
+  email: z.lazy(() => SortOrderSchema).optional(),
+  password: z.lazy(() => SortOrderSchema).optional(),
+  created_at: z.lazy(() => SortOrderSchema).optional(),
+  updated_at: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const ModeratorsMaxOrderByAggregateInputSchema: z.ZodType<Prisma.ModeratorsMaxOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  first_name: z.lazy(() => SortOrderSchema).optional(),
+  last_name: z.lazy(() => SortOrderSchema).optional(),
+  phone_number: z.lazy(() => SortOrderSchema).optional(),
+  email: z.lazy(() => SortOrderSchema).optional(),
+  password: z.lazy(() => SortOrderSchema).optional(),
+  created_at: z.lazy(() => SortOrderSchema).optional(),
+  updated_at: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const ModeratorsMinOrderByAggregateInputSchema: z.ZodType<Prisma.ModeratorsMinOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  first_name: z.lazy(() => SortOrderSchema).optional(),
+  last_name: z.lazy(() => SortOrderSchema).optional(),
+  phone_number: z.lazy(() => SortOrderSchema).optional(),
+  email: z.lazy(() => SortOrderSchema).optional(),
+  password: z.lazy(() => SortOrderSchema).optional(),
+  created_at: z.lazy(() => SortOrderSchema).optional(),
+  updated_at: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const DonatorsCreateNestedManyWithoutMedical_AccountInputSchema: z.ZodType<Prisma.DonatorsCreateNestedManyWithoutMedical_AccountInput> = z.object({
@@ -5561,6 +5812,12 @@ export const Medical_StaffCreateNestedOneWithoutSessionInputSchema: z.ZodType<Pr
   connect: z.lazy(() => Medical_StaffWhereUniqueInputSchema).optional()
 }).strict();
 
+export const ModeratorsCreateNestedOneWithoutSessionInputSchema: z.ZodType<Prisma.ModeratorsCreateNestedOneWithoutSessionInput> = z.object({
+  create: z.union([ z.lazy(() => ModeratorsCreateWithoutSessionInputSchema),z.lazy(() => ModeratorsUncheckedCreateWithoutSessionInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => ModeratorsCreateOrConnectWithoutSessionInputSchema).optional(),
+  connect: z.lazy(() => ModeratorsWhereUniqueInputSchema).optional()
+}).strict();
+
 export const DonatorsUpdateOneWithoutSessionNestedInputSchema: z.ZodType<Prisma.DonatorsUpdateOneWithoutSessionNestedInput> = z.object({
   create: z.union([ z.lazy(() => DonatorsCreateWithoutSessionInputSchema),z.lazy(() => DonatorsUncheckedCreateWithoutSessionInputSchema) ]).optional(),
   connectOrCreate: z.lazy(() => DonatorsCreateOrConnectWithoutSessionInputSchema).optional(),
@@ -5579,6 +5836,16 @@ export const Medical_StaffUpdateOneWithoutSessionNestedInputSchema: z.ZodType<Pr
   delete: z.boolean().optional(),
   connect: z.lazy(() => Medical_StaffWhereUniqueInputSchema).optional(),
   update: z.union([ z.lazy(() => Medical_StaffUpdateWithoutSessionInputSchema),z.lazy(() => Medical_StaffUncheckedUpdateWithoutSessionInputSchema) ]).optional(),
+}).strict();
+
+export const ModeratorsUpdateOneWithoutSessionNestedInputSchema: z.ZodType<Prisma.ModeratorsUpdateOneWithoutSessionNestedInput> = z.object({
+  create: z.union([ z.lazy(() => ModeratorsCreateWithoutSessionInputSchema),z.lazy(() => ModeratorsUncheckedCreateWithoutSessionInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => ModeratorsCreateOrConnectWithoutSessionInputSchema).optional(),
+  upsert: z.lazy(() => ModeratorsUpsertWithoutSessionInputSchema).optional(),
+  disconnect: z.boolean().optional(),
+  delete: z.boolean().optional(),
+  connect: z.lazy(() => ModeratorsWhereUniqueInputSchema).optional(),
+  update: z.union([ z.lazy(() => ModeratorsUpdateWithoutSessionInputSchema),z.lazy(() => ModeratorsUncheckedUpdateWithoutSessionInputSchema) ]).optional(),
 }).strict();
 
 export const Reservation_SlotsCreateNestedOneWithoutReservationsInputSchema: z.ZodType<Prisma.Reservation_SlotsCreateNestedOneWithoutReservationsInput> = z.object({
@@ -5829,6 +6096,48 @@ export const Donation_HistoryUncheckedUpdateManyWithoutPost_Donation_FeedbackNes
   update: z.union([ z.lazy(() => Donation_HistoryUpdateWithWhereUniqueWithoutPost_Donation_FeedbackInputSchema),z.lazy(() => Donation_HistoryUpdateWithWhereUniqueWithoutPost_Donation_FeedbackInputSchema).array() ]).optional(),
   updateMany: z.union([ z.lazy(() => Donation_HistoryUpdateManyWithWhereWithoutPost_Donation_FeedbackInputSchema),z.lazy(() => Donation_HistoryUpdateManyWithWhereWithoutPost_Donation_FeedbackInputSchema).array() ]).optional(),
   deleteMany: z.union([ z.lazy(() => Donation_HistoryScalarWhereInputSchema),z.lazy(() => Donation_HistoryScalarWhereInputSchema).array() ]).optional(),
+}).strict();
+
+export const SessionCreateNestedManyWithoutModeratorInputSchema: z.ZodType<Prisma.SessionCreateNestedManyWithoutModeratorInput> = z.object({
+  create: z.union([ z.lazy(() => SessionCreateWithoutModeratorInputSchema),z.lazy(() => SessionCreateWithoutModeratorInputSchema).array(),z.lazy(() => SessionUncheckedCreateWithoutModeratorInputSchema),z.lazy(() => SessionUncheckedCreateWithoutModeratorInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => SessionCreateOrConnectWithoutModeratorInputSchema),z.lazy(() => SessionCreateOrConnectWithoutModeratorInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => SessionCreateManyModeratorInputEnvelopeSchema).optional(),
+  connect: z.union([ z.lazy(() => SessionWhereUniqueInputSchema),z.lazy(() => SessionWhereUniqueInputSchema).array() ]).optional(),
+}).strict();
+
+export const SessionUncheckedCreateNestedManyWithoutModeratorInputSchema: z.ZodType<Prisma.SessionUncheckedCreateNestedManyWithoutModeratorInput> = z.object({
+  create: z.union([ z.lazy(() => SessionCreateWithoutModeratorInputSchema),z.lazy(() => SessionCreateWithoutModeratorInputSchema).array(),z.lazy(() => SessionUncheckedCreateWithoutModeratorInputSchema),z.lazy(() => SessionUncheckedCreateWithoutModeratorInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => SessionCreateOrConnectWithoutModeratorInputSchema),z.lazy(() => SessionCreateOrConnectWithoutModeratorInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => SessionCreateManyModeratorInputEnvelopeSchema).optional(),
+  connect: z.union([ z.lazy(() => SessionWhereUniqueInputSchema),z.lazy(() => SessionWhereUniqueInputSchema).array() ]).optional(),
+}).strict();
+
+export const SessionUpdateManyWithoutModeratorNestedInputSchema: z.ZodType<Prisma.SessionUpdateManyWithoutModeratorNestedInput> = z.object({
+  create: z.union([ z.lazy(() => SessionCreateWithoutModeratorInputSchema),z.lazy(() => SessionCreateWithoutModeratorInputSchema).array(),z.lazy(() => SessionUncheckedCreateWithoutModeratorInputSchema),z.lazy(() => SessionUncheckedCreateWithoutModeratorInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => SessionCreateOrConnectWithoutModeratorInputSchema),z.lazy(() => SessionCreateOrConnectWithoutModeratorInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => SessionUpsertWithWhereUniqueWithoutModeratorInputSchema),z.lazy(() => SessionUpsertWithWhereUniqueWithoutModeratorInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => SessionCreateManyModeratorInputEnvelopeSchema).optional(),
+  set: z.union([ z.lazy(() => SessionWhereUniqueInputSchema),z.lazy(() => SessionWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => SessionWhereUniqueInputSchema),z.lazy(() => SessionWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => SessionWhereUniqueInputSchema),z.lazy(() => SessionWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => SessionWhereUniqueInputSchema),z.lazy(() => SessionWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => SessionUpdateWithWhereUniqueWithoutModeratorInputSchema),z.lazy(() => SessionUpdateWithWhereUniqueWithoutModeratorInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => SessionUpdateManyWithWhereWithoutModeratorInputSchema),z.lazy(() => SessionUpdateManyWithWhereWithoutModeratorInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => SessionScalarWhereInputSchema),z.lazy(() => SessionScalarWhereInputSchema).array() ]).optional(),
+}).strict();
+
+export const SessionUncheckedUpdateManyWithoutModeratorNestedInputSchema: z.ZodType<Prisma.SessionUncheckedUpdateManyWithoutModeratorNestedInput> = z.object({
+  create: z.union([ z.lazy(() => SessionCreateWithoutModeratorInputSchema),z.lazy(() => SessionCreateWithoutModeratorInputSchema).array(),z.lazy(() => SessionUncheckedCreateWithoutModeratorInputSchema),z.lazy(() => SessionUncheckedCreateWithoutModeratorInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => SessionCreateOrConnectWithoutModeratorInputSchema),z.lazy(() => SessionCreateOrConnectWithoutModeratorInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => SessionUpsertWithWhereUniqueWithoutModeratorInputSchema),z.lazy(() => SessionUpsertWithWhereUniqueWithoutModeratorInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => SessionCreateManyModeratorInputEnvelopeSchema).optional(),
+  set: z.union([ z.lazy(() => SessionWhereUniqueInputSchema),z.lazy(() => SessionWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => SessionWhereUniqueInputSchema),z.lazy(() => SessionWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => SessionWhereUniqueInputSchema),z.lazy(() => SessionWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => SessionWhereUniqueInputSchema),z.lazy(() => SessionWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => SessionUpdateWithWhereUniqueWithoutModeratorInputSchema),z.lazy(() => SessionUpdateWithWhereUniqueWithoutModeratorInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => SessionUpdateManyWithWhereWithoutModeratorInputSchema),z.lazy(() => SessionUpdateManyWithWhereWithoutModeratorInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => SessionScalarWhereInputSchema),z.lazy(() => SessionScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
 export const NestedStringFilterSchema: z.ZodType<Prisma.NestedStringFilter> = z.object({
@@ -6377,20 +6686,22 @@ export const Redemption_HistoryCreateManyDonatorInputEnvelopeSchema: z.ZodType<P
 
 export const SessionCreateWithoutDonatorInputSchema: z.ZodType<Prisma.SessionCreateWithoutDonatorInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string(),
-  expires: z.coerce.date(),
+  session_token: z.string().optional().nullable(),
+  expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
-  Medical_Staff: z.lazy(() => Medical_StaffCreateNestedOneWithoutSessionInputSchema).optional()
+  Medical_Staff: z.lazy(() => Medical_StaffCreateNestedOneWithoutSessionInputSchema).optional(),
+  Moderator: z.lazy(() => ModeratorsCreateNestedOneWithoutSessionInputSchema).optional()
 }).strict();
 
 export const SessionUncheckedCreateWithoutDonatorInputSchema: z.ZodType<Prisma.SessionUncheckedCreateWithoutDonatorInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string(),
-  expires: z.coerce.date(),
+  session_token: z.string().optional().nullable(),
+  expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
-  medical_staff_id: z.string()
+  moderator_id: z.string().optional().nullable(),
+  medical_staff_id: z.string().optional().nullable()
 }).strict();
 
 export const SessionCreateOrConnectWithoutDonatorInputSchema: z.ZodType<Prisma.SessionCreateOrConnectWithoutDonatorInput> = z.object({
@@ -6504,12 +6815,13 @@ export const SessionScalarWhereInputSchema: z.ZodType<Prisma.SessionScalarWhereI
   OR: z.lazy(() => SessionScalarWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => SessionScalarWhereInputSchema),z.lazy(() => SessionScalarWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  session_token: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  expires: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  session_token: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  expires: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   created_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updated_at: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
-  donator_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  medical_staff_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  moderator_id: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  donator_id: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  medical_staff_id: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
 }).strict();
 
 export const DonatorsCreateWithoutReward_TransactionsInputSchema: z.ZodType<Prisma.DonatorsCreateWithoutReward_TransactionsInput> = z.object({
@@ -7772,20 +8084,22 @@ export const PlacesCreateOrConnectWithoutMedical_StaffInputSchema: z.ZodType<Pri
 
 export const SessionCreateWithoutMedical_StaffInputSchema: z.ZodType<Prisma.SessionCreateWithoutMedical_StaffInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string(),
-  expires: z.coerce.date(),
+  session_token: z.string().optional().nullable(),
+  expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
-  Donator: z.lazy(() => DonatorsCreateNestedOneWithoutSessionInputSchema).optional()
+  Donator: z.lazy(() => DonatorsCreateNestedOneWithoutSessionInputSchema).optional(),
+  Moderator: z.lazy(() => ModeratorsCreateNestedOneWithoutSessionInputSchema).optional()
 }).strict();
 
 export const SessionUncheckedCreateWithoutMedical_StaffInputSchema: z.ZodType<Prisma.SessionUncheckedCreateWithoutMedical_StaffInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string(),
-  expires: z.coerce.date(),
+  session_token: z.string().optional().nullable(),
+  expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
-  donator_id: z.string()
+  moderator_id: z.string().optional().nullable(),
+  donator_id: z.string().optional().nullable()
 }).strict();
 
 export const SessionCreateOrConnectWithoutMedical_StaffInputSchema: z.ZodType<Prisma.SessionCreateOrConnectWithoutMedical_StaffInput> = z.object({
@@ -7935,6 +8249,33 @@ export const Medical_StaffCreateOrConnectWithoutSessionInputSchema: z.ZodType<Pr
   create: z.union([ z.lazy(() => Medical_StaffCreateWithoutSessionInputSchema),z.lazy(() => Medical_StaffUncheckedCreateWithoutSessionInputSchema) ]),
 }).strict();
 
+export const ModeratorsCreateWithoutSessionInputSchema: z.ZodType<Prisma.ModeratorsCreateWithoutSessionInput> = z.object({
+  id: z.string().cuid().optional(),
+  first_name: z.string(),
+  last_name: z.string(),
+  phone_number: z.string(),
+  email: z.string(),
+  password: z.string(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional()
+}).strict();
+
+export const ModeratorsUncheckedCreateWithoutSessionInputSchema: z.ZodType<Prisma.ModeratorsUncheckedCreateWithoutSessionInput> = z.object({
+  id: z.string().cuid().optional(),
+  first_name: z.string(),
+  last_name: z.string(),
+  phone_number: z.string(),
+  email: z.string(),
+  password: z.string(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional()
+}).strict();
+
+export const ModeratorsCreateOrConnectWithoutSessionInputSchema: z.ZodType<Prisma.ModeratorsCreateOrConnectWithoutSessionInput> = z.object({
+  where: z.lazy(() => ModeratorsWhereUniqueInputSchema),
+  create: z.union([ z.lazy(() => ModeratorsCreateWithoutSessionInputSchema),z.lazy(() => ModeratorsUncheckedCreateWithoutSessionInputSchema) ]),
+}).strict();
+
 export const DonatorsUpsertWithoutSessionInputSchema: z.ZodType<Prisma.DonatorsUpsertWithoutSessionInput> = z.object({
   update: z.union([ z.lazy(() => DonatorsUpdateWithoutSessionInputSchema),z.lazy(() => DonatorsUncheckedUpdateWithoutSessionInputSchema) ]),
   create: z.union([ z.lazy(() => DonatorsCreateWithoutSessionInputSchema),z.lazy(() => DonatorsUncheckedCreateWithoutSessionInputSchema) ]),
@@ -8003,6 +8344,33 @@ export const Medical_StaffUncheckedUpdateWithoutSessionInputSchema: z.ZodType<Pr
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   place_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const ModeratorsUpsertWithoutSessionInputSchema: z.ZodType<Prisma.ModeratorsUpsertWithoutSessionInput> = z.object({
+  update: z.union([ z.lazy(() => ModeratorsUpdateWithoutSessionInputSchema),z.lazy(() => ModeratorsUncheckedUpdateWithoutSessionInputSchema) ]),
+  create: z.union([ z.lazy(() => ModeratorsCreateWithoutSessionInputSchema),z.lazy(() => ModeratorsUncheckedCreateWithoutSessionInputSchema) ]),
+}).strict();
+
+export const ModeratorsUpdateWithoutSessionInputSchema: z.ZodType<Prisma.ModeratorsUpdateWithoutSessionInput> = z.object({
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  first_name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  last_name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  phone_number: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const ModeratorsUncheckedUpdateWithoutSessionInputSchema: z.ZodType<Prisma.ModeratorsUncheckedUpdateWithoutSessionInput> = z.object({
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  first_name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  last_name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  phone_number: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const Reservation_SlotsCreateWithoutReservationsInputSchema: z.ZodType<Prisma.Reservation_SlotsCreateWithoutReservationsInput> = z.object({
@@ -8421,6 +8789,52 @@ export const Donation_HistoryUpdateManyWithWhereWithoutPost_Donation_FeedbackInp
   data: z.union([ z.lazy(() => Donation_HistoryUpdateManyMutationInputSchema),z.lazy(() => Donation_HistoryUncheckedUpdateManyWithoutDonation_HistoryInputSchema) ]),
 }).strict();
 
+export const SessionCreateWithoutModeratorInputSchema: z.ZodType<Prisma.SessionCreateWithoutModeratorInput> = z.object({
+  id: z.string().cuid().optional(),
+  session_token: z.string().optional().nullable(),
+  expires: z.coerce.date().optional().nullable(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional().nullable(),
+  Donator: z.lazy(() => DonatorsCreateNestedOneWithoutSessionInputSchema).optional(),
+  Medical_Staff: z.lazy(() => Medical_StaffCreateNestedOneWithoutSessionInputSchema).optional()
+}).strict();
+
+export const SessionUncheckedCreateWithoutModeratorInputSchema: z.ZodType<Prisma.SessionUncheckedCreateWithoutModeratorInput> = z.object({
+  id: z.string().cuid().optional(),
+  session_token: z.string().optional().nullable(),
+  expires: z.coerce.date().optional().nullable(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional().nullable(),
+  donator_id: z.string().optional().nullable(),
+  medical_staff_id: z.string().optional().nullable()
+}).strict();
+
+export const SessionCreateOrConnectWithoutModeratorInputSchema: z.ZodType<Prisma.SessionCreateOrConnectWithoutModeratorInput> = z.object({
+  where: z.lazy(() => SessionWhereUniqueInputSchema),
+  create: z.union([ z.lazy(() => SessionCreateWithoutModeratorInputSchema),z.lazy(() => SessionUncheckedCreateWithoutModeratorInputSchema) ]),
+}).strict();
+
+export const SessionCreateManyModeratorInputEnvelopeSchema: z.ZodType<Prisma.SessionCreateManyModeratorInputEnvelope> = z.object({
+  data: z.union([ z.lazy(() => SessionCreateManyModeratorInputSchema),z.lazy(() => SessionCreateManyModeratorInputSchema).array() ]),
+  skipDuplicates: z.boolean().optional()
+}).strict();
+
+export const SessionUpsertWithWhereUniqueWithoutModeratorInputSchema: z.ZodType<Prisma.SessionUpsertWithWhereUniqueWithoutModeratorInput> = z.object({
+  where: z.lazy(() => SessionWhereUniqueInputSchema),
+  update: z.union([ z.lazy(() => SessionUpdateWithoutModeratorInputSchema),z.lazy(() => SessionUncheckedUpdateWithoutModeratorInputSchema) ]),
+  create: z.union([ z.lazy(() => SessionCreateWithoutModeratorInputSchema),z.lazy(() => SessionUncheckedCreateWithoutModeratorInputSchema) ]),
+}).strict();
+
+export const SessionUpdateWithWhereUniqueWithoutModeratorInputSchema: z.ZodType<Prisma.SessionUpdateWithWhereUniqueWithoutModeratorInput> = z.object({
+  where: z.lazy(() => SessionWhereUniqueInputSchema),
+  data: z.union([ z.lazy(() => SessionUpdateWithoutModeratorInputSchema),z.lazy(() => SessionUncheckedUpdateWithoutModeratorInputSchema) ]),
+}).strict();
+
+export const SessionUpdateManyWithWhereWithoutModeratorInputSchema: z.ZodType<Prisma.SessionUpdateManyWithWhereWithoutModeratorInput> = z.object({
+  where: z.lazy(() => SessionScalarWhereInputSchema),
+  data: z.union([ z.lazy(() => SessionUpdateManyMutationInputSchema),z.lazy(() => SessionUncheckedUpdateManyWithoutSessionInputSchema) ]),
+}).strict();
+
 export const DonatorsCreateManyMedical_AccountInputSchema: z.ZodType<Prisma.DonatorsCreateManyMedical_AccountInput> = z.object({
   id: z.string().cuid().optional(),
   image_src: z.string().optional().nullable(),
@@ -8510,11 +8924,12 @@ export const Redemption_HistoryCreateManyDonatorInputSchema: z.ZodType<Prisma.Re
 
 export const SessionCreateManyDonatorInputSchema: z.ZodType<Prisma.SessionCreateManyDonatorInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string(),
-  expires: z.coerce.date(),
+  session_token: z.string().optional().nullable(),
+  expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
-  medical_staff_id: z.string()
+  moderator_id: z.string().optional().nullable(),
+  medical_staff_id: z.string().optional().nullable()
 }).strict();
 
 export const Reward_TransactionsUpdateWithoutDonatorInputSchema: z.ZodType<Prisma.Reward_TransactionsUpdateWithoutDonatorInput> = z.object({
@@ -8570,29 +8985,32 @@ export const Redemption_HistoryUncheckedUpdateManyWithoutRedemption_HistoryInput
 
 export const SessionUpdateWithoutDonatorInputSchema: z.ZodType<Prisma.SessionUpdateWithoutDonatorInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  session_token: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  expires: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  Medical_Staff: z.lazy(() => Medical_StaffUpdateOneWithoutSessionNestedInputSchema).optional()
+  Medical_Staff: z.lazy(() => Medical_StaffUpdateOneWithoutSessionNestedInputSchema).optional(),
+  Moderator: z.lazy(() => ModeratorsUpdateOneWithoutSessionNestedInputSchema).optional()
 }).strict();
 
 export const SessionUncheckedUpdateWithoutDonatorInputSchema: z.ZodType<Prisma.SessionUncheckedUpdateWithoutDonatorInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  session_token: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  expires: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  medical_staff_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  moderator_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  medical_staff_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const SessionUncheckedUpdateManyWithoutSessionInputSchema: z.ZodType<Prisma.SessionUncheckedUpdateManyWithoutSessionInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  session_token: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  expires: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  medical_staff_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  moderator_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  medical_staff_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const Redemption_HistoryCreateManyRewardInputSchema: z.ZodType<Prisma.Redemption_HistoryCreateManyRewardInput> = z.object({
@@ -8895,29 +9313,32 @@ export const ReservationsUncheckedUpdateManyWithoutReservationsInputSchema: z.Zo
 
 export const SessionCreateManyMedical_StaffInputSchema: z.ZodType<Prisma.SessionCreateManyMedical_StaffInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string(),
-  expires: z.coerce.date(),
+  session_token: z.string().optional().nullable(),
+  expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
-  donator_id: z.string()
+  moderator_id: z.string().optional().nullable(),
+  donator_id: z.string().optional().nullable()
 }).strict();
 
 export const SessionUpdateWithoutMedical_StaffInputSchema: z.ZodType<Prisma.SessionUpdateWithoutMedical_StaffInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  session_token: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  expires: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  Donator: z.lazy(() => DonatorsUpdateOneWithoutSessionNestedInputSchema).optional()
+  Donator: z.lazy(() => DonatorsUpdateOneWithoutSessionNestedInputSchema).optional(),
+  Moderator: z.lazy(() => ModeratorsUpdateOneWithoutSessionNestedInputSchema).optional()
 }).strict();
 
 export const SessionUncheckedUpdateWithoutMedical_StaffInputSchema: z.ZodType<Prisma.SessionUncheckedUpdateWithoutMedical_StaffInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  session_token: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  expires: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  donator_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  moderator_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  donator_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const Donation_HistoryCreateManyResevationInputSchema: z.ZodType<Prisma.Donation_HistoryCreateManyResevationInput> = z.object({
@@ -9055,6 +9476,36 @@ export const Donation_HistoryUncheckedUpdateWithoutPost_Donation_FeedbackInputSc
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   deleted_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   reservation_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const SessionCreateManyModeratorInputSchema: z.ZodType<Prisma.SessionCreateManyModeratorInput> = z.object({
+  id: z.string().cuid().optional(),
+  session_token: z.string().optional().nullable(),
+  expires: z.coerce.date().optional().nullable(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional().nullable(),
+  donator_id: z.string().optional().nullable(),
+  medical_staff_id: z.string().optional().nullable()
+}).strict();
+
+export const SessionUpdateWithoutModeratorInputSchema: z.ZodType<Prisma.SessionUpdateWithoutModeratorInput> = z.object({
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  Donator: z.lazy(() => DonatorsUpdateOneWithoutSessionNestedInputSchema).optional(),
+  Medical_Staff: z.lazy(() => Medical_StaffUpdateOneWithoutSessionNestedInputSchema).optional()
+}).strict();
+
+export const SessionUncheckedUpdateWithoutModeratorInputSchema: z.ZodType<Prisma.SessionUncheckedUpdateWithoutModeratorInput> = z.object({
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  donator_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  medical_staff_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 /////////////////////////////////////////
@@ -10291,6 +10742,68 @@ export const Post_Feedback_AnswersFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.
   where: Post_Feedback_AnswersWhereUniqueInputSchema,
 }).strict()
 
+export const ModeratorsFindFirstArgsSchema: z.ZodType<Prisma.ModeratorsFindFirstArgs> = z.object({
+  select: ModeratorsSelectSchema.optional(),
+  include: ModeratorsIncludeSchema.optional(),
+  where: ModeratorsWhereInputSchema.optional(),
+  orderBy: z.union([ ModeratorsOrderByWithRelationInputSchema.array(),ModeratorsOrderByWithRelationInputSchema ]).optional(),
+  cursor: ModeratorsWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ ModeratorsScalarFieldEnumSchema,ModeratorsScalarFieldEnumSchema.array() ]).optional(),
+}).strict()
+
+export const ModeratorsFindFirstOrThrowArgsSchema: z.ZodType<Prisma.ModeratorsFindFirstOrThrowArgs> = z.object({
+  select: ModeratorsSelectSchema.optional(),
+  include: ModeratorsIncludeSchema.optional(),
+  where: ModeratorsWhereInputSchema.optional(),
+  orderBy: z.union([ ModeratorsOrderByWithRelationInputSchema.array(),ModeratorsOrderByWithRelationInputSchema ]).optional(),
+  cursor: ModeratorsWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ ModeratorsScalarFieldEnumSchema,ModeratorsScalarFieldEnumSchema.array() ]).optional(),
+}).strict()
+
+export const ModeratorsFindManyArgsSchema: z.ZodType<Prisma.ModeratorsFindManyArgs> = z.object({
+  select: ModeratorsSelectSchema.optional(),
+  include: ModeratorsIncludeSchema.optional(),
+  where: ModeratorsWhereInputSchema.optional(),
+  orderBy: z.union([ ModeratorsOrderByWithRelationInputSchema.array(),ModeratorsOrderByWithRelationInputSchema ]).optional(),
+  cursor: ModeratorsWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ ModeratorsScalarFieldEnumSchema,ModeratorsScalarFieldEnumSchema.array() ]).optional(),
+}).strict()
+
+export const ModeratorsAggregateArgsSchema: z.ZodType<Prisma.ModeratorsAggregateArgs> = z.object({
+  where: ModeratorsWhereInputSchema.optional(),
+  orderBy: z.union([ ModeratorsOrderByWithRelationInputSchema.array(),ModeratorsOrderByWithRelationInputSchema ]).optional(),
+  cursor: ModeratorsWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+}).strict()
+
+export const ModeratorsGroupByArgsSchema: z.ZodType<Prisma.ModeratorsGroupByArgs> = z.object({
+  where: ModeratorsWhereInputSchema.optional(),
+  orderBy: z.union([ ModeratorsOrderByWithAggregationInputSchema.array(),ModeratorsOrderByWithAggregationInputSchema ]).optional(),
+  by: ModeratorsScalarFieldEnumSchema.array(),
+  having: ModeratorsScalarWhereWithAggregatesInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+}).strict()
+
+export const ModeratorsFindUniqueArgsSchema: z.ZodType<Prisma.ModeratorsFindUniqueArgs> = z.object({
+  select: ModeratorsSelectSchema.optional(),
+  include: ModeratorsIncludeSchema.optional(),
+  where: ModeratorsWhereUniqueInputSchema,
+}).strict()
+
+export const ModeratorsFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.ModeratorsFindUniqueOrThrowArgs> = z.object({
+  select: ModeratorsSelectSchema.optional(),
+  include: ModeratorsIncludeSchema.optional(),
+  where: ModeratorsWhereUniqueInputSchema,
+}).strict()
+
 export const Medical_AccountsCreateArgsSchema: z.ZodType<Prisma.Medical_AccountsCreateArgs> = z.object({
   select: Medical_AccountsSelectSchema.optional(),
   include: Medical_AccountsIncludeSchema.optional(),
@@ -10745,7 +11258,7 @@ export const Medical_StaffDeleteManyArgsSchema: z.ZodType<Prisma.Medical_StaffDe
 export const SessionCreateArgsSchema: z.ZodType<Prisma.SessionCreateArgs> = z.object({
   select: SessionSelectSchema.optional(),
   include: SessionIncludeSchema.optional(),
-  data: z.union([ SessionCreateInputSchema,SessionUncheckedCreateInputSchema ]),
+  data: z.union([ SessionCreateInputSchema,SessionUncheckedCreateInputSchema ]).optional(),
 }).strict()
 
 export const SessionUpsertArgsSchema: z.ZodType<Prisma.SessionUpsertArgs> = z.object({
@@ -11101,4 +11614,45 @@ export const Post_Feedback_AnswersUpdateManyArgsSchema: z.ZodType<Prisma.Post_Fe
 
 export const Post_Feedback_AnswersDeleteManyArgsSchema: z.ZodType<Prisma.Post_Feedback_AnswersDeleteManyArgs> = z.object({
   where: Post_Feedback_AnswersWhereInputSchema.optional(),
+}).strict()
+
+export const ModeratorsCreateArgsSchema: z.ZodType<Prisma.ModeratorsCreateArgs> = z.object({
+  select: ModeratorsSelectSchema.optional(),
+  include: ModeratorsIncludeSchema.optional(),
+  data: z.union([ ModeratorsCreateInputSchema,ModeratorsUncheckedCreateInputSchema ]),
+}).strict()
+
+export const ModeratorsUpsertArgsSchema: z.ZodType<Prisma.ModeratorsUpsertArgs> = z.object({
+  select: ModeratorsSelectSchema.optional(),
+  include: ModeratorsIncludeSchema.optional(),
+  where: ModeratorsWhereUniqueInputSchema,
+  create: z.union([ ModeratorsCreateInputSchema,ModeratorsUncheckedCreateInputSchema ]),
+  update: z.union([ ModeratorsUpdateInputSchema,ModeratorsUncheckedUpdateInputSchema ]),
+}).strict()
+
+export const ModeratorsCreateManyArgsSchema: z.ZodType<Prisma.ModeratorsCreateManyArgs> = z.object({
+  data: z.union([ ModeratorsCreateManyInputSchema,ModeratorsCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict()
+
+export const ModeratorsDeleteArgsSchema: z.ZodType<Prisma.ModeratorsDeleteArgs> = z.object({
+  select: ModeratorsSelectSchema.optional(),
+  include: ModeratorsIncludeSchema.optional(),
+  where: ModeratorsWhereUniqueInputSchema,
+}).strict()
+
+export const ModeratorsUpdateArgsSchema: z.ZodType<Prisma.ModeratorsUpdateArgs> = z.object({
+  select: ModeratorsSelectSchema.optional(),
+  include: ModeratorsIncludeSchema.optional(),
+  data: z.union([ ModeratorsUpdateInputSchema,ModeratorsUncheckedUpdateInputSchema ]),
+  where: ModeratorsWhereUniqueInputSchema,
+}).strict()
+
+export const ModeratorsUpdateManyArgsSchema: z.ZodType<Prisma.ModeratorsUpdateManyArgs> = z.object({
+  data: z.union([ ModeratorsUpdateManyMutationInputSchema,ModeratorsUncheckedUpdateManyInputSchema ]),
+  where: ModeratorsWhereInputSchema.optional(),
+}).strict()
+
+export const ModeratorsDeleteManyArgsSchema: z.ZodType<Prisma.ModeratorsDeleteManyArgs> = z.object({
+  where: ModeratorsWhereInputSchema.optional(),
 }).strict()

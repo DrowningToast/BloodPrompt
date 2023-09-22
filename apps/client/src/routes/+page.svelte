@@ -1,4 +1,4 @@
 <script lang="ts">
 </script>
 
-<div>Pornhub</div>
+<div class="font-bold underline">Pornhub</div>
