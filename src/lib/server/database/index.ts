@@ -14,4 +14,7 @@ const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
 
 export default prisma;
 
+export * from '@prisma/client';
+export * from '../../../../generated-zod';
+
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;

@@ -6,5 +6,5 @@ export const createSvelteKitContext = (locals: App.Locals) => (opts: FetchCreate
 	locals;
 
 const t = initTRPC.context<ReturnType<typeof createSvelteKitContext>>().create();
-export const router = t.router;
+export const createRouter = t.router;
 export const publicProcedure = t.procedure;
