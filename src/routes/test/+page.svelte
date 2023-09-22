@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { trpc } from '$lib/trpc';
+	import type { Prisma } from '@prisma/client';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -43,7 +44,43 @@
 		console.log(uu);
 	};
 
-	const handleClick = async () => {};
+	const handleClick = async () => {
+		const placeData: Prisma.PlacesCreateInput = {
+			name: "King Mongkut's Institute of Technology Ladkrabang",
+			description:
+				"King Mongkut's Institute of Technology Ladkrabang is a research and educational institution in Thailand. It is situated in Lat Krabang District, Bangkok approximately 30 km east of the city center.",
+			image_src: '',
+			icon_src: '',
+			phone_number: '023298000',
+			email: '65070219@kmitl.ac.th',
+			address: '1 Chalong Krung 1 Alley, Lat Krabang, Bangkok 10520',
+			opening_day: 'SUNDAY,MONDAY,TUESDAY',
+			opening_time: 9.0,
+			closing_time: 16.3,
+			is_available: true
+		};
+
+		const medicalStaffs = [
+			{
+				first_name: 'Sila',
+				last_name: 'Pakdeewong',
+				email: '65070219@kmitl.ac.th',
+				password: '1234567',
+				place_id: 'clmuxi9d10000er2jjo8g6dwq'
+			},
+			{
+				first_name: 'Focus',
+				last_name: 'Pakdeewong',
+				email: '65070220@kmitl.ac.th',
+				password: '1234567',
+				place_id: 'clmuxi9d10000er2jjo8g6dwq'
+			}
+		];
+
+		//const place = await trpc.places.create.mutate(placeData);
+		const res = await trpc.medicalStaff.createMany.mutate(medicalStaffs);
+		console.log('new mds: ', res);
+	};
 </script>
 
 <div class="flex flex-col items-center justify-center gap-4 mt-6">

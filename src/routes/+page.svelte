@@ -17,7 +17,9 @@
 		ให้เลือดที่คุณมีค่าต่อชีวิต
 	</p>
 
-	<button class="w-full mt-16 rounded-xl py-3 text-lg font-bold bg-white text-[#F5222D]">
-		เริ่มต้นใช้งาน
-	</button>
+	<a href="/test" class="w-full">
+		<button class="w-full mt-16 rounded-xl py-3 text-lg font-bold bg-white text-[#F5222D]">
+			เริ่มต้นใช้งาน
+		</button></a
+	>
 </div>

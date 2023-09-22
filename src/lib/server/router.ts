@@ -3,6 +3,7 @@ import { publicProcedure, createRouter } from './context';
 import { donatorsRouter } from './routes/donatorsRouter';
 import { authRouter } from './routes/authRouter';
 import { placesRouter } from './routes/placesRouter';
+import { medicalStaffRouter } from './routes/medicalStaffRouter';
 
 export const appRouter = createRouter({
 	greet: publicProcedure
@@ -17,7 +18,8 @@ export const appRouter = createRouter({
 		}),
 	donators: donatorsRouter,
 	auth: authRouter,
-	places: placesRouter
+	places: placesRouter,
+	medicalStaff: medicalStaffRouter
 });
 
 export type AppRouter = typeof appRouter;
