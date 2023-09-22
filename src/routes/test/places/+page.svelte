@@ -35,7 +35,7 @@
 				first_name: 'Focus',
 				last_name: 'Pakdeewong',
 				email: '65070220@kmitl.ac.th',
-				password: 'focus',
+				password: 'admin',
 				place_id: place.id
 			}
 		];
@@ -60,7 +60,21 @@
 		};
 		const res = await trpc.places.update.mutate({
 			data: placeData,
-			placeId: 'clmv1z54j000fer2j9e4ku5kj'
+			placeId: 'clmv42gzp000rer2jfv7frme7'
+		});
+		console.log(res);
+	};
+
+	const handleOnUpdateMedicalStaff = async () => {
+		const medicalStaffData = {
+			first_name: 'Focus',
+			last_name: 'Pakdeewong',
+			email: '65070220@kmitl.ac.th'
+			// password: 'focus'
+		};
+		const res = await trpc.medicalStaff.update.mutate({
+			data: medicalStaffData,
+			medicalStaffId: 'clmv42h35000ter2jwxnalwve'
 		});
 		console.log(res);
 	};
@@ -72,5 +86,10 @@
 	>
 	<button on:click={handleOnUpdate} class="rounded-lg text-white py-2 w-60 text-sm bg-red-500"
 		>Update</button
+	>
+
+	<button
+		on:click={handleOnUpdateMedicalStaff}
+		class="rounded-lg text-white py-2 w-60 text-sm bg-red-500">Update (MedicalStaff)</button
 	>
 </div>

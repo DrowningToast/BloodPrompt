@@ -35,13 +35,14 @@
 
 	const handleLogin = async () => {
 		console.log('handleLogin()');
-		const { user, session } = await trpc.auth.donatorLogin.mutate({
-			phone_number: phoneNumberValue,
-			password: passwordValue
+		// const { user, session } = await trpc.auth.donatorLogin.mutate({
+		// 	phone_number: phoneNumberValue,
+		// 	password: passwordValue
+		// });
+		const { user, session } = await trpc.auth.staffLogin.mutate({
+			email: 'admin@kmitl.ac.th',
+			password: 'admin'
 		});
-
-		const uu = await trpc.auth.getUser.query();
-		console.log(uu);
 	};
 
 	const handleClick = async () => {

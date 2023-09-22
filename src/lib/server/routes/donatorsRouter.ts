@@ -5,7 +5,7 @@ import { donatorsController } from '../database/controllers/donatorsController';
 import { signUpRegister } from '$lib/zod/donatorRegister';
 
 export const donatorsRouter = createRouter({
-	signUp: publicProcedure.input(signUpRegister).mutation(async ({ input, ctx }) => {
+	signUp: publicProcedure.input(signUpRegister).mutation(async ({ input }) => {
 		console.log('signUp()');
 		const { donatorData, medicalAccountData } = input;
 
@@ -23,7 +23,7 @@ export const donatorsRouter = createRouter({
 		};
 
 		const medical_account = {
-			blood_type: medicalAccountData.blood_type || 'A_NEGATIVE',
+			blood_type: medicalAccountData.blood_type || 'A_POSITIVE',
 			account_status: medicalAccountData.account_status || 'UNVERIFIED'
 		};
 
@@ -31,8 +31,6 @@ export const donatorsRouter = createRouter({
 			donator,
 			medical_account
 		});
-
-		console.log('signUp (ctx): ', ctx);
 
 		return res;
 	})

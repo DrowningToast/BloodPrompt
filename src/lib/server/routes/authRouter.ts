@@ -62,6 +62,62 @@ export const authRouter = createRouter({
 
 			return { user, session };
 		}),
+	staffLogin: publicProcedure
+		.input(
+			z.object({
+				email: z.string().email(),
+				password: z.string().min(1)
+			})
+		)
+		.mutation(async ({ input, ctx }) => {
+			const { email, password } = input;
+
+			let user;
+			if (email === 'admin@kmitl.ac.th') {
+				user = await prisma.moderators.findFirst({
+					where: {
+						email: 'admin@kmitl.ac.th'
+					}
+				});
+			} else {
+				user = await prisma.medical_Staff.findFirst({
+					where: {
+						email: email
+					}
+				});
+			}
+
+			console.log('staffLogin() user: ', user);
+
+			const isPasswordMatch = await comparePassword(user?.password || '', password);
+			console.log('staffLogin() isPasswordMatch: ', isPasswordMatch);
+
+			if (!user || !isPasswordMatch) {
+				throw new TRPCError({
+					code: 'UNAUTHORIZED'
+				});
+			}
+
+			let session;
+			if (email === 'admin@kmitl.ac.th') {
+				session = await sessionController.createSessionToken({
+					moderator: { connect: { id: user.id } }
+				});
+			} else {
+				session = await sessionController.createSessionToken({
+					medical_staff: { connect: { id: user.id } }
+				});
+			}
+
+			if (session.session_token && user) {
+				ctx.session = session;
+				ctx.user = user;
+				ctx.token = session.session_token;
+				ctx.opts.resHeaders.append('Set-Cookie', `session-token=${session.session_token}`);
+			}
+
+			return { user, session };
+		}),
 	setAsVerifyUser: publicProcedure.mutation(async ({ ctx }) => {
 		const medicalAccount = await prisma.medical_Accounts.update({
 			where: {

@@ -1,6 +1,6 @@
 import { createRouter, publicProcedure } from '../context';
 import { z } from 'zod';
-import { Medical_StaffCreateInputSchema, Medical_StaffUpdateInputSchema } from '../database';
+import { Medical_StaffCreateInputSchema } from '../database';
 import prisma from '../database';
 import { encodePassword } from '$lib/utils';
 
@@ -23,6 +23,9 @@ export const medicalStaffRouter = createRouter({
 							id: placeId
 						}
 					}
+				},
+				include: {
+					Place: true
 				}
 			});
 			return medicalAccount;
@@ -58,32 +61,43 @@ export const medicalStaffRouter = createRouter({
 				});
 			}
 
-			console.log(data);
-
 			const result = await prisma.medical_Staff.createMany({ data });
 			return result;
 		}),
 	update: publicProcedure
 		.input(
 			z.object({
-				data: Medical_StaffUpdateInputSchema,
+				data: z.object({
+					first_name: z.string().optional(),
+					last_name: z.string().optional(),
+					email: z.string().email().optional(),
+					password: z.string().optional()
+				}),
 				medicalStaffId: z.string()
 			})
 		)
 		.mutation(async ({ input }) => {
 			const { data, medicalStaffId } = input;
+
+			if (data.password) {
+				data.password = await encodePassword(data.password);
+			}
+
 			const medicalStaff = await prisma.medical_Staff.update({
 				where: {
 					id: medicalStaffId
 				},
 				data: {
 					...data
+				},
+				include: {
+					Place: true
 				}
 			});
 			return medicalStaff;
 		}),
 	findAll: publicProcedure.query(async () => {
-		const medicalStaffs = await prisma.medical_Staff.findMany();
+		const medicalStaffs = await prisma.medical_Staff.findMany({ include: { Place: true } });
 		return medicalStaffs;
 	}),
 	findById: publicProcedure
@@ -93,6 +107,9 @@ export const medicalStaffRouter = createRouter({
 			const medicalStaff = await prisma.medical_Staff.findUnique({
 				where: {
 					id: medicalStaffId
+				},
+				include: {
+					Place: true
 				}
 			});
 			return medicalStaff;
