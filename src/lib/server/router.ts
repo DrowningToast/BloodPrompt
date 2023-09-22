@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { publicProcedure, createRouter } from './context';
 import { donatorsRouter } from './routes/donatorsRouter';
 import { authRouter } from './routes/authRouter';
+import { placesRouter } from './routes/placesRouter';
 
 export const appRouter = createRouter({
 	greet: publicProcedure
@@ -15,7 +16,8 @@ export const appRouter = createRouter({
 			return `Hello ${input.name}`;
 		}),
 	donators: donatorsRouter,
-	auth: authRouter
+	auth: authRouter,
+	places: placesRouter
 });
 
 export type AppRouter = typeof appRouter;

@@ -61,5 +61,17 @@ export const authRouter = createRouter({
 			}
 
 			return { user, session };
-		})
+		}),
+	setAsVerifyUser: publicProcedure.mutation(async ({ ctx }) => {
+		const medicalAccount = await prisma.medical_Accounts.update({
+			where: {
+				id: ctx.userContext?.user.id
+			},
+			data: {
+				account_status: 'VERIFIED',
+				is_activated: true
+			}
+		});
+		return medicalAccount;
+	})
 });

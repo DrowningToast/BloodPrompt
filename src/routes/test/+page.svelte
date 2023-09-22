@@ -42,6 +42,8 @@
 		const uu = await trpc.auth.getUser.query();
 		console.log(uu);
 	};
+
+	const handleClick = async () => {};
 </script>
 
 <div class="flex flex-col items-center justify-center gap-4 mt-6">
@@ -62,5 +64,9 @@
 
 	<button on:click={handleLogin} class="rounded-lg text-white py-2 w-60 text-sm bg-red-500"
 		>handleLogin</button
+	>
+
+	<button on:click={handleClick} class="rounded-lg text-white py-2 w-60 text-sm bg-red-500"
+		>RUNNNNNN !</button
 	>
 </div>
