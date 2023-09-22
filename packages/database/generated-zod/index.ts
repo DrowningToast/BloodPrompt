@@ -293,7 +293,7 @@ export type Medical_Staff = z.infer<typeof Medical_StaffSchema>
 
 export const SessionSchema = z.object({
   id: z.string().cuid(),
-  session_token: z.string().nullable(),
+  session_token: z.string().cuid(),
   expires: z.coerce.date().nullable(),
   created_at: z.coerce.date(),
   updated_at: z.coerce.date().nullable(),
@@ -1762,7 +1762,7 @@ export const SessionWhereInputSchema: z.ZodType<Prisma.SessionWhereInput> = z.ob
   OR: z.lazy(() => SessionWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => SessionWhereInputSchema),z.lazy(() => SessionWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  session_token: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  session_token: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   expires: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   created_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updated_at: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
@@ -1776,7 +1776,7 @@ export const SessionWhereInputSchema: z.ZodType<Prisma.SessionWhereInput> = z.ob
 
 export const SessionOrderByWithRelationInputSchema: z.ZodType<Prisma.SessionOrderByWithRelationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  session_token: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  session_token: z.lazy(() => SortOrderSchema).optional(),
   expires: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
@@ -1790,12 +1790,12 @@ export const SessionOrderByWithRelationInputSchema: z.ZodType<Prisma.SessionOrde
 
 export const SessionWhereUniqueInputSchema: z.ZodType<Prisma.SessionWhereUniqueInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string().optional()
+  session_token: z.string().cuid().optional()
 }).strict();
 
 export const SessionOrderByWithAggregationInputSchema: z.ZodType<Prisma.SessionOrderByWithAggregationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  session_token: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  session_token: z.lazy(() => SortOrderSchema).optional(),
   expires: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
@@ -1812,7 +1812,7 @@ export const SessionScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Sessi
   OR: z.lazy(() => SessionScalarWhereWithAggregatesInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => SessionScalarWhereWithAggregatesInputSchema),z.lazy(() => SessionScalarWhereWithAggregatesInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
-  session_token: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  session_token: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   expires: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
   created_at: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   updated_at: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
@@ -3175,7 +3175,7 @@ export const Medical_StaffUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Medic
 
 export const SessionCreateInputSchema: z.ZodType<Prisma.SessionCreateInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string().optional().nullable(),
+  session_token: z.string().cuid().optional(),
   expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
@@ -3186,7 +3186,7 @@ export const SessionCreateInputSchema: z.ZodType<Prisma.SessionCreateInput> = z.
 
 export const SessionUncheckedCreateInputSchema: z.ZodType<Prisma.SessionUncheckedCreateInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string().optional().nullable(),
+  session_token: z.string().cuid().optional(),
   expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
@@ -3197,7 +3197,7 @@ export const SessionUncheckedCreateInputSchema: z.ZodType<Prisma.SessionUnchecke
 
 export const SessionUpdateInputSchema: z.ZodType<Prisma.SessionUpdateInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  session_token: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -3208,7 +3208,7 @@ export const SessionUpdateInputSchema: z.ZodType<Prisma.SessionUpdateInput> = z.
 
 export const SessionUncheckedUpdateInputSchema: z.ZodType<Prisma.SessionUncheckedUpdateInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  session_token: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -3219,7 +3219,7 @@ export const SessionUncheckedUpdateInputSchema: z.ZodType<Prisma.SessionUnchecke
 
 export const SessionCreateManyInputSchema: z.ZodType<Prisma.SessionCreateManyInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string().optional().nullable(),
+  session_token: z.string().cuid().optional(),
   expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
@@ -3230,7 +3230,7 @@ export const SessionCreateManyInputSchema: z.ZodType<Prisma.SessionCreateManyInp
 
 export const SessionUpdateManyMutationInputSchema: z.ZodType<Prisma.SessionUpdateManyMutationInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  session_token: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -3238,7 +3238,7 @@ export const SessionUpdateManyMutationInputSchema: z.ZodType<Prisma.SessionUpdat
 
 export const SessionUncheckedUpdateManyInputSchema: z.ZodType<Prisma.SessionUncheckedUpdateManyInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  session_token: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -6686,7 +6686,7 @@ export const Redemption_HistoryCreateManyDonatorInputEnvelopeSchema: z.ZodType<P
 
 export const SessionCreateWithoutDonatorInputSchema: z.ZodType<Prisma.SessionCreateWithoutDonatorInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string().optional().nullable(),
+  session_token: z.string().cuid().optional(),
   expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
@@ -6696,7 +6696,7 @@ export const SessionCreateWithoutDonatorInputSchema: z.ZodType<Prisma.SessionCre
 
 export const SessionUncheckedCreateWithoutDonatorInputSchema: z.ZodType<Prisma.SessionUncheckedCreateWithoutDonatorInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string().optional().nullable(),
+  session_token: z.string().cuid().optional(),
   expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
@@ -6815,7 +6815,7 @@ export const SessionScalarWhereInputSchema: z.ZodType<Prisma.SessionScalarWhereI
   OR: z.lazy(() => SessionScalarWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => SessionScalarWhereInputSchema),z.lazy(() => SessionScalarWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  session_token: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  session_token: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   expires: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   created_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updated_at: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
@@ -8084,7 +8084,7 @@ export const PlacesCreateOrConnectWithoutMedical_StaffInputSchema: z.ZodType<Pri
 
 export const SessionCreateWithoutMedical_StaffInputSchema: z.ZodType<Prisma.SessionCreateWithoutMedical_StaffInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string().optional().nullable(),
+  session_token: z.string().cuid().optional(),
   expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
@@ -8094,7 +8094,7 @@ export const SessionCreateWithoutMedical_StaffInputSchema: z.ZodType<Prisma.Sess
 
 export const SessionUncheckedCreateWithoutMedical_StaffInputSchema: z.ZodType<Prisma.SessionUncheckedCreateWithoutMedical_StaffInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string().optional().nullable(),
+  session_token: z.string().cuid().optional(),
   expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
@@ -8791,7 +8791,7 @@ export const Donation_HistoryUpdateManyWithWhereWithoutPost_Donation_FeedbackInp
 
 export const SessionCreateWithoutModeratorInputSchema: z.ZodType<Prisma.SessionCreateWithoutModeratorInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string().optional().nullable(),
+  session_token: z.string().cuid().optional(),
   expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
@@ -8801,7 +8801,7 @@ export const SessionCreateWithoutModeratorInputSchema: z.ZodType<Prisma.SessionC
 
 export const SessionUncheckedCreateWithoutModeratorInputSchema: z.ZodType<Prisma.SessionUncheckedCreateWithoutModeratorInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string().optional().nullable(),
+  session_token: z.string().cuid().optional(),
   expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
@@ -8924,7 +8924,7 @@ export const Redemption_HistoryCreateManyDonatorInputSchema: z.ZodType<Prisma.Re
 
 export const SessionCreateManyDonatorInputSchema: z.ZodType<Prisma.SessionCreateManyDonatorInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string().optional().nullable(),
+  session_token: z.string().cuid().optional(),
   expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
@@ -8985,7 +8985,7 @@ export const Redemption_HistoryUncheckedUpdateManyWithoutRedemption_HistoryInput
 
 export const SessionUpdateWithoutDonatorInputSchema: z.ZodType<Prisma.SessionUpdateWithoutDonatorInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  session_token: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -8995,7 +8995,7 @@ export const SessionUpdateWithoutDonatorInputSchema: z.ZodType<Prisma.SessionUpd
 
 export const SessionUncheckedUpdateWithoutDonatorInputSchema: z.ZodType<Prisma.SessionUncheckedUpdateWithoutDonatorInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  session_token: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -9005,7 +9005,7 @@ export const SessionUncheckedUpdateWithoutDonatorInputSchema: z.ZodType<Prisma.S
 
 export const SessionUncheckedUpdateManyWithoutSessionInputSchema: z.ZodType<Prisma.SessionUncheckedUpdateManyWithoutSessionInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  session_token: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -9313,7 +9313,7 @@ export const ReservationsUncheckedUpdateManyWithoutReservationsInputSchema: z.Zo
 
 export const SessionCreateManyMedical_StaffInputSchema: z.ZodType<Prisma.SessionCreateManyMedical_StaffInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string().optional().nullable(),
+  session_token: z.string().cuid().optional(),
   expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
@@ -9323,7 +9323,7 @@ export const SessionCreateManyMedical_StaffInputSchema: z.ZodType<Prisma.Session
 
 export const SessionUpdateWithoutMedical_StaffInputSchema: z.ZodType<Prisma.SessionUpdateWithoutMedical_StaffInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  session_token: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -9333,7 +9333,7 @@ export const SessionUpdateWithoutMedical_StaffInputSchema: z.ZodType<Prisma.Sess
 
 export const SessionUncheckedUpdateWithoutMedical_StaffInputSchema: z.ZodType<Prisma.SessionUncheckedUpdateWithoutMedical_StaffInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  session_token: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -9480,7 +9480,7 @@ export const Donation_HistoryUncheckedUpdateWithoutPost_Donation_FeedbackInputSc
 
 export const SessionCreateManyModeratorInputSchema: z.ZodType<Prisma.SessionCreateManyModeratorInput> = z.object({
   id: z.string().cuid().optional(),
-  session_token: z.string().optional().nullable(),
+  session_token: z.string().cuid().optional(),
   expires: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
@@ -9490,7 +9490,7 @@ export const SessionCreateManyModeratorInputSchema: z.ZodType<Prisma.SessionCrea
 
 export const SessionUpdateWithoutModeratorInputSchema: z.ZodType<Prisma.SessionUpdateWithoutModeratorInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  session_token: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -9500,7 +9500,7 @@ export const SessionUpdateWithoutModeratorInputSchema: z.ZodType<Prisma.SessionU
 
 export const SessionUncheckedUpdateWithoutModeratorInputSchema: z.ZodType<Prisma.SessionUncheckedUpdateWithoutModeratorInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  session_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  session_token: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   expires: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),

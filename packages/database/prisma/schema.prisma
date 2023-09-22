@@ -194,7 +194,7 @@ model Medical_Staff {
 
 model Session {
   id               String         @id @unique @default(cuid())
-  session_token    String?        @unique
+  session_token    String         @unique @default(cuid())
   expires          DateTime?
   created_at       DateTime       @default(now())
   updated_at       DateTime?
