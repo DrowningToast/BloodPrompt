@@ -68,6 +68,7 @@ model Donators {
   Reward_Transactions Reward_Transactions[]
   Redemption_History  Redemption_History[]
   Session             Session[]
+  Reservations        Reservations[]
 }
 
 model Reward_Transactions {
@@ -213,36 +214,54 @@ enum ReservationStatus {
 }
 
 model Reservations {
-  id                    String                 @id @unique @default(cuid())
-  status                ReservationStatus
-  created_at            DateTime               @default(now())
-  cancelled_at          DateTime?
-  updated_at            DateTime?
-  Reservation_Slot      Reservation_Slots      @relation(fields: [reservation_slot_id], references: [id])
-  Pre_Donation_Feedback Pre_Donation_Feedbacks @relation(fields: [pre_donation_fb_id], references: [id])
-  reservation_slot_id   String
-  pre_donation_fb_id    String
-  Donation_History      Donation_History[]
+  id                   String                 @id @unique @default(cuid())
+  status               ReservationStatus
+  created_at           DateTime               @default(now())
+  cancelled_at         DateTime?
+  updated_at           DateTime?
+  Reservation_Slot     Reservation_Slots      @relation(fields: [reservation_slot_id], references: [id])
+  reservation_slot_id  String                 @unique
+  Donation_History     Donation_History[]
+  Pre_Feedback_Answers Pre_Feedback_Answers[]
+  donator_id           String
+  Donator              Donators               @relation(fields: [donator_id], references: [id])
 }
 
-model Pre_Donation_Feedbacks {
-  id           String         @id @unique @default(cuid())
-  created_at   DateTime       @default(now())
-  Reservations Reservations[]
-}
+// model Pre_Donation_Feedbacks {
+//   id                   String                 @id @unique @default(cuid())
+//   created_at           DateTime               @default(now())
+//   Reservations         Reservations[]
+//   Pre_Feedback_Answers Pre_Feedback_Answers[]
+// }
+
+// model Pre_Feedback_Answers {
+//   id                    String                 @id @unique @default(cuid())
+//   Survey_Question       Survey_Questions       @relation(fields: [question_id], references: [id])
+//   Survey_Choice         Survey_Choices         @relation(fields: [choice_id], references: [id])
+//   Pre_Donation_Feedback Pre_Donation_Feedbacks @relation(fields: [feedback_id], references: [id])
+//   feedback_id           String
+//   question_id           String
+//   choice_id             String
+// }
 
 model Pre_Feedback_Answers {
-  feedback_id String @unique
-  question_id String @unique
-  choise_id   String @unique
+  id              String           @id @unique @default(cuid())
+  Survey_Question Survey_Questions @relation(fields: [question_id], references: [id])
+  Survey_Choice   Survey_Choices   @relation(fields: [choice_id], references: [id])
+  Reservation     Reservations     @relation(fields: [reservation_id], references: [id])
+  reservation_id  String
+  question_id     String
+  choice_id       String
 }
 
 model Survey_Choices {
-  id                 String           @id @unique @default(cuid())
-  order              Int
-  label              String
-  Survey_Question    Survey_Questions @relation(fields: [survey_question_id], references: [id])
-  survey_question_id String
+  id                    String                  @id @unique @default(cuid())
+  order                 Int
+  label                 String
+  Survey_Question       Survey_Questions        @relation(fields: [survey_question_id], references: [id])
+  survey_question_id    String
+  Pre_Feedback_Answers  Pre_Feedback_Answers[]
+  Post_Feedback_Answers Post_Feedback_Answers[]
 }
 
 enum SurveyQuestionType {
@@ -251,13 +270,15 @@ enum SurveyQuestionType {
 }
 
 model Survey_Questions {
-  id             String             @id @unique @default(cuid())
-  order          Int
-  type           SurveyQuestionType
-  title          String
-  description    String?
-  is_required    Boolean
-  Survey_Choices Survey_Choices[]
+  id                    String                  @id @unique @default(cuid())
+  order                 Int
+  type                  SurveyQuestionType
+  title                 String
+  description           String?
+  is_required           Boolean
+  Survey_Choices        Survey_Choices[]
+  Pre_Feedback_Answers  Pre_Feedback_Answers[]
+  Post_Feedback_Answers Post_Feedback_Answers[]
 }
 
 enum DonationStatus {
@@ -282,15 +303,20 @@ model Donation_History {
 }
 
 model Post_Donation_Feedbacks {
-  id               String             @id @unique @default(cuid())
-  created_at       DateTime           @default(now())
-  Donation_History Donation_History[]
+  id                    String                  @id @unique @default(cuid())
+  created_at            DateTime                @default(now())
+  Donation_History      Donation_History[]
+  Post_Feedback_Answers Post_Feedback_Answers[]
 }
 
 model Post_Feedback_Answers {
-  feedback_id String @unique
-  question_id String @unique
-  choise_id   String @unique
+  id                    String                  @id @unique @default(cuid())
+  Survey_Question       Survey_Questions        @relation(fields: [question_id], references: [id])
+  Survey_Choice         Survey_Choices          @relation(fields: [choice_id], references: [id])
+  Pre_Donation_Feedback Post_Donation_Feedbacks @relation(fields: [feedback_id], references: [id])
+  feedback_id           String
+  question_id           String
+  choice_id             String
 }
 
 model Moderators {
