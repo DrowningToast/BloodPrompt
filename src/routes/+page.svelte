@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Button from '$lib/components/ui/button/button.svelte';
 	import bloodPromptLogo from '$lib/images/bloodprompt-logo.png';
 </script>
 
@@ -17,9 +18,11 @@
 		ให้เลือดที่คุณมีค่าต่อชีวิต
 	</p>
 
-	<a href="/test" class="w-full">
-		<button class="w-full mt-16 rounded-xl py-3 text-lg font-bold bg-white text-[#F5222D]">
-			เริ่มต้นใช้งาน
-		</button></a
+	<Button
+		href="/landing"
+		variant="outline"
+		class="w-full mt-16 rounded-xl py-6 text-md font-bold bg-white text-[#F5222D]"
 	>
+		เริ่มต้นใช้งาน
+	</Button>
 </div>
