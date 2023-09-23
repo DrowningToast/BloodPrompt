@@ -156,6 +156,7 @@ export const reservationsRouter = createRouter({
 		)
 		.query(async ({ input }) => {
 			const { reservationId } = input;
+
 			const reservation = await prisma.reservations.update({
 				where: {
 					id: reservationId
@@ -163,8 +164,19 @@ export const reservationsRouter = createRouter({
 				data: {
 					status: 'CANCELLED',
 					cancelled_at: new Date(new Date().getTime())
+				},
+				include: {
+					Reservation_Slot: true,
+					Donator: true,
+					Pre_Feedback_Answers: true
 				}
 			});
-			return reservation;
+
+			prisma.reservation_Slots.delete({
+				where: {
+					id: reservation.reservation_slot_id
+				}
+			});
+			return { reservation };
 		})
 });
