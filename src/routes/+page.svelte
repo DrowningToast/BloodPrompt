@@ -19,7 +19,7 @@
 	</p>
 
 	<Button
-		href="/landing"
+		href="/login"
 		variant="outline"
 		class="w-full mt-16 rounded-xl py-6 text-md font-bold bg-white text-[#F5222D]"
 	>

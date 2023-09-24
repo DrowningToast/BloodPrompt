@@ -2,19 +2,19 @@
 	import type { PageData } from './$types';
 	import bloodPromptIconRedBg from '$lib/images/bloodprompt-logo-red-bg.png';
 	import Input from '$lib/components/ui/input/input.svelte';
-	import { Eye, EyeOff, KeyRound, Lock, Smartphone } from 'lucide-svelte';
+	import { Eye, EyeOff, KeyRound, Smartphone } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
-	import { Separator } from '$lib/components/ui/separator';
 
 	let showPassword: boolean = false;
-	export let data: PageData;
+
+	let data: PageData;
 
 	const toggleShowPassword = () => {
 		showPassword = !showPassword;
 	};
 </script>
 
-<div class="p-10">
+<div class="p-10 px-8">
 	<p class="text-[#EF4444] font-bold text-xl">ยินดีต้อนรับเข้าสู่ BloodPrompt</p>
 	<p class="text-[#555555] mt-1">มีบัญชีผู้ใช้แล้ว ? เข้าสู่ระบบเลย...</p>
 
@@ -26,7 +26,7 @@
 		<div class="flex flex-row items-center relative">
 			<Smartphone class="absolute ml-4" />
 			<Input
-				type="text"
+				type="number"
 				class="w-full py-6 rounded-xl border-2 pl-12 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500"
 				placeholder="เบอร์โทรศัพท์"
 			/>
@@ -48,23 +48,13 @@
 					<Eye class=" w-6" />
 				</button>
 			{/if}
-			<!-- {#if showPassword}
-				<div on:click={toggleShowPassword} on:keydown={toggleShowPassword} tabindex="0">
-					<Eye class="absolute right-4 w-6" />
-				</div>
-			{:else}
-				<div on:click={toggleShowPassword} on:keydown={toggleShowPassword} tabindex="0">
-					<EyeOff class="absolute right-4 w-6" />
-				</div>
-			{/if} -->
 		</div>
 
 		<p class="underline text-[#F5222D] w-full text-right pr-2">ลืมรหัสผ่าน ?</p>
 
 		<Button
-			href="/landing"
 			variant="secondary"
-			class="w-full rounded-xl py-6 text-md font-bold bg-[#F5222D] text-white"
+			class="w-full rounded-xl py-6 text-md font-bold bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600"
 		>
 			เข้าสู่ระบบ
 		</Button>
@@ -77,7 +67,6 @@
 	</div>
 
 	<Button
-		href="/landing"
 		variant="secondary"
 		class="w-full rounded-xl py-6 text-md font-bold flex flex-row items-center gap-2 bg-white border-[#E5E7EB] border-2"
 	>
@@ -106,7 +95,9 @@
 		เข้าสู่ระบบ Google Account
 	</Button>
 
-	<p class="w-full text-center mt-6">
-		ยังไม่มีบัญชีผู้ใช้ ? <span class="text-[#F5222D] underline"> สมัครเข้าใช้งาน </span>
+	<p class="w-full text-center mt-4 gap-2 flex items-center justify-center">
+		ยังไม่มีบัญชีผู้ใช้ ? <a class="text-[#F5222D] underline p-0 text-md" href="/register">
+			สมัครเข้าใช้งาน
+		</a>
 	</p>
 </div>
