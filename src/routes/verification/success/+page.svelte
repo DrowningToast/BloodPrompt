@@ -13,7 +13,7 @@
 			ยืนยันตัวตนสำเร็จ คุณสามารถเข้าใช้งานเว็บแอปพลิเคชั่นได้อย่างเต็มประสิทธิภาพ
 		</p>
 		<Button
-			href="/"
+			href="/home"
 			variant="outline"
 			class="w-full mt-16 rounded-xl py-6 text-md font-bold bg-white text-[#F5222D] active:text-[#F5222D] hover:text-[#F5222D]"
 		>

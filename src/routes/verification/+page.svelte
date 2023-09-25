@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { ChevronLeft } from 'lucide-svelte';
 	import type { PageData } from './$types';
-	import { browser } from '$app/environment';
 	import verificationAnimation from '$lib/images/verification/identity_verification.gif';
 	import { Button } from '$lib/components/ui/button';
 	import AlertDialog from '$lib/components/svelte/alert/AlertDialog.svelte';
@@ -64,7 +62,7 @@
 		</a>
 
 		<button
-			class="text-[##F5222D] underline text-center w-full text-sm mt-4 text-slate-500"
+			class="underline text-center w-full text-sm mt-4 text-slate-500"
 			on:click={() => {
 				openSkipVerificationDialog = true;
 			}}
