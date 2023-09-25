@@ -23,7 +23,7 @@
 	<p class="text-[#555555] mt-1">มีบัญชีผู้ใช้แล้ว ? เข้าสู่ระบบเลย...</p>
 
 	<div class="my-10">
-		<img src={bloodPromptIconRedBg} alt="bloodprompt icon" />
+		<img src={bloodPromptIconRedBg} alt="bloodprompt icon" class="mx-auto w-72" />
 	</div>
 
 	<div class="flex flex-col gap-6">

@@ -155,7 +155,7 @@
 	<title>สร้างบัญชี | BloodPrompt</title>
 </svelte:head>
 
-<div class=" pt-0">
+<div class="pt-0">
 	<div class="bg-white shadow-md p-5 flex flex-row items-center justify-start gap-4">
 		<button
 			on:click={() => {
@@ -266,8 +266,8 @@
 					<Select.Value placeholder="กลุ่มหมู่เลือด Rh" />
 				</Select.Trigger>
 				<Select.Content>
-					<Select.Item value="positive">เลือดบวก (Positive)</Select.Item>
-					<Select.Item value="negative">เลือดลบ (Negative)</Select.Item>
+					<Select.Item value="positive" class="py-4">เลือดบวก (Positive)</Select.Item>
+					<Select.Item value="negative" class="py-4">เลือดลบ (Negative)</Select.Item>
 				</Select.Content>
 			</Select.Root>
 
@@ -340,17 +340,19 @@
 			</div>
 		</div>
 
-		<Button
-			variant="secondary"
-			class="w-full rounded-xl py-6 mt-6 text-md font-bold bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600"
-			disabled={!isAcceptedTerms || isLoading}
-			on:click={handleRegister}
+		<a href="/verification">
+			<Button
+				variant="secondary"
+				class="w-full rounded-xl py-6 mt-6 text-md font-bold bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600"
+				disabled={!isAcceptedTerms || isLoading}
+				on:click={handleRegister}
+			>
+				{#if isLoading}
+					<Loader2 class="mr-2 h-4 w-4 animate-spin" />
+				{/if}
+				สมัครบัญชีใหม่
+			</Button></a
 		>
-			{#if isLoading}
-				<Loader2 class="mr-2 h-4 w-4 animate-spin" />
-			{/if}
-			สมัครบัญชีใหม่
-		</Button>
 		<p class="mt-6 text-center">
 			มีบัญชีผู้ใช้แล้ว ? <a href="/login" class="text-[#F5222D] underline"> เข้าสู่ระบบ </a>
 		</p>
