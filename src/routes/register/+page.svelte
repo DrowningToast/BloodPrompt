@@ -149,9 +149,11 @@
 				isLoading = false;
 			});
 	};
-
-	const SHEET_SIDES = ['bottom'] as const;
 </script>
+
+<svelte:head>
+	<title>สร้างบัญชี | BloodPrompt</title>
+</svelte:head>
 
 <div class=" pt-0">
 	<div class="bg-white shadow-md p-5 flex flex-row items-center justify-start gap-4">
@@ -168,13 +170,6 @@
 	</div>
 
 	<div class="p-10 px-8 py-6">
-		<!-- <div class="text-center flex flex-col gap-2">
-			<p>
-				ในการเข้าใช้งานแอปพลิเคชั่น จำเป็นต้องมีบัญชีผู้ใช้และข้อมูลในระบบก่อน
-				โปรดสร้างบัญชีใหม่เพื่อดำเนินการต่อ
-			</p>
-		</div> -->
-
 		<div class="flex flex-col justify-center w-full py-6 pt-2 gap-6">
 			<div
 				class="relative rounded-full w-24 h-24 bg-[#F5222D] mx-auto flex items-center justify-center"

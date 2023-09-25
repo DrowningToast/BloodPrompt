@@ -14,6 +14,10 @@
 	};
 </script>
 
+<svelte:head>
+	<title>เข้าสู่ระบบ | BloodPrompt</title>
+</svelte:head>
+
 <div class="p-10 px-8">
 	<p class="text-[#EF4444] font-bold text-xl">ยินดีต้อนรับเข้าสู่ BloodPrompt</p>
 	<p class="text-[#555555] mt-1">มีบัญชีผู้ใช้แล้ว ? เข้าสู่ระบบเลย...</p>
