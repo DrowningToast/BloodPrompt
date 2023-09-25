@@ -8,12 +8,10 @@
     import * as Dialog from "$lib/components/ui/dialog";
     import { Input } from "$lib/components/ui/input";
     import{ Label } from "$lib/components/ui/label";
-    import { Home, LogOut, UserCircle, UserCircle2,MapPin, Lock, Search, UserCog } from 'lucide-svelte';
+    import { Home, LogOut, UserCircle, UserCircle2,MapPin, Lock, Search } from 'lucide-svelte';
 
     export let data: PageData;
-    
-    let placeholder = "เเสดงบัญชีบุคลากรการเเพทย์ในระบบทั้งหมด";
-    $:isShowData = false;
+
     type personalInfo = {
         id : String,
         fullname : String,
@@ -197,6 +195,5 @@
                 </Table.Root>
             </div>
     </div>
-    
 </div>
 </div>
