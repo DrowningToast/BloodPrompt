@@ -68,7 +68,7 @@
                 <Button class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><UserCircle2 class="w-5 h-5"/>จัดการบัญชีบุคลากรการเเพทย์</Button>
                 <Button class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><Lock class="w-5 h-5" />จัดการบัญชี / เปลี่ยนรหัสผ่าน</Button>
             </div>
-            <Button class="flex justify-start gap-2 text-white text-start px-6 py-3 items-center bg-[#191F2F] mb-9"><LogOut class="mr-2 h-5    w-5 stroke-white" />ออกจากระบบ</Button>
+            <Button class="flex justify-start gap-2 text-white text-start px-6 py-3 items-center bg-[#191F2F] mb-9"><LogOut class="mr-2 h-5 w-5 stroke-white" />ออกจากระบบ</Button>
         </div>
     </div>
     <div class="flex flex-col items-center w-9/12">
@@ -101,9 +101,10 @@
                 </div>
             </div>
             <!-- place to donate -->
-            <div class="flex flex-col bg-white w-[1103px] h-[274px] rounded-xl justify-between">
+            <div class="flex flex-col bg-white w-[1103px] h-[274px] rounded-xl">
                 <p class="pt-6 pl-6 font-semibold">สถานที่บริจาคเลือดในระบบ</p>
-                    <Table.Root>
+                <div class="flex justify-center bg-white rounded-3xl w-12/12 h-5/6 shadow-xl px-4 py-3">
+                    <Table.Root class="bg-white rounded-full">
                         <Table.Header >
                             <Table.Row>
                                 <Table.Head>Invoice</Table.Head>
@@ -123,6 +124,7 @@
                         {/each}
                     </Table.Body>
                   </Table.Root>
+                </div>
                 </div>
         </div>
     </div>

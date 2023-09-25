@@ -9,16 +9,9 @@
     import { Input } from "$lib/components/ui/input";
     import{ Label } from "$lib/components/ui/label";
     import { Home, LogOut, UserCircle, UserCircle2,MapPin, Lock, Search } from 'lucide-svelte';
-
+	import { redirect } from '@sveltejs/kit';
     export let data: PageData;
 
-    type personalInfo = {
-        id : String,
-        fullname : String,
-        email : String,
-        hospital : String
-    }
-    
     const staff_information = [
         {
           id : "1",
@@ -70,7 +63,6 @@
           password : "password" 
         },
     ]
-
 </script>
 
 <div class="flex flex-row w-full justify-between bg-gray-300 max-w-[100vw] min-h-[100vh]">
@@ -148,7 +140,7 @@
                         <Table.Head class="text-center">รหัสพนักงาน</Table.Head>
                         <Table.Head class="text-center">ชื่อ-นามสกุล</Table.Head>
                         <Table.Head class="w-[300px] text-center">อีเมลล์</Table.Head>
-                        <Table.Head class="text-center">สถานที่บริจาค</Table.Head>
+                        <Table.Head class="text-center">สถานบริจาค</Table.Head>
                         <Table.Head class="text-center">ข้อมูลเพิ่มเติม</Table.Head>
                       </Table.Row>
                     </Table.Header>
