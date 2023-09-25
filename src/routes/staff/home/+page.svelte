@@ -1,10 +1,12 @@
 <script lang="ts">
     // import { Button } from "@/components/ui/button"
-    import bloodpromptlogo from '$lib/images/staff/login/bloodprompt-logo.png';
-    import { UserCircle } from 'lucide-svelte'
-    import * as Table from "$lib/components/ui/table";
     import Dropdown from './dropdown.svelte';
     import AmountCard from './amount.svelte';
+    import { Home, LogOut, Info, UserCircle, UserCircle2, KeyRound ,MapPin, Lock, PlusCircle } from 'lucide-svelte';
+    import bloodpromptlogo from '$lib/images/staff/login/bloodprompt-logo.png';
+    import * as Table from "$lib/components/ui/table";
+    import { Button } from "$lib/components/ui/button";
+    
     let position = "bottom";
 
 
@@ -53,22 +55,20 @@
     }
   ];
 </script>
-
 <div class="flex flex-row w-full justify-between bg-gray-300 max-w-[100vw] min-h-[100vh]">
-    <div class="flex flex-col bg-[#191F2F] w-3/12">
-        <div class="flex px-8 py-16 justify-center">
+    <div class="flex flex-col bg-[#191F2F] w-3/12 h-auto">
+        <div class="flex flex-row px-8 py-16 justify-center">
             <img src={bloodpromptlogo} alt="" class="w-16">
             <h1 class="translate-y-4 text-xl font-bold text-white px-3">BLOODPROMPT</h1>
         </div>
-        <div class="flex flex-col  w-full h-[72%] justify-between">
-            <div class="flex flex-col w-full px-5 gap-8 object-cover">
-                <button class="bg-[#EF4444]  rounded-3xl text-start text-base px-11 py-3 text-white w-full">หน้าหลัก</button>
-                <button class="bg-[#191F2F]  rounded-3xl text-start  text-base px-11 py-3 text-white">จัดการสถานที่รับบริจาคเลือด</button>
-                <button class="bg-[#191F2F]  rounded-3xl text-start px-11 py-3 text-white">จัดการบัญชีบุคลากรการเเพทย์</button>
-                <button class="bg-[#191F2F]  rounded-3xl text-start px-11 py-3 text-white">จัดการบัญชี / เปลี่ยนรหัสผ่าน</button></div>
-            <div class="px-5">
-                <button class=" text-white text-start px-11 py-3">ออกจากระบบ</button>
+        <div class="flex flex-col px-5 w-full h-full justify-between">
+            <div class="flex flex-col gap-8 w-full">
+                <Button class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><Home class="w-5 h-5 "/>หน้าหลัก</Button>
+                <Button class="flex justify-start items-center gap-3 bg-[#EF4444] hover:bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><MapPin class="w-5 h-5" />จัดการสถานที่รับบริจาคเลือด</Button>
+                <Button class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><UserCircle2 class="w-5 h-5"/>จัดการบัญชีบุคลากรการเเพทย์</Button>
+                <Button class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><Lock class="w-5 h-5" />จัดการบัญชี / เปลี่ยนรหัสผ่าน</Button>
             </div>
+            <Button class="flex justify-start gap-2 text-white text-start px-6 py-3 items-center bg-[#191F2F] mb-9"><LogOut class="mr-2 h-5    w-5 stroke-white" />ออกจากระบบ</Button>
         </div>
     </div>
     <div class="flex flex-col items-center w-9/12">
