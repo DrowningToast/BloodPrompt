@@ -161,11 +161,14 @@ model Announcements {
 }
 
 model Special_Events {
-  id         String   @id @unique @default(cuid())
-  rating     Int?
-  created_at DateTime @default(now())
-  Place      Places   @relation(fields: [place_id], references: [id])
-  place_id   String
+  id          String    @id @unique @default(cuid())
+  name        String
+  description String
+  created_at  DateTime  @default(now())
+  updated_at  DateTime?
+  deleted_at  DateTime?
+  Place       Places    @relation(fields: [place_id], references: [id])
+  place_id    String
 }
 
 model Reservation_Slots {

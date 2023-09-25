@@ -28,7 +28,7 @@ export const Place_Review_HistoryScalarFieldEnumSchema = z.enum(['id','rating','
 
 export const AnnouncementsScalarFieldEnumSchema = z.enum(['id','blood_type','post_type','title','content','image_src','created_at','updated_at','deleted_at','place_id']);
 
-export const Special_EventsScalarFieldEnumSchema = z.enum(['id','rating','created_at','place_id']);
+export const Special_EventsScalarFieldEnumSchema = z.enum(['id','name','description','created_at','updated_at','deleted_at','place_id']);
 
 export const Reservation_SlotsScalarFieldEnumSchema = z.enum(['id','reserve_date','reserve_time','created_at','updated_at','cancelled_at','place_id']);
 
@@ -245,8 +245,11 @@ export type Announcements = z.infer<typeof AnnouncementsSchema>
 
 export const Special_EventsSchema = z.object({
   id: z.string().cuid(),
-  rating: z.number().int().nullable(),
+  name: z.string(),
+  description: z.string(),
   created_at: z.coerce.date(),
+  updated_at: z.coerce.date().nullable(),
+  deleted_at: z.coerce.date().nullable(),
   place_id: z.string(),
 })
 
@@ -708,8 +711,11 @@ export const Special_EventsArgsSchema: z.ZodType<Prisma.Special_EventsDefaultArg
 
 export const Special_EventsSelectSchema: z.ZodType<Prisma.Special_EventsSelect> = z.object({
   id: z.boolean().optional(),
-  rating: z.boolean().optional(),
+  name: z.boolean().optional(),
+  description: z.boolean().optional(),
   created_at: z.boolean().optional(),
+  updated_at: z.boolean().optional(),
+  deleted_at: z.boolean().optional(),
   place_id: z.boolean().optional(),
   Place: z.union([z.boolean(),z.lazy(() => PlacesArgsSchema)]).optional(),
 }).strict()
@@ -1776,16 +1782,22 @@ export const Special_EventsWhereInputSchema: z.ZodType<Prisma.Special_EventsWher
   OR: z.lazy(() => Special_EventsWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => Special_EventsWhereInputSchema),z.lazy(() => Special_EventsWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  rating: z.union([ z.lazy(() => IntNullableFilterSchema),z.number() ]).optional().nullable(),
+  name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  description: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   created_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  updated_at: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  deleted_at: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   place_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   Place: z.union([ z.lazy(() => PlacesRelationFilterSchema),z.lazy(() => PlacesWhereInputSchema) ]).optional(),
 }).strict();
 
 export const Special_EventsOrderByWithRelationInputSchema: z.ZodType<Prisma.Special_EventsOrderByWithRelationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  rating: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  name: z.lazy(() => SortOrderSchema).optional(),
+  description: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
+  updated_at: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deleted_at: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   place_id: z.lazy(() => SortOrderSchema).optional(),
   Place: z.lazy(() => PlacesOrderByWithRelationInputSchema).optional()
 }).strict();
@@ -1798,22 +1810,26 @@ export const Special_EventsWhereUniqueInputSchema: z.ZodType<Prisma.Special_Even
   AND: z.union([ z.lazy(() => Special_EventsWhereInputSchema),z.lazy(() => Special_EventsWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => Special_EventsWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => Special_EventsWhereInputSchema),z.lazy(() => Special_EventsWhereInputSchema).array() ]).optional(),
-  rating: z.union([ z.lazy(() => IntNullableFilterSchema),z.number().int() ]).optional().nullable(),
+  name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  description: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   created_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  updated_at: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  deleted_at: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   place_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   Place: z.union([ z.lazy(() => PlacesRelationFilterSchema),z.lazy(() => PlacesWhereInputSchema) ]).optional(),
 }).strict());
 
 export const Special_EventsOrderByWithAggregationInputSchema: z.ZodType<Prisma.Special_EventsOrderByWithAggregationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  rating: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  name: z.lazy(() => SortOrderSchema).optional(),
+  description: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
+  updated_at: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deleted_at: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   place_id: z.lazy(() => SortOrderSchema).optional(),
   _count: z.lazy(() => Special_EventsCountOrderByAggregateInputSchema).optional(),
-  _avg: z.lazy(() => Special_EventsAvgOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => Special_EventsMaxOrderByAggregateInputSchema).optional(),
-  _min: z.lazy(() => Special_EventsMinOrderByAggregateInputSchema).optional(),
-  _sum: z.lazy(() => Special_EventsSumOrderByAggregateInputSchema).optional()
+  _min: z.lazy(() => Special_EventsMinOrderByAggregateInputSchema).optional()
 }).strict();
 
 export const Special_EventsScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Special_EventsScalarWhereWithAggregatesInput> = z.object({
@@ -1821,8 +1837,11 @@ export const Special_EventsScalarWhereWithAggregatesInputSchema: z.ZodType<Prism
   OR: z.lazy(() => Special_EventsScalarWhereWithAggregatesInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => Special_EventsScalarWhereWithAggregatesInputSchema),z.lazy(() => Special_EventsScalarWhereWithAggregatesInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
-  rating: z.union([ z.lazy(() => IntNullableWithAggregatesFilterSchema),z.number() ]).optional().nullable(),
+  name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  description: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   created_at: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  updated_at: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  deleted_at: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
   place_id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
 }).strict();
 
@@ -3335,49 +3354,70 @@ export const AnnouncementsUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Annou
 
 export const Special_EventsCreateInputSchema: z.ZodType<Prisma.Special_EventsCreateInput> = z.object({
   id: z.string().cuid().optional(),
-  rating: z.number().int().optional().nullable(),
+  name: z.string(),
+  description: z.string(),
   created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional().nullable(),
+  deleted_at: z.coerce.date().optional().nullable(),
   Place: z.lazy(() => PlacesCreateNestedOneWithoutSpecial_EventsInputSchema)
 }).strict();
 
 export const Special_EventsUncheckedCreateInputSchema: z.ZodType<Prisma.Special_EventsUncheckedCreateInput> = z.object({
   id: z.string().cuid().optional(),
-  rating: z.number().int().optional().nullable(),
+  name: z.string(),
+  description: z.string(),
   created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional().nullable(),
+  deleted_at: z.coerce.date().optional().nullable(),
   place_id: z.string()
 }).strict();
 
 export const Special_EventsUpdateInputSchema: z.ZodType<Prisma.Special_EventsUpdateInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  rating: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  description: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deleted_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   Place: z.lazy(() => PlacesUpdateOneRequiredWithoutSpecial_EventsNestedInputSchema).optional()
 }).strict();
 
 export const Special_EventsUncheckedUpdateInputSchema: z.ZodType<Prisma.Special_EventsUncheckedUpdateInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  rating: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  description: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deleted_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   place_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const Special_EventsCreateManyInputSchema: z.ZodType<Prisma.Special_EventsCreateManyInput> = z.object({
   id: z.string().cuid().optional(),
-  rating: z.number().int().optional().nullable(),
+  name: z.string(),
+  description: z.string(),
   created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional().nullable(),
+  deleted_at: z.coerce.date().optional().nullable(),
   place_id: z.string()
 }).strict();
 
 export const Special_EventsUpdateManyMutationInputSchema: z.ZodType<Prisma.Special_EventsUpdateManyMutationInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  rating: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  description: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deleted_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const Special_EventsUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Special_EventsUncheckedUpdateManyInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  rating: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  description: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deleted_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   place_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
@@ -4927,31 +4967,32 @@ export const EnumPostTypeWithAggregatesFilterSchema: z.ZodType<Prisma.EnumPostTy
 
 export const Special_EventsCountOrderByAggregateInputSchema: z.ZodType<Prisma.Special_EventsCountOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  rating: z.lazy(() => SortOrderSchema).optional(),
+  name: z.lazy(() => SortOrderSchema).optional(),
+  description: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
+  updated_at: z.lazy(() => SortOrderSchema).optional(),
+  deleted_at: z.lazy(() => SortOrderSchema).optional(),
   place_id: z.lazy(() => SortOrderSchema).optional()
-}).strict();
-
-export const Special_EventsAvgOrderByAggregateInputSchema: z.ZodType<Prisma.Special_EventsAvgOrderByAggregateInput> = z.object({
-  rating: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const Special_EventsMaxOrderByAggregateInputSchema: z.ZodType<Prisma.Special_EventsMaxOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  rating: z.lazy(() => SortOrderSchema).optional(),
+  name: z.lazy(() => SortOrderSchema).optional(),
+  description: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
+  updated_at: z.lazy(() => SortOrderSchema).optional(),
+  deleted_at: z.lazy(() => SortOrderSchema).optional(),
   place_id: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const Special_EventsMinOrderByAggregateInputSchema: z.ZodType<Prisma.Special_EventsMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  rating: z.lazy(() => SortOrderSchema).optional(),
+  name: z.lazy(() => SortOrderSchema).optional(),
+  description: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
+  updated_at: z.lazy(() => SortOrderSchema).optional(),
+  deleted_at: z.lazy(() => SortOrderSchema).optional(),
   place_id: z.lazy(() => SortOrderSchema).optional()
-}).strict();
-
-export const Special_EventsSumOrderByAggregateInputSchema: z.ZodType<Prisma.Special_EventsSumOrderByAggregateInput> = z.object({
-  rating: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const Reservation_SlotsCountOrderByAggregateInputSchema: z.ZodType<Prisma.Reservation_SlotsCountOrderByAggregateInput> = z.object({
@@ -8091,14 +8132,20 @@ export const AnnouncementsCreateManyPlaceInputEnvelopeSchema: z.ZodType<Prisma.A
 
 export const Special_EventsCreateWithoutPlaceInputSchema: z.ZodType<Prisma.Special_EventsCreateWithoutPlaceInput> = z.object({
   id: z.string().cuid().optional(),
-  rating: z.number().int().optional().nullable(),
-  created_at: z.coerce.date().optional()
+  name: z.string(),
+  description: z.string(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional().nullable(),
+  deleted_at: z.coerce.date().optional().nullable()
 }).strict();
 
 export const Special_EventsUncheckedCreateWithoutPlaceInputSchema: z.ZodType<Prisma.Special_EventsUncheckedCreateWithoutPlaceInput> = z.object({
   id: z.string().cuid().optional(),
-  rating: z.number().int().optional().nullable(),
-  created_at: z.coerce.date().optional()
+  name: z.string(),
+  description: z.string(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional().nullable(),
+  deleted_at: z.coerce.date().optional().nullable()
 }).strict();
 
 export const Special_EventsCreateOrConnectWithoutPlaceInputSchema: z.ZodType<Prisma.Special_EventsCreateOrConnectWithoutPlaceInput> = z.object({
@@ -8281,8 +8328,11 @@ export const Special_EventsScalarWhereInputSchema: z.ZodType<Prisma.Special_Even
   OR: z.lazy(() => Special_EventsScalarWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => Special_EventsScalarWhereInputSchema),z.lazy(() => Special_EventsScalarWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  rating: z.union([ z.lazy(() => IntNullableFilterSchema),z.number() ]).optional().nullable(),
+  name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  description: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   created_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  updated_at: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  deleted_at: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   place_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
 }).strict();
 
@@ -10598,8 +10648,11 @@ export const AnnouncementsCreateManyPlaceInputSchema: z.ZodType<Prisma.Announcem
 
 export const Special_EventsCreateManyPlaceInputSchema: z.ZodType<Prisma.Special_EventsCreateManyPlaceInput> = z.object({
   id: z.string().cuid().optional(),
-  rating: z.number().int().optional().nullable(),
-  created_at: z.coerce.date().optional()
+  name: z.string(),
+  description: z.string(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional().nullable(),
+  deleted_at: z.coerce.date().optional().nullable()
 }).strict();
 
 export const Medical_StaffCreateManyPlaceInputSchema: z.ZodType<Prisma.Medical_StaffCreateManyPlaceInput> = z.object({
@@ -10706,20 +10759,29 @@ export const AnnouncementsUncheckedUpdateManyWithoutPlaceInputSchema: z.ZodType<
 
 export const Special_EventsUpdateWithoutPlaceInputSchema: z.ZodType<Prisma.Special_EventsUpdateWithoutPlaceInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  rating: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  description: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deleted_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const Special_EventsUncheckedUpdateWithoutPlaceInputSchema: z.ZodType<Prisma.Special_EventsUncheckedUpdateWithoutPlaceInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  rating: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  description: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deleted_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const Special_EventsUncheckedUpdateManyWithoutPlaceInputSchema: z.ZodType<Prisma.Special_EventsUncheckedUpdateManyWithoutPlaceInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  rating: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  description: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deleted_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const Medical_StaffUpdateWithoutPlaceInputSchema: z.ZodType<Prisma.Medical_StaffUpdateWithoutPlaceInput> = z.object({
