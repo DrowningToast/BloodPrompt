@@ -1,8 +1,5 @@
 <script lang="ts">
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
-	import { Button } from '$lib/components/ui/button';
-	import { Dialog, DialogContent } from '$lib/components/ui/dialog';
-
 	export let open: boolean;
 	export let title: string;
 	export let description: string;
@@ -10,7 +7,6 @@
 	export let onAction: () => void;
 	export let secondaryLabel: string;
 	export let onSecondaryAction: () => void;
-	export let dangerousAction: boolean = false;
 </script>
 
 <AlertDialog.Root {open}>

@@ -21,7 +21,7 @@
 	<Button
 		href="/login"
 		variant="outline"
-		class="w-full mt-16 rounded-xl py-6 text-md font-bold bg-white text-[#F5222D]"
+		class="w-full mt-16 rounded-xl py-6 text-md font-bold bg-white text-[#F5222D] active:text-[#F5222D] hover:text-[#F5222D]"
 	>
 		เริ่มต้นใช้งาน
 	</Button>
