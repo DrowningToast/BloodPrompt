@@ -42,8 +42,7 @@ let checked = false;
                         <Label
                           id="terms-label"
                           for="terms"
-                          class="text-base font-bold"
-                        >
+                          class="text-base font-bold">
                           จดจำการเข้าสู่ระบบ
                         </Label>
                       </div>

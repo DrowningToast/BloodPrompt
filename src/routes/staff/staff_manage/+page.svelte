@@ -3,15 +3,15 @@
     import bloodpromptlogo from '$lib/images/staff/login/bloodprompt-logo.png';
     import Dropdown from '../home/dropdown.svelte';
     import * as Table from "$lib/components/ui/table";
-    import { Button, buttonVariants } from '$lib/components/ui/button';
+    import { Button} from '$lib/components/ui/button';
     import * as Select from "$lib/components/ui/select";
     import * as Dialog from "$lib/components/ui/dialog";
     import { Input } from "$lib/components/ui/input";
     import{ Label } from "$lib/components/ui/label";
     import { Home, LogOut, UserCircle, UserCircle2,MapPin, Lock, Search } from 'lucide-svelte';
-	import { redirect } from '@sveltejs/kit';
     export let data: PageData;
-
+    
+    
     const staff_information = [
         {
           id : "1",
@@ -101,7 +101,7 @@
                 <!-- drop down -->
                 <div class="flex flex-col gap-1">
                     <p class="font-bold">เเสดงข้อมูลทั้งหมด / เลือกเเสดงตามโรงพยาบาล</p>
-                    <!-- selecttor -->
+                    <!-- selector -->
                     <Select.Root>
                         <Select.Trigger class="w-[475px] h-[50px] bg-white rounded-xl text-[#888]">
                           <Select.Value class="text-base" placeholder="เเสดงบัญชีบุคลากรการเเพทย์ในระบบทั้งหมด" />
@@ -128,11 +128,10 @@
                             ค้นหา
                         </Button>
                         </div>
-                       
                     </div>
-              
                 </div>
             </div>
+            <!-- Table -->
             <div class="flex justify-center bg-white rounded-3xl w-11/12 h-4/6 shadow-xl px-5 py-5">
                 <Table.Root class="bg-white rounded-full" >
                     <Table.Header>
@@ -145,6 +144,7 @@
                       </Table.Row>
                     </Table.Header>
                     <Table.Body>
+                        <!-- Record -->
                         {#each staff_information as info}
                         <Table.Row class="text-center">
                             <Table.Cell>{info.id}</Table.Cell>
@@ -152,6 +152,7 @@
                             <Table.Cell>{info.email}</Table.Cell>
                             <Table.Cell>{info.hospital}</Table.Cell>
                             <Table.Cell class="flex justify-center">
+                                <!-- Dialog Popup -->
                                 <Dialog.Root>
                                     <Dialog.Trigger>
                                         <Search class="cursor-pointer self-center hover:stroke-[#EF4444]"/>
@@ -183,6 +184,7 @@
                             </Table.Cell>
                         </Table.Row>
                         {/each}
+                        <!-- Finish column information showing -->
                     </Table.Body>
                 </Table.Root>
             </div>
