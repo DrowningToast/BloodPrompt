@@ -15,6 +15,16 @@ const config = {
 		alias: {
 			$lib: './src/lib'
 		}
+	},
+	// existing props
+	kit: {
+		// existing props
+		vite: {
+			optimizeDeps: {
+				include: ['lodash.get', 'lodash.isequal', 'lodash.clonedeep']
+			}
+			// plugins: []
+		}
 	}
 };
 export default config;
