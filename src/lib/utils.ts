@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { cubicOut } from "svelte/easing";
 import type { TransitionConfig } from "svelte/transition";
+=======
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+import { cubicOut } from 'svelte/easing';
+import type { TransitionConfig } from 'svelte/transition';
+>>>>>>> d77c21704c8466b52812e03eee9150918dae1fdd
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -52,6 +59,7 @@ export const flyAndScale = (
             const x = scaleConversion(t, [0, 1], [params.x ?? 0, 0]);
             const scale = scaleConversion(t, [0, 1], [params.start ?? 0.95, 1]);
 
+<<<<<<< HEAD
             return styleToString({
                 transform: `${transform} translate3d(${x}px, ${y}px, 0) scale(${scale})`,
                 opacity: t
@@ -60,3 +68,34 @@ export const flyAndScale = (
         easing: cubicOut
     };
 };
+=======
+			return styleToString({
+				transform: `${transform} translate3d(${x}px, ${y}px, 0) scale(${scale})`,
+				opacity: t
+			});
+		},
+		easing: cubicOut
+	};
+};
+
+// export async function encodePassword(password: string) {
+// 	try {
+// 		const hash = await argon2.hash(password);
+// 		return hash;
+// 	} catch (error) {
+// 		console.log(error);
+// 	}
+// }
+
+// export async function comparePassword(encodePassword: string, password: string) {
+// 	try {
+// 		if (await argon2.verify(encodePassword, password)) {
+// 			return true;
+// 		} else {
+// 			return false;
+// 		}
+// 	} catch (error) {
+// 		console.log(error);
+// 	}
+// }
+>>>>>>> d77c21704c8466b52812e03eee9150918dae1fdd

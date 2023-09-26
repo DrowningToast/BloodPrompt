@@ -25,6 +25,11 @@ module.exports = {
 			parserOptions: {
 				parser: '@typescript-eslint/parser'
 			}
-		}
-	]
+		},
+	],
+	settings: {
+		'svelte3/ignore-warnings': (warning) => {
+			return warning.code === 'a11y-click-events-have-key-events' || "a11y-no-static-element-interactions"
+		},
+	},
 };

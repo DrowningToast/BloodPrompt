@@ -5,7 +5,7 @@
 <div>
 	<!-- <Header /> -->
 
-	<main>
+	<main class="min-h-screen relative">
 		<slot />
 	</main>
 
