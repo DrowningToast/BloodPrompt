@@ -1,0 +1,335 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator zod {
+  provider = "zod-prisma-types"
+  output   = "../generated-zod"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum BloodType {
+  A_POSITIVE
+  B_POSITIVE
+  O_POSITIVE
+  AB_POSITIVE
+  A_NEGATIVE
+  B_NEGATIVE
+  O_NEGATIVE
+  AB_NEGATIVE
+}
+
+enum AccountStatus {
+  VERIFIED
+  UNVERIFIED
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum RedemptionStatus {
+  REDEEMED
+  RECEIVED
+  CANCELLED
+}
+
+model Medical_Accounts {
+  id             String        @id @unique @default(cuid())
+  blood_type     BloodType
+  account_status AccountStatus
+  is_activated   Boolean       @default(false)
+  created_at     DateTime      @default(now())
+  updated_at     DateTime?
+  Donators       Donators[]
+}
+
+model Donators {
+  id                  String                @id @unique @default(cuid())
+  Medical_Account     Medical_Accounts      @relation(fields: [medical_account_id], references: [id])
+  medical_account_id  String
+  image_src           String?
+  first_name          String
+  last_name           String
+  phone_number        String                @unique
+  gender              Gender
+  dob                 DateTime
+  address             String
+  email               String?               @unique
+  password            String
+  reward_point        Int                   @default(0)
+  created_at          DateTime              @default(now())
+  updated_at          DateTime?
+  Reward_Transactions Reward_Transactions[]
+  Redemption_History  Redemption_History[]
+  Session             Session[]
+  Reservations        Reservations[]
+}
+
+model Reward_Transactions {
+  id         String    @id @unique @default(cuid())
+  Donator    Donators  @relation(fields: [donator_id], references: [id])
+  donator_id String
+  points     Int
+  created_at DateTime  @default(now())
+  updated_at DateTime?
+}
+
+model Redemption_History {
+  id            String           @id @unique @default(cuid())
+  status        RedemptionStatus
+  used_points   Int
+  redeem_amount Int
+  created_at    DateTime         @default(now())
+  updated_at    DateTime?
+  Donator       Donators         @relation(fields: [donator_id], references: [id])
+  donator_id    String
+  Reward        Rewards          @relation(fields: [reward_id], references: [id])
+  reward_id     String
+}
+
+model Rewards {
+  id                 String               @id @unique @default(cuid())
+  name               String
+  description        String
+  required_points    Int
+  image_src          String?
+  is_available       Boolean?             @default(true)
+  amount_left        Int
+  created_at         DateTime             @default(now())
+  updated_at         DateTime?
+  deleted_at         DateTime?
+  Place              Places               @relation(fields: [place_id], references: [id])
+  place_id           String
+  Redemption_History Redemption_History[]
+}
+
+model Places {
+  id                   String                 @id @unique @default(cuid())
+  name                 String
+  description          String?
+  image_src            String?
+  icon_src             String?
+  phone_number         String
+  email                String?
+  address              String
+  opening_day          String
+  opening_time         Float
+  closing_time         Float
+  is_available         Boolean                @default(true)
+  created_at           DateTime               @default(now())
+  updated_at           DateTime?
+  deleted_at           DateTime?
+  Rewards              Rewards[]
+  Announcements        Announcements[]
+  Special_Events       Special_Events[]
+  Medical_Staff        Medical_Staff[]
+  Reservation_Slots    Reservation_Slots[]
+  Place_Review_History Place_Review_History[]
+}
+
+model Place_Review_History {
+  id         String   @id @unique @default(cuid())
+  rating     Int?
+  created_at DateTime @default(now())
+  Place      Places   @relation(fields: [place_id], references: [id])
+  place_id   String
+}
+
+enum PostType {
+  NORMAL
+  EMERGENCY
+}
+
+model Announcements {
+  id         String     @id @unique @default(cuid())
+  blood_type BloodType?
+  post_type  PostType
+  title      String
+  content    String
+  image_src  String?
+  created_at DateTime
+  updated_at DateTime?
+  deleted_at DateTime?
+  Place      Places     @relation(fields: [place_id], references: [id])
+  place_id   String
+}
+
+model Special_Events {
+  id          String    @id @unique @default(cuid())
+  name        String
+  description String
+  created_at  DateTime  @default(now())
+  updated_at  DateTime?
+  deleted_at  DateTime?
+  Place       Places    @relation(fields: [place_id], references: [id])
+  place_id    String
+}
+
+model Reservation_Slots {
+  id           String         @id @unique @default(cuid())
+  reserve_date DateTime
+  reserve_time DateTime
+  created_at   DateTime       @default(now())
+  updated_at   DateTime?
+  cancelled_at DateTime?
+  Place        Places         @relation(fields: [place_id], references: [id])
+  place_id     String
+  Reservations Reservations[]
+}
+
+model Medical_Staff {
+  id         String    @id @unique @default(cuid())
+  first_name String
+  last_name  String
+  email      String    @unique
+  password   String
+  created_at DateTime  @default(now())
+  updated_at DateTime?
+  Place      Places    @relation(fields: [place_id], references: [id])
+  place_id   String
+  Session    Session[]
+}
+
+model Session {
+  id               String         @id @unique @default(cuid())
+  session_token    String         @unique @default(cuid())
+  expires          DateTime?
+  created_at       DateTime       @default(now())
+  updated_at       DateTime?
+  Donator          Donators?      @relation(fields: [donator_id], references: [id])
+  Medical_Staff    Medical_Staff? @relation(fields: [medical_staff_id], references: [id])
+  Moderator        Moderators?    @relation(fields: [moderator_id], references: [id])
+  moderator_id     String?
+  donator_id       String?
+  medical_staff_id String?
+}
+
+enum ReservationStatus {
+  BOOKED
+  COMPLETED
+  CANCELLED
+}
+
+model Reservations {
+  id                   String                 @id @unique @default(cuid())
+  status               ReservationStatus
+  created_at           DateTime               @default(now())
+  cancelled_at         DateTime?
+  updated_at           DateTime?
+  Reservation_Slot     Reservation_Slots      @relation(fields: [reservation_slot_id], references: [id])
+  reservation_slot_id  String                 @unique
+  Donation_History     Donation_History[]
+  Pre_Feedback_Answers Pre_Feedback_Answers[]
+  donator_id           String
+  Donator              Donators               @relation(fields: [donator_id], references: [id])
+}
+
+// model Pre_Donation_Feedbacks {
+//   id                   String                 @id @unique @default(cuid())
+//   created_at           DateTime               @default(now())
+//   Reservations         Reservations[]
+//   Pre_Feedback_Answers Pre_Feedback_Answers[]
+// }
+
+// model Pre_Feedback_Answers {
+//   id                    String                 @id @unique @default(cuid())
+//   Survey_Question       Survey_Questions       @relation(fields: [question_id], references: [id])
+//   Survey_Choice         Survey_Choices         @relation(fields: [choice_id], references: [id])
+//   Pre_Donation_Feedback Pre_Donation_Feedbacks @relation(fields: [feedback_id], references: [id])
+//   feedback_id           String
+//   question_id           String
+//   choice_id             String
+// }
+
+model Pre_Feedback_Answers {
+  id              String           @id @unique @default(cuid())
+  Survey_Question Survey_Questions @relation(fields: [question_id], references: [id])
+  Survey_Choice   Survey_Choices   @relation(fields: [choice_id], references: [id])
+  Reservation     Reservations     @relation(fields: [reservation_id], references: [id])
+  reservation_id  String
+  question_id     String
+  choice_id       String
+}
+
+model Survey_Choices {
+  id                    String                  @id @unique @default(cuid())
+  order                 Int
+  label                 String
+  Survey_Question       Survey_Questions        @relation(fields: [survey_question_id], references: [id])
+  survey_question_id    String
+  Pre_Feedback_Answers  Pre_Feedback_Answers[]
+  Post_Feedback_Answers Post_Feedback_Answers[]
+}
+
+enum SurveyQuestionType {
+  PRE_SURVEY
+  POST_SURVEY
+}
+
+model Survey_Questions {
+  id                    String                  @id @unique @default(cuid())
+  order                 Int
+  type                  SurveyQuestionType
+  title                 String
+  description           String?
+  is_required           Boolean
+  Survey_Choices        Survey_Choices[]
+  Pre_Feedback_Answers  Pre_Feedback_Answers[]
+  Post_Feedback_Answers Post_Feedback_Answers[]
+}
+
+enum DonationStatus {
+  WAIT_BLOOD_QUALITY
+  SUCCESS
+  FAILED
+}
+
+model Donation_History {
+  id                     String                  @id @unique @default(cuid())
+  rewarded_points        Int
+  blood_quality_status   String?
+  blood_type             BloodType
+  status                 DonationStatus
+  created_at             DateTime                @default(now())
+  updated_at             DateTime?
+  deleted_at             DateTime?
+  Resevation             Reservations            @relation(fields: [reservation_id], references: [id])
+  Post_Donation_Feedback Post_Donation_Feedbacks @relation(fields: [post_donation_db_id], references: [id])
+  reservation_id         String
+  post_donation_db_id    String
+}
+
+model Post_Donation_Feedbacks {
+  id                    String                  @id @unique @default(cuid())
+  created_at            DateTime                @default(now())
+  Donation_History      Donation_History[]
+  Post_Feedback_Answers Post_Feedback_Answers[]
+}
+
+model Post_Feedback_Answers {
+  id                    String                  @id @unique @default(cuid())
+  Survey_Question       Survey_Questions        @relation(fields: [question_id], references: [id])
+  Survey_Choice         Survey_Choices          @relation(fields: [choice_id], references: [id])
+  Pre_Donation_Feedback Post_Donation_Feedbacks @relation(fields: [feedback_id], references: [id])
+  feedback_id           String
+  question_id           String
+  choice_id             String
+}
+
+model Moderators {
+  id           String    @id @unique @default(cuid())
+  first_name   String
+  last_name    String
+  phone_number String
+  email        String
+  password     String
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @default(now())
+  Session      Session[]
+}
