@@ -59,8 +59,8 @@
         </div>
         <div class="flex flex-col px-5 w-full h-full justify-between">
             <div class="flex flex-col gap-8 w-full">
-                <Button class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><Home class="w-5 h-5 "/>หน้าหลัก</Button>
-                <Button class="flex justify-start items-center gap-3 bg-[#EF4444] hover:bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><MapPin class="w-5 h-5" />จัดการสถานที่รับบริจาคเลือด</Button>
+                <Button class="flex justify-start items-center gap-3 bg-[#EF4444] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><Home class="w-5 h-5 "/>หน้าหลัก</Button>
+                <Button class="flex justify-start items-center gap-3 bg-[#191F2F] hover:bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><MapPin class="w-5 h-5" />จัดการสถานที่รับบริจาคเลือด</Button>
                 <Button class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><UserCircle2 class="w-5 h-5"/>จัดการบัญชีบุคลากรการเเพทย์</Button>
                 <Button class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><Lock class="w-5 h-5" />จัดการบัญชี / เปลี่ยนรหัสผ่าน</Button>
             </div>
