@@ -232,7 +232,7 @@ model Pre_Donation_Feedbacks {
 model Pre_Feedback_Answers {
   feedback_id String @unique
   question_id String @unique
-  choise_id   String @unique
+  choice_id   String @unique
 }
 
 model Survey_Choices {
@@ -288,5 +288,5 @@ model Post_Donation_Feedbacks {
 model Post_Feedback_Answers {
   feedback_id String @unique
   question_id String @unique
-  choise_id   String @unique
+  choice_id   String @unique
 }
