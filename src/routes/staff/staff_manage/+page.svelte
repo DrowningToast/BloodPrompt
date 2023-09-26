@@ -82,7 +82,7 @@
         </div>
     </div>
     <div class="flex flex-col items-center w-9/12">
-        <div class="flex items-center bg-white px-14  w-full  py-6 flex-row justify-between">
+        <div class="flex items-center bg-white px-14 h-16 w-full  py-6 flex-row justify-between">
             <h1 class=" font-bold text-xl">BloodPrompt (สำหรับผู้ดูเเลระบบ)</h1>
             <div class="flex gap-3 items-center">
                 <UserCircle class="fill-[#EF4444] stroke-white scale-150"/>
