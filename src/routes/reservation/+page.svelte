@@ -56,7 +56,7 @@
 		}}
 	/>
 
-	<div class="p-10 px-10 flex flex-col gap-6">
+	<div class="p-10 px-10 pt-8 flex flex-col gap-6">
 		{#each new Array(5) as _, index}
 			<PlaceCard
 				name="โรงพยาบาลพระจอมเกล้าเจ้าคุณทหาร (คลินิคเวชกรรม สจล.)"
