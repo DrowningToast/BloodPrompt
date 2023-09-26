@@ -133,7 +133,7 @@
 					class="rounded-2xl bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600 w-36"
 					on:click={() => {
 						selectedPlace.set(placeData);
-						goto('/reservation/success');
+						goto('/reservation/confirm');
 					}}
 				>
 					จอง
