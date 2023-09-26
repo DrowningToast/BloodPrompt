@@ -117,6 +117,7 @@ model Places {
   icon_src             String?
   phone_number         String
   email                String?
+  website_url          String?
   address              String
   opening_day          String
   opening_time         Float
