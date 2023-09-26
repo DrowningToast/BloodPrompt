@@ -3,6 +3,8 @@
 	import { CalendarClock, Clock, Globe, Mail, MapPin, Phone, Star } from 'lucide-svelte';
 	import type { Places } from '../../../../../generated-zod';
 	import { Button } from '$lib/components/ui/button';
+	import { selectedPlace } from '$lib/stores/reservationStores';
+	import { goto } from '$app/navigation';
 
 	export let rating: number = 5.0;
 	export let open: boolean = false;
@@ -127,7 +129,13 @@
 			</Dialog.Header>
 
 			<Dialog.Footer class="flex w-full justify-end  flex-row p-4">
-				<Button class="rounded-2xl bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600 w-24">
+				<Button
+					class="rounded-2xl bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600 w-36"
+					on:click={() => {
+						selectedPlace.set(placeData);
+						goto('/reservation/success');
+					}}
+				>
 					จอง
 				</Button>
 			</Dialog.Footer>
