@@ -1,6 +1,6 @@
 <script>
-import login_background from '$lib/images/staff/login/login_bacground.png';
-import logo from '$lib/images/staff/login/bloodprompt-logo.png'
+import login_background from '$lib/images/moderator/login/login_bacground.png';
+import logo from '$lib/images/moderator/login/bloodprompt-logo.png'
 import { Input } from "$lib/components/ui/input"
 import { Checkbox } from "$lib/components/ui/checkbox"
 import { Label } from "$lib/components/ui/label"
@@ -35,7 +35,7 @@ let checked = false;
                     <Input type="password" class="w-[500px] border-[3px] rounded-xl h-14" />
                 </div>
                 <!-- saved and forget -->
-                <div class="flex justify-between pl-2 pt-5">
+                <div class="flex justify-between pl-2 pt-5 items-center">
                     <!-- saved -->
                     <div class="flex items-center space-x-2">
                         <Checkbox id="terms" bind:checked aria-labelledby="terms-label"  class="w-8 h-8 flex items-center justify-center rounded-md border-[3px] border-[#e4e4e4]"/>
@@ -47,7 +47,7 @@ let checked = false;
                         </Label>
                       </div>
                       <div>
-                        <a href="#" class="underline text-[#EF4444]">ลืมรหัสผ่าน ?</a>
+                        <a href="/moderator/login" class="underline text-[#EF4444]">ลืมรหัสผ่าน ?</a>
                       </div>
                 </div>
                 <button class="mt-14 py-4 px-10 w-full text-xl font-bold rounded-3xl bg-[#EF4444] text-[#fff]">เข้าสู่ระบบ</button>

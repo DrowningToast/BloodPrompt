@@ -1,7 +1,7 @@
 <script>
     export let title = "", amount = 0, person = true;
-    import people from '$lib/images/staff/login/person.png';
-    import location from '$lib/images/staff/login/location.png';
+    import people from '$lib/images/moderator/login/person.png';
+    import location from '$lib/images/moderator/login/location.png';
     
 </script>
 

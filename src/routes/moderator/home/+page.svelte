@@ -1,57 +1,53 @@
 <script lang="ts">
-    // import { Button } from "@/components/ui/button"
     import Dropdown from './dropdown.svelte';
     import AmountCard from './amount.svelte';
-    import { Home, LogOut, Info, UserCircle, UserCircle2, KeyRound ,MapPin, Lock, PlusCircle } from 'lucide-svelte';
-    import bloodpromptlogo from '$lib/images/staff/login/bloodprompt-logo.png';
+    import { Home, LogOut, UserCircle, UserCircle2,MapPin, Lock } from 'lucide-svelte';
+    import bloodpromptlogo from '$lib/images/moderator/login/bloodprompt-logo.png';
     import * as Table from "$lib/components/ui/table";
     import { Button } from "$lib/components/ui/button";
-    
-    let position = "bottom";
 
-
-    const invoices = [
+    const places = [
     {
-      invoice: "INV001",
-      paymentStatus: "Paid",
-      totalAmount: "$250.00",
-      paymentMethod: "Credit Card"
+      name: "INV001",
+      status: "Paid",
+      address: "$250.00",
+      contact: "Credit Card"
     },
     {
-      invoice: "INV002",
-      paymentStatus: "Pending",
-      totalAmount: "$150.00",
-      paymentMethod: "PayPal"
+      name: "INV002",
+      status: "Pending",
+      address: "$150.00",
+      contact: "PayPal"
     },
     {
-      invoice: "INV003",
-      paymentStatus: "Unpaid",
-      totalAmount: "$350.00",
-      paymentMethod: "Bank Transfer"
+      name: "INV003",
+      status: "Unpaid",
+      address: "$350.00",
+      contact: "Bank Transfer"
     },
     {
-      invoice: "INV004",
-      paymentStatus: "Paid",
-      totalAmount: "$450.00",
-      paymentMethod: "Credit Card"
+      name: "INV004",
+      status: "Paid",
+      address: "$450.00",
+      contact: "Credit Card"
     },
     {
-      invoice: "INV005",
-      paymentStatus: "Paid",
-      totalAmount: "$550.00",
-      paymentMethod: "PayPal"
+      name: "INV005",
+      status: "Paid",
+      address: "$550.00",
+      contact: "PayPal"
     },
     {
-      invoice: "INV006",
-      paymentStatus: "Pending",
-      totalAmount: "$200.00",
-      paymentMethod: "Bank Transfer"
+      name: "INV006",
+      status: "Pending",
+      address: "$200.00",
+      contact: "Bank Transfer"
     },
     {
-      invoice: "INV007",
-      paymentStatus: "Unpaid",
-      totalAmount: "$300.00",
-      paymentMethod: "Credit Card"
+      name: "INV007",
+      status: "Unpaid",
+      address: "$300.00",
+      contact: "Credit Card"
     }
   ];
 </script>
@@ -72,7 +68,7 @@
         </div>
     </div>
     <div class="flex flex-col items-center w-9/12">
-        <div class="flex items-center bg-white px-14  w-full  py-6 flex-row justify-between">
+        <div class="flex items-center bg-white px-14  w-full h-16  py-6 flex-row justify-between">
             <h1 class=" font-bold text-lg">BloodPrompt (สำหรับผู้ดูเเลระบบ)</h1>
             <div class="flex gap-3 items-center">
                 <UserCircle class="fill-[#EF4444] stroke-white scale-150"/>
@@ -107,19 +103,19 @@
                     <Table.Root class="bg-white rounded-full">
                         <Table.Header >
                             <Table.Row>
-                                <Table.Head>Invoice</Table.Head>
-                                <Table.Head>Status</Table.Head>
-                                <Table.Head>Method</Table.Head>
-                                <Table.Head>Amount</Table.Head>
+                                <Table.Head>ชื่อสถานบริจาค</Table.Head>
+                                <Table.Head>สถานะ</Table.Head>
+                                <Table.Head>ที่อยู่</Table.Head>
+                                <Table.Head>ติดต่อ</Table.Head>
                             </Table.Row>
                         </Table.Header>
                     <Table.Body>
-                        {#each invoices as invoice, i (i)}
+                        {#each places as place, i (i)}
                         <Table.Row>
-                            <Table.Cell>{invoice.invoice}</Table.Cell>
-                            <Table.Cell>{invoice.paymentStatus}</Table.Cell>
-                          <Table.Cell>{invoice.paymentMethod}</Table.Cell>
-                          <Table.Cell>{invoice.totalAmount}</Table.Cell>
+                            <Table.Cell>{place.name}</Table.Cell>
+                            <Table.Cell>{place.status}</Table.Cell>
+                          <Table.Cell>{place.contact}</Table.Cell>
+                          <Table.Cell>{place.address}</Table.Cell>
                         </Table.Row>
                         {/each}
                     </Table.Body>
