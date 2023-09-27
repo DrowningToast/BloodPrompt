@@ -4,6 +4,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import '@fontsource-variable/noto-sans-thai';
+
 @layer base {
 	:root {
 		--background: 0 0% 100%;
