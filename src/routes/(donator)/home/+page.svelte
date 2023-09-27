@@ -10,13 +10,15 @@
 	export let data: PageData;
 </script>
 
-<Banner />
-<section class="px-10 py-8">
-	<SpecialEvent />
-</section>
-<section class="px-8">
-	<Searchbar />
-</section>
-<section>
-	<AnnouncementList />
-</section>
+<div class="pb-24">
+	<Banner />
+	<section class="px-10 py-8">
+		<SpecialEvent />
+	</section>
+	<section class="px-8">
+		<Searchbar />
+	</section>
+	<section>
+		<AnnouncementList />
+	</section>
+</div>

@@ -34,7 +34,7 @@
 	};
 </script>
 
-<div>
+<div class="pb-24">
 	<div class="bg-white shadow-md p-5 flex flex-row items-center justify-start gap-4">
 		<button
 			on:click={() => {

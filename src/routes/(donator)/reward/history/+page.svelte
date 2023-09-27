@@ -66,7 +66,7 @@
 	};
 </script>
 
-<div class="bg-[#F5F5F5] h-screen">
+<div class="bg-[#F5F5F5] min-h-screen pb-24">
 	<div class="bg-white shadow-md p-5 flex flex-row items-center justify-start gap-4">
 		<button
 			on:click={() => {
