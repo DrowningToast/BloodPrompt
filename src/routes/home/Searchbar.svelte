@@ -2,15 +2,7 @@
 	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import { FilterIcon, SearchIcon } from 'lucide-svelte';
-
-	interface SearchFilter {
-		bloodTypes: Record<BloodType['value'], boolean>;
-	}
-
-	interface BloodType {
-		value: string;
-		label: string;
-	}
+	import type { BloodType, SearchFilter } from './utils';
 
 	let expand = false;
 	const handleExpand = () => {
@@ -42,7 +34,8 @@
 				...prev,
 				[bloodType.value]: false
 			};
-		}, {})
+		}, {}),
+		searchQuery: ''
 	};
 </script>
 
@@ -51,6 +44,7 @@
 		<Input
 			class="w-full rounded-3xl py-6 px-6 placeholder:text-gray-400 pl-12"
 			placeholder="ค้นหารายชื่อผู้ต้องการรับบริจาคเลือด"
+			bind:value={searchFilter['searchQuery']}
 		/>
 	</div>
 	<SearchIcon class="text-gray-400" />
