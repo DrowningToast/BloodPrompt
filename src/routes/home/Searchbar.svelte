@@ -43,20 +43,20 @@
 	<div class="absolute inset-0">
 		<Input
 			on:change
-			class="w-full rounded-3xl py-6 px-6 placeholder:text-gray-400 pl-12"
-			placeholder="ค้นหารายชื่อผู้ต้องการรับบริจาคเลือด"
+			class="w-full rounded-2xl shadow py-6 px-6 placeholder:text-slate-400 pl-12"
+			placeholder="ค้นหาชื่อผู้ต้องการรับบริจาคเลือด"
 			bind:value={searchFilter['searchQuery']}
 		/>
 	</div>
 	<SearchIcon class="text-gray-400" />
 	<button on:click={handleExpand} class="ml-auto text-gray-800 z-10">
-		<FilterIcon fill={`${expand ? '#F5222D' : '#ffffff'}`} />
+		<FilterIcon fill={`${expand ? '#F5222D' : '#ffff'}`} color={'#F5222D'} />
 	</button>
 	{#if expand}
 		<div
 			class="absolute bg-white shadow-2xl rounded-2xl px-4 py-6 inset-x-0 -bottom-4 transform translate-y-full"
 		>
-			<h3 class="font-bold text-black text-lg">ตัวกรองในการค้นหา</h3>
+			<h6 class="font-bold text-black">ตัวกรองในการค้นหา</h6>
 			<hr class="my-4" />
 			<div class="flex flex-col gap-y-3">
 				<h3 class="text-sm font-medium text-gray-500">กรุ๊ปเลือด</h3>

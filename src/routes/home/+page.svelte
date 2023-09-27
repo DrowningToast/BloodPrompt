@@ -11,7 +11,7 @@
 </script>
 
 <Banner />
-<section class="px-12 py-8">
+<section class="px-10 py-8">
 	<SpecialEvent />
 </section>
 <section class="px-8">
