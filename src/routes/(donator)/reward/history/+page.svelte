@@ -10,6 +10,7 @@
 	import rewardleftImage from '$lib/images/reward/reward_history_left.png';
 	import rewardRightImage from '$lib/images/reward/reward_history_right.png';
 	import RewardHistoryCard from '$lib/components/svelte/card/reward/RewardHistoryCard.svelte';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 </script>
@@ -19,7 +20,7 @@
 		<button
 			on:click={() => {
 				if (browser) {
-					window.history.back();
+					goto('/reward');
 				}
 			}}
 		>

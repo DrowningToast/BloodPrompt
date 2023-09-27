@@ -7,6 +7,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import RewardItemCard from '$lib/components/svelte/card/reward/RewardItemCard.svelte';
 	import rewardMockImage from '$lib/images/reward/reward_mock.png';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 </script>
@@ -16,7 +17,7 @@
 		<button
 			on:click={() => {
 				if (browser) {
-					window.history.back();
+					goto('/home');
 				}
 			}}
 		>
