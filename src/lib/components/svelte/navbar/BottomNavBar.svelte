@@ -2,15 +2,15 @@
 	import { goto } from '$app/navigation';
 	import {
 		isReservationRoute,
-		page,
+		currentRoute,
 		isHistoryRoute,
 		isHomeRoute,
 		isRewardRoute
-	} from '$lib/stores/pageStores';
+	} from '$lib/stores/routeStores';
 	import { CalendarClock, FileClock, Gift, Home } from 'lucide-svelte';
 
 	const handleRouteChange = (route: string) => {
-		page.set(route);
+		currentRoute.set(route);
 		goto(route);
 	};
 </script>

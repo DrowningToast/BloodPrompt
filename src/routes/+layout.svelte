@@ -3,19 +3,18 @@
 
 	import { navigating } from '$app/stores';
 	import {
-		page,
+		currentRoute,
 		isHistoryRoute,
 		isHomeRoute,
 		isReservationRoute,
 		isRewardRoute
-	} from '$lib/stores/pageStores';
+	} from '$lib/stores/routeStores';
 
 	$: if ($navigating) handleRouteChange();
 
 	const handleRouteChange = () => {
 		const pathname = $navigating?.to?.url.pathname;
-		console.log(pathname);
-		page.set(pathname || '/home');
+		currentRoute.set(pathname || '/home');
 		if (pathname?.includes('home')) {
 			isHomeRoute.set(true);
 			isReservationRoute.set(false);
