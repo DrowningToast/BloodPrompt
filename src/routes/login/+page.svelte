@@ -56,12 +56,14 @@
 
 		<p class="underline text-[#F5222D] w-full text-right pr-2">ลืมรหัสผ่าน ?</p>
 
-		<Button
-			variant="secondary"
-			class="w-full rounded-xl py-6 text-md font-bold bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600"
-		>
-			เข้าสู่ระบบ
-		</Button>
+		<a href="/home">
+			<Button
+				variant="secondary"
+				class="w-full rounded-xl py-6 text-md font-bold bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600"
+			>
+				เข้าสู่ระบบ
+			</Button>
+		</a>
 	</div>
 
 	<div class="flex items-center my-6 gap-2">

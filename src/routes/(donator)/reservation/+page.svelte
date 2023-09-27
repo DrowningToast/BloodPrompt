@@ -4,7 +4,7 @@
 	import type { PageData } from './$types';
 	import { browser } from '$app/environment';
 	import PlaceDetails from '$lib/components/svelte/dialog/PlaceDetails.svelte';
-	import type { Places } from '../../../generated-zod';
+	import type { Places } from '../../../../generated-zod';
 	export let data: PageData;
 
 	let isShowPlaceDetailsDialog: boolean = false;
