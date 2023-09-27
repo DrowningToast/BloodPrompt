@@ -23,7 +23,7 @@
 	<Button
 		variant="outline"
 		class="rounded-full font-bold bg-white text-[#F5222D] active:text-[#F5222D] hover:text-[#F5222D] w-2/5 max-w-[150px] px-2 py-3 "
-		href="/reservation">จองคิวเลย !</Button
+		href="/reservation/survey">จองคิวเลย !</Button
 	>
 	<img class="absolute bottom-0 right-4 w-44 object-cover" src={heroImage} alt="hero" />
 </section>
