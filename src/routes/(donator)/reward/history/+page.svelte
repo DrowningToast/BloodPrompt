@@ -11,8 +11,59 @@
 	import rewardRightImage from '$lib/images/reward/reward_history_right.png';
 	import RewardHistoryCard from '$lib/components/svelte/card/reward/RewardHistoryCard.svelte';
 	import { goto } from '$app/navigation';
+	import { selectedRedemptionHistory, type RedemptionHistory } from '$lib/stores/rewardStores';
+	import Button from '$lib/components/ui/button/button.svelte';
 
-	export let data: PageData;
+	const handleClickRewardHistoryItem = () => {
+		const data: RedemptionHistory = {
+			rewardData: {
+				amount_left: 100,
+				created_at: new Date(),
+				deleted_at: null,
+				description: 'แก้วน้ำอัจฉริยะแห่งศตวรรษที่ 21',
+				id: '001',
+				image_src:
+					'https://i.etsystatic.com/17455023/r/il/b3e17c/3605344456/il_fullxfull.3605344456_9y53.jpg',
+				is_available: true,
+				name: 'แก้วน้ำลิมิเต็ด',
+				place_id: '01',
+				required_points: 12000,
+				updated_at: null
+			},
+			placeData: {
+				id: '01',
+				name: 'โรงพยาบาลพระจอมเกล้าเจ้าคุณทหาร',
+				description:
+					"สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง (King Mongkut's Institute of Technology Ladkrabang) เป็นมหาวิทยาลัยในกำกับของรัฐ ก่อตั้งด้วยความช่วยเหลือของรัฐบาลญี่ปุ่น (มหาวิทยาลัยโตไก) โดยเน้นการเรียนการสอนด้านวิทยาศาสตร์และเทคโนโลยี ตั้งอยู่เขตลาดกระบัง กรุงเทพมหานคร",
+				image_src:
+					'https://scontent.fbkk7-3.fna.fbcdn.net/v/t1.6435-9/75625360_2708828382511763_3205029120262012928_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=e3f864&_nc_eui2=AeGOqQxnGM18lHXUfqJyW9DEOBRkihhNDX44FGSKGE0NfjS7uhqfp3lMIjdWkpXnd6iyNHxq0ifH0GfTFlfA0PPh&_nc_ohc=j9h9QLsMYgIAX_jfuFK&_nc_ht=scontent.fbkk7-3.fna&oh=00_AfA-v_P2xu40hWBwbC0ZnItdEstjeWUU1JqjvTZFtO4IKg&oe=6539C618',
+				phone_number: '0656526769',
+				email: '65070219@kmitl.ac.th',
+				icon_src: '',
+				address: 'ถนนฉลองกรุง เขตลาดกระบัง กรุงเทพฯ 10520, ประเทศไทย',
+				opening_day: 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY',
+				opening_time: 9,
+				closing_time: 16.3,
+				is_available: true,
+				created_at: new Date(new Date().getTime()),
+				updated_at: new Date(new Date().getTime()),
+				deleted_at: null,
+				website_url: 'https://www.it.kmitl.ac.th'
+			},
+			redemtionData: {
+				created_at: new Date(),
+				donator_id: '01',
+				id: '000001',
+				redeem_amount: 1,
+				reward_id: '001',
+				status: 'REDEEMED',
+				updated_at: null,
+				used_points: 12000
+			}
+		};
+		selectedRedemptionHistory.set(data);
+		goto('/reward/history/' + data.redemtionData.id);
+	};
 </script>
 
 <div class="bg-[#F5F5F5] h-screen">
@@ -82,14 +133,16 @@
 		</div>
 
 		<div class="mt-2 flex flex-col gap-4">
-			<RewardHistoryCard
-				name="แก้วน้ำลิมิเต็ด"
-				description="แก้วน้ำอัจฉริยะแห่งศตวรรษที่ 21"
-				imageSrc="https://i.etsystatic.com/17455023/r/il/b3e17c/3605344456/il_fullxfull.3605344456_9y53.jpg"
-				usedPoints={12000}
-				redeemDate={new Date()}
-				status={'REDEEMED'}
-			/>
+			<div on:click={handleClickRewardHistoryItem}>
+				<RewardHistoryCard
+					name="แก้วน้ำลิมิเต็ด"
+					description="แก้วน้ำอัจฉริยะแห่งศตวรรษที่ 21"
+					imageSrc="https://i.etsystatic.com/17455023/r/il/b3e17c/3605344456/il_fullxfull.3605344456_9y53.jpg"
+					usedPoints={12000}
+					redeemDate={new Date()}
+					status={'REDEEMED'}
+				/>
+			</div>
 			<RewardHistoryCard
 				name="แก้วน้ำลิมิเต็ด"
 				description="แก้วน้ำอัจฉริยะแห่งศตวรรษที่ 21"

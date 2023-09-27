@@ -71,7 +71,7 @@
 	</div>
 
 	<Button
-		href="/"
+		href="/home"
 		variant="secondary"
 		class="w-full rounded-xl py-6 text-md font-bold flex flex-row items-center gap-2 bg-white border-[#E5E7EB] border-2"
 	>

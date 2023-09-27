@@ -75,3 +75,31 @@ export const flyAndScale = (
 // 		console.log(error);
 // 	}
 // }
+
+export const getFormattedOpeningDate = (opening_day: string) => {
+	if (opening_day) {
+		const result: string[] = [];
+		const openingDays = opening_day.split(',');
+		for (const day of openingDays) {
+			if (day === 'SUNDAY') {
+				result.push('วันอาทิตย์');
+			} else if (day === 'MONDAY') {
+				result.push('วันจันทร์');
+			} else if (day === 'TUESDAY') {
+				result.push('วันอังคาร');
+			} else if (day === 'WEDNESDAY') {
+				result.push('วันพุธ');
+			} else if (day === 'THURSDAY') {
+				result.push('วันพฤหัสบดี');
+			} else if (day === 'FRIDAY') {
+				result.push('วันศุกร์​');
+			} else if (day === 'SATURDAY') {
+				result.push('วันเสาร์');
+			}
+		}
+		const lastDay = result.pop();
+		let temp = result.join(', ');
+		temp += ` และ${lastDay}`;
+		return temp;
+	}
+};
