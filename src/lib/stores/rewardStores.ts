@@ -7,4 +7,11 @@ export type RedemptionHistory = {
 	placeData: Places;
 };
 
+export type Reward = {
+	rewardData: Rewards;
+	placeData: Places;
+};
+
 export const selectedRedemptionHistory = writable<RedemptionHistory | null>(null);
+
+export const selectedReward = writable<Reward | null>(null);

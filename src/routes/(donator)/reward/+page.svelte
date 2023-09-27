@@ -8,9 +8,19 @@
 	import RewardItemCard from '$lib/components/svelte/card/reward/RewardItemCard.svelte';
 	import rewardMockImage from '$lib/images/reward/reward_mock.png';
 	import { goto } from '$app/navigation';
+	import RewardDetails from '$lib/components/svelte/dialog/RewardDetails.svelte';
+	import { selectedReward } from '$lib/stores/rewardStores';
 
 	export let data: PageData;
+	let showRewardDetailDialog: boolean = false;
 </script>
+
+<RewardDetails
+	open={showRewardDetailDialog}
+	onClose={() => {
+		showRewardDetailDialog = false;
+	}}
+/>
 
 <div class="bg-[#F5222D] min-h-screen">
 	<div class="bg-white shadow-md p-5 flex flex-row items-center justify-start gap-4">
@@ -60,14 +70,55 @@
 			</div>
 
 			<div class="mt-4 flex flex-col gap-4">
-				<a href="">
+				<button
+					class="flex text-left"
+					on:click={() => {
+						selectedReward.set({
+							placeData: {
+								id: '01',
+								name: 'โรงพยาบาลพระจอมเกล้าเจ้าคุณทหาร',
+								description:
+									"สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง (King Mongkut's Institute of Technology Ladkrabang) เป็นมหาวิทยาลัยในกำกับของรัฐ ก่อตั้งด้วยความช่วยเหลือของรัฐบาลญี่ปุ่น (มหาวิทยาลัยโตไก) โดยเน้นการเรียนการสอนด้านวิทยาศาสตร์และเทคโนโลยี ตั้งอยู่เขตลาดกระบัง กรุงเทพมหานคร",
+								image_src:
+									'https://scontent.fbkk7-3.fna.fbcdn.net/v/t1.6435-9/75625360_2708828382511763_3205029120262012928_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=e3f864&_nc_eui2=AeGOqQxnGM18lHXUfqJyW9DEOBRkihhNDX44FGSKGE0NfjS7uhqfp3lMIjdWkpXnd6iyNHxq0ifH0GfTFlfA0PPh&_nc_ohc=j9h9QLsMYgIAX_jfuFK&_nc_ht=scontent.fbkk7-3.fna&oh=00_AfA-v_P2xu40hWBwbC0ZnItdEstjeWUU1JqjvTZFtO4IKg&oe=6539C618',
+								phone_number: '0656526769',
+								email: '65070219@kmitl.ac.th',
+								icon_src: '',
+								address: 'ถนนฉลองกรุง เขตลาดกระบัง กรุงเทพฯ 10520, ประเทศไทย',
+								opening_day: 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY',
+								opening_time: 9,
+								closing_time: 16.3,
+								is_available: true,
+								created_at: new Date(new Date().getTime()),
+								updated_at: new Date(new Date().getTime()),
+								deleted_at: null,
+								website_url: 'https://www.it.kmitl.ac.th'
+							},
+							rewardData: {
+								amount_left: 100,
+								created_at: new Date(),
+								deleted_at: null,
+								updated_at: null,
+								name: 'เงิน 10,000 บาท',
+								description: 'เงินดิจิตอลจากพรรคเพื่อเธอคนไทยมีกินมีใช้',
+								id: '001',
+								image_src: 'https://picsum.photos/200/300',
+								is_available: true,
+								place_id: '01',
+								required_points: 200
+							}
+						});
+						showRewardDetailDialog = true;
+					}}
+				>
 					<RewardItemCard
 						name={'เงิน 10,000 บาท'}
 						description="เงินดิจิตอลจากพรรคเพื่อเธอคนไทยมีกินมีใช้"
 						imageSrc={rewardMockImage}
 						requirePoints={200}
+						rewardId="001"
 					/>
-				</a>
+				</button>
 
 				<a href="">
 					<RewardItemCard
