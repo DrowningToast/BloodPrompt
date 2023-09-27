@@ -1,4 +1,5 @@
 import type { PageServerLoad } from './$types';
+import kmitlLogo from '$lib/images/home/kmitl_logo.png';
 
 export const load = (async ({ params }) => {
 	return {
@@ -14,7 +15,7 @@ export const load = (async ({ params }) => {
 				created_at: new Date(),
 				Place: {
 					name: `โรงพยาบาลพระจอมเกล้าเจ้าคุณทหาร`,
-					image_src: '/images/kmitl-logo.png'
+					image_src: kmitlLogo
 				}
 			}
 		]
