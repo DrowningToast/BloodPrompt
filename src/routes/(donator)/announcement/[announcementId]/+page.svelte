@@ -3,6 +3,7 @@
 	import { ChevronLeft, Verified } from 'lucide-svelte';
 	import type { PageData } from './$types';
 	import { toDateString } from '$lib/utils';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 
@@ -14,7 +15,7 @@
 		<button
 			on:click={() => {
 				if (browser) {
-					window.history.back();
+					goto('/home');
 				}
 			}}
 		>
