@@ -3,7 +3,6 @@
 	import type { PageData } from './$types';
 	import { browser } from '$app/environment';
 	import { selectedPlace, selectedDate, selectedTime } from '$lib/stores/reservationStores';
-	import is from 'date-fns/locale/is';
 	import { Button } from '$lib/components/ui/button';
 
 	export let data: PageData;
@@ -63,7 +62,7 @@
 			</div>
 
 			<Button
-				class="rounded-2xl bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600 w-60 py-6 mx-auto mt-28"
+				class="rounded-2xl bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600 w-60 py-6 mx-auto mt-10"
 			>
 				ยืนยันการจอง
 			</Button>
