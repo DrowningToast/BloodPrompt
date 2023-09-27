@@ -17,14 +17,6 @@ const config = {
 		}
 	},
 	// existing props
-	kit: {
-		// existing props
-		vite: {
-			optimizeDeps: {
-				include: ['lodash.get', 'lodash.isequal', 'lodash.clonedeep']
-			}
-			// plugins: []
-		}
-	}
+	kit: {}
 };
 export default config;
