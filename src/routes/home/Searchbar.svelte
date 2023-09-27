@@ -42,6 +42,7 @@
 <div class="relative flex items-center h-12 px-4 pr-6">
 	<div class="absolute inset-0">
 		<Input
+			on:change
 			class="w-full rounded-3xl py-6 px-6 placeholder:text-gray-400 pl-12"
 			placeholder="ค้นหารายชื่อผู้ต้องการรับบริจาคเลือด"
 			bind:value={searchFilter['searchQuery']}
