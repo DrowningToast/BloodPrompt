@@ -4,6 +4,8 @@
 	import SpecialEvent from './SpecialEventHero.svelte';
 
 	import Searchbar from './Searchbar.svelte';
+	import Announcement from './Announcement.svelte';
+	import AnnouncementList from './AnnouncementList.svelte';
 
 	export let data: PageData;
 </script>
@@ -14,4 +16,7 @@
 </section>
 <section class="px-8">
 	<Searchbar />
+</section>
+<section>
+	<AnnouncementList />
 </section>
