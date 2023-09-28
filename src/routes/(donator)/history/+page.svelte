@@ -7,6 +7,7 @@
 	import type { Donation_History, Places, Reservations } from '../../../../generated-zod';
 	import DonationHistoryTabPanel from './DonationHistoryTabPanel.svelte';
 	import ReservationTabPanel from './ReservationTabPanel.svelte';
+	import SurveyCard from '$lib/components/svelte/card/survey/SurveyCard.svelte';
 
 	export let data: PageData;
 
@@ -152,6 +153,15 @@
 			<ChevronLeft />
 		</button>
 		<p class="text-md font-bold">ประวัติการจองคิวและบริจาคเลือด</p>
+	</div>
+
+	<div class="px-6 pt-6">
+		<SurveyCard
+			donateDate={new Date()}
+			donateTime={12.3}
+			donationHistoryId={'001'}
+			placeName="โรงพยาบาลพระจอมเกล้าเจ้าคุณทหาร"
+		/>
 	</div>
 
 	<div class="p-6">
