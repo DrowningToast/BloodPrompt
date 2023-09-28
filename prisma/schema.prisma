@@ -292,18 +292,18 @@ enum DonationStatus {
 }
 
 model Donation_History {
-  id                     String                  @id @unique @default(cuid())
+  id                     String                   @id @unique @default(cuid())
   rewarded_points        Int
   blood_quality_status   String?
   blood_type             BloodType
   status                 DonationStatus
-  created_at             DateTime                @default(now())
+  created_at             DateTime                 @default(now())
   updated_at             DateTime?
   deleted_at             DateTime?
-  Resevation             Reservations            @relation(fields: [reservation_id], references: [id])
-  Post_Donation_Feedback Post_Donation_Feedbacks @relation(fields: [post_donation_db_id], references: [id])
+  Resevation             Reservations             @relation(fields: [reservation_id], references: [id])
+  Post_Donation_Feedback Post_Donation_Feedbacks? @relation(fields: [post_donation_db_id], references: [id])
   reservation_id         String
-  post_donation_db_id    String
+  post_donation_db_id    String?
 }
 
 model Post_Donation_Feedbacks {
