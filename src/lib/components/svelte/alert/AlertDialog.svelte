@@ -5,8 +5,8 @@
 	export let description: string;
 	export let actionLabel: string;
 	export let onAction: () => void;
-	export let secondaryLabel: string;
-	export let onSecondaryAction: () => void;
+	export let secondaryLabel: string = '';
+	export let onSecondaryAction: () => void = () => {};
 </script>
 
 <AlertDialog.Root {open}>
@@ -19,9 +19,11 @@
 		</AlertDialog.Header>
 		<AlertDialog.Footer>
 			<AlertDialog.Cancel on:click={onAction}>{actionLabel}</AlertDialog.Cancel>
-			<AlertDialog.Action on:click={onSecondaryAction} class="bg-red-600 text-white"
-				>{secondaryLabel}</AlertDialog.Action
-			>
+			{#if secondaryLabel && onSecondaryAction}
+				<AlertDialog.Action on:click={onSecondaryAction} class="bg-red-600 text-white"
+					>{secondaryLabel}</AlertDialog.Action
+				>
+			{/if}
 		</AlertDialog.Footer>
 	</AlertDialog.Content>
 </AlertDialog.Root>

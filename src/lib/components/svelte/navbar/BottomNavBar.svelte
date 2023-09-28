@@ -26,7 +26,7 @@
 		</button>
 		<button
 			on:click={() => {
-				handleRouteChange('/reservation');
+				handleRouteChange('/reservation/survey');
 			}}
 		>
 			<CalendarClock size={28} class={`${$isReservationRoute ? 'text-white' : 'opacity-40'}`} />

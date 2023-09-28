@@ -78,8 +78,8 @@ export const createSvelteKitContext =
 			}
 		}
 
-		console.log('createSvelteKitContext() locals ', locals.session);
-		console.log(opts);
+		// console.log('createSvelteKitContext() locals ', locals.session);
+		// console.log(opts);
 		return {
 			...locals,
 			opts,
