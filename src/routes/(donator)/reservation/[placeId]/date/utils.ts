@@ -31,3 +31,12 @@ export const getAvilableDays = (availableHospitalDates: HospitalAvailability, mo
 	});
 	return _;
 };
+
+export const checkEquivalenceTime = (a: Date, b: Date) => {
+	console.log(a.getHours(), b.getHours(), a.getMinutes(), b.getMinutes());
+	return a.getHours() === b.getHours() && a.getMinutes() === b.getMinutes();
+};
+
+export const get24HoursTimeString = (date: Date) => {
+	return `${date.getHours()}:${(date.getMinutes() < 10 ? '0' : '') + date.getMinutes()}`;
+};
