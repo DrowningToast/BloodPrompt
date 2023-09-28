@@ -103,3 +103,13 @@ export const getFormattedOpeningDate = (opening_day: string) => {
 		return temp;
 	}
 };
+
+export const toDateString = (date: Date) => {
+	return date?.toLocaleDateString('th-TH', {
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric',
+		hour: '2-digit',
+		minute: '2-digit'
+	});
+};

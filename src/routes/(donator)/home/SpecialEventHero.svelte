@@ -2,6 +2,8 @@
 	import { page } from '$app/stores';
 	import { CalendarDays } from 'lucide-svelte';
 
+	import specialEventMockImage from '$lib/images/home/special_event_banner.png';
+
 	interface Poster {
 		img: string;
 		href: string;
@@ -35,10 +37,14 @@
 <div>
 	<div class="carousel w-full gap-x-6">
 		{#each mock_data as poster, key}
-			<div id={`slide${key}`} class="carousel-item relative w-full rounded-2xl overflow-hidden">
+			<div id={`slide${key}`} class="carousel-item relative w-full rounded-xl overflow-hidden">
 				<!-- svelte-ignore a11y-missing-content -->
 				<a class="absolute inset-0 inline-block" href={poster.href} />
-				<img src={poster.img} class="w-full h-64" alt={`${poster.img} poster image`} />
+				<img
+					src={specialEventMockImage}
+					class="w-full h-64"
+					alt={`${specialEventMockImage} poster image`}
+				/>
 			</div>
 		{/each}
 	</div>
