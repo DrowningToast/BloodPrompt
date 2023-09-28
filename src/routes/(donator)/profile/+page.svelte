@@ -7,10 +7,46 @@
 	import Textarea from '$lib/components/ui/textarea/textarea.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import { Button } from '$lib/components/ui/button';
+	import AlertDialog from '$lib/components/svelte/alert/AlertDialog.svelte';
 
 	export let data: PageData;
 	let isLoading: boolean = false;
+	let showLogoutConfirmDialog: boolean = false;
+	let showEditConfirmDialog: boolean = false;
 </script>
+
+<AlertDialog
+	open={showLogoutConfirmDialog}
+	title="ออกจากระบบหรือไม่ ?"
+	description="ยืนยันที่จะออกจากระบบหรือไม่ คุณสามารถเข้าสู่ระบบใหม่ได้โดยใช้เบอร์โทรศัพท์และรหัสผ่าน"
+	actionLabel="ออกจากระบบ"
+	onAction={() => {
+		goto('/login');
+	}}
+	secondaryLabel="ยกเลิก"
+	onSecondaryAction={() => {
+		showLogoutConfirmDialog = false;
+	}}
+/>
+
+<AlertDialog
+	open={showEditConfirmDialog}
+	title="บันทึกการแก้ไขหรือไม่ ?"
+	description="บันทึกการแก้ไขข้อมูลของคุณหรือไม่"
+	actionLabel="ยืนยันการแก้ไขและบันทึก"
+	onAction={() => {
+		showEditConfirmDialog = false;
+		isLoading = true;
+		setTimeout(() => {
+			isLoading = false;
+			goto('/home');
+		}, 1500);
+	}}
+	secondaryLabel="ยกเลิก"
+	onSecondaryAction={() => {
+		showEditConfirmDialog = false;
+	}}
+/>
 
 <div class=" pb-32">
 	<div class="bg-white shadow-md p-5 flex flex-row items-center justify-start gap-4">
@@ -89,6 +125,9 @@
 		</Card.Root>
 
 		<Button
+			on:click={() => {
+				showEditConfirmDialog = true;
+			}}
 			variant="secondary"
 			class="w-full rounded-xl py-6 mt-6 text-md font-bold bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600"
 		>
@@ -98,6 +137,13 @@
 			บันทึกการแก้ไข
 		</Button>
 
-		<button class="mt-4 text-center underline mx-auto w-full"> ออกจากระบบ </button>
+		<button
+			class="mt-4 text-center underline mx-auto w-full"
+			on:click={() => {
+				showLogoutConfirmDialog = true;
+			}}
+		>
+			ออกจากระบบ
+		</button>
 	</div>
 </div>

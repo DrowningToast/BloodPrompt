@@ -2,7 +2,8 @@
 	import { browser } from '$app/environment';
 	import { ChevronLeft, Verified } from 'lucide-svelte';
 	import type { PageData } from './$types';
-	import { toDateString } from '$lib/utiltoDateTimeStringgoto } from '$app/navigation';
+	import { toDateTimeString } from '$lib/utils';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 
@@ -34,9 +35,8 @@
 					<p class="font-bold text-sm">{announcementData.Place.name}</p>
 					<Verified size={20} class="text-sm text-red-900 font-bold" />
 				</div>
-				toDateTimeString
 				<p class="text-gray-500 text-xs font-bold mt-1">
-					{toDateString(announcementData.created_at)}
+					{toDateTimeString(announcementData.created_at)}
 				</p>
 			</div>
 		</div>
