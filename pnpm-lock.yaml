@@ -32,6 +32,9 @@ dependencies:
   lucide-svelte:
     specifier: ^0.279.0
     version: 0.279.0(svelte@4.2.1)
+  svelte-steps:
+    specifier: ^2.4.1
+    version: 2.4.1
   sveltekit-superforms:
     specifier: ^1.7.2
     version: 1.7.2(@sveltejs/kit@1.25.0)(svelte@4.2.1)(zod@3.22.2)
@@ -2278,6 +2281,10 @@ packages:
       svelte: 4.2.1
       tslib: 2.6.2
     dev: true
+
+  /svelte-steps@2.4.1:
+    resolution: {integrity: sha512-2Xq2lLcGJf3PaEY46f1w5s+/O+tLl4U2V+Z+sCeoUm/kEPFXeZP/aFr2JVKwdzSlXCT+raz75xqXtnZrPWJ0zA==}
+    dev: false
 
   /svelte@4.2.1:
     resolution: {integrity: sha512-LpLqY2Jr7cRxkrTc796/AaaoMLF/1ax7cto8Ot76wrvKQhrPmZ0JgajiWPmg9mTSDqO16SSLiD17r9MsvAPTmw==}
