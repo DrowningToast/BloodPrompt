@@ -56,6 +56,7 @@ const config = {
 			},
 			fontFamily: {
 				sans: [...fontFamily.sans]
+				//'press-start': ['"Noto Sans Thai"', 'cursive'],
 			}
 		}
 	}
