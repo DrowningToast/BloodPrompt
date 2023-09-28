@@ -11,7 +11,7 @@
 
 <div class="min-h-screen flex flex-col pb-8">
 	<ReservationHeader href="/reservation">ยืนยันการจอง</ReservationHeader>
-	<div class="w-full h-72"><img src={`/images/mock_hospital_bg.png`} /></div>
+	<div class="w-full h-72"><img src={`/images/mock_hospital_bg.png`} alt="hospital bg" /></div>
 	<div class="flex flex-col gap-y-6 relative px-8 py-8 font-semibold min-h-full">
 		<div class="absolute inset-8 z-0">
 			<a
