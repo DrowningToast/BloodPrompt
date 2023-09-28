@@ -1,0 +1,66 @@
+<script lang="ts">
+    import sEventImg from '$lib/images/staff/reward/reward1.png';
+    import { Home, LogOut, UserCircle, FileText, Gift, CalendarHeart, CalendarClock, PlusCircle, History } from 'lucide-svelte';
+    import bloodPromptLogo from '$lib/images/moderator/login/bloodprompt-logo.png';
+    import { Button } from "$lib/components/ui/button";
+	import Reward from './reward.svelte';
+</script>
+<div class="flex flex-row w-full justify-between bg-gray-300 max-w-[100vw] min-h-[100vh]">
+    <div class="flex flex-col bg-[#191F2F] w-3/12 h-100%">
+		<div class="flex flex-row px-8 py-16 justify-center">
+			<img src={bloodPromptLogo} alt="" class="w-16" />
+			<h1 class="translate-y-4 text-xl font-bold text-white px-3">BLOODPROMPT</h1>
+		</div>
+		<div class="flex flex-col px-5 w-full min-h-screen justify-between">
+			<div class="flex flex-col gap-8 w-full">
+				<Button
+					class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+					><Home class="w-5 h-5 " />หน้าหลัก</Button
+				>
+				<Button
+					class="flex justify-start items-center gap-3 bg-[#EF4444] hover:bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+					><FileText class="w-5 h-5" />การจองคิว</Button
+				>
+				<Button
+					class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+					><Gift class="w-5 h-5" />จัดการรางวัล</Button
+				>
+				<Button
+					class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+					><CalendarHeart class="w-5 h-5" />จัดการกิจกรรมหรือแคมเปญ</Button
+				>
+			</div>
+			<Button
+				class="flex justify-start gap-2 text-white text-start px-6 py-3 items-center bg-[#191F2F] mb-9"
+				><LogOut class="mr-2 h-5    w-5 stroke-white" />ออกจากระบบ</Button
+			>
+		</div>
+	</div>
+    <div class="flex flex-col items-center w-9/12">
+		<div class="flex relative items-center bg-white px-14  w-full h-16 py-6 justify-center">
+            <h1 class="flex font-bold text-lg">โรงพยาบาลลาดกระบัง</h1>
+            <div class="flex gap-3 items-center absolute left-[929px]">
+                <UserCircle class="fill-[#EF4444] stroke-white scale-150"/>
+                <p>บุคคลากรทางการแพทย์</p>
+            </div>
+    </div>
+	<div class="flex w-full justify-between px-9">
+		<div class="flex flex-col gap-3 mt-10">
+			<p class="text-2xl font-bold">จัดการของรางวัล</p>
+			<p class="text-xl text-[#888]">สามารถจัดการของรางวัล รางละเอียด แต้มที่ใช้แลก</p>
+		</div>
+		<div class="flex gap-4 mt-16">
+			<Button class="flex gap-2 w-60 h-12  bg-[#000] rounded-3xl font-semibold"><History />ประวัติการแลกของรางวัล</Button>
+			<Button class="flex gap-2 w-60 h-12  bg-[#EF4444] rounded-3xl font-semibold"><PlusCircle />เพิ่มของรางวัล</Button>
+		</div>
+	</div>
+	<div class="w-full bg-blue-300 h-full px-9">
+		<div class="w-full h-[765px] bg-red-200 mt-4 rounded-3xl p-8">
+			<div>
+				<Reward data={{point : 2, remain : 3, title : "แก้วน้ำไอ้เจ", desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นขงอรางวัล", img : "reward1"}}/>
+			</div>
+		</div>
+	</div>
+         </div>
+		 </div>
+
