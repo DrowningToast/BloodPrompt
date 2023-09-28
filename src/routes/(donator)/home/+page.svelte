@@ -6,12 +6,23 @@
 	import Searchbar from './Searchbar.svelte';
 	import Announcement from './Announcement.svelte';
 	import AnnouncementList from './AnnouncementList.svelte';
+	import SurveyCard from '$lib/components/svelte/card/survey/SurveyCard.svelte';
 
 	export let data: PageData;
 </script>
 
 <div class="pb-24">
 	<Banner />
+
+	<div class="px-10 pt-6">
+		<SurveyCard
+			donateDate={new Date()}
+			donateTime={12.3}
+			donationHistoryId={'001'}
+			placeName="โรงพยาบาลพระจอมเกล้าเจ้าคุณทหาร"
+		/>
+	</div>
+
 	<section class="px-10 py-8">
 		<SpecialEvent />
 	</section>
