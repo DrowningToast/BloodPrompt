@@ -25,7 +25,7 @@
 			isReservationRoute.set(true);
 			isHistoryRoute.set(false);
 			isRewardRoute.set(false);
-		} else if (pathname?.includes('history')) {
+		} else if (pathname?.includes('history') && !pathname?.includes('reward')) {
 			isHomeRoute.set(false);
 			isReservationRoute.set(false);
 			isHistoryRoute.set(true);

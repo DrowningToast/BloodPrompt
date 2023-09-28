@@ -5,39 +5,12 @@
 	import { Button } from '$lib/components/ui/button';
 	import { selectedPlace } from '$lib/stores/reservationStores';
 	import { goto } from '$app/navigation';
+	import { getFormattedOpeningDate } from '$lib/utils';
 
 	export let rating: number = 5.0;
 	export let open: boolean = false;
 	export let placeData: Places | null = null;
 	export let onClose: () => void;
-
-	const getFormattedOpeningDate = () => {
-		if (placeData?.opening_day) {
-			const result: string[] = [];
-			const openingDays = placeData?.opening_day.split(',');
-			for (let day of openingDays) {
-				if (day === 'SUNDAY') {
-					result.push('วันอาทิตย์');
-				} else if (day === 'MONDAY') {
-					result.push('วันจันทร์');
-				} else if (day === 'TUESDAY') {
-					result.push('วันอังคาร');
-				} else if (day === 'WEDNESDAY') {
-					result.push('วันพุธ');
-				} else if (day === 'THURSDAY') {
-					result.push('วันพฤหัสบดี');
-				} else if (day === 'FRIDAY') {
-					result.push('วันศุกร์​');
-				} else if (day === 'SATURDAY') {
-					result.push('วันเสาร์');
-				}
-			}
-			const lastDay = result.pop();
-			let temp = result.join(', ');
-			temp += ` และ${lastDay}`;
-			return temp;
-		}
-	};
 </script>
 
 {#if placeData}
@@ -95,7 +68,7 @@
 							<div class="flex flex-row items-center gap-2">
 								<CalendarClock size={28} />
 								<p class="text-sm">
-									{`เปิดทำการทุกวัน ${getFormattedOpeningDate()}`}
+									{`เปิดทำการทุกวัน ${getFormattedOpeningDate(placeData.opening_day)}`}
 								</p>
 							</div>
 
