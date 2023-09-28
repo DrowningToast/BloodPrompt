@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Donation_History, Places } from '../../../../generated-zod';
 	import * as Card from '$lib/components/ui/card';
-	import { Calendar, CheckCircle, CheckCircle2, Clock, RefreshCcw, XCircle } from 'lucide-svelte';
+	import { Calendar, History, CheckCircle2, Clock, RefreshCcw, XCircle } from 'lucide-svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { toDateString, toDateTimeString } from '$lib/utils';
 	import { goto } from '$app/navigation';
@@ -27,9 +27,13 @@
 				<Card.Root class="w-full rounded-xl shadow">
 					<Card.Content class="p-0 py-4">
 						<div class="px-4 py-1 pb-0">
-							<p class="text-sm">
-								ประวัติการบริจาคเลือดเลขที่: <span class="font-bold">{donationData.id}</span>
-							</p>
+							<div class="flex flex-row items-center gap-1">
+								<History size={18} />
+								<p class="text-sm">
+									ประวัติการบริจาคเลือดเลขที่: <span class="font-bold">{donationData.id}</span>
+								</p>
+							</div>
+
 							<div class="mt-2">
 								<p class="text-slate-500 text-sm">สถานที่</p>
 								<p class="font-bold text-sm">{placeData.name}</p>

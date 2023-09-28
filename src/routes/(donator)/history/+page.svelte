@@ -4,12 +4,13 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { Button } from '$lib/components/ui/button';
-	import type { Donation_History, Places } from '../../../../generated-zod';
+	import type { Donation_History, Places, Reservations } from '../../../../generated-zod';
 	import DonationHistoryTabPanel from './DonationHistoryTabPanel.svelte';
+	import ReservationTabPanel from './ReservationTabPanel.svelte';
 
 	export let data: PageData;
 
-	let currentTabIndex: number = 1;
+	let currentTabIndex: number = 0;
 
 	const handleTabChange = (event: any) => {
 		if (event.target.id === '1') {
@@ -22,6 +23,32 @@
 	type DonationHistory = {
 		donationData: Donation_History;
 		placeData: Places;
+	};
+
+	type ReservationHistory = {
+		reservationData: Reservations;
+		placeData: Places;
+	};
+
+	const PLACE_DATA = {
+		id: '01',
+		name: 'โรงพยาบาลพระจอมเกล้าเจ้าคุณทหาร',
+		description:
+			"สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง (King Mongkut's Institute of Technology Ladkrabang) เป็นมหาวิทยาลัยในกำกับของรัฐ ก่อตั้งด้วยความช่วยเหลือของรัฐบาลญี่ปุ่น (มหาวิทยาลัยโตไก) โดยเน้นการเรียนการสอนด้านวิทยาศาสตร์และเทคโนโลยี ตั้งอยู่เขตลาดกระบัง กรุงเทพมหานคร",
+		image_src:
+			'https://scontent.fbkk7-3.fna.fbcdn.net/v/t1.6435-9/75625360_2708828382511763_3205029120262012928_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=e3f864&_nc_eui2=AeGOqQxnGM18lHXUfqJyW9DEOBRkihhNDX44FGSKGE0NfjS7uhqfp3lMIjdWkpXnd6iyNHxq0ifH0GfTFlfA0PPh&_nc_ohc=j9h9QLsMYgIAX_jfuFK&_nc_ht=scontent.fbkk7-3.fna&oh=00_AfA-v_P2xu40hWBwbC0ZnItdEstjeWUU1JqjvTZFtO4IKg&oe=6539C618',
+		phone_number: '0656526769',
+		email: '65070219@kmitl.ac.th',
+		icon_src: '',
+		address: 'ถนนฉลองกรุง เขตลาดกระบัง กรุงเทพฯ 10520, ประเทศไทย',
+		opening_day: 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY',
+		opening_time: 9,
+		closing_time: 16.3,
+		is_available: true,
+		created_at: new Date(new Date().getTime()),
+		updated_at: new Date(new Date().getTime()),
+		deleted_at: null,
+		website_url: 'https://www.it.kmitl.ac.th'
 	};
 
 	// MOCK
@@ -39,26 +66,7 @@
 				status: 'SUCCESS',
 				updated_at: new Date()
 			},
-			placeData: {
-				id: '01',
-				name: 'โรงพยาบาลพระจอมเกล้าเจ้าคุณทหาร',
-				description:
-					"สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง (King Mongkut's Institute of Technology Ladkrabang) เป็นมหาวิทยาลัยในกำกับของรัฐ ก่อตั้งด้วยความช่วยเหลือของรัฐบาลญี่ปุ่น (มหาวิทยาลัยโตไก) โดยเน้นการเรียนการสอนด้านวิทยาศาสตร์และเทคโนโลยี ตั้งอยู่เขตลาดกระบัง กรุงเทพมหานคร",
-				image_src:
-					'https://scontent.fbkk7-3.fna.fbcdn.net/v/t1.6435-9/75625360_2708828382511763_3205029120262012928_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=e3f864&_nc_eui2=AeGOqQxnGM18lHXUfqJyW9DEOBRkihhNDX44FGSKGE0NfjS7uhqfp3lMIjdWkpXnd6iyNHxq0ifH0GfTFlfA0PPh&_nc_ohc=j9h9QLsMYgIAX_jfuFK&_nc_ht=scontent.fbkk7-3.fna&oh=00_AfA-v_P2xu40hWBwbC0ZnItdEstjeWUU1JqjvTZFtO4IKg&oe=6539C618',
-				phone_number: '0656526769',
-				email: '65070219@kmitl.ac.th',
-				icon_src: '',
-				address: 'ถนนฉลองกรุง เขตลาดกระบัง กรุงเทพฯ 10520, ประเทศไทย',
-				opening_day: 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY',
-				opening_time: 9,
-				closing_time: 16.3,
-				is_available: true,
-				created_at: new Date(new Date().getTime()),
-				updated_at: new Date(new Date().getTime()),
-				deleted_at: null,
-				website_url: 'https://www.it.kmitl.ac.th'
-			}
+			placeData: PLACE_DATA
 		},
 		{
 			donationData: {
@@ -73,26 +81,7 @@
 				status: 'FAILED',
 				updated_at: new Date()
 			},
-			placeData: {
-				id: '01',
-				name: 'โรงพยาบาลพระจอมเกล้าเจ้าคุณทหาร',
-				description:
-					"สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง (King Mongkut's Institute of Technology Ladkrabang) เป็นมหาวิทยาลัยในกำกับของรัฐ ก่อตั้งด้วยความช่วยเหลือของรัฐบาลญี่ปุ่น (มหาวิทยาลัยโตไก) โดยเน้นการเรียนการสอนด้านวิทยาศาสตร์และเทคโนโลยี ตั้งอยู่เขตลาดกระบัง กรุงเทพมหานคร",
-				image_src:
-					'https://scontent.fbkk7-3.fna.fbcdn.net/v/t1.6435-9/75625360_2708828382511763_3205029120262012928_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=e3f864&_nc_eui2=AeGOqQxnGM18lHXUfqJyW9DEOBRkihhNDX44FGSKGE0NfjS7uhqfp3lMIjdWkpXnd6iyNHxq0ifH0GfTFlfA0PPh&_nc_ohc=j9h9QLsMYgIAX_jfuFK&_nc_ht=scontent.fbkk7-3.fna&oh=00_AfA-v_P2xu40hWBwbC0ZnItdEstjeWUU1JqjvTZFtO4IKg&oe=6539C618',
-				phone_number: '0656526769',
-				email: '65070219@kmitl.ac.th',
-				icon_src: '',
-				address: 'ถนนฉลองกรุง เขตลาดกระบัง กรุงเทพฯ 10520, ประเทศไทย',
-				opening_day: 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY',
-				opening_time: 9,
-				closing_time: 16.3,
-				is_available: true,
-				created_at: new Date(new Date().getTime()),
-				updated_at: new Date(new Date().getTime()),
-				deleted_at: null,
-				website_url: 'https://www.it.kmitl.ac.th'
-			}
+			placeData: PLACE_DATA
 		},
 		{
 			donationData: {
@@ -107,25 +96,45 @@
 				status: 'WAIT_BLOOD_QUALITY',
 				updated_at: new Date()
 			},
-			placeData: {
-				id: '01',
-				name: 'โรงพยาบาลพระจอมเกล้าเจ้าคุณทหาร',
-				description:
-					"สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง (King Mongkut's Institute of Technology Ladkrabang) เป็นมหาวิทยาลัยในกำกับของรัฐ ก่อตั้งด้วยความช่วยเหลือของรัฐบาลญี่ปุ่น (มหาวิทยาลัยโตไก) โดยเน้นการเรียนการสอนด้านวิทยาศาสตร์และเทคโนโลยี ตั้งอยู่เขตลาดกระบัง กรุงเทพมหานคร",
-				image_src:
-					'https://scontent.fbkk7-3.fna.fbcdn.net/v/t1.6435-9/75625360_2708828382511763_3205029120262012928_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=e3f864&_nc_eui2=AeGOqQxnGM18lHXUfqJyW9DEOBRkihhNDX44FGSKGE0NfjS7uhqfp3lMIjdWkpXnd6iyNHxq0ifH0GfTFlfA0PPh&_nc_ohc=j9h9QLsMYgIAX_jfuFK&_nc_ht=scontent.fbkk7-3.fna&oh=00_AfA-v_P2xu40hWBwbC0ZnItdEstjeWUU1JqjvTZFtO4IKg&oe=6539C618',
-				phone_number: '0656526769',
-				email: '65070219@kmitl.ac.th',
-				icon_src: '',
-				address: 'ถนนฉลองกรุง เขตลาดกระบัง กรุงเทพฯ 10520, ประเทศไทย',
-				opening_day: 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY',
-				opening_time: 9,
-				closing_time: 16.3,
-				is_available: true,
-				created_at: new Date(new Date().getTime()),
-				updated_at: new Date(new Date().getTime()),
-				deleted_at: null,
-				website_url: 'https://www.it.kmitl.ac.th'
+			placeData: PLACE_DATA
+		}
+	];
+
+	const reservationData: ReservationHistory[] = [
+		{
+			placeData: PLACE_DATA,
+			reservationData: {
+				id: '001',
+				cancelled_at: null,
+				created_at: new Date(),
+				donator_id: '001',
+				reservation_slot_id: '001',
+				status: 'BOOKED',
+				updated_at: null
+			}
+		},
+		{
+			placeData: PLACE_DATA,
+			reservationData: {
+				id: '002',
+				cancelled_at: null,
+				created_at: new Date(),
+				donator_id: '001',
+				reservation_slot_id: '001',
+				status: 'CANCELLED',
+				updated_at: new Date()
+			}
+		},
+		{
+			placeData: PLACE_DATA,
+			reservationData: {
+				id: '003',
+				cancelled_at: null,
+				created_at: new Date(),
+				donator_id: '001',
+				reservation_slot_id: '001',
+				status: 'COMPLETED',
+				updated_at: new Date()
 			}
 		}
 	];
@@ -168,8 +177,7 @@
 
 		<div class="mt-4">
 			{#if currentTabIndex === 0}
-				<!-- <ReservationTabPanel {reservationData} /> -->
-				<div />
+				<ReservationTabPanel reservationHistoryData={reservationData} />
 			{:else}
 				<DonationHistoryTabPanel {donationHistoryData} />
 			{/if}
