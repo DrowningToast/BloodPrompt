@@ -1,4 +1,4 @@
-import type { HospitalAvailability } from './+page.server';
+import type { HospitalAvailability } from '../utils';
 
 /**
  *
@@ -21,7 +21,9 @@ export const ArrayRange = (start: number, stop: number, step: number) =>
 	Array.from({ length: (stop - start) / step + 1 }, (value, index) => start + index * step);
 
 export const getAvilableDays = (availableHospitalDates: HospitalAvailability, month: number) => {
-	const availableDates = availableHospitalDates.availableDates;
+	const availableDates = availableHospitalDates.availableDates.filter((date) => {
+		return date.date.getTime() > Date.now();
+	});
 	const availableDatesInMonth = availableDates.filter((date) => {
 		return date.date.getMonth() === month;
 	});
@@ -38,5 +40,7 @@ export const checkEquivalenceTime = (a: Date, b: Date) => {
 };
 
 export const get24HoursTimeString = (date: Date) => {
-	return `${date.getHours()}:${(date.getMinutes() < 10 ? '0' : '') + date.getMinutes()}`;
+	return `${(date.getHours() < 10 ? '0' : '') + date.getHours()}:${
+		(date.getMinutes() < 10 ? '0' : '') + date.getMinutes()
+	}`;
 };

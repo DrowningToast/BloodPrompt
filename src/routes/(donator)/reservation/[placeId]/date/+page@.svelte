@@ -1,11 +1,12 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Sheet from '$lib/components/ui/sheet';
 	import ReservationHeader from '../../ReservationHeader.svelte';
 	import type { PageData } from './$types';
 	import ReservationCalendar from './ReservationCalendar.svelte';
 	import TimeButton from './TimeButton.svelte';
-	import { ArrayRange, checkEquivalenceTime, get24HoursTimeString, getAvilableDays } from './utils';
+	import { ArrayRange, get24HoursTimeString, getAvilableDays } from './utils';
 	import { Steps } from 'svelte-steps';
 
 	export let data: PageData;
@@ -43,11 +44,13 @@
 		return new Date(today.getFullYear(), today.getMonth(), today.getDate(), hour, 0);
 	});
 
-	const handleConfirm = () => {
+	const handleConfirm = async () => {
 		if (!selectedDate) return;
 		if (!selectedTime) return;
+		goto(`/reservation/${data.hospitalData.id}/confirm?date=${selectedTime.getTime()}`);
 		// mock api call
 		console.log(selectedTime);
+		console.log(selectedTime.getTime());
 		// done!, go to next page
 	};
 </script>
@@ -101,8 +104,9 @@
 			{/if}
 			<div class="grid place-items-center w-full mt-8">
 				<Button
+					on:click={handleConfirm}
 					disabled={!selectedTime}
-					class="rounded-3xl bg-red-600 text-white text-lg py-6 px-10">เลือก</Button
+					class="rounded-3 xl bg-red-600 text-white text-lg py-6 px-10">เลือก</Button
 				>
 			</div>
 		</Sheet.Content>
