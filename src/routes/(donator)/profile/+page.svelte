@@ -27,7 +27,7 @@
 	</div>
 
 	<div class="pt-8 px-6">
-		<Card.Root class="mx-auto rounded-sxl shadow">
+		<Card.Root class="mx-auto rounded-xl shadow">
 			<Card.Content class="p-0 py-4">
 				<div class="px-4 py-2">
 					<div class="flex flex-row gap-2 items-center">
@@ -60,7 +60,7 @@
 			</Card.Content>
 		</Card.Root>
 
-		<Card.Root class="mt-6 mx-auto rounded-sxl shadow">
+		<Card.Root class="mt-6 mx-auto rounded-xl shadow">
 			<Card.Content class="p-0 py-4">
 				<div class="px-4 py-2">
 					<div class="flex flex-row gap-2 items-center">
