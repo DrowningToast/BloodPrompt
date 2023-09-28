@@ -38,7 +38,17 @@
 	let selectedDate: Date | undefined = undefined;
 	let selectedTime: Date | undefined = undefined;
 
-	let steps = [{ text: 'เลือกสถานที่' }, { text: 'เลือกวันที่จอง' }, { text: 'เลือกเวลาที่จอง' }];
+	$: steps = [
+		{ text: `สถานที่ ${data.hospitalData.name}` },
+		{
+			text: `วันที่ ${(selectedDate as unknown as Date)?.toLocaleDateString('th-TH', {
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric'
+			})}`
+		},
+		{ text: 'เลือกเวลาที่จอง' }
+	];
 
 	const timeSlots = ArrayRange(9, 17, 1).map((hour) => {
 		return new Date(today.getFullYear(), today.getMonth(), today.getDate(), hour, 0);
@@ -71,11 +81,7 @@
 			<Sheet.Header>
 				<Sheet.Title class="font-bold text-2xl text-left my-4">เลือกเวลาที่ต้องการจอง</Sheet.Title>
 			</Sheet.Header>
-			<p>
-				Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo incidunt, architecto sed
-				veniam assumenda est blanditiis delectus quia odio porro modi eum ipsa quae! Obcaecati
-				nostrum accusantium architecto aliquam neque!
-			</p>
+
 			<Steps
 				clickable={false}
 				line="0.4rem"
@@ -85,6 +91,7 @@
 				vertical
 				{steps}
 			/>
+			<br />
 			{#if selectedDate}
 				<div class="grid grid-cols-3 gap-x-4 gap-y-4">
 					{#each timeSlots as timeSlot}

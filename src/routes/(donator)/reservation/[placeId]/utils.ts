@@ -1,6 +1,7 @@
 export interface HospitalAvailability {
 	id: string;
 	name: string;
+	googleMapUrl: string;
 	availableDates: {
 		date: Date;
 		periods:
@@ -55,5 +56,6 @@ export const mock_hospitalData = (placeId: any): HospitalAvailability => ({
 				{ time: '17:00', available: true }
 			]
 		}
-	]
+	],
+	googleMapUrl: 'https://www.google.com/maps/place/1.3521,103.8198'
 });
