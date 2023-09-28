@@ -22,17 +22,14 @@ export const load = (async () => {
 		website_url: 'https://www.it.kmitl.ac.th'
 	};
 	return {
-		donationData: {
-			id: '00001',
-			blood_quality_status: 'QUALIFY',
-			blood_type: 'B_POSITIVE',
+		reservationData: {
+			id: '001',
+			cancelled_at: null,
 			created_at: new Date(),
-			deleted_at: null,
-			post_donation_db_id: '001',
-			reservation_id: '001',
-			rewarded_points: 300,
-			status: 'SUCCESS',
-			updated_at: new Date()
+			donator_id: '001',
+			reservation_slot_id: '001',
+			status: 'BOOKED',
+			updated_at: null
 		},
 		placeData: PLACE_DATA,
 		donatorData: {

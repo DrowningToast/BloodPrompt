@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@castlenine/svelte-qrcode':
+    specifier: ^1.1.0
+    version: 1.1.0(svelte@4.2.1)
   '@prisma/client':
     specifier: 5.3.1
     version: 5.3.1(prisma@5.3.1)
@@ -154,6 +157,14 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.14.0
+    dev: false
+
+  /@castlenine/svelte-qrcode@1.1.0(svelte@4.2.1):
+    resolution: {integrity: sha512-NHjq6PLusq+LCPLTcQi4nZKSQpuYlXV7t1vHX2RwPgEel+vyScZJHFeoAO3rXc4vs2YM3EDKkpfqw3ElNJ0hsQ==}
+    peerDependencies:
+      svelte: '>=3.54.0'
+    dependencies:
+      svelte: 4.2.1
     dev: false
 
   /@cspotcode/source-map-support@0.8.1:
