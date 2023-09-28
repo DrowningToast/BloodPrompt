@@ -2,7 +2,6 @@
     import sEventImg from '$lib/images/staff/manage_specialevent/Rectangle 24.png';
     import { Home, LogOut, UserCircle, FileText, Gift, CalendarHeart, CalendarClock } from 'lucide-svelte';
     import bloodPromptLogo from '$lib/images/moderator/login/bloodprompt-logo.png';
-    import * as Table from "$lib/components/ui/table";
     import { Button } from "$lib/components/ui/button";
 
 </script>

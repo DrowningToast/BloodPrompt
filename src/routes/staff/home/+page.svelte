@@ -2,6 +2,7 @@
     import sEventImg from '$lib/images/staff/manage_specialevent/Rectangle 24.png';
     import { Home, LogOut, UserCircle, FileText, Gift, CalendarHeart, CalendarClock } from 'lucide-svelte';
     import bloodPromptLogo from '$lib/images/moderator/login/bloodprompt-logo.png';
+    import graph_mock from '$lib/images/staff/home/long_graph.png';
     import graphExample from '$lib/images/staff/home/grpah.png';
     import * as Table from "$lib/components/ui/table";
     import { Button } from "$lib/components/ui/button";
@@ -64,7 +65,7 @@
 					><Home class="w-5 h-5 " />หน้าหลัก</Button
 				>
 				<Button
-					class="flex justify-start items-center gap-3 bg-[#EF4444] hover:bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+					class="flex justify-start items-center gap-3 bg-[#191F2F] hover:bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
 					><FileText class="w-5 h-5" />การจองคิว</Button
 				>
 				<Button
@@ -72,7 +73,7 @@
 					><Gift class="w-5 h-5" />จัดการรางวัล</Button
 				>
 				<Button
-					class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+					class="flex justify-start items-center gap-3 bg-[#EF4444] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
 					><CalendarHeart class="w-5 h-5" />จัดการกิจกรรมหรือแคมเปญ</Button
 				>
 			</div>
@@ -93,7 +94,7 @@
         <div class="flex flex-col w-full h-full p-7 gap-9">
             <!-- 1 -->
             <div class="flex w-full h-4/12 gap-12 ">
-                <div class="flex w-8/12 rounded-3xl p-11 justify-between shadow-xl bg-white">
+                <div class="flex w-8/12 rounded-3xl p-11 justify-between items-center shadow-xl bg-white">
                     <img src={graphExample} class="" alt="">
                     <div class="flex flex-col gap-8 ">
                         <p class="text-2xl font-bold">จำนวนเลือดในคลังทั้งหมด</p>
@@ -113,39 +114,41 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex shadow-xl w-4/12 rounded-3xl p-4 bg-white">
+                <div class="flex shadow-xl w-4/12 rounded-3xl p-4 bg-white ">
+                    <div class="flex flex-col justify-center items-center m-auto gap-5">
+                        <img class="w-[80%] h-[80%]" src={sEventImg} alt="">
+                        <p class="text-center font-bold text-2xl">Special event now</p>
+                    </div>
                 </div>
             </div>
             <!-- 2 -->
             <div class="flex w-full  h-[50%] gap-12">
-                <div class="flex  w-8/12 rounded-3xl p-11 justify-between shadow-xl bg-white">
+                <div class="flex flex-col  w-8/12 rounded-3xl p-11 gap-10 shadow-xl bg-white">
                     <div>
                         <p class="text-2xl font-bold">สถิติการบริจาคเลือดย้อนหลัง</p>
                         <p class="text-lg text-[#888] font-bold">จำนวนการบริจาคเลือดทั้งหมด : 9,999 ครั้ง</p>
                     </div>
+                    <img class="w-full" src={graph_mock} alt="">
                 </div>
                     <div class="flex flex-col shadow-xl w-4/12 rounded-3xl p-4 bg-white">
                         <div class="pl-2">
                             <p class="text-2xl font-bold ">คิวการบริจาคเลือดวันนี้</p>
                             <p class="text-lg text-[#888] font-bold">จำนวนวันนี้ 100 คิว</p>
                         </div>
-                    <div class="flex justify-end bg-white rounded-3xl h-5/6 w-[305px] px-4 py-3">
+                        
+                    <div class="flex bg-white rounded-3xl h-5/6 w-[305px] px-4 py-12">
                         <Table.Root class="bg-white rounded-full">
                             <Table.Header >
                                 <Table.Row>
-                                    <Table.Head>ชื่อสถานบริจาค</Table.Head>
-                                    <Table.Head>สถานะ</Table.Head>
-                                    <Table.Head>ที่อยู่</Table.Head>
-                                    <Table.Head>ติดต่อ</Table.Head>
+                                    <Table.Head>คิวบริจาคที่</Table.Head>
+                                    <Table.Head>ชื่อ-นามสกุล</Table.Head>
                                 </Table.Row>
                             </Table.Header>
                         <Table.Body>
                             {#each places as place, i (i)}
                             <Table.Row>
-                                <Table.Cell>{place.name}</Table.Cell>
                                 <Table.Cell>{place.status}</Table.Cell>
-                              <Table.Cell>{place.contact}</Table.Cell>
-                              <Table.Cell>{place.address}</Table.Cell>
+                                <Table.Cell>{place.name}</Table.Cell>
                             </Table.Row>
                             {/each}
                         </Table.Body>
