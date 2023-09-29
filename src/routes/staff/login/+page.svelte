@@ -5,8 +5,7 @@ import { Input } from "$lib/components/ui/input"
 import { Checkbox } from "$lib/components/ui/checkbox"
 import { Label } from "$lib/components/ui/label"
 let checked = false;
-
-</script>   
+</script>
 
 <div class=" h-[100dvh] flex justify-between">
     <div class="w-1/2">
