@@ -8,6 +8,8 @@
     import { Input } from "$lib/components/ui/input";
     import{ Label } from "$lib/components/ui/label";
     import { Home, LogOut, UserCircle, UserCircle2,MapPin, Lock, Search } from 'lucide-svelte';
+	import { browser } from '$app/environment';
+	import { goto } from '$app/navigation';
     
     
     const staff_information = [
@@ -71,10 +73,11 @@
         </div>
         <div class="flex flex-col px-5 w-full h-full justify-between">
             <div class="flex flex-col gap-8 w-full">
-                <Button class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><Home class="w-5 h-5 "/>หน้าหลัก</Button>
-                <Button class="flex justify-start items-center gap-3 bg-[#191F2F] hover:bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><MapPin class="w-5 h-5" />จัดการสถานที่รับบริจาคเลือด</Button>
-                <Button class="flex justify-start items-center gap-3 bg-[#EF4444] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><UserCircle2 class="w-5 h-5"/>จัดการบัญชีบุคลากรการเเพทย์</Button>
-                <Button class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><Lock class="w-5 h-5" />จัดการบัญชี / เปลี่ยนรหัสผ่าน</Button>
+
+              <Button on:click={()=>{if(browser){goto("/moderator/home")}}} class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><Home class="w-5 h-5 "/>หน้าหลัก</Button>
+              <Button on:click={()=>{if(browser){goto("/moderator/manage/donation-center")}}} class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><MapPin class="w-5 h-5" />จัดการสถานที่รับบริจาคเลือด</Button>
+              <Button on:click={()=>{if(browser){goto("/moderator/manage/staff")}}} class="flex justify-start items-center gap-3 bg-[#EF4444] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><UserCircle2 class="w-5 h-5"/>จัดการบัญชีบุคลากรการเเพทย์</Button>
+              <Button on:click={()=>{if(browser){goto("/moderator/manage/account")}}} class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><Lock class="w-5 h-5" />จัดการบัญชี / เปลี่ยนรหัสผ่าน</Button>
             </div>
             <Button class="flex justify-start gap-2 text-white text-start px-6 py-3 items-center bg-[#191F2F] mb-9"><LogOut class="mr-2 h-5    w-5 stroke-white" />ออกจากระบบ</Button>
         </div>
@@ -115,7 +118,7 @@
                 <div>
                     <!-- search -->
                     <div class="flex flex-col gap-1">
-                        <p class="font-bold ">ค้นหาโดยใช้ชื่อของบุคลากรการเเพทย์</p>
+                        <p class="font-bold">ค้นหาโดยใช้ชื่อของบุคลากรการเเพทย์</p>
                         <!-- search-bar + button -->
                         <div class="flex gap-6">
                             <input type="text" placeholder="ระบุชื่อของบุคลากรการเเพทย์เพื่อทำการค้นหา" class="bg-white w-[425px] h-[50px] p-5 rounded-xl">
