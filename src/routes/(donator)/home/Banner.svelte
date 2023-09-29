@@ -1,8 +1,10 @@
-<script>
+<script lang="ts">
 	import { goto } from '$app/navigation';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { UserIcon } from 'lucide-svelte';
 	import heroImage from '$lib/images/home/banner.png';
+
+	export let name: string = '';
 </script>
 
 <section
@@ -18,7 +20,7 @@
 				<UserIcon />
 			</button>
 		</div>
-		<span class="text-white font-bold">ศิลา ภักดีวงษ์</span>
+		<span class="text-white font-bold">{name}</span>
 	</div>
 	<Button
 		variant="outline"
