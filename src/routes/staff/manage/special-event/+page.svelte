@@ -3,9 +3,11 @@
     import { Home, LogOut, UserCircle, FileText, Gift, CalendarHeart, CalendarClock } from 'lucide-svelte';
     import bloodPromptLogo from '$lib/images/moderator/login/bloodprompt-logo.png';
     import { Button } from "$lib/components/ui/button";
+    import { goto } from '$app/navigation';
+	import { browser } from '$app/environment';
 
 </script>
-<div class="flex flex-row w-full justify-between bg-gray-300 max-w-[100vw] min-h-[100vh]">
+<div class="flex flex-row w-full justify-between bg-gray-300 max-w-[100vw] min-h-[100vh] h-full">
     <div class="flex flex-col bg-[#191F2F] w-3/12 h-full">
 		<div class="flex flex-row px-8 py-16 justify-center">
 			<img src={bloodPromptLogo} alt="" class="w-16" />
@@ -14,26 +16,47 @@
 		<div class="flex flex-col px-5 w-full min-h-screen justify-between">
 			<div class="flex flex-col gap-8 w-full">
 				<Button
-					class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><Home class="w-5 h-5 " />หน้าหลัก</Button
-				>
+					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/home')
+                    }}}
+				><Home class="w-5 h-5 " />หน้าหลัก</Button>
+
 				<Button
-					class="flex justify-start items-center gap-3 bg-[#EF4444] hover:bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><FileText class="w-5 h-5" />การจองคิว</Button
-				>
+					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/reservation')
+                    }}}
+				><FileText class="w-5 h-5" />การจองคิว</Button>
+
 				<Button
-					class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><Gift class="w-5 h-5" />จัดการรางวัล</Button
-				>
+					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                            goto('/staff/manage/reward')
+                        }
+                    }}
+				><Gift class="w-5 h-5" />จัดการรางวัล</Button>
+
 				<Button
-					class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><CalendarHeart class="w-5 h-5" />จัดการกิจกรรมหรือแคมเปญ</Button
-				>
+					class="flex justify-start items-center gap-3 hover:bg-[#EF4444] bg-[#EF4444] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/manage/special-event')
+                    }}}
+				><CalendarHeart class="w-5 h-5" />จัดการกิจกรรมหรือแคมเปญ</Button>
+
 			</div>
 			<Button
 				class="flex justify-start gap-2 text-white text-start px-6 py-3 items-center bg-[#191F2F] mb-9"
-				><LogOut class="mr-2 h-5    w-5 stroke-white" />ออกจากระบบ</Button
-			>
+                on:click={()=>{
+                    if (browser) {
+                    goto('/staff/login')
+                }}}
+			><LogOut class="mr-2 h-5 w-5 stroke-white" />ออกจากระบบ</Button>
+
 		</div>
 	</div>
     <div class="flex flex-col items-center w-9/12">
@@ -65,7 +88,7 @@
                     <p class="font-bold pl-8">01/08/2023 08:00 - 12/08/2023 16:00</p>
                 </div>
                 <div class="flex justify-end gap-6 mt-auto">
-                    <Button class="flex self-center text-[#EF4444] border-[#EF4444] border-2 rounded-3xl w-32 h-10 gap-1 bg-white rounded-3xls hover:text-white hover:bg-[#EF4444]">แก้ไข</Button>
+                    <Button class="flex self-center text-[#EF4444] border-[#EF4444] border-2 w-32 h-10 gap-1 bg-white rounded-3xl">แก้ไข</Button>
                     <Button class="flex self-center text-white rounded-3xl w-32 h-10 gap-1 bg-[#EF4444] rounded-3xls">ลบ</Button>
                 </div>
             </div>

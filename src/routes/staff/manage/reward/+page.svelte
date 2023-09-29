@@ -5,6 +5,8 @@
     import { Button } from "$lib/components/ui/button";
 	import Reward from './reward.svelte';
 	import rewardImage from "$lib/images/staff/reward/reward1.png"
+	import { browser } from '$app/environment';
+	import { goto } from '$app/navigation';
 
 	const rewardMockInfo = [
 					{
@@ -55,31 +57,52 @@
 		<div class="flex flex-col px-5 w-full min-h-screen justify-between">
 			<div class="flex flex-col gap-8 w-full">
 				<Button
-					class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><Home class="w-5 h-5 " />หน้าหลัก</Button
-				>
+					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/home')
+                    }}}
+				><Home class="w-5 h-5 " />หน้าหลัก</Button>
+
 				<Button
-					class="flex justify-start items-center gap-3 bg-[#EF4444] hover:bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><FileText class="w-5 h-5" />การจองคิว</Button
-				>
+					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/reservation')
+                    }}}
+				><FileText class="w-5 h-5" />การจองคิว</Button>
+
 				<Button
-					class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><Gift class="w-5 h-5" />จัดการรางวัล</Button
-				>
+					class="flex justify-start items-center gap-3 hover:bg-[#EF4444] bg-[#EF4444]  text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                            goto('/staff/manage/reward')
+                        }
+                    }}
+				><Gift class="w-5 h-5" />จัดการรางวัล</Button>
+
 				<Button
-					class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><CalendarHeart class="w-5 h-5" />จัดการกิจกรรมหรือแคมเปญ</Button
-				>
+					class="flex justify-start items-center gap-3 text-base hover:bg-[#191F2F] bg-[#191F2F] rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/manage/special-event')
+                    }}}
+				><CalendarHeart class="w-5 h-5" />จัดการกิจกรรมหรือแคมเปญ</Button>
+
 			</div>
 			<Button
 				class="flex justify-start gap-2 text-white text-start px-6 py-3 items-center bg-[#191F2F] mb-9"
-				><LogOut class="mr-2 h-5    w-5 stroke-white" />ออกจากระบบ</Button
-			>
+                on:click={()=>{
+                    if (browser) {
+                    goto('/staff/login')
+                }}}
+			><LogOut class="mr-2 h-5 w-5 stroke-white" />ออกจากระบบ</Button>
+		
 		</div>
 	</div>
     <div class="flex flex-col items-center w-9/12">
 		<div class="flex relative items-center bg-white px-14  w-full h-16 py-6 justify-center">
-            <h1 class="flex font-bold text-lg">โรงพยาบาลลาดกระบัง</h1>
+            <h1 class="flex font-bold text-2xl">โรงพยาบาลลาดกระบัง</h1>
             <div class="flex gap-3 items-center absolute left-[929px]">
                 <UserCircle class="fill-[#EF4444] stroke-white scale-150"/>
                 <p>บุคคลากรทางการแพทย์</p>
@@ -88,11 +111,11 @@
 	<div class="flex w-full justify-between px-9">
 		<div class="flex flex-col gap-3 mt-10">
 			<p class="text-2xl font-bold">จัดการของรางวัล</p>
-			<p class="text-xl text-[#888]">สามารถจัดการของรางวัล รางละเอียด แต้มที่ใช้แลก</p>
+			<p class="text-xl text-[#888]">สามารถจัดการของรางวัล รายละเอียด แต้มที่ใช้แลก</p>
 		</div>
 		<div class="flex gap-4 mt-16">
-			<Button class="flex gap-2 w-60 h-12  bg-[#000] rounded-3xl font-semibold"><History />ประวัติการแลกของรางวัล</Button>
-			<Button class="flex gap-2 w-60 h-12  bg-[#EF4444] rounded-3xl font-semibold"><PlusCircle />เพิ่มของรางวัล</Button>
+			<Button on:click={()=>{if(browser){goto("/staff/manage/reward/history")}}} class="flex gap-2 w-60 h-12 bg-[#000] rounded-3xl font-semibold"><History />ประวัติการแลกของรางวัล</Button>
+			<Button on:click={()=>{if(browser){goto("/staff/manage/reward/add")}}} class="flex gap-2 w-60 h-12 bg-[#EF4444] rounded-3xl font-semibold"><PlusCircle />เพิ่มของรางวัล</Button>
 		</div>
 	</div>
 	<div class="w-full h-full px-9">

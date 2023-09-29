@@ -36,9 +36,9 @@
             </div>
         
         </div>
-        <div class="flex justify-between">
-            <Button class="w-24 h-10 rounded-3xl">แก้ไข</Button>
-            <Button class="w-24 h-10 rounded-3xl">ลบ</Button>
+        <div class="flex justify-start gap-6">
+            <Button class="w-24 h-10 text-[#EF4444] border-[#EF4444] border-2 gap-1 bg-white rounded-3xl">แก้ไข</Button>
+            <Button class="w-24 h-10 text-white rounded-3xl bg-[#EF4444] rounded-3xls">ลบ</Button>
         </div>
     </div>
 </div>

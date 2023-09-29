@@ -6,6 +6,9 @@
     import graphExample from '$lib/images/staff/home/grpah.png';
     import * as Table from "$lib/components/ui/table";
     import { Button } from "$lib/components/ui/button";
+    import Dropdown from "../../moderator/home/dropdown.svelte";
+	import { browser } from '$app/environment';
+    import { goto } from '$app/navigation';
     const places = [
     {
       name: "INV001",
@@ -61,35 +64,62 @@
 		<div class="flex flex-col px-5 w-full h-full justify-between">
 			<div class="flex flex-col gap-8 w-full">
 				<Button
-					class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><Home class="w-5 h-5 " />หน้าหลัก</Button
-				>
+					class="flex justify-start items-center gap-3 hover:bg-[#EF4444] bg-[#EF4444] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/home')
+                    }}}
+				><Home class="w-5 h-5 " />หน้าหลัก</Button>
+
 				<Button
-					class="flex justify-start items-center gap-3 bg-[#191F2F] hover:bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><FileText class="w-5 h-5" />การจองคิว</Button
-				>
+					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/reservation')
+                    }}}
+				><FileText class="w-5 h-5" />การจองคิว</Button>
+
 				<Button
-					class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><Gift class="w-5 h-5" />จัดการรางวัล</Button
-				>
+					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                            goto('/staff/manage/reward')
+                        }
+                    }}
+				><Gift class="w-5 h-5" />จัดการรางวัล</Button>
+
 				<Button
-					class="flex justify-start items-center gap-3 bg-[#EF4444] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><CalendarHeart class="w-5 h-5" />จัดการกิจกรรมหรือแคมเปญ</Button
-				>
+					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F]s text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/manage/special-event')
+                    }}}
+				><CalendarHeart class="w-5 h-5" />จัดการกิจกรรมหรือแคมเปญ</Button>
+
 			</div>
 			<Button
 				class="flex justify-start gap-2 text-white text-start px-6 py-3 items-center bg-[#191F2F] mb-9"
-				><LogOut class="mr-2 h-5    w-5 stroke-white" />ออกจากระบบ</Button
-			>
+                on:click={()=>{
+                    if (browser) {
+                    goto('/staff/login')
+                }}}
+			><LogOut class="mr-2 h-5 w-5 stroke-white" />ออกจากระบบ</Button>
+		
 		</div>
 	</div>
     <div class="flex flex-col w-9/12">
-        <div class="flex relative items-center bg-white px-14  w-full h-16 py-6 justify-center">
-                <h1 class="flex font-bold text-lg">โรงพยาบาลลาดกระบัง</h1>
-            <div class="flex gap-3 items-center absolute left-[929px]">
-                <UserCircle class="fill-[#EF4444] stroke-white scale-150"/>
-                <p>บุคคลากรทางการแพทย์</p>
-            </div>
+        <div class="w-full h-16 bg-white grid grid-cols-3 items-center justify-center px-8">
+			<div class="items-center justify-center flex" />
+			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
+			<div class="items-center justify-end flex gap-2">
+				<div class="flex flex-row items-center gap-3">
+                    <UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8"/>
+                    <h1 class="font-bold ">ศรุตา โทรัตน์</h1>
+                    <div>
+                        <Dropdown/>
+                    </div>
+                </div>
+			</div>
         </div>
         <div class="flex flex-col w-full h-full p-7 gap-9">
             <!-- 1 -->
@@ -135,8 +165,7 @@
                             <p class="text-2xl font-bold ">คิวการบริจาคเลือดวันนี้</p>
                             <p class="text-lg text-[#888] font-bold">จำนวนวันนี้ 100 คิว</p>
                         </div>
-                        
-                    <div class="flex bg-white rounded-3xl h-5/6 w-[305px] px-4 py-12">
+                    <div class="flex bg-white rounded-3xl h-5/6 w-[305px] px-4 py-4">
                         <Table.Root class="bg-white rounded-full">
                             <Table.Header >
                                 <Table.Row>
@@ -145,7 +174,7 @@
                                 </Table.Row>
                             </Table.Header>
                         <Table.Body>
-                            {#each places as place, i (i)}
+                            {#each places as place}
                             <Table.Row>
                                 <Table.Cell>{place.status}</Table.Cell>
                                 <Table.Cell>{place.name}</Table.Cell>
