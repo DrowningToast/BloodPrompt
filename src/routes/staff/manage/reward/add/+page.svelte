@@ -71,7 +71,7 @@
 		</div>
     </div>
     <div class="flex flex-col justify-center items-center w-9/12 h-auto">
-        <div class="w-full h-20 bg-white grid grid-cols-3 items-center justify-center px-8">
+        <div class="w-full h-16 bg-white grid grid-cols-3 items-center justify-center px-8">
 			<div class="items-center justify-center flex" />
 			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
 			<div class="items-center justify-end flex gap-2">

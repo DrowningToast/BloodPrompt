@@ -78,7 +78,7 @@
 		</div>
 	</div>
     <div class="flex flex-col justify-center items-center w-9/12 h-auto">
-        <div class="w-full h-20 bg-white grid grid-cols-3 items-center justify-center px-8">
+        <div class="w-full h-16 bg-white grid grid-cols-3 items-center justify-center px-8">
 			<div class="items-center justify-center flex" />
 			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
 			<div class="items-center justify-end flex gap-2">
@@ -112,7 +112,7 @@
                 <p class="text-base text-gray-500">สามารถจัดการกิจกรรมพิเศษจองสถาที่นั้นๆ</p>
             </div>
             <div class="flex justify-between items-center gap-4">
-                <Button class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-11 py-4 text-base font-bold text-white hover:bg-[#EF4444]"><PlusCircle class="fill-white stroke-[#EF4444]" />เพิ่มกิจกรรมพิเศษ</Button>
+                <Button class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white hover:bg-[#EF4444]"><PlusCircle class="fill-white stroke-[#EF4444]" />เพิ่มกิจกรรมพิเศษ</Button>
                 <Button class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white">ยกเลิกการเพิ่ม</Button>
             </div>
         </div>
@@ -156,7 +156,7 @@
                     </div>
                     <div class="flex items-center gap-2">
                         <h1 class="font-bold py-2 w-2/12">ตั้งเเต่</h1>
-                        <Input placeholder="วันเริ่มกิจกรรม" class="rounded-xl border-2 border-gray-300 h-[50px] w-6/12 px-4 py-4"/>
+                        <Input placeholder="วันเริ่มกิจกกรม" class="rounded-xl border-2 border-gray-300 h-[50px] w-6/12 px-4 py-4"/>
                         <Input placeholder="เวลาเริ่มกิจกรรม" class="rounded-xl border-2 border-gray-300 h-[50px] w-5/12  /12 px-4 py-4"/>
                     </div>
                     <div class="flex items-center gap-2 justify-start">
