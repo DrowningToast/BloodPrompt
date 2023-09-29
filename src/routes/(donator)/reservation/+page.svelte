@@ -5,6 +5,7 @@
 	import { browser } from '$app/environment';
 	import PlaceDetails from '$lib/components/svelte/dialog/PlaceDetails.svelte';
 	import type { Places } from '../../../../generated-zod';
+	import ReservationHeader from './ReservationHeader.svelte';
 	export let data: PageData;
 
 	let isShowPlaceDetailsDialog: boolean = false;
@@ -34,20 +35,8 @@
 	};
 </script>
 
-<div class="pb-24">
-	<div class="bg-white shadow-md p-5 flex flex-row items-center justify-start gap-4">
-		<button
-			on:click={() => {
-				if (browser) {
-					window.history.back();
-				}
-			}}
-		>
-			<ChevronLeft />
-		</button>
-		<p class="text-md font-bold">จองคิวรับบริจาคเลือด</p>
-	</div>
-
+<div>
+	<ReservationHeader href="/home">จองคิวรับบริจาคเลือด</ReservationHeader>
 	<PlaceDetails
 		open={isShowPlaceDetailsDialog}
 		placeData={selectedPlace}
