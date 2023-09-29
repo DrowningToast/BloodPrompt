@@ -61,7 +61,7 @@ export const encodePassword = (password: string): string => {
 	return cryptr.encrypt(password);
 };
 
-export function comparePassword(password: string) {
+export function decryptPassword(password: string) {
 	return cryptr.decrypt(password);
 }
 

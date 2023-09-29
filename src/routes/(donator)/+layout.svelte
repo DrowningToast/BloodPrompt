@@ -9,7 +9,6 @@
 	trpc.auth.getUser
 		.query()
 		.then((res) => {
-			console.log(res);
 			if (!res) {
 				alert('โปรดเข้าสู่ระบบเพื่อดำเนินการต่อ...');
 				goto('/login');
