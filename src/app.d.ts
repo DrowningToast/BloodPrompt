@@ -7,7 +7,7 @@ declare global {
 		interface Locals {
 			session: Session | null;
 			user: Donators | Medical_Staff | Moderators | null;
-			token: string;
+			sessionToken: string;
 		}
 		// interface PageData {}
 		// interface Platform {}

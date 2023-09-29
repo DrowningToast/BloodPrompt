@@ -1,7 +1,9 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
-import { cubicOut } from "svelte/easing";
-import type { TransitionConfig } from "svelte/transition";
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+import { cubicOut } from 'svelte/easing';
+import type { TransitionConfig } from 'svelte/transition';
+import Cryptr from 'cryptr';
+const cryptr = new Cryptr('myTotallySecretKey');
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -59,4 +61,58 @@ export const flyAndScale = (
         },
         easing: cubicOut
     };
+};
+
+export const encodePassword = (password: string): string => {
+	return cryptr.encrypt(password);
+};
+
+export function comparePassword(password: string) {
+	return cryptr.decrypt(password);
+}
+
+export const getFormattedOpeningDate = (opening_day: string) => {
+	if (opening_day) {
+		const result: string[] = [];
+		const openingDays = opening_day.split(',');
+		for (const day of openingDays) {
+			if (day === 'SUNDAY') {
+				result.push('วันอาทิตย์');
+			} else if (day === 'MONDAY') {
+				result.push('วันจันทร์');
+			} else if (day === 'TUESDAY') {
+				result.push('วันอังคาร');
+			} else if (day === 'WEDNESDAY') {
+				result.push('วันพุธ');
+			} else if (day === 'THURSDAY') {
+				result.push('วันพฤหัสบดี');
+			} else if (day === 'FRIDAY') {
+				result.push('วันศุกร์​');
+			} else if (day === 'SATURDAY') {
+				result.push('วันเสาร์');
+			}
+		}
+		const lastDay = result.pop();
+		let temp = result.join(', ');
+		temp += ` และ${lastDay}`;
+		return temp;
+	}
+};
+
+export const toDateTimeString = (date: Date) => {
+	return date?.toLocaleDateString('th-TH', {
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric',
+		hour: '2-digit',
+		minute: '2-digit'
+	});
+};
+
+export const toDateString = (date: Date) => {
+	return date?.toLocaleDateString('th-TH', {
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric'
+	});
 };
