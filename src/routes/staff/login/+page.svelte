@@ -1,10 +1,31 @@
-<script>
+<script lang="ts">
 	import login_background from '$lib/images/moderator/login/login_bacground.png';
 	import logo from '$lib/images/moderator/login/bloodprompt-logo.png';
 	import { Input } from '$lib/components/ui/input';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { Label } from '$lib/components/ui/label';
+	import { trpc } from '$lib/trpc';
+	import { goto } from '$app/navigation';
 	let checked = false;
+
+	let email: string = '';
+	let password: string = '';
+
+	const handleLogin = async () => {
+		await trpc.auth.staffLogin
+			.mutate({ email: email, password: password })
+			.then((res) => {
+				if (res.session.medical_staff_id) {
+					goto('/staff/home');
+				} else if (res.session.moderator_id) {
+					goto('/moderator/home');
+				}
+			})
+			.catch((error) => {
+				alert('ข้อมูลการเข้าสู่ระบบไม่ถูกต้อง');
+				console.error(error);
+			});
+	};
 </script>
 
 <div class=" h-[100dvh] flex justify-between">
@@ -28,12 +49,16 @@
 			<div class="w-[500px]">
 				<!-- username -->
 				<div class="pt-16 flex flex-col gap-3">
-					<p class="text-base font-bold pl-2">บัญชีผู้ใช้ (Username)</p>
-					<Input type="email" class="w-[500px] border-[3px] rounded-xl h-14" />
+					<p class="text-base font-bold pl-2">อีเมล (Email)</p>
+					<Input type="email" class="w-[500px] border-[3px] rounded-xl h-14" bind:value={email} />
 				</div>
 				<div class="pt-7 flex flex-col gap-3">
 					<p class="text-base font-bold pl-2">รหัสผ่าน (Password)</p>
-					<Input type="password" class="w-[500px] border-[3px] rounded-xl h-14" />
+					<Input
+						type="password"
+						class="w-[500px] border-[3px] rounded-xl h-14"
+						bind:value={password}
+					/>
 				</div>
 				<!-- saved and forget -->
 				<div class="flex justify-between pl-2 pt-5 items-center">
