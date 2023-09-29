@@ -4,13 +4,13 @@
 	import { UserIcon } from 'lucide-svelte';
 	import heroImage from '$lib/images/home/banner.png';
 
-	export let name: string = '';
+	export let name: String = '';
 </script>
 
 <section
 	class="w-full h-52 bg-[#F5222D] flex flex-col justify-around items-start px-6 pt-6 pb-12 relative"
 >
-	<div class="flex gap-4 justify-start items-center">
+	<div class="flex gap-3 justify-start items-center">
 		<div class="w-[44px] h-11 bg-white rounded-full grid place-items-center">
 			<button
 				on:click={() => {
