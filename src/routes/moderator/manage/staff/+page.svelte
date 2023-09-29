@@ -10,6 +10,7 @@
 	import { Home, LogOut, UserCircle, UserCircle2, MapPin, Lock, Search } from 'lucide-svelte';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
+	import { trpc } from '$lib/trpc';
 
 	const staff_information = [
 		{
@@ -62,6 +63,17 @@
 			password: 'password'
 		}
 	];
+
+	const handleLogout = async () => {
+		await trpc.auth.logout
+			.mutate()
+			.then((res) => {
+				goto('/staff/login');
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	};
 </script>
 
 <div class="flex flex-row w-full justify-between bg-gray-300 max-w-[100vw] min-h-[100vh]">
@@ -111,7 +123,7 @@
 			</div>
 			<Button
 				class="flex justify-start gap-2 text-white text-start px-6 py-3 items-center bg-[#191F2F] mb-9"
-				><LogOut class="mr-2 h-5    w-5 stroke-white" />ออกจากระบบ</Button
+				><LogOut class="mr-2 h-5    w-5 stroke-white" on:click={handleLogout} />ออกจากระบบ</Button
 			>
 		</div>
 	</div>
