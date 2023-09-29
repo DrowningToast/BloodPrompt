@@ -15,8 +15,6 @@ const config = {
 		alias: {
 			$lib: './src/lib'
 		}
-	},
-	// existing props
-	kit: {}
+	}
 };
 export default config;
