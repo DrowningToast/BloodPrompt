@@ -23,6 +23,9 @@ dependencies:
   clsx:
     specifier: ^2.0.0
     version: 2.0.0
+  cryptr:
+    specifier: ^6.3.0
+    version: 6.3.0
   date-fns:
     specifier: ^2.30.0
     version: 2.30.0
@@ -82,6 +85,9 @@ devDependencies:
   autoprefixer:
     specifier: ^10.4.16
     version: 10.4.16(postcss@8.4.30)
+  bcrypt]:
+    specifier: link:@types/bcrypt]
+    version: link:@types/bcrypt]
   daisyui:
     specifier: ^3.8.0
     version: 3.8.0(ts-node@10.9.1)
@@ -1048,6 +1054,10 @@ packages:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
+
+  /cryptr@6.3.0:
+    resolution: {integrity: sha512-TA4byAuorT8qooU9H8YJhBwnqD151i1rcauHfJ3Divg6HmukHB2AYMp0hmjv2873J2alr4t15QqC7zAnWFrtfQ==}
+    dev: false
 
   /css-selector-tokenizer@0.8.0:
     resolution: {integrity: sha512-Jd6Ig3/pe62/qe5SBPTN8h8LeUg/pT4lLgtavPf7updwwHpvFzxvOQBHYj2LZDMjUnBzgvIUSjRcf6oT5HzHFg==}

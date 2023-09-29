@@ -2,15 +2,37 @@
 	import type { PageData } from './$types';
 	import bloodPromptIconRedBg from '$lib/images/bloodprompt-logo-red-bg.png';
 	import Input from '$lib/components/ui/input/input.svelte';
-	import { Eye, EyeOff, KeyRound, Smartphone } from 'lucide-svelte';
+	import { Eye, EyeOff, KeyRound, Loader2, Smartphone } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
+	import { trpc } from '$lib/trpc';
+	import { goto } from '$app/navigation';
 
 	let showPassword: boolean = false;
+
+	let phoneNumber: string = '';
+	let password: string = '';
+	let isLoading: boolean = false;
 
 	let data: PageData;
 
 	const toggleShowPassword = () => {
 		showPassword = !showPassword;
+	};
+
+	const handleLogin = async () => {
+		isLoading = true;
+		await trpc.auth.donatorLogin
+			.mutate({ phone_number: phoneNumber, password })
+			.then((res) => {
+				goto('/home');
+			})
+			.catch((error) => {
+				alert('ไม่สามารถเข้าสู่ระบบ โปรดตรวจสอบข้อมูลการเข้าสู่ระบบ');
+				console.log(error);
+			})
+			.finally(() => {
+				isLoading = false;
+			});
 	};
 </script>
 
@@ -30,6 +52,7 @@
 		<div class="flex flex-row items-center relative">
 			<Smartphone class="absolute ml-4" />
 			<Input
+				bind:value={phoneNumber}
 				type="number"
 				class="w-full py-6 rounded-xl border-2 pl-12 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500"
 				placeholder="เบอร์โทรศัพท์"
@@ -39,6 +62,7 @@
 		<div class="flex flex-row items-center relative">
 			<KeyRound class="absolute ml-4 w-5" />
 			<Input
+				bind:value={password}
 				type={`${showPassword ? 'text' : 'password'}`}
 				class="w-full py-6 rounded-xl border-2 pl-12 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500"
 				placeholder="รหัสผ่าน"
@@ -58,8 +82,13 @@
 
 		<Button
 			variant="secondary"
-			class="w-full rounded-xl py-6 text-md font-bold bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600"
+			class="w-full rounded-xl py-6 mt-6 text-md font-bold bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600"
+			disabled={isLoading}
+			on:click={handleLogin}
 		>
+			{#if isLoading}
+				<Loader2 class="mr-2 h-4 w-4 animate-spin" />
+			{/if}
 			เข้าสู่ระบบ
 		</Button>
 	</div>

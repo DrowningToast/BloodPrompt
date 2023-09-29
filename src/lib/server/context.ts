@@ -28,9 +28,6 @@ export const createSvelteKitContext =
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	(locals: App.Locals) => async (opts: FetchCreateContextFnOptions) => {
 		const cookie = opts.req.headers.get('Cookie');
-		// cookie = getCookie(cookie || '', 'session-token') || '';
-
-		// console.log(cookie);
 
 		let userContext: UserContext;
 
@@ -72,14 +69,13 @@ export const createSvelteKitContext =
 					return {
 						...locals,
 						opts,
+						sessionToken,
 						userContext
 					};
 				}
 			}
 		}
 
-		// console.log('createSvelteKitContext() locals ', locals.session);
-		// console.log(opts);
 		return {
 			...locals,
 			opts,
