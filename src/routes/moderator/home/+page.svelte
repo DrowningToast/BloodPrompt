@@ -99,7 +99,7 @@
             <!-- place to donate -->
             <div class="flex flex-col bg-white w-[1103px] h-[274px] rounded-xl">
                 <p class="pt-6 pl-6 font-semibold">สถานที่บริจาคเลือดในระบบ</p>
-                <div class="flex justify-center bg-white rounded-3xl w-12/12 h-5/6 shadow-xl px-4 py-3">
+                <div class="flex justify-center bg-white rounded-3xl h-5/6 shadow-xl px-4 py-3">
                     <Table.Root class="bg-white rounded-full">
                         <Table.Header >
                             <Table.Row>
