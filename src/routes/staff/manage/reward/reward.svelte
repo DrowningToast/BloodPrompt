@@ -1,14 +1,20 @@
-<script>
-    export let data;
-    import cup from '$lib/images/staff/reward/reward1.png';
-    let images = `$lib/images/staff/reward/reward1.png`
-    
-    console.log(data.img);
+<script lang="ts">
+	import { Button } from "$lib/components/ui/button";
+
+    type reward = {
+        point:number,
+        remain:number,
+        title:string,
+        desc:string,
+        img:string
+    };
+    export let data:reward;
+    console.log(data);
 </script>
 
-<div class="flex gap-7 p-4">
-    <div class="w-5/12">
-        <img src="" alt="">
+<div class="flex gap-7 p-4 border-black border-[1.5px] bg-white rounded-3xl shadow-2xl m-2">
+    <div class="flex w-5/12 items-center">
+        <img src={data.img} alt="" class="">
     </div>
     <div class="flex flex-col w-7/12 gap-7">
         <!-- title + description -->
@@ -28,7 +34,11 @@
                 <p class="font-bold">แต้มที่ต้องใช้</p>
                 <p>{data.remain} ชิ้น</p>
             </div>
-
+        
+        </div>
+        <div class="flex justify-between">
+            <Button class="w-24 h-10 rounded-3xl">แก้ไข</Button>
+            <Button class="w-24 h-10 rounded-3xl">ลบ</Button>
         </div>
     </div>
 </div>
