@@ -30,7 +30,19 @@
 					remain : 8,
 					title : "แก้วน้ำไอ้เจ",
 					desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นของรางวัล", 
-					img : rewardImage}
+					img : rewardImage},
+					{
+					point : 5,
+					remain : 6,
+					title : "แก้วน้ำไอ้เจ",
+					desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นของรางวัล", 
+					img : rewardImage},
+					{
+					point : 7,
+					remain : 8,
+					title : "แก้วน้ำไอ้เจ",
+					desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นของรางวัล", 
+					img : rewardImage},
 				]
 	
 </script>
@@ -84,9 +96,9 @@
 		</div>
 	</div>
 	<div class="w-full h-full px-9">
-		<div class="flex gap-8 w-full h-[652px] bg-white mt-4 rounded-3xl p-6 flex-wrap">
+		<div class="flex gap-8 w-full bg-white mt-4 rounded-3xl p-6 flex-wrap">
 			<!-- #each -->
-			<div class="flex w-full h-1/2 justify-between flex-wrap">
+			<div class="flex w-full h-1/2 justify-between flex-wrap ">
 					{#each rewardMockInfo as eachReward, i(i)}
 						<div class="flex w-1/2">
 							<Reward data={eachReward}/>
