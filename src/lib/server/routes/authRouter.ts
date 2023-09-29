@@ -12,13 +12,14 @@ export const authRouter = createRouter({
 		return userContext;
 	}),
 	logout: publicProcedure.mutation(async ({ ctx }) => {
-		console.log(ctx.token);
+		console.log(ctx.sessionToken);
 		await prisma.session.delete({
 			where: {
-				session_token: ctx.token
+				session_token: ctx.sessionToken
 			}
 		});
-		(ctx.session = {}), (ctx.user = {}), (ctx.token = '');
+		ctx.opts.resHeaders.append('Set-Cookie', `session-token=`);
+		(ctx.session = {}), (ctx.user = {}), (ctx.sessionToken = '');
 	}),
 	donatorLogin: publicProcedure
 		.input(
@@ -40,9 +41,17 @@ export const authRouter = createRouter({
 				}
 			});
 
-			const isPasswordMatch = await comparePassword(user?.password || '', password);
+			if (!user) {
+				throw new TRPCError({
+					code: 'UNAUTHORIZED'
+				});
+			}
 
-			if (!user || !isPasswordMatch) {
+			const decodedPassword = comparePassword(user?.password || '');
+
+			console.log(decodedPassword);
+
+			if (password !== decodedPassword) {
 				throw new TRPCError({
 					code: 'UNAUTHORIZED'
 				});
@@ -56,7 +65,7 @@ export const authRouter = createRouter({
 			if (session.session_token && user) {
 				ctx.session = session;
 				ctx.user = user;
-				ctx.token = session.session_token;
+				ctx.sessionToken = session.session_token;
 				ctx.opts.resHeaders.append('Set-Cookie', `session-token=${session.session_token}`);
 			}
 
@@ -89,10 +98,9 @@ export const authRouter = createRouter({
 
 			console.log('staffLogin() user: ', user);
 
-			const isPasswordMatch = await comparePassword(user?.password || '', password);
-			console.log('staffLogin() isPasswordMatch: ', isPasswordMatch);
+			const decodedPassword = comparePassword(user?.password || '');
 
-			if (!user || !isPasswordMatch) {
+			if (!user || password !== decodedPassword) {
 				throw new TRPCError({
 					code: 'UNAUTHORIZED'
 				});
@@ -112,16 +120,21 @@ export const authRouter = createRouter({
 			if (session.session_token && user) {
 				ctx.session = session;
 				ctx.user = user;
-				ctx.token = session.session_token;
+				ctx.sessionToken = session.session_token;
 				ctx.opts.resHeaders.append('Set-Cookie', `session-token=${session.session_token}`);
 			}
 
 			return { user, session };
 		}),
 	setAsVerifyUser: publicProcedure.mutation(async ({ ctx }) => {
-		const medicalAccount = await prisma.medical_Accounts.update({
+		const user = await prisma.donators.findUnique({
 			where: {
 				id: ctx.userContext?.user.id
+			}
+		});
+		const medicalAccount = await prisma.medical_Accounts.update({
+			where: {
+				id: user?.medical_account_id
 			},
 			data: {
 				account_status: 'VERIFIED',
