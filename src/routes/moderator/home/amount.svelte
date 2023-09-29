@@ -14,9 +14,9 @@
         </div>
         <div class="">
             {#if person}
-            <img src={people} alt="" class="w-11">
+                <img src={people} alt="" class="w-11">
             {:else}
-            <img src={location} alt="" class="w-10 h-10">
+                <img src={location} alt="" class="w-10 h-10">
             {/if}
         </div>
     </div>
