@@ -11,7 +11,6 @@ export const donatorsController = {
 		donator,
 		medical_account
 	}: createDonatorAccountArgs) => {
-		console.log('createDonatorAccount()');
 		const res = await prisma.donators.create({
 			data: {
 				...donator,

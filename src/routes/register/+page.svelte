@@ -12,6 +12,7 @@
 	import { browser } from '$app/environment';
 	import { trpc } from '$lib/trpc';
 	import type { BloodType, Gender } from '$lib/server/database';
+	import { goto } from '$app/navigation';
 
 	let locale = localeFromDateFnsLocale(th);
 
@@ -30,11 +31,9 @@
 	};
 
 	let date: any;
-
 	let data: PageData;
 
 	const gender: Gender = 'MALE';
-	const blood_type: BloodType = 'A_POSITIVE';
 	const donatorData = {
 		first_name: '',
 		last_name: '',
@@ -115,6 +114,7 @@
 
 		const blood_type =
 			((selectedBloodType + '_' + bloodRhValue).toUpperCase() as BloodType) || 'A_POSITIVE';
+		console.log(blood_type);
 
 		await trpc.donators.signUp
 			.mutate({
@@ -140,6 +140,7 @@
 					'สมัครสมาชิกสำเร็จ คุณสามารถทำการเข้าสู่ระบบโดยใช้หมายเลขโทรศัพท์ และรหัสผ่านที่ได้ทำการสมัครสมาชิก'
 				);
 				console.log(res);
+				goto('/verification');
 			})
 			.catch((error) => {
 				alert('ไม่สามารถสมัครสมาชิกได้ โปรดตรวจสอบข้อมูลการสมัคร');
@@ -340,19 +341,17 @@
 			</div>
 		</div>
 
-		<a href="/verification">
-			<Button
-				variant="secondary"
-				class="w-full rounded-xl py-6 mt-6 text-md font-bold bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600"
-				disabled={!isAcceptedTerms || isLoading}
-				on:click={handleRegister}
-			>
-				{#if isLoading}
-					<Loader2 class="mr-2 h-4 w-4 animate-spin" />
-				{/if}
-				สมัครบัญชีใหม่
-			</Button></a
+		<Button
+			variant="secondary"
+			class="w-full rounded-xl py-6 mt-6 text-md font-bold bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600"
+			disabled={!isAcceptedTerms || isLoading}
+			on:click={handleRegister}
 		>
+			{#if isLoading}
+				<Loader2 class="mr-2 h-4 w-4 animate-spin" />
+			{/if}
+			สมัครบัญชีใหม่
+		</Button>
 		<p class="mt-6 text-center">
 			มีบัญชีผู้ใช้แล้ว ? <a href="/login" class="text-[#F5222D] underline"> เข้าสู่ระบบ </a>
 		</p>

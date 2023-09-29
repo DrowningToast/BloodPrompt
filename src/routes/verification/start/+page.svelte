@@ -5,10 +5,12 @@
 	import { Button } from '$lib/components/ui/button';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { trpc } from '$lib/trpc';
 
 	export let data: PageData;
 	let videoSource: any = null;
 	$: step = 1;
+	let isLoading = false;
 
 	const obtenerVideoCamara = async () => {
 		navigator.mediaDevices
@@ -28,6 +30,13 @@
 	onMount(() => {
 		obtenerVideoCamara();
 	});
+
+	const handleSubmit = async () => {
+		isLoading = true;
+		await trpc.auth.setAsVerifyUser.mutate();
+		isLoading = false;
+		goto('/verification/success');
+	};
 </script>
 
 <div class="bg-red-200 min-h-screen">
@@ -65,7 +74,7 @@
 					if (step == 1) {
 						step++;
 					} else if (step == 2) {
-						goto('/verification/success');
+						handleSubmit();
 					}
 				}}
 			>
@@ -74,14 +83,16 @@
 
 			{#if step == 2}
 				<div class="mt-8 w-full">
-					<a href="/verification/success">
-						<Button
-							variant="secondary"
-							class="w-full rounded-xl py-6 mt-6 text-md font-bold bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600"
-						>
-							เสร็จสิ้น
-						</Button>
-					</a>
+					<Button
+						variant="secondary"
+						class="w-full rounded-xl py-6 mt-6 text-md font-bold bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600"
+						on:click={handleSubmit}
+					>
+						{#if isLoading}
+							<Loader2 class="mr-2 h-4 w-4 animate-spin" />
+						{/if}
+						เสร็จสิ้น
+					</Button>
 
 					<button
 						class="text-[##F5222D] underline text-center w-full text-sm mt-4 text-slate-500"

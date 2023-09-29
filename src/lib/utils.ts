@@ -2,6 +2,8 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { cubicOut } from 'svelte/easing';
 import type { TransitionConfig } from 'svelte/transition';
+import Cryptr from 'cryptr';
+const cryptr = new Cryptr('myTotallySecretKey');
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -55,26 +57,13 @@ export const flyAndScale = (
 	};
 };
 
-// export async function encodePassword(password: string) {
-// 	try {
-// 		const hash = await argon2.hash(password);
-// 		return hash;
-// 	} catch (error) {
-// 		console.log(error);
-// 	}
-// }
+export const encodePassword = (password: string): string => {
+	return cryptr.encrypt(password);
+};
 
-// export async function comparePassword(encodePassword: string, password: string) {
-// 	try {
-// 		if (await argon2.verify(encodePassword, password)) {
-// 			return true;
-// 		} else {
-// 			return false;
-// 		}
-// 	} catch (error) {
-// 		console.log(error);
-// 	}
-// }
+export function comparePassword(password: string) {
+	return cryptr.decrypt(password);
+}
 
 export const getFormattedOpeningDate = (opening_day: string) => {
 	if (opening_day) {

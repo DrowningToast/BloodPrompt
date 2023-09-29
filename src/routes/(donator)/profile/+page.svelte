@@ -8,6 +8,7 @@
 	import Input from '$lib/components/ui/input/input.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import AlertDialog from '$lib/components/svelte/alert/AlertDialog.svelte';
+	import { trpc } from '$lib/trpc';
 
 	export let data: PageData;
 	let isLoading: boolean = false;
@@ -21,7 +22,15 @@
 	description="ยืนยันที่จะออกจากระบบหรือไม่ คุณสามารถเข้าสู่ระบบใหม่ได้โดยใช้เบอร์โทรศัพท์และรหัสผ่าน"
 	actionLabel="ออกจากระบบ"
 	onAction={() => {
-		goto('/login');
+		trpc.auth.logout
+			.mutate()
+			.then(() => {
+				goto('/login');
+			})
+			.catch((error) => {
+				alert('ไม่สามารถออกจากระบบ โปรดลองใหม่อีกครั้ง');
+				console.log(error);
+			});
 	}}
 	secondaryLabel="ยกเลิก"
 	onSecondaryAction={() => {
