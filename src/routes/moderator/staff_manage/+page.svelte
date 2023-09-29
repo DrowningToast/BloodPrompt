@@ -1,5 +1,4 @@
 <script lang="ts">
-    import type { PageData } from './$types';
     import bloodpromptlogo from '$lib/images/moderator/login/bloodprompt-logo.png';
     import Dropdown from '../home/dropdown.svelte';
     import * as Table from "$lib/components/ui/table";
@@ -9,7 +8,6 @@
     import { Input } from "$lib/components/ui/input";
     import{ Label } from "$lib/components/ui/label";
     import { Home, LogOut, UserCircle, UserCircle2,MapPin, Lock, Search } from 'lucide-svelte';
-    export let data: PageData;
     
     
     const staff_information = [
