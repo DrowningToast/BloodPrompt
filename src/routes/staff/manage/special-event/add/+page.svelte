@@ -78,7 +78,7 @@
 		</div>
 	</div>
     <div class="flex flex-col justify-center items-center w-9/12 h-auto">
-        <div class="w-full h-16 bg-white grid grid-cols-3 items-center justify-center px-8">
+        <div class="w-full h-20 bg-white grid grid-cols-3 items-center justify-center px-8">
 			<div class="items-center justify-center flex" />
 			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
 			<div class="items-center justify-end flex gap-2">
@@ -112,7 +112,7 @@
                 <p class="text-base text-gray-500">สามารถจัดการกิจกรรมพิเศษจองสถาที่นั้นๆ</p>
             </div>
             <div class="flex justify-between items-center gap-4">
-                <Button class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white hover:bg-[#EF4444]"><PlusCircle class="fill-white stroke-[#EF4444]" />เพิ่มกิจกรรมพิเศษ</Button>
+                <Button class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-10 py-4 text-base font-bold text-white hover:bg-[#EF4444]"><PlusCircle class="fill-white stroke-[#EF4444]" />เพิ่มกิจกรรมพิเศษ</Button>
                 <Button class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white">ยกเลิกการเพิ่ม</Button>
             </div>
         </div>
