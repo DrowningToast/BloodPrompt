@@ -13,6 +13,16 @@
 	import { goto } from '$app/navigation';
 
     let fileInput:HTMLInputElement;
+    let  sp_event;
+    const onFileSelected =(e)=>{
+        let image = e.target.files[0];
+        let reader = new FileReader();
+        reader.readAsDataURL(image);
+        reader.onload = e => {
+     	    sp_event = e.target.result
+        };
+    }
+
 
 </script>
 
@@ -25,31 +35,46 @@
 		<div class="flex flex-col px-5 w-full h-full justify-between">
 			<div class="flex flex-col gap-8 w-full">
 				<Button
-					class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><Home class="w-5 h-5 " />หน้าหลัก</Button
-				>
-				<Button
-					class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><FileText class="w-5 h-5" />การจองคิว</Button
-				>
-				<Button
-					class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
                     on:click={()=>{
                         if (browser) {
-                            goto('AddReward')
+                        goto('/staff/home')
+                    }}}
+				><Home class="w-5 h-5 " />หน้าหลัก</Button>
+
+				<Button
+					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/reservation')
+                    }}}
+				><FileText class="w-5 h-5" />การจองคิว</Button>
+
+				<Button
+					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                            goto('/staff/manage/reward')
                         }
                     }}
-					><Gift class="w-5 h-5" />จัดการรางวัล</Button
-				>
+				><Gift class="w-5 h-5" />จัดการรางวัล</Button>
+
 				<Button
-					class="flex justify-start items-center gap-3  bg-[#EF4444] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><CalendarHeart class="w-5 h-5" />จัดการกิจกรรมหรือแคมเปญ</Button
-				>
+					class="flex justify-start items-center gap-3 hover:bg-[#EF4444] bg-[#EF4444] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/manage/special-event')
+                    }}}
+				><CalendarHeart class="w-5 h-5" />จัดการกิจกรรมหรือแคมเปญ</Button>
+
 			</div>
 			<Button
 				class="flex justify-start gap-2 text-white text-start px-6 py-3 items-center bg-[#191F2F] mb-9"
-				><LogOut class="mr-2 h-5    w-5 stroke-white" />ออกจากระบบ</Button
-			>
+                on:click={()=>{
+                    if (browser) {
+                    goto('/staff/login')
+                }}}
+			><LogOut class="mr-2 h-5 w-5 stroke-white" />ออกจากระบบ</Button>
 		</div>
 	</div>
     <div class="flex flex-col justify-center items-center w-9/12 h-auto">
@@ -65,10 +90,14 @@
                             <DropdownMenu.Trigger asChild let:builder>
                                 <Button variant="outline" builders={[builder]} class="p-0 m-0 border-transparent bg-white hover:bg-white"><ChevronDown class="p-0 m-0 fill-black stroke-none"/></Button>
                             </DropdownMenu.Trigger>
-                            <DropdownMenu.Content class="w-56">
-                              <DropdownMenu.Item>
+                            <DropdownMenu.Content class="">
+                              <DropdownMenu.Item class="cursor-pointer">
                                 <LogOut class="mr-2 h-4 w-4" />
-                                <span>ออกจากระบบ</span>
+                                <div on:click={()=>{
+                                    if (browser) {
+                                        goto('/staff/login')
+                                    }}
+                                }>ออกจากระบบ</div>
                               </DropdownMenu.Item>
                             </DropdownMenu.Content>
                         </DropdownMenu.Root>
@@ -95,15 +124,21 @@
                         <h1 class="font-bold py-2">รูปภาพประกอบ</h1>
                     </div>
 
-                    <div class="flex flex-col items-center justify-center bg-gray-200 w-full h-5/6 rounded-3xl">
-                        <p>ยังไม่ได้เลือกรูปภาพ</p>
-                        <p>(โปรดเลือกอย่างน้อย 1 รูปภาพ)</p>
+                    <div class="flex flex-col items-center justify-center w-full h-5/6 rounded-3xl">
+                        {#if sp_event}
+                        <img class="flex justify-center h-fit w-full rounded-xl" src="{sp_event}" alt="d"/>
+                        {:else}
+                        <div class="flex flex-col items-center justify-center bg-gray-200 w-full h-full rounded-3xl">
+                            <p>ยังไม่ได้เลือกรูปภาพ</p>
+                            <p>(โปรดเลือกอย่างน้อย 1 รูปภาพ)</p>
+                        </div>
+                    {/if}
                     </div>
 
                     <div class="flex flex-row justify-center items-center w-full gap-5">
-                        <input type="file" id="file" bind:this={fileInput} class="hidden">
-                        <Button class="flex justify-center gap-2 bg-black rounded-full text-center h-[40px] w-[200px] px-10 py-4 text-base font-bold text-white" on:click={() =>{fileInput.click();}}>เลือกรูปภาพ</Button>
-                        <Button variant="link" class="flex justify-center gap-2 rounded-full text-center h-[40px] w-[84px] px-5 py-4 text-base font-bold text-[#EF4444]">ลบรูปภาพ</Button>
+                        <input type="file" id="file" on:change={(e)=>onFileSelected(e)} bind:this={fileInput} class="hidden">
+                        <Button class="flex justify-center gap-2 bg-black rounded-full text-center h-[40px] w-[200px] px-10 py-4 text-base font-bold text-white" on:click={()=>{fileInput.click();}}>เลือกรูปภาพ</Button>
+                        <Button variant="link" class="flex justify-center gap-2 rounded-full text-center h-[40px] w-[84px] px-5 py-4 text-base font-bold text-[#EF4444]" on:click={() => sp_event=null}>ลบรูปภาพ</Button>
                     </div>
                 </div>
 

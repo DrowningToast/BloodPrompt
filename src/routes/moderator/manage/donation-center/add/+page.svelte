@@ -23,6 +23,15 @@
     ];
 
     let fileInput:HTMLInputElement;
+    let  place;
+    const onFileSelected =(e)=>{
+        let image = e.target.files[0];
+        let reader = new FileReader();
+        reader.readAsDataURL(image);
+        reader.onload = e => {
+     	place = e.target.result
+     };
+}
 
 </script>
 
@@ -34,14 +43,31 @@
         </div>
         <div class="flex flex-col px-5 w-full h-full justify-between">
             <div class="flex flex-col gap-8 w-full">
-                <Button class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><Home class="w-5 h-5 "/>หน้าหลัก</Button>
-                <Button class="flex justify-start items-center gap-3 hover:bg-[#EF4444] bg-[#EF4444] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><MapPin class="w-5 h-5" />จัดการสถานที่รับบริจาคเลือด</Button>
-                <Button class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"><UserCircle2 class="w-5 h-5"/>จัดการบัญชีบุคลากรการเเพทย์</Button>
+
                 <Button class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white" on:click={()=>{
-                    if (browser) {
-                        goto('ManageModeratorAccount')
+                    if(browser){
+                        goto('/moderator/home')
+                    }
+                }}><Home class="w-5 h-5 "/>หน้าหลัก</Button>
+
+                <Button class="flex justify-start items-center gap-3 hover:bg-[#EF4444] bg-[#EF4444] text-base  rounded-full text-start px-6 py-4 h-12 text-white" on:click={()=>{
+                    if(browser){
+                        goto('/moderator/manage/donation-center')
+                    }
+                }}><MapPin class="w-5 h-5" />จัดการสถานที่รับบริจาคเลือด</Button>
+
+                <Button class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white" on:click={()=>{
+                    if(browser){
+                        goto('/moderator/manage/staff')
+                    }
+                }}><UserCircle2 class="w-5 h-5"/>จัดการบัญชีบุคลากรการเเพทย์</Button>
+                
+                <Button class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white" on:click={()=>{
+                    if(browser){
+                        goto('/moderator/manage/account')
                     }
                 }}><Lock class="w-5 h-5" />จัดการบัญชี / เปลี่ยนรหัสผ่าน</Button>
+
             </div>
             <Button class="flex justify-start gap-2 text-white text-start px-6 py-3 items-center bg-[#191F2F] mb-9 text-base"><LogOut class="mr-2 h-5    w-5 stroke-white" />ออกจากระบบ</Button>
         </div>
@@ -78,7 +104,7 @@
                 <Button class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white"
                 on:click = {()=>{
                     if (browser) {
-                        goto('/staff/Moderator/ManageBloodDonationCenter')
+                        goto('/moderator/manage/donation-center')
                     }
                 }}
                 >ยกเลิกการเพิ่ม</Button>
@@ -93,15 +119,29 @@
                         <h1 class="font-bold py-2">รูปภาพประกอบของสถานที่</h1>
                     </div>
 
-                    <div class="flex flex-col items-center justify-center bg-gray-200 w-full h-[206px] rounded-3xl">
-                        <p>ยังไม่ได้เลือกรูปภาพ</p>
-                        <p>(โปรดเลือกอย่างน้อย 1 รูปภาพ)</p>
+                    <div class="flex items-center justify-center w-full h-[200px] rounded-3xl">
+                        {#if place}
+                            <img class="flex justify-center h-full w-fit rounded-xl" src="{place}" alt="d"/>
+                        {:else}
+                        <div class="flex flex-col items-center justify-center bg-gray-200 w-full h-full rounded-3xl">
+                            <p>ยังไม่ได้เลือกรูปภาพ</p>
+                            <p>(โปรดเลือกอย่างน้อย 1 รูปภาพ)</p>
+                        </div>
+                        {/if}
                     </div>
 
                     <div class="flex flex-row justify-center items-center w-full gap-5">
-                        <input type="file" id="file" bind:this={fileInput} class="hidden">
-                        <Button class="flex justify-center gap-2 bg-black rounded-full text-center h-[40px] w-[200px] px-10 py-4 text-base font-bold text-white" on:click={() =>{fileInput.click();}}>เลือกรูปภาพ</Button>
-                        <Button variant="link" class="flex justify-center gap-2 rounded-full text-center h-[40px] w-[84px] px-5 py-4 text-base font-bold text-[#EF4444]">ลบรูปภาพ</Button>
+                        <input type="file" id="file" class="hidden" accept=".jpg, .jpeg, .png" on:change={(e)=>onFileSelected(e)} bind:this={fileInput}>
+
+                        <Button
+                        class="flex justify-center gap-2 bg-black rounded-full text-center h-[40px] w-[200px] px-10 py-4 text-base font-bold text-white"
+                         on:click={() =>{fileInput.click();}}
+                         >เลือกรูปภาพ</Button>
+                         
+                        <Button
+                         variant="link" class="flex justify-center gap-2 rounded-full text-center h-[40px] w-[84px] px-5 py-4 text-base font-bold text-[#EF4444]"
+                         on:click={() => place=null}
+                         >ลบรูปภาพ</Button>
                     </div>
 
                     <div class="flex items-center gap-2 mt-6">
