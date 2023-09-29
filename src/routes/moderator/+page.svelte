@@ -1,6 +1,6 @@
 <script lang="ts">
     import bloodpromptlogo from '$lib/images/moderator/login/bloodprompt-logo.png';
-    import Dropdown from '../home/dropdown.svelte';
+    // import Dropdown from '../home/dropdown.svelte';
     import * as Table from "$lib/components/ui/table";
     import { Button} from '$lib/components/ui/button';
     import * as Select from "$lib/components/ui/select";
@@ -85,7 +85,7 @@
             <div class="flex gap-3 items-center">
                 <UserCircle class="fill-[#EF4444] stroke-white scale-150"/>
                 <p>ผู้ดูแลระบบ</p>
-                <Dropdown></Dropdown>
+                <!-- <Dropdown></Dropdown> -->
         </div>
     </div>
         <div class="flex flex-col gap-8 mt-10 w-full h-full items-center">
@@ -118,7 +118,7 @@
                         <p class="font-bold ">ค้นหาโดยใช้ชื่อของบุคลากรการเเพทย์</p>
                         <!-- search-bar + button -->
                         <div class="flex gap-6">
-                            <input type="text" placeholder="ระบุชื่อของบุคลากรการเเพทย์เพื่อทำการค้นหา" class="w-[425px] h-[50px] p-5 rounded-xl">
+                            <input type="text" placeholder="ระบุชื่อของบุคลากรการเเพทย์เพื่อทำการค้นหา" class="bg-white w-[425px] h-[50px] p-5 rounded-xl">
                             <!-- button -->
                             <Button class="flex self-center gap-1 w-[107px] h-11 bg-[#EF4444] rounded-3xls">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
