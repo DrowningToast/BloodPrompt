@@ -56,7 +56,7 @@
 
 </script>
 <div class="flex flex-row justify-between bg-gray-300 h-full w-full max-w-[100vw] min-h-[100vh]">
-    <div class="flex flex-col bg-[#191F2F] w-3/12 h-auto">
+    <div class="flex flex-col bg-[#191F2F] w-3/12 h-100%">
 		<div class="flex flex-row px-8 py-16 justify-center">
 			<img src={bloodPromptLogo} alt="" class="w-16" />
 			<h1 class="translate-y-4 text-xl font-bold text-white px-3">BLOODPROMPT</h1>
@@ -107,17 +107,15 @@
 		
 		</div>
 	</div>
-    <div class="flex flex-col w-9/12">
-        <div class="w-full h-16 bg-white grid grid-cols-3 items-center justify-center px-8">
-			<div class="items-center justify-center flex" />
+    <div class="flex flex-col w-9/12 items-center h-full">
+        <div class="w-full bg-white grid grid-cols-3 items-center justify-center px-8 h-16">
+			<div class="items-center justify-center flex" />    
 			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
 			<div class="items-center justify-end flex gap-2">
-				<div class="flex flex-row items-center gap-3">
+				<div class="flex flex-row items-center gap-1">
                     <UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8"/>
                     <h1 class="font-bold ">ศรุตา โทรัตน์</h1>
-                    <div>
                         <Dropdown/>
-                    </div>
                 </div>
 			</div>
         </div>

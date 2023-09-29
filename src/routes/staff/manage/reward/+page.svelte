@@ -7,6 +7,7 @@
 	import rewardImage from "$lib/images/staff/reward/reward1.png"
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
+	import Dropdown from '../../../moderator/home/dropdown.svelte';
 
 	const rewardMockInfo = [
 					{
@@ -54,7 +55,7 @@
 			<img src={bloodPromptLogo} alt="" class="w-16" />
 			<h1 class="translate-y-4 text-xl font-bold text-white px-3">BLOODPROMPT</h1>
 		</div>
-		<div class="flex flex-col px-5 w-full min-h-screen justify-between">
+		<div class="flex flex-col px-5 w-full min-h-screen justify-between h-full">
 			<div class="flex flex-col gap-8 w-full">
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
@@ -100,22 +101,28 @@
 		
 		</div>
 	</div>
-    <div class="flex flex-col items-center w-9/12">
-		<div class="flex relative items-center bg-white px-14  w-full h-16 py-6 justify-center">
-            <h1 class="flex font-bold text-2xl">โรงพยาบาลลาดกระบัง</h1>
-            <div class="flex gap-3 items-center absolute left-[929px]">
-                <UserCircle class="fill-[#EF4444] stroke-white scale-150"/>
-                <p>บุคคลากรทางการแพทย์</p>
-            </div>
-    </div>
+    <div class="flex flex-col items-center w-9/12 h-full">
+		<div class="w-full h-16 bg-white grid grid-cols-3 items-center justify-center px-8">
+			<div class="items-center justify-center flex" />
+			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
+			<div class="items-center justify-end flex gap-2">
+				<div class="flex flex-row items-center gap-1">
+                    <UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8"/>
+                    <h1 class="font-bold ">ศรุตา โทรัตน์</h1>
+                    <div>
+                        <Dropdown/>
+                    </div>
+                </div>
+			</div>
+        </div>
 	<div class="flex w-full justify-between px-9">
 		<div class="flex flex-col gap-3 mt-10">
 			<p class="text-2xl font-bold">จัดการของรางวัล</p>
 			<p class="text-xl text-[#888]">สามารถจัดการของรางวัล รายละเอียด แต้มที่ใช้แลก</p>
 		</div>
 		<div class="flex gap-4 mt-16">
-			<Button on:click={()=>{if(browser){goto("/staff/manage/reward/history")}}} class="flex gap-2 w-60 h-12 bg-[#000] rounded-3xl font-semibold"><History />ประวัติการแลกของรางวัล</Button>
-			<Button on:click={()=>{if(browser){goto("/staff/manage/reward/add")}}} class="flex gap-2 w-60 h-12 bg-[#EF4444] rounded-3xl font-semibold"><PlusCircle />เพิ่มของรางวัล</Button>
+			<Button on:click={()=>{if(browser){goto("/staff/manage/reward/history")}}} class="flex gap-2 w-60 h-12 bg-[#000] hover:bg-[#000] rounded-3xl font-semibold"><History />ประวัติการแลกของรางวัล</Button>
+			<Button on:click={()=>{if(browser){goto("/staff/manage/reward/add")}}} class="flex gap-2 w-60 h-12 bg-[#EF4444] hover:bg-[#EF4444] rounded-3xl font-semibold"><PlusCircle />เพิ่มของรางวัล</Button>
 		</div>
 	</div>
 	<div class="w-full h-full px-9">

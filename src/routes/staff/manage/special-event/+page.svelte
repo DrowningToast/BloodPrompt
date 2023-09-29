@@ -5,10 +5,11 @@
     import { Button } from "$lib/components/ui/button";
     import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
+    import Dropdown from '../../../moderator/home/dropdown.svelte';
 
 </script>
-<div class="flex flex-row w-full justify-between bg-gray-300 max-w-[100vw] min-h-[100vh] h-full">
-    <div class="flex flex-col bg-[#191F2F] w-3/12 h-full">
+<div class="flex flex-row w-full justify-between bg-gray-300 max-w-[100vw] min-h-[100vh">
+    <div class="flex flex-col bg-[#191F2F] w-3/12 h-100%">
 		<div class="flex flex-row px-8 py-16 justify-center">
 			<img src={bloodPromptLogo} alt="" class="w-16" />
 			<h1 class="translate-y-4 text-xl font-bold text-white px-3">BLOODPROMPT</h1>
@@ -59,13 +60,17 @@
 
 		</div>
 	</div>
-    <div class="flex flex-col items-center w-9/12">
-        <div class="flex relative items-center bg-white px-14  w-full h-16 py-6 justify-center">
-            <h1 class="flex font-bold text-lg">โรงพยาบาลลาดกระบัง</h1>
-            <div class="flex gap-3 items-center absolute left-[929px]">
-                <UserCircle class="fill-[#EF4444] stroke-white scale-150"/>
-                <p>บุคคลากรทางการแพทย์</p>
-            </div>
+    <div class="flex flex-col items-center w-9/12 h-full">
+        <div class="w-full h-16 bg-white grid grid-cols-3 items-center justify-center px-8">
+			<div class="items-center justify-center flex" />
+			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
+			<div class="items-center justify-end flex gap-2">
+				<div class="flex flex-row items-center gap-1">
+                    <UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8"/>
+                    <h1 class="font-bold ">ศรุตา โทรัตน์</h1>
+                        <Dropdown/> 
+                </div>
+			</div>
         </div>
         <div class="flex flex-col w-full justify-start pt-8 pl-20">
             <p class="text-black text-2xl font-bold">จัดการกิจกรรมพิเศษ</p>
@@ -88,8 +93,8 @@
                     <p class="font-bold pl-8">01/08/2023 08:00 - 12/08/2023 16:00</p>
                 </div>
                 <div class="flex justify-end gap-6 mt-auto">
-                    <Button class="flex self-center text-[#EF4444] border-[#EF4444] border-2 w-32 h-10 gap-1 bg-white rounded-3xl">แก้ไข</Button>
-                    <Button class="flex self-center text-white rounded-3xl w-32 h-10 gap-1 bg-[#EF4444] rounded-3xls">ลบ</Button>
+                    <Button class="flex self-center text-[#EF4444] border-[#EF4444] border-2 w-32 h-10 gap-1 bg-white hover:bg-white rounded-3xl">แก้ไข</Button>
+                    <Button class="flex self-center text-white rounded-3xl w-32 h-10 gap-1 bg-[#EF4444] hover:bg-[#EF4444] rounded-3xls">ลบ</Button>
                 </div>
             </div>
         </div>

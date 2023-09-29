@@ -11,7 +11,6 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
     
-    
     const staff_information = [
         {
           id : "1",
@@ -84,7 +83,7 @@
     </div>
     <div class="flex flex-col items-center w-9/12">
         <div class="flex items-center bg-white px-14 h-16 w-full  py-6 flex-row justify-between">
-            <h1 class=" font-bold text-xl">BloodPrompt (สำหรับผู้ดูเเลระบบ)</h1>
+            <h1 class="text-2xl font-semibold ">BloodPrompt (สำหรับผู้ดูเเลระบบ)</h1>
             <div class="flex gap-3 items-center">
                 <UserCircle class="fill-[#EF4444] stroke-white scale-150"/>
                 <p>ผู้ดูแลระบบ</p>
@@ -123,7 +122,7 @@
                         <div class="flex gap-6">
                             <input type="text" placeholder="ระบุชื่อของบุคลากรการเเพทย์เพื่อทำการค้นหา" class="bg-white w-[425px] h-[50px] p-5 rounded-xl">
                             <!-- button -->
-                            <Button class="flex self-center gap-1 w-[107px] h-11 bg-[#EF4444] rounded-3xls">
+                            <Button class="flex self-center gap-1 w-[107px] h-11 bg-[#EF4444] hover:bg-[#EF4444] rounded-3xls">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
                             </svg>
                             ค้นหา
@@ -174,16 +173,17 @@
                                                         <div class="flex flex-col gap-[10px]">
                                                             <Input id="name" value={info.password} type = "password" class="border-2 rounded-xl" />
                                                             <Input id="username" value={info.password} type = "password" class="border-2 rounded-xl" />
-                                                        </div>
+                                                        </div>s
                                                     </div>
                                              </div>
                                       <Dialog.Footer>
-                                        <Button type="submit" variant = "outline" class="rounded-3xl bg-[#EF4444] text-base font-semibold text-white w-[140px] h-11 ">บันทึกข้อมูล</Button>
+                                        
+                                        <Button type="submit" class="rounded-3xl bg-[#EF4444] hover:bg-[#EF4444] text-base font-semibold text-white w-[140px] h-11 ">บันทึกข้อมูล</Button>
                                       </Dialog.Footer>
                                     </Dialog.Content>
                                   </Dialog.Root>
                             </Table.Cell>
-                        </Table.Row>
+                        </Table.Row>s
                         {/each}
                         <!-- Finish column information showing -->
                     </Table.Body>

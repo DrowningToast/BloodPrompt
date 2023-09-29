@@ -71,10 +71,10 @@
     </div>
     <div class="flex flex-col items-center w-9/12">
         <div class="flex items-center bg-white px-14  w-full h-16  py-6 flex-row justify-between">
-            <h1 class=" font-bold text-lg">BloodPrompt (สำหรับผู้ดูเเลระบบ)</h1>
+            <h1 class=" text-2xl font-semibold">BloodPrompt (สำหรับผู้ดูเเลระบบ)</h1>
             <div class="flex gap-3 items-center">
                 <UserCircle class="fill-[#EF4444] stroke-white scale-150"/>
-                <p>ผู้ดูแลระบบ</p>
+                <p>ผู้ดูแลระบบ</p> 
                 <Dropdown></Dropdown>
         </div>
     </div>
