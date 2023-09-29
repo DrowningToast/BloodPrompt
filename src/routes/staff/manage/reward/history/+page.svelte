@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PageData } from './$types';
+	import type { PageData } from '../rewardHistory/$types';
 	import bloodPromptLogo from '$lib/images/bloodprompt-logo.png';
 	import {
 		Home,
