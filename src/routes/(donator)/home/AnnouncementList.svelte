@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import Announcement from './Announcement.svelte';
+	import type { Announcements } from '@prisma/client';
+	import AnnouncementPost from './AnnouncementPost.svelte';
 	import type { ComponentProps } from 'svelte';
 
-	type AnnouncementProps = ComponentProps<Announcement>;
-	const data: AnnouncementProps[] = [{}, { emergencyBloodType: 'A' }];
+	export let data: Announcements[] = [];
 </script>
 
 <div class="flex flex-col gap-y-4 pt-4">
@@ -15,7 +15,12 @@
 				goto('/announcement/' + '01');
 			}}
 		>
-			<Announcement {...announcement} />
+			<AnnouncementPost
+				title={announcement.title}
+				desc={announcement.content}
+				postedDate={announcement.created_at}
+				emergencyBloodType={`${announcement.blood_type}`}
+			/>
 		</button>
 		{#if data.length > 1}
 			<hr />
