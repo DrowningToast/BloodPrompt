@@ -1,7 +1,7 @@
 <script lang="ts">
     import sEventImg from '$lib/images/staff/reward/reward1.png';
     import { Home, LogOut, UserCircle, FileText, Gift, CalendarHeart, PlusCircle, History } from 'lucide-svelte';
-    import bloodPromptLogo from '$lib/images/moderator/login/bloodprompt-logo.png';
+    import bloodPromptLogo from '$lib/images/bloodprompt-logo.png';
     import { Button } from "$lib/components/ui/button";
 	import Reward from './reward.svelte';
 	import rewardImage from "$lib/images/staff/reward/reward1.png"
@@ -69,7 +69,7 @@
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
                     on:click={()=>{
                         if (browser) {
-                        goto('/staff/reservation')
+                        goto('/staff/manage/reservation')
                     }}}
 				><FileText class="w-5 h-5" />การจองคิว</Button>
 
