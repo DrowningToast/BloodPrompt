@@ -30,20 +30,21 @@
     let image_src:string = "";
 
     const addRewardHandler = async () => {
-        console.log(name,
-                        description,
-                        required_points,
-                        amount_left,);
         const temptData = {
                         name : name,
                         description : description,
                         required_points: parseInt(required_points),
                         amount_left : parseInt(amount_left),
                     };
-        console.log(temptData);
         await trpc.reward.create
             .mutate(temptData)
-            .then(()=>{console.log("success")})
+            .finally(()=>{
+                name = "";
+                description = "";
+                required_points = "";
+                amount_left = "";
+                image_src = "";
+            })
     }
 
 
