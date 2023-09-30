@@ -4,6 +4,7 @@ import { donatorsRouter } from './routes/donatorsRouter';
 import { authRouter } from './routes/authRouter';
 import { placesRouter } from './routes/placesRouter';
 import { medicalStaffRouter } from './routes/medicalStaffRouter';
+import { rewardRouter } from './routes/rewardRouter';
 import { moderatorRoutes } from './routes/moderatorsRoutes';
 
 export const appRouter = createRouter({
