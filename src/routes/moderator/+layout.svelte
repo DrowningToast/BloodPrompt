@@ -1,8 +1,7 @@
 <script lang="ts">
-	import BottomNavBar from '$lib/components/svelte/navbar/BottomNavBar.svelte';
+	import { goto } from '$app/navigation';
 	import { trpc } from '$lib/trpc';
 	import type { LayoutData } from './$types';
-	import { goto } from '$app/navigation';
 
 	export let data: LayoutData;
 
@@ -11,7 +10,7 @@
 		.then((res) => {
 			if (!res) {
 				alert('โปรดเข้าสู่ระบบเพื่อดำเนินการต่อ...');
-				goto('/login');
+				goto('/staff/login');
 			}
 		})
 		.catch((error) => console.error(error));
@@ -21,8 +20,4 @@
 	<main>
 		<slot />
 	</main>
-
-	<div class="max-w-[90%] mx-auto">
-		<BottomNavBar />
-	</div>
 </div>

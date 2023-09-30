@@ -29,7 +29,7 @@
 					>{toDateString(donateDate)}</span
 				>
 				เวลา
-				<span class="font-semibold">{donateTime}</span>
+				<span class="font-semibold">{donateTime.toFixed(2)}</span>
 				ที่ <span class="font-semibold">{placeName}</span>
 			</p>
 

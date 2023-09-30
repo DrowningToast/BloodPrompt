@@ -4,6 +4,8 @@ import { encodePassword } from '$lib/utils';
 import { donatorsController } from '../database/controllers/donatorsController';
 import { signUpRegister } from '$lib/zod/donatorRegister';
 import { sessionController } from '../database/controllers/sessionController';
+import { z } from 'zod';
+import prisma from '../database';
 
 export const donatorsRouter = createRouter({
 	signUp: publicProcedure.input(signUpRegister).mutation(async ({ input, ctx }) => {
@@ -43,5 +45,46 @@ export const donatorsRouter = createRouter({
 		ctx.opts.resHeaders.append('Set-Cookie', `session-token=${session.session_token}`);
 
 		return res;
-	})
+	}),
+	findById: publicProcedure
+		.input(
+			z.object({
+				donatorId: z.string()
+			})
+		)
+		.query(async ({ input }) => {
+			const { donatorId } = input;
+			const user = await prisma.donators.findUnique({
+				where: {
+					id: donatorId
+				}
+			});
+			return user;
+		}),
+	updateById: publicProcedure
+		.input(
+			z.object({
+				donatorId: z.string(),
+				data: z.object({
+					address: z.string().optional(),
+					email: z.string().optional(),
+					password: z.string().optional()
+				})
+			})
+		)
+		.mutation(async ({ input }) => {
+			const { donatorId, data } = input;
+			if (data?.password) {
+				data.password = encodePassword(data.password);
+			}
+			const result = await prisma.donators.update({
+				data: {
+					...data
+				},
+				where: {
+					id: donatorId
+				}
+			});
+			return result;
+		})
 });
