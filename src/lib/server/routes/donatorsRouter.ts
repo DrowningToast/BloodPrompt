@@ -86,5 +86,9 @@ export const donatorsRouter = createRouter({
 				}
 			});
 			return result;
-		})
+		}),
+	findAll: publicProcedure.query(async () => {
+		const donators = await prisma.donators.findMany();
+		return donators;
+	})
 });

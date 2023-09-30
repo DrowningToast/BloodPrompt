@@ -5,6 +5,7 @@ import { authRouter } from './routes/authRouter';
 import { placesRouter } from './routes/placesRouter';
 import { medicalStaffRouter } from './routes/medicalStaffRouter';
 import { rewardRouter } from './routes/rewardRouter';
+import { moderatorRoutes } from './routes/moderatorsRoutes';
 
 export const appRouter = createRouter({
 	greet: publicProcedure
@@ -21,7 +22,7 @@ export const appRouter = createRouter({
 	auth: authRouter,
 	places: placesRouter,
 	medicalStaff: medicalStaffRouter,
-	reward: rewardRouter
+	moderator: moderatorRoutes
 });
 
 export type AppRouter = typeof appRouter;
