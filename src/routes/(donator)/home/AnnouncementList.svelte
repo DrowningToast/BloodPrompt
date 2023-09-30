@@ -12,7 +12,7 @@
 		<button
 			class=" text-left"
 			on:click={() => {
-				goto('/announcement/' + '01');
+				goto('/announcement/' + announcement.id);
 			}}
 		>
 			<AnnouncementPost
@@ -20,6 +20,8 @@
 				desc={announcement.content}
 				postedDate={announcement.created_at}
 				emergencyBloodType={`${announcement.blood_type}`}
+				post_type={announcement.post_type}
+				post_img={announcement.image_src}
 			/>
 		</button>
 		{#if data.length > 1}

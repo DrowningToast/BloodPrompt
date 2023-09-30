@@ -7,7 +7,15 @@
 	import AnnouncementList from './AnnouncementList.svelte';
 	import SurveyCard from '$lib/components/svelte/card/survey/SurveyCard.svelte';
 
-	let filter : 
+	// TODO: Searchbar Functionality
+
+	// let searchFilter = {
+	// 	bloodType: 'A',
+	// 	province: 'กรุงเทพมหานคร',
+	// 	district: 'ทุ่งครุ',
+	// 	subDistrict: 'บางมด',
+	// 	placeName: 'โรงพยาบาลพระจอมเกล้าเจ้าคุณทหาร'
+	// };
 
 	export let data: PageData;
 </script>
