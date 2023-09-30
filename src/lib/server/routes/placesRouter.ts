@@ -5,7 +5,13 @@ import { PlacesCreateInputSchema } from '../database';
 
 export const placesRouter = createRouter({
 	findAll: publicProcedure.query(async () => {
-		const places = await prisma.places.findMany();
+		const places = await prisma.places.findMany({
+			where: {
+				deleted_at: {
+					equals: null
+				}
+			}
+		});
 		return places;
 	}),
 	findById: publicProcedure.input(z.object({ placeId: z.string() })).query(async ({ input }) => {
@@ -13,6 +19,9 @@ export const placesRouter = createRouter({
 		const place = await prisma.places.findUnique({
 			where: {
 				id: placeId
+			},
+			include: {
+				Medical_Staff: true
 			}
 		});
 		return place;
@@ -52,6 +61,11 @@ export const placesRouter = createRouter({
 			},
 			data: {
 				deleted_at: new Date()
+			}
+		});
+		await prisma.medical_Staff.deleteMany({
+			where: {
+				place_id: place.id
 			}
 		});
 		return place;
