@@ -4,15 +4,12 @@
     import bloodPromptLogo from '$lib/images/moderator/login/bloodprompt-logo.png';
     import { Button } from "$lib/components/ui/button";
 	import Reward from './reward.svelte';
-	import rewardImage from "$lib/images/staff/reward/reward1.png"
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import Dropdown from '../../../moderator/home/dropdown.svelte';
-	import { trpc } from '$lib/trpc';
-	import type { Rewards } from '../../../../../generated-zod';
 	import type { PageData } from './$types';
 	export let data:PageData;
-	let rewards = data.rewards;
+	let rewards = data.filteredRewards;
 	
 </script>
 <div class="flex flex-row w-full justify-between bg-gray-300 max-w-[100vw] min-h-[100vh]">

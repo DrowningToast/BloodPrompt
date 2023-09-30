@@ -20,7 +20,6 @@
         reader.onload = e => {
      	    reward = e.target.result
         };
-
     }
 
     let name:string = "";
@@ -135,7 +134,7 @@
             </div>
             <div class="flex justify-between items-center gap-4">
                 <Button on:click={addRewardHandler} class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white hover:bg-[#EF4444]"><PlusCircle class="fill-white stroke-[#EF4444]" />เพิ่มของรางวัล</Button>
-                <Button class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white">ยกเลิกการเพิ่ม</Button>
+                <Button on:click={()=>{goto("/staff/manage/reward")}} class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white">ยกเลิกการเพิ่ม</Button>
             </div>
         </div>
         <div class="flex flex-col justify-start items-center h-full w-full px-14 py-2">

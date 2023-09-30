@@ -35,5 +35,15 @@ export const rewardRouter = createRouter({
 	getAllRewards: publicProcedure.query(async () => {
 		const allRewards = await prisma.rewards.findMany();
 		return allRewards;
+	}),
+	delete: publicProcedure.input(z.string()).mutation(async ({ input }) => {
+		await prisma.rewards.update({
+			where: {
+				id: input
+			},
+			data: {
+				deleted_at: new Date()
+			}
+		});
 	})
 });
