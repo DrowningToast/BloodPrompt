@@ -6,6 +6,7 @@
 	export let name: string;
 	export let address: string;
 	export let rating: number = 0;
+	export let ratingCount: number = 0;
 	export let imageSrc: string = '';
 	export let onClick: () => void;
 </script>
@@ -27,6 +28,7 @@
 					<Star class="text-yellow-500 w-5" />
 				{/if}
 			{/each}
+			<span>({ratingCount})</span>
 		</div>
 		<Button
 			class="rounded-2xl bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600"

@@ -17,6 +17,7 @@
 		goto('/history/donation/' + donationHistoryId + '/survey');
 	}}
 >
+	<!-- Currently not checked by the API -->
 	<Card.Root class="rounded-xl shadow">
 		<Card.Content class="p-4">
 			<div class="flex flex-row items-center gap-2">

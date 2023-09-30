@@ -3,18 +3,22 @@
 	import { CalendarClock, Clock, Globe, Mail, MapPin, Phone, Star } from 'lucide-svelte';
 	import type { Places } from '../../../../../generated-zod';
 	import { Button } from '$lib/components/ui/button';
-	import { selectedPlace } from '$lib/stores/reservationStores';
 	import { goto } from '$app/navigation';
 	import { getFormattedOpeningDate } from '$lib/utils';
 
-	export let rating: number = 5.0;
-	export let open: boolean = false;
+	export let rating: number = 0;
+	export let rating_count: number = 0;
 	export let placeData: Places | null = null;
 	export let onClose: () => void;
 </script>
 
-{#if placeData}
-	<Dialog.Root {open} closeOnEscape={false} closeOnOutsideClick={false} onOpenChange={onClose}>
+{#if !!placeData}
+	<Dialog.Root
+		open={!!placeData}
+		closeOnEscape={false}
+		closeOnOutsideClick={false}
+		onOpenChange={onClose}
+	>
 		<Dialog.Content class="max-w-[90vw] rounded-xl p-0">
 			<Dialog.Header>
 				<img src={placeData.image_src} alt="palce_image" class=" rounded-t-xl" />
@@ -47,7 +51,7 @@
 								{/if}
 							{/each}
 							<p class="text-slate-500 text-xs">
-								<span class="text-[#F5222D] font-bold m-1">{rating}</span> (1933 รีวิว)
+								<span class="text-[#F5222D] font-bold m-1">{rating}</span> ({rating_count} รีวิว)
 							</p>
 						</div>
 					</div>
@@ -105,7 +109,6 @@
 				<Button
 					class="rounded-2xl bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600 w-36"
 					on:click={() => {
-						selectedPlace.set(placeData);
 						goto(`/reservation/${placeData?.id}/date`);
 					}}
 				>

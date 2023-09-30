@@ -15,7 +15,7 @@ export function daysInMonth(month: number, year: number) {
  * @param start
  * @param stop
  * @param step
- * @returns
+ * @return
  */
 export const ArrayRange = (start: number, stop: number, step: number) =>
 	Array.from({ length: (stop - start) / step + 1 }, (value, index) => start + index * step);
@@ -32,6 +32,14 @@ export const getAvilableDays = (availableHospitalDates: HospitalAvailability, mo
 		return d.date.getDate();
 	});
 	return _;
+};
+
+export const checkEquivalenceDate = (a: Date, b: Date) => {
+	return (
+		a.getFullYear() === b.getFullYear() &&
+		a.getMonth() === b.getMonth() &&
+		a.getDate() === b.getDate()
+	);
 };
 
 export const checkEquivalenceTime = (a: Date, b: Date) => {
