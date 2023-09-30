@@ -35,6 +35,8 @@
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Label } from '$lib/components/ui/label';
 	import wallet from '$lib/images/wallet.png';
+	import { browser } from '$app/environment';
+	import { goto } from '$app/navigation';
 </script>
 
 <div class="flex flex-row">
@@ -47,15 +49,27 @@
 			<div class="flex flex-col gap-8 w-full">
 				<Button
 					class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><Home class="w-5 h-5 " />หน้าหลัก</Button
+					on:click={() => {
+						if (browser) {
+							goto('/staff/home');
+						}
+					}}><Home class="w-5 h-5 " />หน้าหลัก</Button
 				>
 				<Button
 					class="flex justify-start items-center gap-3 bg-[#EF4444] hover:bg-[#ef4444] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><FileText class="w-5 h-5" />การจองคิว</Button
+					on:click={() => {
+						if (browser) {
+							goto('/staff/manage/reservation');
+						}
+					}}><FileText class="w-5 h-5" />การจองคิว</Button
 				>
 				<Button
 					class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><Gift class="w-5 h-5" />จัดการรางวัล</Button
+					on:click={() => {
+						if (browser) {
+							goto('/staff/manage/reward');
+						}
+					}}><Gift class="w-5 h-5" />จัดการรางวัล</Button
 				>
 				<Button
 					class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"

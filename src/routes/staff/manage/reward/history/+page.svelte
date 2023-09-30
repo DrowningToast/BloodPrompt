@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { PageData } from '../rewardHistory/$types';
 	import bloodPromptLogo from '$lib/images/bloodprompt-logo.png';
 	import {
 		Home,
@@ -14,7 +13,7 @@
 		Search,
 		Wallet
 	} from 'lucide-svelte';
-	export let data: PageData;
+
 	import { Input } from '$lib/components/ui/input';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
