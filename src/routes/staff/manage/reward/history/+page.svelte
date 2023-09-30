@@ -20,6 +20,8 @@
 	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import * as Select from '$lib/components/ui/select';
 	import * as Table from '$lib/components/ui/table';
+	import { browser } from '$app/environment';
+	import { goto } from '$app/navigation';
 	let position = 'bottom';
 </script>
 
@@ -33,24 +35,44 @@
 			<div class="flex flex-col gap-8 w-full">
 				<Button
 					class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><Home class="w-5 h-5 " />หน้าหลัก</Button
+					on:click={() => {
+						if (browser) {
+							goto('/staff/home');
+						}
+					}}><Home class="w-5 h-5 " />หน้าหลัก</Button
 				>
 				<Button
 					class="flex justify-start items-center gap-3 bg-[#191F2F]  text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><FileText class="w-5 h-5" />การจองคิว</Button
+					on:click={() => {
+						if (browser) {
+							goto('/staff/manage/reservation');
+						}
+					}}><FileText class="w-5 h-5" />การจองคิว</Button
 				>
 				<Button
 					class="flex justify-start items-center gap-3 bg-[#EF4444] hover:bg-[#ac3232] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><Gift class="w-5 h-5" />จัดการรางวัล</Button
+					on:click={() => {
+						if (browser) {
+							goto('/staff/manage/reward');
+						}
+					}}><Gift class="w-5 h-5" />จัดการรางวัล</Button
 				>
 				<Button
 					class="flex justify-start items-center gap-3 bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					><CalendarHeart class="w-5 h-5" />จัดการกิจกรรมหรือแคมเปญ</Button
+					on:click={() => {
+						if (browser) {
+							goto('/staff/manage/special-event');
+						}
+					}}><CalendarHeart class="w-5 h-5" />จัดการกิจกรรมหรือแคมเปญ</Button
 				>
 			</div>
 			<Button
 				class="flex justify-start gap-2 text-white text-start px-6 py-3 items-center bg-[#191F2F] mb-9"
-				><LogOut class="mr-2 h-5    w-5 stroke-white" />ออกจากระบบ</Button
+				on:click={() => {
+					if (browser) {
+						goto('/staff/login');
+					}
+				}}><LogOut class="mr-2 h-5    w-5 stroke-white" />ออกจากระบบ</Button
 			>
 		</div>
 	</div>
