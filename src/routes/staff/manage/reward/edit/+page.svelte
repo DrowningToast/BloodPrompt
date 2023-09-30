@@ -1,7 +1,7 @@
 <script lang="ts">
 
-    import { Home, LogOut, CalendarHeart,FileText , UserCircle, Gift, PlusCircle, Image, Info} from 'lucide-svelte';
-    import bloodpromptlogo from '$lib/images/bloodprompt-logo.png';
+    import { Home, LogOut, CalendarHeart,FileText , UserCircle, Gift, Save , Image, Info} from 'lucide-svelte';
+    import bloodpromptlogo from '$lib/images/staff/bloodprompt-logo.png';
     import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
     import { Button } from "$lib/components/ui/button";
     import { ChevronDown } from "lucide-svelte";
@@ -44,7 +44,7 @@
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
                     on:click={()=>{
                         if (browser) {
-                        goto('/staff/ reservation')
+                        goto('/staff/reservation')
                     }}}
 				><FileText class="w-5 h-5" />การจองคิว</Button>
 
@@ -66,7 +66,7 @@
 			</div>
 			<Button
 				class="flex justify-start gap-2 text-white text-start px-6 py-3 items-center bg-[#191F2F] mb-9" on:click={()=>{
-                    if (browser) {
+                    if(browser){
                         goto('/staff/login')
                     }
                 }}
@@ -105,16 +105,16 @@
         <!-- content -->
         <div class="flex flex-row items-center justify-between px-14 h-32 w-full">
             <div class="flex flex-col">
-                <p class="font-bold text-xl">กาารเพิ่มรางวัล</p>
-                <p class="text-base text-gray-500">สามารถเพิ่มหรือแก้ไขข้อมูลของรางวัล</p>
+                <p class="font-bold text-xl">การแก้ไขของรางวัล</p>
+                <p class="text-base text-gray-500">สามารถแก้ไขข้อมูลของรางวัล</p>
             </div>
             <div class="flex justify-between items-center gap-4">
-                <Button class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white hover:bg-[#EF4444]"><PlusCircle class="fill-white stroke-[#EF4444]" />เพิ่มของรางวัล</Button>
+                <Button class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-4 py-4 text-base font-bold text-white hover:bg-[#EF4444]"><Save  class=" stroke-white w-5" />บันทึกข้อมูล</Button>
                 <Button class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white" on:click={()=>{
                     if (browser) {
                         goto('/staff/manage/reward')
                     }
-                }}>ยกเลิกการเพิ่ม</Button>
+                }}>ยกเลิกการแก้ไข</Button>
             </div>
         </div>
         <div class="flex flex-col justify-start items-center h-full w-full px-14 py-2">

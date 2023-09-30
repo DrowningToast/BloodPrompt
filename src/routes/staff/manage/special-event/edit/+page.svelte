@@ -1,6 +1,6 @@
 <script lang="ts">
 
-    import { Home, LogOut, CalendarDays, UserCircle, FileText, Gift, CalendarHeart, PlusCircle, Image, Info,Eye, Trash2 } from 'lucide-svelte';
+    import { Home, LogOut, CalendarDays, UserCircle, FileText, Gift, CalendarHeart, Lock, PlusCircle, Image, Info,Eye, Trash2 } from 'lucide-svelte';
     import bloodpromptlogo from '$lib/images/bloodprompt-logo.png';
     import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
     import { Button } from "$lib/components/ui/button";
@@ -106,12 +106,12 @@
         <!-- content -->
         <div class="flex flex-row items-center justify-between px-14 h-32 w-full">
             <div class="flex flex-col">
-                <p class="font-bold text-xl">จัดการกิจกรรมพิเศษ</p>
-                <p class="text-base text-gray-500">สามารถจัดการกิจกรรมพิเศษจองสถานที่นั้นๆ</p>
+                <p class="font-bold text-xl">แก้ไขข้อมูลกิจกรรมพิเศษ</p>
+                <p class="text-base text-gray-500">สามารถแก้ไขข้อมูลของกิจกรรมพิเศษจองสถานที่นั้นๆ</p>
             </div>
             <div class="flex justify-between items-center gap-4">
-                <Button class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-10 py-4 text-base font-bold text-white hover:bg-[#EF4444]"><PlusCircle class="fill-white stroke-[#EF4444]" />เพิ่มกิจกรรมพิเศษ</Button>
-                <Button class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white">ยกเลิกการเพิ่ม</Button>
+                <Button class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-10 py-4 text-base font-bold text-white hover:bg-[#EF4444]">บันทึกข้อมูล</Button>
+                <Button class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white">ยกเลิกการแก้ไข</Button>
             </div>
         </div>
         <div class="flex flex-col justify-start items-center h-full w-full px-14 py-2">
