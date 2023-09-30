@@ -6,18 +6,29 @@
 	import { get24HoursTimeString } from '../date/utils';
 	import { trpc } from '$lib/trpc';
 	import { goto } from '$app/navigation';
+	import { preFeedbackStore } from '$lib/stores/preFeedback';
+	import { onMount } from 'svelte';
 
 	export let data: PageData;
 	const { dateTime, hospitalData } = data;
-	$: console.log(dateTime);
+
 	const handleClick = async () => {
 		const response = await trpc.reservation.reserve.mutate({
 			placeId: hospitalData.id,
-			timeSlotInMillisecond: dateTime.getTime()
+			timeSlotInMillisecond: dateTime.getTime(),
+			preFeedback: $preFeedbackStore
 		});
 
 		await goto(`/history/reservation/${response.id}/confirm`);
 	};
+
+	onMount(async () => {
+		console.log($preFeedbackStore.Pre_Feedback_Answers.length);
+		if ($preFeedbackStore.Pre_Feedback_Answers.length > 0) {
+		} else {
+			await goto('/reservation/survey');
+		}
+	});
 </script>
 
 <div class="min-h-screen flex flex-col pb-8">

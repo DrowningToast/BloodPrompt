@@ -7,8 +7,8 @@ export const preFeedBackRouter = createRouter({
 		.input(
 			z.array(
 				z.object({
-					questionId: z.string(),
-					choiceId: z.string()
+					question_id: z.string(),
+					choice_id: z.string()
 				})
 			)
 		)
@@ -24,8 +24,9 @@ export const preFeedBackRouter = createRouter({
 			const hasAll = allQuestions.every((question) =>
 				input.find((answer) => {
 					return (
-						answer.questionId === question.id &&
-						question.Survey_Choices.find((choice) => choice.id === answer.choiceId)?.label === 'ใช่'
+						answer.question_id === question.id &&
+						question.Survey_Choices.find((choice) => choice.id === answer.choice_id)?.label ===
+							'ใช่'
 					);
 				})
 			);

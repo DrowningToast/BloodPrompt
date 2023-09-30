@@ -35,6 +35,7 @@
 				name={hospital.name}
 				address={hospital.description ?? ''}
 				rating={hospital.review.rating}
+				ratingCount={hospital.review.count}
 				imageSrc={hospital?.image_src ?? ''}
 				onClick={handleShowPlaceDetailsDialog(hospital)}
 			/>

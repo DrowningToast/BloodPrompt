@@ -9,6 +9,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import AlertDialog from '$lib/components/svelte/alert/AlertDialog.svelte';
 	import { trpc } from '$lib/trpc';
+	import { preFeedbackStore } from '$lib/stores/preFeedback';
 
 	export let data: PageData;
 	const { questions } = data;
@@ -52,16 +53,19 @@
 	};
 
 	const handleSubmit = async () => {
+		// console.log(await trpc.preFeedback.getLastFeedback.query());
+
 		const payload = Object.entries(answers).map((pair) => {
 			const questionId = pair[0];
 			const choiceId = Object.keys(pair[1])[0];
 			return {
-				questionId,
-				choiceId
+				question_id: questionId,
+				choice_id: choiceId
 			};
 		});
 
 		const pass = await trpc.preFeedback.checkFeedBack.query(payload);
+		$preFeedbackStore = { Pre_Feedback_Answers: payload };
 
 		isQualified = pass;
 

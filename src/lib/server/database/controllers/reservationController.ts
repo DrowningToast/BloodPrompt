@@ -23,6 +23,7 @@ const reservationController = {
 	createReservation: async (
 		donator: Prisma.DonatorsWhereUniqueInput,
 		place: Prisma.PlacesWhereUniqueInput,
+		preFeedback: Prisma.Pre_Donation_FeedbacksCreateInput,
 		timeSlot: Date
 	) => {
 		return await prisma.reservations.create({
@@ -39,6 +40,9 @@ const reservationController = {
 							connect: place
 						}
 					}
+				},
+				Pre_Donation_Feedbacks: {
+					create: preFeedback
 				}
 			}
 		});

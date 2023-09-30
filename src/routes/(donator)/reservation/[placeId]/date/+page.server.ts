@@ -1,6 +1,5 @@
 import prisma from '$lib/server/database';
 import {
-	mock_hospitalData,
 	type HospitalAvailability,
 	getDatesFrom,
 	DEFAULT_TIME_SLOT,
@@ -26,8 +25,6 @@ export const load = (async ({ params }) => {
 
 	const { placeId } = params;
 
-	console.log(placeId);
-
 	const alreadyReserved = await prisma.reservation_Slots.findMany({
 		where: {
 			Place: {
@@ -38,8 +35,6 @@ export const load = (async ({ params }) => {
 			}
 		}
 	});
-
-	console.log(alreadyReserved);
 
 	const availableDates = getDatesFrom(new Date(), 14).map((date) => ({
 		date,
@@ -55,14 +50,11 @@ export const load = (async ({ params }) => {
 		}))
 	}));
 
-	console.log(availableDates);
-
 	const hospitalAvailability: HospitalAvailability = {
 		id: placeId,
 		name: hospital.name,
 		availableDates
 	};
-	console.log(getDatesFrom(new Date(), 14));
 
 	// mock get hospital data from database
 	// const hospitalData: HospitalAvailability = mock_hospitalData(placeId);

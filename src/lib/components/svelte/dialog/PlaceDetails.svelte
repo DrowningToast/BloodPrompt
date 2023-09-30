@@ -6,7 +6,8 @@
 	import { goto } from '$app/navigation';
 	import { getFormattedOpeningDate } from '$lib/utils';
 
-	export let rating: number = 5.0;
+	export let rating: number = 0;
+	export let rating_count: number = 0;
 	export let placeData: Places | null = null;
 	export let onClose: () => void;
 </script>
@@ -50,7 +51,7 @@
 								{/if}
 							{/each}
 							<p class="text-slate-500 text-xs">
-								<span class="text-[#F5222D] font-bold m-1">{rating}</span> (1933 รีวิว)
+								<span class="text-[#F5222D] font-bold m-1">{rating}</span> ({rating_count} รีวิว)
 							</p>
 						</div>
 					</div>

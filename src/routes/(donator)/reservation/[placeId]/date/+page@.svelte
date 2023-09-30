@@ -3,12 +3,14 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Sheet from '$lib/components/ui/sheet';
 	import { trpc } from '$lib/trpc';
+	import { onMount } from 'svelte';
 	import ReservationHeader from '../../ReservationHeader.svelte';
 	import type { PageData } from './$types';
 	import ReservationCalendar from './ReservationCalendar.svelte';
 	import TimeButton from './TimeButton.svelte';
 	import { ArrayRange, get24HoursTimeString, getAvilableDays } from './utils';
 	import { Steps } from 'svelte-steps';
+	import { preFeedbackStore } from '$lib/stores/preFeedback';
 
 	export let data: PageData;
 	const thisMonthAvailableDates = getAvilableDays(data.hospitalData, new Date().getMonth());
@@ -53,6 +55,14 @@
 
 	const timeSlots = ArrayRange(9, 17, 1).map((hour) => {
 		return new Date(today.getFullYear(), today.getMonth(), today.getDate(), hour, 0);
+	});
+
+	onMount(async () => {
+		console.log($preFeedbackStore.Pre_Feedback_Answers.length);
+		if ($preFeedbackStore.Pre_Feedback_Answers.length > 0) {
+		} else {
+			await goto('/reservation/survey');
+		}
 	});
 
 	const handleConfirm = async () => {

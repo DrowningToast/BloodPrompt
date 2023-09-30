@@ -8,6 +8,7 @@ import {
 } from '../../../routes/(donator)/reservation/[placeId]/utils';
 import { get24HoursTimeString } from '../../../routes/(donator)/reservation/[placeId]/date/utils';
 import reservationController from '../database/controllers/reservationController';
+import { validatePreDonationFeedback } from '$lib/stores/preFeedback';
 
 export const reservationSlotsRouter = createRouter({
 	findByDate: publicProcedure
@@ -31,7 +32,8 @@ export const reservationSlotsRouter = createRouter({
 		.input(
 			z.object({
 				placeId: z.string(),
-				timeSlotInMillisecond: z.number()
+				timeSlotInMillisecond: z.number(),
+				preFeedback: validatePreDonationFeedback
 			})
 		)
 		.mutation(async ({ ctx, input }) => {
@@ -96,6 +98,13 @@ export const reservationSlotsRouter = createRouter({
 				},
 				{
 					id: placeId
+				},
+				{
+					Pre_Feedback_Answers: {
+						createMany: {
+							data: input.preFeedback.Pre_Feedback_Answers
+						}
+					}
 				},
 				timeSlot
 			);
