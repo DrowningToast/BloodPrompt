@@ -9,8 +9,6 @@
 	export let rating: number = 5.0;
 	export let placeData: Places | null = null;
 	export let onClose: () => void;
-
-	$: console.log(placeData);
 </script>
 
 {#if !!placeData}

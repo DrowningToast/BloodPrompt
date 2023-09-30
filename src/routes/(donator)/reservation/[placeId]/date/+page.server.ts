@@ -3,10 +3,11 @@ import {
 	mock_hospitalData,
 	type HospitalAvailability,
 	getDatesFrom,
-	DEFAULT_TIME_SLOT
+	DEFAULT_TIME_SLOT,
+	MAX_SEAT_PER_TIME_SLOT
 } from '../utils';
 import type { PageServerLoad } from './$types';
-import { checkEquivalenceDate } from './utils';
+import { checkEquivalenceDate, get24HoursTimeString } from './utils';
 
 export const load = (async ({ params }) => {
 	// check if placeId exists or not
@@ -38,18 +39,23 @@ export const load = (async ({ params }) => {
 		}
 	});
 
+	console.log(alreadyReserved);
+
 	const availableDates = getDatesFrom(new Date(), 14).map((date) => ({
 		date,
 		periods: DEFAULT_TIME_SLOT.map((time) => ({
 			...time,
 			available:
-				alreadyReserved.filter(
-					(reservation) =>
+				alreadyReserved.filter((reservation) => {
+					return (
 						checkEquivalenceDate(reservation.reserve_date, date) &&
-						reservation.reserve_time.toTimeString().split(' ')[0] === time.time
-				).length < 2 && time.available
+						get24HoursTimeString(reservation.reserve_time) === time.time
+					);
+				}).length < MAX_SEAT_PER_TIME_SLOT && time.available
 		}))
 	}));
+
+	console.log(availableDates);
 
 	const hospitalAvailability: HospitalAvailability = {
 		id: placeId,

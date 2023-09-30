@@ -23,7 +23,6 @@
 	<ReservationHeader href="/home">จองคิวรับบริจาคเลือด</ReservationHeader>
 	<!-- Dialog -->
 	<PlaceDetails
-		open={isShowPlaceDetailsDialog}
 		placeData={selectedPlace}
 		onClose={() => {
 			isShowPlaceDetailsDialog = false;

@@ -9,6 +9,7 @@
 
 	export let data: PageData;
 	const { dateTime, hospitalData } = data;
+	$: console.log(dateTime);
 	const handleClick = async () => {
 		const response = await trpc.reservation.reserve.mutate({
 			placeId: hospitalData.id,
