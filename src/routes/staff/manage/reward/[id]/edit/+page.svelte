@@ -36,9 +36,9 @@
 			.mutate({
 				data: {
 					name: name_value || '',
-					amount_left: amount_left_value || 0,
+					amount_left: Number(amount_left_value) || 0,
 					description: description_value || '',
-					required_points: required_points_value || 0,
+					required_points: Number(required_points_value) || 0,
 					image_src: image_src_value || ''
 				},
 				rewardId: currentReward?.id || '1'
@@ -235,12 +235,14 @@
 					/>
 					<Input
 						bind:value={required_points_value}
+						type="number"
 						placeholder="แต้มที่ต้องใช้แลกของรางวัล"
 						class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4"
 					/>
 					<Input
 						bind:value={amount_left_value}
 						placeholder="จำนวน"
+						type="number"
 						class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4"
 					/>
 				</div>

@@ -74,8 +74,6 @@
 
 					<p class="text-slate-500 text-sm mt-2">
 						{$selectedReward.rewardData.description}
-						{$selectedReward.rewardData.description}
-						{$selectedReward.rewardData.description}
 					</p>
 					<div class="text-left relative mt-6">
 						<p class="font-bold">{$selectedReward.placeData.name}</p>
