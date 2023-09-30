@@ -1,60 +1,42 @@
+import prisma, { Survey_ChoicesSchema } from '$lib/server/database';
+import { writable } from 'svelte/store';
 import type { PageServerLoad } from './$types';
+import { z } from 'zod';
+
+const validatePreSurveyQuestion = z.object({
+	id: z.string(),
+	label: z.string(),
+	is_required: z.boolean(),
+	description: z.string().nullable(),
+	choices: z.array(Survey_ChoicesSchema)
+});
+
+export type PreSurveyQuestion = z.infer<typeof validatePreSurveyQuestion>;
 
 export const load = (async () => {
+	const surveyQuestion = await prisma.survey_Questions.findMany({
+		include: {
+			Survey_Choices: true
+		}
+	});
+	const preSurveyQuestion = await surveyQuestion
+		.filter((question) => question.type === 'PRE_SURVEY')
+		.sort((q1, q2) => q1.order - q2.order)
+		.map((questions) => ({
+			...questions,
+			choices: questions.Survey_Choices.sort((a, b) => a.order - b.order)
+		}));
+
+	const questions: PreSurveyQuestion[] = preSurveyQuestion.map((question) => ({
+		id: question.id,
+		label: question.title,
+		is_required: question.is_required,
+		title: question.title,
+		description: question.description,
+		choices: question.Survey_Choices
+	}));
+
 	return {
-		questions: [
-			{
-				id: '1',
-				label:
-					'คุณมีอายุ 17 ปีบริบูรณ์ ณ วันที่จะทำการบริจาคเลือด และรับประทานอาหารประจำมื้อเรียบร้อยแล้ว'
-			},
-			{
-				id: '2',
-				label: 'คุณไม่มีอาการท้องร่วงหรือท้องเสียในช่วง 7 วันที่ผ่านมา'
-			},
-			{
-				id: '3',
-				label:
-					'คุณไม่ได้อยู่ในช่วงรับประทานยาแอสไพริน ยาคลายกล้ามเนื้อหรือยาแก้วปวดข้อ หรือยาแก้อักเสบ ในช่วง 7 วันที่ผ่านมา'
-			},
-			{
-				id: '4',
-				label:
-					'คุณหรือคนในครอบครัวไม่เป็นโรคหอบหืด ลมชัก โรคผิวหนัง ไอเรื้อรัง วัณโรค หรือโรคภูมิแพ้อื่น ๆ'
-			},
-			{
-				id: '5',
-				label:
-					'คุณหรือคนในครอบครัวไม่เป็นโรคตับอักเสบ โรคความดันโลหิตสูง เบาหวาน หัวใจ ได ไทรอยด์ หรือมะเร็ง'
-			},
-			{
-				id: '6',
-				label: 'คุณหรือคู่ของคุณไม่มีพฤติกรรมเสี่ยงทางเพศกับผู้อื่น'
-			},
-			{
-				id: '7',
-				label:
-					'ไม่ได้รับการผ่าตัดใหญ่ในช่วง 6 เดือนที่ผ่านมา หรือไ่ม่ได้รับการผ่าตัดเล็กในช่วง 1 เดือนที่ผ่านมา หรือไม่ได้ทำฟันภายใน 3 วันที่ผ่านมา'
-			},
-			{
-				id: '8',
-				label:
-					'ไม่มีการเจาะหู สัก ลบรอยสัก ฝังเข็มในช่วง 6 เดือนย้อนหลัง และไม่เคยมีประวัติยาเสพติด หรือพ้นโทษในระยะ 3 ปี'
-			},
-			{
-				id: '9',
-				label:
-					'ไม่เคยเจ็บป่วยที่ต้องรับโลหิตผู้อื่นในช่วง 1 ปีย้อนหลัง และไม่ได้มีการฉีดวัคซีนในช่วง 14 วันที่ผ่านมา'
-			},
-			{
-				id: '10',
-				label:
-					'ไม่มีประวัติการเดินทางไปในพื้นที่แพร่ระบาดของโรคติดต่อในช่วง 1 ปีที่ผ่านมา และไม่เคยป่วยเป็นโรคมาลาเรีย'
-			},
-			{
-				id: '11',
-				label: 'ไม่อยู่ระหว่างมีประจำเดือน และไม่ได้คลอดบุตรหรือแท้งบุตรในช่วง 6 เดือนที่ผ่านมา'
-			}
-		]
+		questions
 	};
 }) satisfies PageServerLoad;

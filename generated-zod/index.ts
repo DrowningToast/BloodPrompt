@@ -328,7 +328,7 @@ export type Reservations = z.infer<typeof ReservationsSchema>
 
 export const Pre_Feedback_AnswersSchema = z.object({
   id: z.string().cuid(),
-  reservation_id: z.string(),
+  reservation_id: z.string().nullable(),
   question_id: z.string(),
   choice_id: z.string(),
 })
@@ -2187,17 +2187,17 @@ export const Pre_Feedback_AnswersWhereInputSchema: z.ZodType<Prisma.Pre_Feedback
   OR: z.lazy(() => Pre_Feedback_AnswersWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => Pre_Feedback_AnswersWhereInputSchema),z.lazy(() => Pre_Feedback_AnswersWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  reservation_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  reservation_id: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   question_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   choice_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   Survey_Question: z.union([ z.lazy(() => Survey_QuestionsRelationFilterSchema),z.lazy(() => Survey_QuestionsWhereInputSchema) ]).optional(),
   Survey_Choice: z.union([ z.lazy(() => Survey_ChoicesRelationFilterSchema),z.lazy(() => Survey_ChoicesWhereInputSchema) ]).optional(),
-  Reservation: z.union([ z.lazy(() => ReservationsRelationFilterSchema),z.lazy(() => ReservationsWhereInputSchema) ]).optional(),
+  Reservation: z.union([ z.lazy(() => ReservationsNullableRelationFilterSchema),z.lazy(() => ReservationsWhereInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const Pre_Feedback_AnswersOrderByWithRelationInputSchema: z.ZodType<Prisma.Pre_Feedback_AnswersOrderByWithRelationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  reservation_id: z.lazy(() => SortOrderSchema).optional(),
+  reservation_id: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   question_id: z.lazy(() => SortOrderSchema).optional(),
   choice_id: z.lazy(() => SortOrderSchema).optional(),
   Survey_Question: z.lazy(() => Survey_QuestionsOrderByWithRelationInputSchema).optional(),
@@ -2213,17 +2213,17 @@ export const Pre_Feedback_AnswersWhereUniqueInputSchema: z.ZodType<Prisma.Pre_Fe
   AND: z.union([ z.lazy(() => Pre_Feedback_AnswersWhereInputSchema),z.lazy(() => Pre_Feedback_AnswersWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => Pre_Feedback_AnswersWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => Pre_Feedback_AnswersWhereInputSchema),z.lazy(() => Pre_Feedback_AnswersWhereInputSchema).array() ]).optional(),
-  reservation_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  reservation_id: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   question_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   choice_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   Survey_Question: z.union([ z.lazy(() => Survey_QuestionsRelationFilterSchema),z.lazy(() => Survey_QuestionsWhereInputSchema) ]).optional(),
   Survey_Choice: z.union([ z.lazy(() => Survey_ChoicesRelationFilterSchema),z.lazy(() => Survey_ChoicesWhereInputSchema) ]).optional(),
-  Reservation: z.union([ z.lazy(() => ReservationsRelationFilterSchema),z.lazy(() => ReservationsWhereInputSchema) ]).optional(),
+  Reservation: z.union([ z.lazy(() => ReservationsNullableRelationFilterSchema),z.lazy(() => ReservationsWhereInputSchema) ]).optional().nullable(),
 }).strict());
 
 export const Pre_Feedback_AnswersOrderByWithAggregationInputSchema: z.ZodType<Prisma.Pre_Feedback_AnswersOrderByWithAggregationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  reservation_id: z.lazy(() => SortOrderSchema).optional(),
+  reservation_id: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   question_id: z.lazy(() => SortOrderSchema).optional(),
   choice_id: z.lazy(() => SortOrderSchema).optional(),
   _count: z.lazy(() => Pre_Feedback_AnswersCountOrderByAggregateInputSchema).optional(),
@@ -2236,7 +2236,7 @@ export const Pre_Feedback_AnswersScalarWhereWithAggregatesInputSchema: z.ZodType
   OR: z.lazy(() => Pre_Feedback_AnswersScalarWhereWithAggregatesInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => Pre_Feedback_AnswersScalarWhereWithAggregatesInputSchema),z.lazy(() => Pre_Feedback_AnswersScalarWhereWithAggregatesInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
-  reservation_id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  reservation_id: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   question_id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   choice_id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
 }).strict();
@@ -3742,12 +3742,12 @@ export const Pre_Feedback_AnswersCreateInputSchema: z.ZodType<Prisma.Pre_Feedbac
   id: z.string().cuid().optional(),
   Survey_Question: z.lazy(() => Survey_QuestionsCreateNestedOneWithoutPre_Feedback_AnswersInputSchema),
   Survey_Choice: z.lazy(() => Survey_ChoicesCreateNestedOneWithoutPre_Feedback_AnswersInputSchema),
-  Reservation: z.lazy(() => ReservationsCreateNestedOneWithoutPre_Feedback_AnswersInputSchema)
+  Reservation: z.lazy(() => ReservationsCreateNestedOneWithoutPre_Feedback_AnswersInputSchema).optional()
 }).strict();
 
 export const Pre_Feedback_AnswersUncheckedCreateInputSchema: z.ZodType<Prisma.Pre_Feedback_AnswersUncheckedCreateInput> = z.object({
   id: z.string().cuid().optional(),
-  reservation_id: z.string(),
+  reservation_id: z.string().optional().nullable(),
   question_id: z.string(),
   choice_id: z.string()
 }).strict();
@@ -3756,19 +3756,19 @@ export const Pre_Feedback_AnswersUpdateInputSchema: z.ZodType<Prisma.Pre_Feedbac
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   Survey_Question: z.lazy(() => Survey_QuestionsUpdateOneRequiredWithoutPre_Feedback_AnswersNestedInputSchema).optional(),
   Survey_Choice: z.lazy(() => Survey_ChoicesUpdateOneRequiredWithoutPre_Feedback_AnswersNestedInputSchema).optional(),
-  Reservation: z.lazy(() => ReservationsUpdateOneRequiredWithoutPre_Feedback_AnswersNestedInputSchema).optional()
+  Reservation: z.lazy(() => ReservationsUpdateOneWithoutPre_Feedback_AnswersNestedInputSchema).optional()
 }).strict();
 
 export const Pre_Feedback_AnswersUncheckedUpdateInputSchema: z.ZodType<Prisma.Pre_Feedback_AnswersUncheckedUpdateInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  reservation_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  reservation_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   question_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   choice_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const Pre_Feedback_AnswersCreateManyInputSchema: z.ZodType<Prisma.Pre_Feedback_AnswersCreateManyInput> = z.object({
   id: z.string().cuid().optional(),
-  reservation_id: z.string(),
+  reservation_id: z.string().optional().nullable(),
   question_id: z.string(),
   choice_id: z.string()
 }).strict();
@@ -3779,7 +3779,7 @@ export const Pre_Feedback_AnswersUpdateManyMutationInputSchema: z.ZodType<Prisma
 
 export const Pre_Feedback_AnswersUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Pre_Feedback_AnswersUncheckedUpdateManyInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  reservation_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  reservation_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   question_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   choice_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
@@ -5205,9 +5205,9 @@ export const Survey_ChoicesRelationFilterSchema: z.ZodType<Prisma.Survey_Choices
   isNot: z.lazy(() => Survey_ChoicesWhereInputSchema).optional()
 }).strict();
 
-export const ReservationsRelationFilterSchema: z.ZodType<Prisma.ReservationsRelationFilter> = z.object({
-  is: z.lazy(() => ReservationsWhereInputSchema).optional(),
-  isNot: z.lazy(() => ReservationsWhereInputSchema).optional()
+export const ReservationsNullableRelationFilterSchema: z.ZodType<Prisma.ReservationsNullableRelationFilter> = z.object({
+  is: z.lazy(() => ReservationsWhereInputSchema).optional().nullable(),
+  isNot: z.lazy(() => ReservationsWhereInputSchema).optional().nullable()
 }).strict();
 
 export const Pre_Feedback_AnswersCountOrderByAggregateInputSchema: z.ZodType<Prisma.Pre_Feedback_AnswersCountOrderByAggregateInput> = z.object({
@@ -5337,6 +5337,11 @@ export const EnumDonationStatusFilterSchema: z.ZodType<Prisma.EnumDonationStatus
   in: z.lazy(() => DonationStatusSchema).array().optional(),
   notIn: z.lazy(() => DonationStatusSchema).array().optional(),
   not: z.union([ z.lazy(() => DonationStatusSchema),z.lazy(() => NestedEnumDonationStatusFilterSchema) ]).optional(),
+}).strict();
+
+export const ReservationsRelationFilterSchema: z.ZodType<Prisma.ReservationsRelationFilter> = z.object({
+  is: z.lazy(() => ReservationsWhereInputSchema).optional(),
+  isNot: z.lazy(() => ReservationsWhereInputSchema).optional()
 }).strict();
 
 export const Post_Donation_FeedbacksNullableRelationFilterSchema: z.ZodType<Prisma.Post_Donation_FeedbacksNullableRelationFilter> = z.object({
@@ -6473,10 +6478,12 @@ export const Survey_ChoicesUpdateOneRequiredWithoutPre_Feedback_AnswersNestedInp
   update: z.union([ z.lazy(() => Survey_ChoicesUpdateToOneWithWhereWithoutPre_Feedback_AnswersInputSchema),z.lazy(() => Survey_ChoicesUpdateWithoutPre_Feedback_AnswersInputSchema),z.lazy(() => Survey_ChoicesUncheckedUpdateWithoutPre_Feedback_AnswersInputSchema) ]).optional(),
 }).strict();
 
-export const ReservationsUpdateOneRequiredWithoutPre_Feedback_AnswersNestedInputSchema: z.ZodType<Prisma.ReservationsUpdateOneRequiredWithoutPre_Feedback_AnswersNestedInput> = z.object({
+export const ReservationsUpdateOneWithoutPre_Feedback_AnswersNestedInputSchema: z.ZodType<Prisma.ReservationsUpdateOneWithoutPre_Feedback_AnswersNestedInput> = z.object({
   create: z.union([ z.lazy(() => ReservationsCreateWithoutPre_Feedback_AnswersInputSchema),z.lazy(() => ReservationsUncheckedCreateWithoutPre_Feedback_AnswersInputSchema) ]).optional(),
   connectOrCreate: z.lazy(() => ReservationsCreateOrConnectWithoutPre_Feedback_AnswersInputSchema).optional(),
   upsert: z.lazy(() => ReservationsUpsertWithoutPre_Feedback_AnswersInputSchema).optional(),
+  disconnect: z.union([ z.boolean(),z.lazy(() => ReservationsWhereInputSchema) ]).optional(),
+  delete: z.union([ z.boolean(),z.lazy(() => ReservationsWhereInputSchema) ]).optional(),
   connect: z.lazy(() => ReservationsWhereUniqueInputSchema).optional(),
   update: z.union([ z.lazy(() => ReservationsUpdateToOneWithWhereWithoutPre_Feedback_AnswersInputSchema),z.lazy(() => ReservationsUpdateWithoutPre_Feedback_AnswersInputSchema),z.lazy(() => ReservationsUncheckedUpdateWithoutPre_Feedback_AnswersInputSchema) ]).optional(),
 }).strict();
@@ -9529,7 +9536,7 @@ export const Pre_Feedback_AnswersScalarWhereInputSchema: z.ZodType<Prisma.Pre_Fe
   OR: z.lazy(() => Pre_Feedback_AnswersScalarWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => Pre_Feedback_AnswersScalarWhereInputSchema),z.lazy(() => Pre_Feedback_AnswersScalarWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  reservation_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  reservation_id: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   question_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   choice_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
 }).strict();
@@ -9783,12 +9790,12 @@ export const Survey_QuestionsCreateOrConnectWithoutSurvey_ChoicesInputSchema: z.
 export const Pre_Feedback_AnswersCreateWithoutSurvey_ChoiceInputSchema: z.ZodType<Prisma.Pre_Feedback_AnswersCreateWithoutSurvey_ChoiceInput> = z.object({
   id: z.string().cuid().optional(),
   Survey_Question: z.lazy(() => Survey_QuestionsCreateNestedOneWithoutPre_Feedback_AnswersInputSchema),
-  Reservation: z.lazy(() => ReservationsCreateNestedOneWithoutPre_Feedback_AnswersInputSchema)
+  Reservation: z.lazy(() => ReservationsCreateNestedOneWithoutPre_Feedback_AnswersInputSchema).optional()
 }).strict();
 
 export const Pre_Feedback_AnswersUncheckedCreateWithoutSurvey_ChoiceInputSchema: z.ZodType<Prisma.Pre_Feedback_AnswersUncheckedCreateWithoutSurvey_ChoiceInput> = z.object({
   id: z.string().cuid().optional(),
-  reservation_id: z.string(),
+  reservation_id: z.string().optional().nullable(),
   question_id: z.string()
 }).strict();
 
@@ -9928,12 +9935,12 @@ export const Survey_ChoicesCreateManySurvey_QuestionInputEnvelopeSchema: z.ZodTy
 export const Pre_Feedback_AnswersCreateWithoutSurvey_QuestionInputSchema: z.ZodType<Prisma.Pre_Feedback_AnswersCreateWithoutSurvey_QuestionInput> = z.object({
   id: z.string().cuid().optional(),
   Survey_Choice: z.lazy(() => Survey_ChoicesCreateNestedOneWithoutPre_Feedback_AnswersInputSchema),
-  Reservation: z.lazy(() => ReservationsCreateNestedOneWithoutPre_Feedback_AnswersInputSchema)
+  Reservation: z.lazy(() => ReservationsCreateNestedOneWithoutPre_Feedback_AnswersInputSchema).optional()
 }).strict();
 
 export const Pre_Feedback_AnswersUncheckedCreateWithoutSurvey_QuestionInputSchema: z.ZodType<Prisma.Pre_Feedback_AnswersUncheckedCreateWithoutSurvey_QuestionInput> = z.object({
   id: z.string().cuid().optional(),
-  reservation_id: z.string(),
+  reservation_id: z.string().optional().nullable(),
   choice_id: z.string()
 }).strict();
 
@@ -11065,7 +11072,7 @@ export const Pre_Feedback_AnswersUncheckedUpdateManyWithoutReservationInputSchem
 
 export const Pre_Feedback_AnswersCreateManySurvey_ChoiceInputSchema: z.ZodType<Prisma.Pre_Feedback_AnswersCreateManySurvey_ChoiceInput> = z.object({
   id: z.string().cuid().optional(),
-  reservation_id: z.string(),
+  reservation_id: z.string().optional().nullable(),
   question_id: z.string()
 }).strict();
 
@@ -11078,18 +11085,18 @@ export const Post_Feedback_AnswersCreateManySurvey_ChoiceInputSchema: z.ZodType<
 export const Pre_Feedback_AnswersUpdateWithoutSurvey_ChoiceInputSchema: z.ZodType<Prisma.Pre_Feedback_AnswersUpdateWithoutSurvey_ChoiceInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   Survey_Question: z.lazy(() => Survey_QuestionsUpdateOneRequiredWithoutPre_Feedback_AnswersNestedInputSchema).optional(),
-  Reservation: z.lazy(() => ReservationsUpdateOneRequiredWithoutPre_Feedback_AnswersNestedInputSchema).optional()
+  Reservation: z.lazy(() => ReservationsUpdateOneWithoutPre_Feedback_AnswersNestedInputSchema).optional()
 }).strict();
 
 export const Pre_Feedback_AnswersUncheckedUpdateWithoutSurvey_ChoiceInputSchema: z.ZodType<Prisma.Pre_Feedback_AnswersUncheckedUpdateWithoutSurvey_ChoiceInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  reservation_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  reservation_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   question_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const Pre_Feedback_AnswersUncheckedUpdateManyWithoutSurvey_ChoiceInputSchema: z.ZodType<Prisma.Pre_Feedback_AnswersUncheckedUpdateManyWithoutSurvey_ChoiceInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  reservation_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  reservation_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   question_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
@@ -11119,7 +11126,7 @@ export const Survey_ChoicesCreateManySurvey_QuestionInputSchema: z.ZodType<Prism
 
 export const Pre_Feedback_AnswersCreateManySurvey_QuestionInputSchema: z.ZodType<Prisma.Pre_Feedback_AnswersCreateManySurvey_QuestionInput> = z.object({
   id: z.string().cuid().optional(),
-  reservation_id: z.string(),
+  reservation_id: z.string().optional().nullable(),
   choice_id: z.string()
 }).strict();
 
@@ -11154,18 +11161,18 @@ export const Survey_ChoicesUncheckedUpdateManyWithoutSurvey_QuestionInputSchema:
 export const Pre_Feedback_AnswersUpdateWithoutSurvey_QuestionInputSchema: z.ZodType<Prisma.Pre_Feedback_AnswersUpdateWithoutSurvey_QuestionInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   Survey_Choice: z.lazy(() => Survey_ChoicesUpdateOneRequiredWithoutPre_Feedback_AnswersNestedInputSchema).optional(),
-  Reservation: z.lazy(() => ReservationsUpdateOneRequiredWithoutPre_Feedback_AnswersNestedInputSchema).optional()
+  Reservation: z.lazy(() => ReservationsUpdateOneWithoutPre_Feedback_AnswersNestedInputSchema).optional()
 }).strict();
 
 export const Pre_Feedback_AnswersUncheckedUpdateWithoutSurvey_QuestionInputSchema: z.ZodType<Prisma.Pre_Feedback_AnswersUncheckedUpdateWithoutSurvey_QuestionInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  reservation_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  reservation_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   choice_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const Pre_Feedback_AnswersUncheckedUpdateManyWithoutSurvey_QuestionInputSchema: z.ZodType<Prisma.Pre_Feedback_AnswersUncheckedUpdateManyWithoutSurvey_QuestionInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  reservation_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  reservation_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   choice_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 

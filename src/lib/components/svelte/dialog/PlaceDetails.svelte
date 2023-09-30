@@ -11,10 +11,17 @@
 	export let open: boolean = false;
 	export let placeData: Places | null = null;
 	export let onClose: () => void;
+
+	$: console.log(placeData);
 </script>
 
-{#if placeData}
-	<Dialog.Root {open} closeOnEscape={false} closeOnOutsideClick={false} onOpenChange={onClose}>
+{#if !!placeData}
+	<Dialog.Root
+		open={!!placeData}
+		closeOnEscape={false}
+		closeOnOutsideClick={false}
+		onOpenChange={onClose}
+	>
 		<Dialog.Content class="max-w-[90vw] rounded-xl p-0">
 			<Dialog.Header>
 				<img src={placeData.image_src} alt="palce_image" class=" rounded-t-xl" />

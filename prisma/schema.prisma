@@ -252,8 +252,8 @@ model Pre_Feedback_Answers {
   id              String           @id @unique @default(cuid())
   Survey_Question Survey_Questions @relation(fields: [question_id], references: [id])
   Survey_Choice   Survey_Choices   @relation(fields: [choice_id], references: [id])
-  Reservation     Reservations     @relation(fields: [reservation_id], references: [id])
-  reservation_id  String
+  Reservation     Reservations?    @relation(fields: [reservation_id], references: [id])
+  reservation_id  String?
   question_id     String
   choice_id       String
 }

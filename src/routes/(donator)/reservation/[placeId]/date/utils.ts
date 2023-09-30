@@ -34,6 +34,14 @@ export const getAvilableDays = (availableHospitalDates: HospitalAvailability, mo
 	return _;
 };
 
+export const checkEquivalenceDate = (a: Date, b: Date) => {
+	return (
+		a.getFullYear() === b.getFullYear() &&
+		a.getMonth() === b.getMonth() &&
+		a.getDate() === b.getDate()
+	);
+};
+
 export const checkEquivalenceTime = (a: Date, b: Date) => {
 	return a.getHours() === b.getHours() && a.getMinutes() === b.getMinutes();
 };
