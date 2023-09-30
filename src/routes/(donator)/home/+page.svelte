@@ -4,15 +4,16 @@
 	import SpecialEvent from './SpecialEventHero.svelte';
 
 	import Searchbar from './Searchbar.svelte';
-	import Announcement from './Announcement.svelte';
 	import AnnouncementList from './AnnouncementList.svelte';
 	import SurveyCard from '$lib/components/svelte/card/survey/SurveyCard.svelte';
 
 	export let data: PageData;
+	const { user } = data;
+	console.log(data);
 </script>
 
 <div class="pb-24">
-	<Banner />
+	<Banner name={data.user?.first_name + ' ' + data.user?.last_name} />
 
 	<div class="px-8 pt-6">
 		<SurveyCard

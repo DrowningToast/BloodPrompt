@@ -4,7 +4,7 @@ import { z } from 'zod';
 import prisma from '$lib/server/database';
 import { TRPCError } from '@trpc/server';
 import { sessionController } from '../database/controllers/sessionController';
-import { comparePassword } from '$lib/utils';
+import { decryptPassword } from '$lib/utils';
 
 export const authRouter = createRouter({
 	getUser: publicProcedure.query(async ({ ctx }) => {
@@ -47,7 +47,7 @@ export const authRouter = createRouter({
 				});
 			}
 
-			const decodedPassword = comparePassword(user?.password || '');
+			const decodedPassword = decryptPassword(user?.password || '');
 
 			console.log(decodedPassword);
 
@@ -98,7 +98,7 @@ export const authRouter = createRouter({
 
 			console.log('staffLogin() user: ', user);
 
-			const decodedPassword = comparePassword(user?.password || '');
+			const decodedPassword = decryptPassword(user?.password || '');
 
 			if (!user || password !== decodedPassword) {
 				throw new TRPCError({

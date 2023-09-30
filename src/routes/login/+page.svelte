@@ -82,7 +82,7 @@
 
 		<Button
 			variant="secondary"
-			class="w-full rounded-xl py-6 mt-6 text-md font-bold bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600"
+			class="w-full rounded-xl py-6 text-md font-bold bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600"
 			disabled={isLoading}
 			on:click={handleLogin}
 		>

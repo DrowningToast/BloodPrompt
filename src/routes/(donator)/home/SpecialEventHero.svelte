@@ -9,8 +9,6 @@
 		href: string;
 	}
 
-	console.log($page.url);
-
 	const mock_data: Poster[] = [
 		{
 			img: '/images/mock_carousel.png',
