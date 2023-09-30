@@ -13,6 +13,28 @@ export interface HospitalAvailability {
 	}[];
 }
 
+export const SEAT_PER_TIME_SLOT = 3;
+export const DEFAULT_TIME_SLOT = [
+	{ time: '09:00', available: true },
+	{ time: '10:00', available: true },
+	{ time: '11:00', available: true },
+	{ time: '13:00', available: false },
+	{ time: '14:00', available: false },
+	{ time: '15:00', available: true },
+	{ time: '16:00', available: true },
+	{ time: '17:00', available: true }
+];
+
+export const getDatesFrom = (start: Date, days: number) => {
+	const dates = [];
+	for (let i = 0; i < days; i++) {
+		const date = new Date(start);
+		date.setDate(date.getDate() + i);
+		dates.push(date);
+	}
+	return dates;
+};
+
 export const mock_hospitalData = (placeId: any): HospitalAvailability => ({
 	id: placeId,
 	name: 'Hospital',

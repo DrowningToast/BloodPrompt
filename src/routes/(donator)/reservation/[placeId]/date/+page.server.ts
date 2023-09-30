@@ -1,6 +1,12 @@
 import prisma from '$lib/server/database';
-import { mock_hospitalData, type HospitalAvailability } from '../utils';
+import {
+	mock_hospitalData,
+	type HospitalAvailability,
+	getDatesFrom,
+	DEFAULT_TIME_SLOT
+} from '../utils';
 import type { PageServerLoad } from './$types';
+import { checkEquivalenceDate } from './utils';
 
 export const load = (async ({ params }) => {
 	// check if placeId exists or not
@@ -19,19 +25,42 @@ export const load = (async ({ params }) => {
 
 	const { placeId } = params;
 
+	console.log(placeId);
+
 	const alreadyReserved = await prisma.reservation_Slots.findMany({
 		where: {
-			place_id: placeId,
+			Place: {
+				id: placeId
+			},
 			reserve_date: {
-				lt: new Date()
+				gt: new Date()
 			}
 		}
 	});
 
-	console.log(alreadyReserved);
+	const availableDates = getDatesFrom(new Date(), 14).map((date) => ({
+		date,
+		periods: DEFAULT_TIME_SLOT.map((time) => ({
+			...time,
+			available:
+				alreadyReserved.filter(
+					(reservation) =>
+						checkEquivalenceDate(reservation.reserve_date, date) &&
+						reservation.reserve_time.toTimeString().split(' ')[0] === time.time
+				).length < 2 && time.available
+		}))
+	}));
+
+	const hospitalAvailability: HospitalAvailability = {
+		id: placeId,
+		name: hospital.name,
+		googleMapUrl: hospital.address,
+		availableDates
+	};
+	console.log(getDatesFrom(new Date(), 14));
 
 	// mock get hospital data from database
-	const hospitalData: HospitalAvailability = mock_hospitalData(placeId);
+	// const hospitalData: HospitalAvailability = mock_hospitalData(placeId);
 
-	return { hospitalData };
+	return { hospitalData: hospitalAvailability };
 }) satisfies PageServerLoad;
