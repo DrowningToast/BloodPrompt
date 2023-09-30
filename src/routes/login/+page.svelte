@@ -23,8 +23,8 @@
 		isLoading = true;
 		await trpc.auth.donatorLogin
 			.mutate({ phone_number: phoneNumber, password })
-			.then((res) => {
-				goto('/home');
+			.then(async (res) => {
+				await goto('/home');
 			})
 			.catch((error) => {
 				alert('ไม่สามารถเข้าสู่ระบบ โปรดตรวจสอบข้อมูลการเข้าสู่ระบบ');

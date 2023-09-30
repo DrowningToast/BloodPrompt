@@ -53,6 +53,7 @@
             <div class="flex flex-row items-center gap-1">
                 <UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8"/>
                 <h1 class="font-semibold">ผู้ดูเเลระบบ</h1>
+                <h1 class="font-semibold">ผู้ดูเเลระบบ</h1>
                 <div>
                     <DropdownMenu.Root>
                         <DropdownMenu.Trigger asChild let:builder>
@@ -61,7 +62,11 @@
                         <DropdownMenu.Content class="w-56">
                           <DropdownMenu.Item>
                             <LogOut class="mr-2 h-4 w-4" />
-                            <span>ออกจากระบบ</span>
+                            <div on:click={()=>{
+                                if (browser) {
+                                    goto('/staff/login')
+                                }}
+                            }>ออกจากระบบ</div>
                           </DropdownMenu.Item>
                         </DropdownMenu.Content>
                     </DropdownMenu.Root>
