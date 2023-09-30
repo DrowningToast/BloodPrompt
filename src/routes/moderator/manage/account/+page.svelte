@@ -17,6 +17,52 @@
 	import { ChevronDown } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
+	import type { PageData } from './$types';
+	import type { Moderators } from '../../../../../generated-zod';
+	import { trpc } from '$lib/trpc';
+
+	export let data: PageData;
+	const { moderator } = data;
+
+	let moderatorData = {
+		name: moderator.first_name + ' ' + moderator.last_name,
+		phone_number: moderator.phone_number,
+		email: moderator.email,
+		password: '',
+		newPassword: '',
+		confirmNewPassword: ''
+	};
+
+	const handleUpdateModeratorData = async () => {
+		const [first_name, last_name] = moderatorData.name.split(' ');
+		trpc.moderator.update
+			.mutate({
+				data: {
+					first_name: first_name,
+					last_name: last_name,
+					phone_number: moderatorData.phone_number,
+					email: moderatorData.email,
+					password: moderatorData.newPassword
+				},
+				moderatorId: moderator.id
+			})
+			.then((res) => {
+				alert('ระบบบันทึกการเปลี่ยนแปลงของคุณแล้ว');
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+
+		const newModeratorData = await trpc.moderator.get.query();
+		moderatorData = {
+			name: newModeratorData.first_name + ' ' + newModeratorData.last_name,
+			phone_number: newModeratorData.phone_number,
+			email: newModeratorData.email,
+			password: '',
+			newPassword: '',
+			confirmNewPassword: ''
+		};
+	};
 </script>
 
 <div class="flex flex-row w-full justify-between bg-gray-300 min-w-[100vw] min-h-[100vh]">
@@ -111,6 +157,7 @@
 				</p>
 			</div>
 			<button
+				on:click={handleUpdateModeratorData}
 				class="flex justify-center items-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white"
 				>บันทึกข้อมูล</button
 			>
@@ -124,14 +171,17 @@
 				<Input
 					placeholder="ชื่อ-นามสกุล"
 					class="rounded-lg border-2 border-gray-300 h-10 w-full px-4 py-4"
+					bind:value={moderatorData.name}
 				/>
 				<Input
 					placeholder="เบอร์โทรติดต่อ"
 					class="rounded-lg border-2 border-gray-300 h-10 w-full px-4 py-4"
+					bind:value={moderatorData.phone_number}
 				/>
 				<Input
 					placeholder="อีเมล"
 					class="rounded-lg border-2 border-gray-300 h-10 w-full px-4 py-4"
+					bind:value={moderatorData.email}
 				/>
 			</div>
 			<div class="flex flex-col gap-4 w-8/12 px-5">
@@ -142,14 +192,17 @@
 				<Input
 					placeholder="รหัสผ่านปัจจุบัน"
 					class="rounded-lg border-2 border-gray-300 h-10 w-full px-4 py-4 "
+					bind:value={moderatorData.password}
 				/>
 				<Input
 					placeholder="รหัสผ่านใหม่"
 					class="rounded-lg border-2 border-gray-300 h-10 w-full px-4 py-4 "
+					bind:value={moderatorData.newPassword}
 				/>
 				<Input
 					placeholder="ยืนยันรหัสผ่านใหม่"
 					class="rounded-lg border-2 border-gray-300 h-10 w-full px-4 py-4 "
+					bind:value={moderatorData.confirmNewPassword}
 				/>
 			</div>
 		</div>
