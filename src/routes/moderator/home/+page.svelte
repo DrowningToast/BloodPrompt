@@ -8,51 +8,17 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { trpc } from '$lib/trpc';
+	import type { PageData } from './$types';
 
-	const places = [
-		{
-			name: 'INV001',
-			status: 'Paid',
-			address: '$250.00',
-			contact: 'Credit Card'
-		},
-		{
-			name: 'INV002',
-			status: 'Pending',
-			address: '$150.00',
-			contact: 'PayPal'
-		},
-		{
-			name: 'INV003',
-			status: 'Unpaid',
-			address: '$350.00',
-			contact: 'Bank Transfer'
-		},
-		{
-			name: 'INV004',
-			status: 'Paid',
-			address: '$450.00',
-			contact: 'Credit Card'
-		},
-		{
-			name: 'INV005',
-			status: 'Paid',
-			address: '$550.00',
-			contact: 'PayPal'
-		},
-		{
-			name: 'INV006',
-			status: 'Pending',
-			address: '$200.00',
-			contact: 'Bank Transfer'
-		},
-		{
-			name: 'INV007',
-			status: 'Unpaid',
-			address: '$300.00',
-			contact: 'Credit Card'
-		}
-	];
+	import {
+		BarChartSimple,
+		DonutChart,
+		type BarChartOptions,
+		type DonutChartOptions
+	} from '@carbon/charts-svelte';
+	import '@carbon/charts-svelte/styles.css';
+
+	export let data: PageData;
 
 	const handleLogout = async () => {
 		await trpc.auth.logout
@@ -63,6 +29,39 @@
 			.catch((error) => {
 				console.error(error);
 			});
+	};
+
+	const donutChartOptions: DonutChartOptions = {
+		title: 'จำนวนเลือดในคลังทั้งหมด',
+		resizable: false,
+		legend: {
+			alignment: 'center'
+		},
+		donut: {
+			center: {
+				label: 'จำนวนครั้งการบริจาคเลือด'
+			},
+			alignment: 'center'
+		},
+		height: '400px',
+
+		width: '485px'
+	};
+
+	const barChartOptions: BarChartOptions = {
+		title: 'สถิติการบริจาคเลือดย้อนหลัง',
+		resizable: false,
+		axes: {
+			left: {
+				mapsTo: 'value'
+			},
+			bottom: {
+				mapsTo: 'group',
+				scaleType: 'labels'
+			}
+		},
+		height: '400px',
+		width: '485px'
 	};
 </script>
 
@@ -129,43 +128,67 @@
 		<div class="flex flex-col gap-11 mt-11 w-full h-full items-center">
 			<!-- active info -->
 			<div class="flex gap-14 justify-center">
-				<AmountCard title={'จำนวนบัญชีผู้ใช้ในระบบ'} amount={9999} person={true} />
-				<AmountCard title={'จำนวนสถานที่ในระบบ'} amount={9999} person={false} />
-				<AmountCard title={'จำนวนบัญชีผู้ใช้ในระบบ'} amount={9999} person={true} />
+				<AmountCard title={'จำนวนบัญชีผู้ใช้ในระบบ'} amount={data.donators.length} person={true} />
+				<AmountCard title={'จำนวนสถานที่ในระบบ'} amount={data.places.length} person={false} />
+				<AmountCard
+					title={'จำนวนบุคลากรการแพทย์ใช้ในระบบ'}
+					amount={data.medicalAccounts.length}
+					person={true}
+				/>
 			</div>
 			<!-- graph -->
 			<div class="flex flex-row justify-between gap-11">
 				<!-- box1 -->
-				<div class="w-[530px] h-[334px] bg-white rounded-xl">
-					<p class="p-5 font-semibold">จำนวนเลือดในคลังทั้งหมด</p>
+
+				<div class=" bg-white rounded-xl p-6">
+					<DonutChart data={data.bloodTypeCount} options={donutChartOptions} />
+				</div>
+
+				<div class=" bg-white rounded-xl p-6">
+					<BarChartSimple data={data.donationCount} options={barChartOptions} />
 				</div>
 				<!-- box2 -->
-				<div class="w-[530px] h-[334px] bg-white rounded-xl">
+				<!-- <div class="w-[530px] h-[334px] bg-white rounded-xl">
 					<p class="p-5 font-semibold">สถิติการบริจาคเลือดย้อนหลัง</p>
-				</div>
+				</div> -->
 			</div>
 			<!-- place to donate -->
-			<div class="flex flex-col bg-white w-[1103px] h-[274px] rounded-xl">
+			<div class="flex flex-col bg-white w-[1103px] h-[350px] rounded-xl">
 				<p class="pt-6 pl-6 font-semibold">สถานที่บริจาคเลือดในระบบ</p>
 				<div class="flex justify-center bg-white rounded-3xl w-12/12 h-5/6 shadow-xl px-4 py-3">
 					<Table.Root class="bg-white rounded-full">
+						<Table.Caption>เพิ่มข้อมูลของคุณ</Table.Caption>
 						<Table.Header>
-							<Table.Row>
-								<Table.Head>ชื่อสถานบริจาค</Table.Head>
-								<Table.Head>สถานะ</Table.Head>
-								<Table.Head>ที่อยู่</Table.Head>
-								<Table.Head>ติดต่อ</Table.Head>
+							<Table.Row class=" hover:bg-white">
+								<Table.Head class="font-bold text-black">หมายเลข</Table.Head>
+								<Table.Head class="font-bold text-black">ชื่อสถานที่</Table.Head>
+								<Table.Head class="font-bold text-black">คำอธิบาย</Table.Head>
+								<Table.Head class="font-bold text-black">เบอร์โทร</Table.Head>
+								<Table.Head class="font-bold text-black">เว็บไซต์</Table.Head>
+								<Table.Head class="font-bold text-black">อีเมล</Table.Head>
+								<Table.Head class="font-bold text-black">แก้ไขข้อมูล</Table.Head>
 							</Table.Row>
 						</Table.Header>
 						<Table.Body>
-							{#each places as place, i (i)}
-								<Table.Row>
-									<Table.Cell>{place.name}</Table.Cell>
-									<Table.Cell>{place.status}</Table.Cell>
-									<Table.Cell>{place.contact}</Table.Cell>
-									<Table.Cell>{place.address}</Table.Cell>
-								</Table.Row>
-							{/each}
+							{#if data.places}
+								{#each data.places as place, index}
+									<Table.Row>
+										<Table.Cell class="text-center">{index + 1}</Table.Cell>
+										<Table.Cell>{place.name}</Table.Cell>
+										<Table.Cell>{place.address}</Table.Cell>
+										<Table.Cell>{place.phone_number}</Table.Cell>
+										<Table.Cell>{place.website_url}</Table.Cell>
+										<Table.Cell>{place.email}</Table.Cell>
+										<Table.Cell
+											><Button
+												on:click={() => {
+													goto('/moderator/manage/donation-center/' + place.id + '/edit');
+												}}>แก้ไข</Button
+											></Table.Cell
+										>
+									</Table.Row>
+								{/each}
+							{/if}
 						</Table.Body>
 					</Table.Root>
 				</div>
