@@ -19,7 +19,7 @@
 			preFeedback: $preFeedbackStore
 		});
 
-		await goto(`/history/reservation/${response.id}/confirm`);
+		await goto(`/history/reservation/${response.id}`);
 	};
 
 	onMount(async () => {

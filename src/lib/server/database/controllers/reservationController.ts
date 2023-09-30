@@ -1,4 +1,4 @@
-import prisma, { Prisma } from '..';
+import prisma, { Prisma, type Reservations } from '..';
 import { checkEquivalenceDate } from '../../../../routes/(donator)/reservation/[placeId]/date/utils';
 import {
 	DEFAULT_TIME_SLOT,
@@ -25,7 +25,7 @@ const reservationController = {
 		place: Prisma.PlacesWhereUniqueInput,
 		preFeedback: Prisma.Pre_Donation_FeedbacksCreateInput,
 		timeSlot: Date
-	) => {
+	): Promise<Reservations> => {
 		return await prisma.reservations.create({
 			data: {
 				status: 'BOOKED',
@@ -84,6 +84,19 @@ const reservationController = {
 		}));
 
 		return availableDates;
+	},
+	getReservation: async (reservation: Prisma.ReservationsWhereUniqueInput) => {
+		return await prisma.reservations.findUnique({
+			where: reservation,
+			include: {
+				Donator: true,
+				Reservation_Slot: {
+					include: {
+						Place: true
+					}
+				}
+			}
+		});
 	}
 };
 export default reservationController;
