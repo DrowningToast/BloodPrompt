@@ -8,51 +8,11 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import Dropdown from '../../../moderator/home/dropdown.svelte';
-
-	const rewardMockInfo = [
-					{
-					rewardId : "1",
-					point : 2,
-					remain : 3,
-					title : "แก้วน้ำไอ้เจ",
-					desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นของรางวัล", 
-					img : rewardImage}, 
-					{
-					rewardId : "2",
-					point : 3,
-					remain : 4,
-					title : "แก้วน้ำไอ้เจ",
-					desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นของรางวัล", 
-					img : rewardImage},
-					{
-					rewardId : "3",
-					point : 5,
-					remain : 6,
-					title : "แก้วน้ำไอ้เจ",
-					desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นของรางวัล", 
-					img : rewardImage},
-					{
-					rewardId : "4",
-					point : 7,
-					remain : 8,
-					title : "แก้วน้ำไอ้เจ",
-					desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นของรางวัล", 
-					img : rewardImage},
-					{
-					rewardId : "5",
-					point : 5,
-					remain : 6,
-					title : "แก้วน้ำไอ้เจ",
-					desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นของรางวัล", 
-					img : rewardImage},
-					{
-					rewardId : "6",
-					point : 7,
-					remain : 8,
-					title : "แก้วน้ำไอ้เจ",
-					desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นของรางวัล", 
-					img : rewardImage},
-				]
+	import { trpc } from '$lib/trpc';
+	import type { Rewards } from '../../../../../generated-zod';
+	import type { PageData } from './$types';
+	export let data:PageData;
+	let rewards = data.rewards;
 	
 </script>
 <div class="flex flex-row w-full justify-between bg-gray-300 max-w-[100vw] min-h-[100vh]">
@@ -135,7 +95,7 @@
 		<div class="flex gap-8 w-full bg-white mt-4 rounded-3xl p-6 flex-wrap">
 			<!-- #each -->
 			<div class="flex w-full h-1/2 justify-between flex-wrap ">
-					{#each rewardMockInfo as eachReward, i(i)}
+					{#each rewards as eachReward, i(i)}
 						<div class="flex w-1/2">
 							<Reward data={eachReward}/>
 						</div>

@@ -38,6 +38,10 @@
                     };
         await trpc.reward.create
             .mutate(temptData)
+            .catch((error)=>{
+                alert('ไม่สามารถเพิ่มของรางวัลได้ โปรดตรวจสอบข้อมูลการเพิ่มของรางวัล');
+                console.log(error);
+            })
             .finally(()=>{
                 name = "";
                 description = "";
@@ -46,7 +50,6 @@
                 image_src = "";
             })
     }
-
 
 </script>
 

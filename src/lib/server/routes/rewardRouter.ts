@@ -31,5 +31,9 @@ export const rewardRouter = createRouter({
 				}
 			});
 			return reward;
-		})
+		}),
+	getAllRewards: publicProcedure.query(async () => {
+		const allRewards = await prisma.rewards.findMany();
+		return allRewards;
+	})
 });
