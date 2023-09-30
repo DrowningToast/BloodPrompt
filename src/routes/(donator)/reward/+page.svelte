@@ -27,13 +27,6 @@
 	};
 </script>
 
-<RewardDetails
-	open={showRewardDetailDialog}
-	onClose={() => {
-		showRewardDetailDialog = false;
-	}}
-/>
-
 <div class="bg-[#F5222D] h-screen pb-28">
 	<div class="bg-white shadow-md p-5 flex flex-row items-center justify-start gap-4">
 		<button
@@ -53,7 +46,7 @@
 			<div>
 				<p class="text-lg">คุณมีแต้มสะสมทั้งหมด</p>
 				<p class="text-2xl font-bold mt-1">
-					{Number(donator?.reward_point || 0).toLocaleString('en')}
+					{Number(donator?.reward_point).toLocaleString('en')}
 					<span class="text-xl">แต้ม</span>
 				</p>
 				<Button
@@ -84,7 +77,7 @@
 				</div>
 			</div>
 
-			<div class="mt-4 flex flex-col gap-4">
+			<div class="mt-4 flex flex-col gap-2">
 				{#each filteredRewards as reward}
 					<button
 						class="flex text-left"
@@ -133,6 +126,14 @@
 							rewardId={reward.id}
 						/>
 					</button>
+
+					<RewardDetails
+						open={showRewardDetailDialog}
+						onClose={() => {
+							showRewardDetailDialog = false;
+						}}
+						donatorData={donator}
+					/>
 				{/each}
 			</div>
 		</div>
