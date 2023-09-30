@@ -83,7 +83,7 @@ export const medicalStaffRouter = createRouter({
 			const { data, medicalStaffId } = input;
 
 			if (data.password) {
-				data.password = await encodePassword(data.password);
+				data.password = encodePassword(data.password);
 			}
 
 			const medicalStaff = await prisma.medical_Staff.update({
