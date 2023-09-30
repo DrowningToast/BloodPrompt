@@ -21,6 +21,12 @@
         };
     }
 
+    let name:string;
+    let description:string;
+
+    const submit=()=>{
+        
+    }
 
 </script>
 

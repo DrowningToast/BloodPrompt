@@ -21,7 +21,6 @@
         };
     }
 
-
 </script>
 
 <div class="flex justify-between bg-gray-300 min-w-screen min-h-[100vh] h-screen w-full">
@@ -111,7 +110,11 @@
             </div>
             <div class="flex justify-between items-center gap-4">
                 <Button class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-10 py-4 text-base font-bold text-white hover:bg-[#EF4444]">บันทึกข้อมูล</Button>
-                <Button class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white">ยกเลิกการแก้ไข</Button>
+                <Button class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white" on:click={()=>{
+                    if(browser){
+                        goto('/staff/manage/special-event')
+                    }
+                }}>ยกเลิกการแก้ไข</Button>
             </div>
         </div>
         <div class="flex flex-col justify-start items-center h-full w-full px-14 py-2">
