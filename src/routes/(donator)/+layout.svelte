@@ -5,16 +5,6 @@
 	import { goto } from '$app/navigation';
 
 	export let data: LayoutData;
-
-	trpc.auth.getUser
-		.query()
-		.then((res) => {
-			if (!res) {
-				alert('โปรดเข้าสู่ระบบเพื่อดำเนินการต่อ...');
-				goto('/login');
-			}
-		})
-		.catch((error) => console.error(error));
 </script>
 
 <div>
