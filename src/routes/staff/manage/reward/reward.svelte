@@ -1,7 +1,10 @@
 <script lang="ts">
+	import { browser } from "$app/environment";
+	import { goto } from "$app/navigation";
 	import { Button } from "$lib/components/ui/button";
 
     type reward = {
+        rewardId:string,
         point:number,
         remain:number,
         title:string,
@@ -37,7 +40,7 @@
         
         </div>
         <div class="flex justify-start gap-6">
-            <Button class="w-24 h-10 text-[#EF4444] border-[#EF4444] hover:bg-white border-2 gap-1 bg-white rounded-3xl">แก้ไข</Button>
+            <Button on:click={()=>{if(browser)goto(`/staff/manage/reward/${data.rewardId}/edit`)}} class="w-24 h-10 text-[#EF4444] border-[#EF4444] hover:bg-white border-2 gap-1 bg-white rounded-3xl">แก้ไข</Button>
             <Button class="w-24 h-10 text-white rounded-3xl bg-[#EF4444] hover:bg-[#EF4444] rounded-3xls">ลบ</Button>
         </div>
     </div>

@@ -11,36 +11,42 @@
 
 	const rewardMockInfo = [
 					{
+					rewardId : "1",
 					point : 2,
 					remain : 3,
 					title : "แก้วน้ำไอ้เจ",
 					desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นของรางวัล", 
 					img : rewardImage}, 
 					{
+					rewardId : "2",
 					point : 3,
 					remain : 4,
 					title : "แก้วน้ำไอ้เจ",
 					desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นของรางวัล", 
 					img : rewardImage},
 					{
+					rewardId : "3",
 					point : 5,
 					remain : 6,
 					title : "แก้วน้ำไอ้เจ",
 					desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นของรางวัล", 
 					img : rewardImage},
 					{
+					rewardId : "4",
 					point : 7,
 					remain : 8,
 					title : "แก้วน้ำไอ้เจ",
 					desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นของรางวัล", 
 					img : rewardImage},
 					{
+					rewardId : "5",
 					point : 5,
 					remain : 6,
 					title : "แก้วน้ำไอ้เจ",
 					desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นของรางวัล", 
 					img : rewardImage},
 					{
+					rewardId : "6",
 					point : 7,
 					remain : 8,
 					title : "แก้วน้ำไอ้เจ",
