@@ -53,10 +53,10 @@
     </div>
     <div class="flex flex-col items-center w-9/12">
         <div class="flex items-center bg-white px-14  w-full  py-6 justify-between h-16">
-            <h1 class=" font-bold text-lg">BloodPrompt (สำหรับผู้ดูเเลระบบ)</h1>
-            <div class="flex flex-row items-center gap-3">
+            <h1 class=" font-bold text-xl">BloodPrompt (สำหรับผู้ดูเเลระบบ)</h1>
+            <div class="flex flex-row items-center gap-1">
                 <UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8"/>
-                <h1 class="font-bold">ผู้ดูเเลระบบ</h1>
+                <h1 class="font-semibold">ผู้ดูเเลระบบ</h1>
                 <div>
                     <DropdownMenu.Root>
                         <DropdownMenu.Trigger asChild let:builder>

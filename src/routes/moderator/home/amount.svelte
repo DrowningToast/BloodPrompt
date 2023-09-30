@@ -2,7 +2,6 @@
     export let title = "", amount = 0, person = true;
     import people from '$lib/images/moderator/login/person.png';
     import location from '$lib/images/moderator/login/location.png';
-    
 </script>
 
 <div class="w-[330px] h-[130px] bg-white rounded-xl drop-shadow-lg">
