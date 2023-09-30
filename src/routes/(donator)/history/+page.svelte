@@ -8,6 +8,8 @@
 	import DonationHistoryTabPanel from './DonationHistoryTabPanel.svelte';
 	import ReservationTabPanel from './ReservationTabPanel.svelte';
 	import SurveyCard from '$lib/components/svelte/card/survey/SurveyCard.svelte';
+	import { trpc } from '$lib/trpc';
+	import { onMount } from 'svelte';
 
 	export let data: PageData;
 
@@ -27,7 +29,7 @@
 	};
 
 	type ReservationHistory = {
-		reservationData: Reservations;
+		reservationData: Omit<Reservations, 'pre_donation_fb_id'>;
 		placeData: Places;
 	};
 
@@ -101,44 +103,22 @@
 		}
 	];
 
-	const reservationData: ReservationHistory[] = [
-		{
-			placeData: PLACE_DATA,
-			reservationData: {
-				id: '001',
-				cancelled_at: null,
-				created_at: new Date(),
-				donator_id: '001',
-				reservation_slot_id: '001',
-				status: 'BOOKED',
-				updated_at: null
-			}
-		},
-		{
-			placeData: PLACE_DATA,
-			reservationData: {
-				id: '002',
-				cancelled_at: null,
-				created_at: new Date(),
-				donator_id: '001',
-				reservation_slot_id: '001',
-				status: 'CANCELLED',
-				updated_at: new Date()
-			}
-		},
-		{
-			placeData: PLACE_DATA,
-			reservationData: {
-				id: '003',
-				cancelled_at: null,
-				created_at: new Date(),
-				donator_id: '001',
-				reservation_slot_id: '001',
-				status: 'COMPLETED',
-				updated_at: new Date()
-			}
-		}
-	];
+	let reservationData: ReservationHistory[] = [];
+
+	onMount(async () => {
+		const reservationLog = await trpc.reservation.getLog.query();
+
+		console.log(reservationLog);
+
+		reservationData = reservationLog.map((reservation) => {
+			return {
+				placeData: reservation.Reservation_Slot.Place,
+				reservationData: { ...reservation }
+			};
+		});
+
+		console.log(reservationData);
+	});
 </script>
 
 <div class="pb-28">

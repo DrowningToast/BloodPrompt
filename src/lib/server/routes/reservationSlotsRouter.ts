@@ -1,6 +1,10 @@
 import { z } from 'zod';
 import { createRouter, publicProcedure } from '../context';
-import prisma from '../database';
+import prisma, {
+	DonatorsWhereInputSchema,
+	type Donators,
+	DonatorsWhereUniqueInputSchema
+} from '../database';
 import { TRPCError } from '@trpc/server';
 import {
 	DEFAULT_TIME_SLOT,
@@ -109,5 +113,38 @@ export const reservationSlotsRouter = createRouter({
 				timeSlot
 			);
 			return reservation;
+		}),
+	getLog: publicProcedure
+		.input(DonatorsWhereUniqueInputSchema.optional())
+		.query(async ({ ctx, input }) => {
+			let donator: Donators | undefined | null;
+			if (input) {
+				donator = await prisma.donators.findUnique({
+					where: input
+				});
+			} else {
+				const { sessionToken } = ctx;
+				const session = await prisma.session.findUnique({
+					where: {
+						session_token: sessionToken
+					}
+				});
+				donator = await prisma.donators.findUnique({
+					where: {
+						id: session?.donator_id!
+					}
+				});
+			}
+			if (!donator) {
+				throw new TRPCError({
+					code: 'NOT_FOUND',
+					message: 'Donator not found'
+				});
+			}
+			const reservations = await reservationController.getAllReservations({
+				id: donator?.id
+			});
+
+			return reservations;
 		})
 });

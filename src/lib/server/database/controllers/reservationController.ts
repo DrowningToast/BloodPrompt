@@ -97,6 +97,21 @@ const reservationController = {
 				}
 			}
 		});
+	},
+	getAllReservations: async (donator: Prisma.DonatorsWhereInput) => {
+		return await prisma.reservations.findMany({
+			where: {
+				Donator: donator
+			},
+			include: {
+				Donator: true,
+				Reservation_Slot: {
+					include: {
+						Place: true
+					}
+				}
+			}
+		});
 	}
 };
 export default reservationController;
