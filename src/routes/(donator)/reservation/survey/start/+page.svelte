@@ -8,58 +8,67 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Button } from '$lib/components/ui/button';
 	import AlertDialog from '$lib/components/svelte/alert/AlertDialog.svelte';
+	import { trpc } from '$lib/trpc';
+	import { preFeedbackStore } from '$lib/stores/preFeedback';
 
 	export let data: PageData;
 	const { questions } = data;
 
-	let answers = {
-		q1: null,
-		q2: null,
-		q3: null,
-		q4: null,
-		q5: null,
-		q6: null,
-		q7: null,
-		q8: null,
-		q9: null,
-		q10: null,
-		q11: null
+	interface Answers {
+		[key: string]: {
+			[key: string]: boolean;
+		};
+	}
+
+	let answers: Answers = {
+		...questions.reduce((prev, current) => {
+			return {
+				...prev,
+				[current.id]: {
+					...current.choices.reduce((prev, current) => {
+						return { ...prev, [current.id]: false };
+					}, {})
+				}
+			};
+		}, {})
 	};
 
 	let isAnswerAllQuestion: boolean = false;
 	let isQualified = false;
 	let showSurveyResultDialog: boolean = false;
 
-	const handleAnswerChange = (event: any) => {
-		const key = 'q' + event.split('_')[0];
-		const value = event.split('_')[1];
-		console.log(value);
+	const handleAnswerChange = (questionId: string) => (event: string | undefined) => {
+		if (!event) return;
 		answers = {
 			...answers,
-			[key]: value
-		};
-		let isAnswerAll = true;
-		for (const [key, value] of Object.entries(answers)) {
-			console.log(key, value);
-			if (value === null || value === false) {
-				isAnswerAll = false;
+			[questionId]: {
+				[event]: true
 			}
-		}
-		isAnswerAllQuestion = isAnswerAll;
+		};
+		// isAnswerAllQuestion = answers;
+		isAnswerAllQuestion = Object.entries(answers).every((answer) => {
+			const hasSelected = Object.values(answer[1]).some((value) => value === true);
+			return hasSelected;
+		});
 	};
 
-	const handleSubmit = () => {
-		for (const [key, value] of Object.entries(answers)) {
-			console.log(key, value);
-			if (value === 'false') {
-				isQualified = false;
-				break;
-			}
+	const handleSubmit = async () => {
+		// console.log(await trpc.preFeedback.getLastFeedback.query());
 
-			if (key === 'q11' && value === 'true') {
-				isQualified = true;
-			}
-		}
+		const payload = Object.entries(answers).map((pair) => {
+			const questionId = pair[0];
+			const choiceId = Object.keys(pair[1])[0];
+			return {
+				question_id: questionId,
+				choice_id: choiceId
+			};
+		});
+
+		const pass = await trpc.preFeedback.checkFeedBack.query(payload);
+		$preFeedbackStore = { Pre_Feedback_Answers: payload };
+
+		isQualified = pass;
+
 		showSurveyResultDialog = true;
 	};
 </script>
@@ -69,13 +78,13 @@
 		open={showSurveyResultDialog}
 		title="ผลการทำแบบประเมินของคุณ: ผ่าน"
 		description="คุณผ่านการประเมินความพร้อม และอาการเบื้องต้นก่อนการบริจาคเลือด และสามารถดำเนินการต่อเพื่อจองคิวเพื่อเข้ารับการบริจาคเลือดได้"
-		actionLabel="ดำเนินการต่อ"
+		actionLabel="ยกเลิก"
 		onAction={() => {
-			goto('/reservation');
-		}}
-		secondaryLabel={'ยกเลิก'}
-		onSecondaryAction={() => {
 			showSurveyResultDialog = false;
+		}}
+		secondaryLabel={'ดำเนินการต่อ'}
+		onSecondaryAction={() => {
+			goto('/reservation');
 		}}
 	/>
 {:else}
@@ -105,26 +114,25 @@
 		<p class="text-md font-bold">แบบประเมินก่อนการบริจาคเลือด</p>
 	</div>
 
-	{#each questions as question}
+	{#each questions as question, index}
 		<div class="pt-8 px-6">
 			<Card.Root class="mx-auto rounded-xl shadow">
 				<Card.Content class="p-0 py-4">
 					<div class="px-6 py-2">
-						<p class="text-sm font-bold">{question.id}. {question.label}</p>
+						<p class="text-sm font-bold">{index + 1}. {question.label}</p>
 						<p class="text-sm font-semibold text-gray-400 mt-1">
 							(โปรดเลือกคำตอบตามจริง ใช่ หรือ ไม่ ?)
 						</p>
 
 						<div class="mt-4">
-							<RadioGroup.Root value="comfortable" onValueChange={handleAnswerChange}>
-								<div class="flex items-center space-x-2">
-									<RadioGroup.Item value={question.id + '_true'} id={'r1-' + question.id} />
-									<Label for={'r1-' + question.id}>ใช่</Label>
-								</div>
-								<div class="flex items-center space-x-2">
-									<RadioGroup.Item value={question.id + '_false'} id={'r2-' + question.id} />
-									<Label for={'r2-' + question.id}>ไม่ใช่</Label>
-								</div>
+							<RadioGroup.Root value="comfortable" onValueChange={handleAnswerChange(question.id)}>
+								{#each question.choices as choice}
+									<div class="flex items-center space-x-2">
+										<RadioGroup.Item value={choice.id} id={'r1-' + choice.id} />
+										<Label for={'r1-' + choice.id}>{choice.label}</Label>
+									</div>
+								{/each}
+
 								<RadioGroup.Input name="spacing" />
 							</RadioGroup.Root>
 						</div>

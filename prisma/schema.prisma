@@ -218,25 +218,26 @@ enum ReservationStatus {
 }
 
 model Reservations {
-  id                   String                 @id @unique @default(cuid())
-  status               ReservationStatus
-  created_at           DateTime               @default(now())
-  cancelled_at         DateTime?
-  updated_at           DateTime?
-  Reservation_Slot     Reservation_Slots      @relation(fields: [reservation_slot_id], references: [id])
-  reservation_slot_id  String                 @unique
-  Donation_History     Donation_History[]
-  Pre_Feedback_Answers Pre_Feedback_Answers[]
-  donator_id           String
-  Donator              Donators               @relation(fields: [donator_id], references: [id])
+  id                     String                 @id @unique @default(cuid())
+  status                 ReservationStatus
+  created_at             DateTime               @default(now())
+  cancelled_at           DateTime?
+  updated_at             DateTime?
+  Reservation_Slot       Reservation_Slots      @relation(fields: [reservation_slot_id], references: [id])
+  reservation_slot_id    String                 @unique
+  Donation_History       Donation_History[]
+  donator_id             String
+  Donator                Donators               @relation(fields: [donator_id], references: [id])
+  Pre_Donation_Feedbacks Pre_Donation_Feedbacks @relation(fields: [pre_donation_fb_id], references: [id])
+  pre_donation_fb_id     String                 @unique
 }
 
-// model Pre_Donation_Feedbacks {
-//   id                   String                 @id @unique @default(cuid())
-//   created_at           DateTime               @default(now())
-//   Reservations         Reservations[]
-//   Pre_Feedback_Answers Pre_Feedback_Answers[]
-// }
+model Pre_Donation_Feedbacks {
+  id                   String                 @id @unique @default(cuid())
+  created_at           DateTime               @default(now())
+  Pre_Feedback_Answers Pre_Feedback_Answers[]
+  Reservations         Reservations?
+}
 
 // model Pre_Feedback_Answers {
 //   id                    String                 @id @unique @default(cuid())
@@ -249,13 +250,15 @@ model Reservations {
 // }
 
 model Pre_Feedback_Answers {
-  id              String           @id @unique @default(cuid())
-  Survey_Question Survey_Questions @relation(fields: [question_id], references: [id])
-  Survey_Choice   Survey_Choices   @relation(fields: [choice_id], references: [id])
-  Reservation     Reservations     @relation(fields: [reservation_id], references: [id])
-  reservation_id  String
-  question_id     String
-  choice_id       String
+  id                       String                  @id @unique @default(cuid())
+  Survey_Question          Survey_Questions        @relation(fields: [question_id], references: [id])
+  Survey_Choice            Survey_Choices          @relation(fields: [choice_id], references: [id])
+  // Reservation              Reservations?           @relation(fields: [reservation_id], references: [id])
+  // reservation_id           String?
+  question_id              String
+  choice_id                String
+  Pre_Donation_Feedbacks   Pre_Donation_Feedbacks? @relation(fields: [pre_Donation_FeedbacksId], references: [id])
+  pre_Donation_FeedbacksId String?
 }
 
 model Survey_Choices {

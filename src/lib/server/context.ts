@@ -1,6 +1,7 @@
 import { initTRPC } from '@trpc/server';
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
 import prisma, { type Donators, type Medical_Staff, type Moderators } from './database';
+import superjson from 'superjson';
 
 type UserContext = DonatorContext | MedicalStaffContext | ModeratorContext | undefined;
 
@@ -83,6 +84,8 @@ export const createSvelteKitContext =
 		};
 	};
 
-const t = initTRPC.context<ReturnType<typeof createSvelteKitContext>>().create();
+const t = initTRPC.context<ReturnType<typeof createSvelteKitContext>>().create({
+	transformer: superjson
+});
 export const createRouter = t.router;
 export const publicProcedure = t.procedure;

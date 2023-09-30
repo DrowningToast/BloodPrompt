@@ -4,8 +4,6 @@
 	import type { LayoutData } from './$types';
 	import { goto } from '$app/navigation';
 
-	export let data: LayoutData;
-
 	trpc.auth.getUser
 		.query()
 		.then((res) => {

@@ -4,6 +4,8 @@ import { donatorsRouter } from './routes/donatorsRouter';
 import { authRouter } from './routes/authRouter';
 import { placesRouter } from './routes/placesRouter';
 import { medicalStaffRouter } from './routes/medicalStaffRouter';
+import { reservationSlotsRouter } from './routes/reservationSlotsRouter';
+import { preFeedBackRouter } from './routes/preFeedBackRouter';
 import { rewardRouter } from './routes/rewardRouter';
 import { moderatorRoutes } from './routes/moderatorsRoutes';
 
@@ -22,7 +24,10 @@ export const appRouter = createRouter({
 	auth: authRouter,
 	places: placesRouter,
 	medicalStaff: medicalStaffRouter,
-	moderator: moderatorRoutes
+	preFeedback: preFeedBackRouter,
+	reservation: reservationSlotsRouter
+	moderator: moderatorRoutes,
+  reward: rewardRouter
 });
 
 export type AppRouter = typeof appRouter;

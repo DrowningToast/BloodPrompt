@@ -2,12 +2,15 @@
 	import { goto } from '$app/navigation';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Sheet from '$lib/components/ui/sheet';
+	import { trpc } from '$lib/trpc';
+	import { onMount } from 'svelte';
 	import ReservationHeader from '../../ReservationHeader.svelte';
 	import type { PageData } from './$types';
 	import ReservationCalendar from './ReservationCalendar.svelte';
 	import TimeButton from './TimeButton.svelte';
 	import { ArrayRange, get24HoursTimeString, getAvilableDays } from './utils';
 	import { Steps } from 'svelte-steps';
+	import { preFeedbackStore } from '$lib/stores/preFeedback';
 
 	export let data: PageData;
 	const thisMonthAvailableDates = getAvilableDays(data.hospitalData, new Date().getMonth());
@@ -54,14 +57,22 @@
 		return new Date(today.getFullYear(), today.getMonth(), today.getDate(), hour, 0);
 	});
 
+	onMount(async () => {
+		console.log($preFeedbackStore.Pre_Feedback_Answers.length);
+		if ($preFeedbackStore.Pre_Feedback_Answers.length > 0) {
+		} else {
+			await goto('/reservation/survey');
+		}
+	});
+
 	const handleConfirm = async () => {
 		if (!selectedDate) return;
 		if (!selectedTime) return;
-		goto(`/reservation/${data.hospitalData.id}/confirm?date=${selectedTime.getTime()}`);
-		// mock api call
-		console.log(selectedTime);
-		console.log(selectedTime.getTime());
-		// done!, go to next page
+		try {
+			await goto(`/reservation/${data.hospitalData.id}/confirm?date=${selectedTime.getTime()}`);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 </script>
 
