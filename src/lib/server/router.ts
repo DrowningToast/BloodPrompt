@@ -22,7 +22,8 @@ export const appRouter = createRouter({
 	auth: authRouter,
 	places: placesRouter,
 	medicalStaff: medicalStaffRouter,
-	moderator: moderatorRoutes
+	moderator: moderatorRoutes,
+	reward: rewardRouter
 });
 
 export type AppRouter = typeof appRouter;
