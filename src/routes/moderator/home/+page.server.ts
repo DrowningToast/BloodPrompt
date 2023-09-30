@@ -42,11 +42,6 @@ export const load = (async ({ fetch }) => {
 		dateArray.push(new Date(data.created_at));
 	}
 
-	dateArray.push(new Date());
-	dateArray.push(new Date());
-	dateArray.push(new Date());
-	dateArray.push(new Date());
-
 	const groupedByDay: Record<string, Date[]> = groupDatesByDay(dateArray);
 
 	const bloodTypeCount = [];
