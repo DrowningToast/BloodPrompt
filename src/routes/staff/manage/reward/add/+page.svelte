@@ -9,16 +9,41 @@
     import { Textarea } from "$lib/components/ui/textarea";
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
+    import { trpc } from '$lib/trpc';
 
     let fileInput:HTMLInputElement;
-    let  reward;
-    const onFileSelected =(e)=>{
+    let reward : any;
+    const onFileSelected =(e : any)=>{
         let image = e.target.files[0];
         let reader = new FileReader();
         reader.readAsDataURL(image);
         reader.onload = e => {
      	    reward = e.target.result
         };
+
+    }
+
+    let name:string = "";
+    let description:string = "";
+    let required_points:string;
+    let amount_left:string;
+    let image_src:string = "";
+
+    const addRewardHandler = async () => {
+        console.log(name,
+                        description,
+                        required_points,
+                        amount_left,);
+        const temptData = {
+                        name : name,
+                        description : description,
+                        required_points: parseInt(required_points),
+                        amount_left : parseInt(amount_left),
+                    };
+        console.log(temptData);
+        await trpc.reward.create
+            .mutate(temptData)
+            .then(()=>{console.log("success")})
     }
 
 
@@ -105,7 +130,7 @@
                 <p class="text-base text-gray-500">สามารถเพิ่มหรือแก้ไขข้อมูลของรางวัล</p>
             </div>
             <div class="flex justify-between items-center gap-4">
-                <Button class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white hover:bg-[#EF4444]"><PlusCircle class="fill-white stroke-[#EF4444]" />เพิ่มของรางวัล</Button>
+                <Button on:click={addRewardHandler} class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white hover:bg-[#EF4444]"><PlusCircle class="fill-white stroke-[#EF4444]" />เพิ่มของรางวัล</Button>
                 <Button class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white">ยกเลิกการเพิ่ม</Button>
             </div>
         </div>
@@ -139,10 +164,10 @@
                         <Info class="w-5"/>
                         <h1 class="font-bold py-2">ข้อมูลพื้นฐานของของรางวัล</h1>
                     </div>
-                    <Input placeholder="ชื่อของรางวัล" class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4"/>
-                    <Textarea placeholder="รายละเอียดเบื้องต้นของของรางวัล" class="rounded-xl border-2 border-gray-300 h-[200px] w-full px-4 py-4 resize-none"/>
-                    <Input placeholder="แต้มที่ต้องใช้แลกของรางวัล" class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4"/>
-                    <Input placeholder="จำนวน" class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4"/>
+                    <Input bind:value={name} placeholder="ชื่อของรางวัล" class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4"/>
+                    <Textarea bind:value={description} placeholder="รายละเอียดเบื้องต้นของของรางวัล" class="rounded-xl border-2 border-gray-300 h-[200px] w-full px-4 py-4 resize-none"/>
+                    <Input bind:value={required_points} placeholder="แต้มที่ต้องใช้แลกของรางวัล" class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4"/>
+                    <Input bind:value={amount_left} placeholder="จำนวน" class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4"/>
                 </div>
             </div>
         </div>
