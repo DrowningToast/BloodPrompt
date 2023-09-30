@@ -108,8 +108,6 @@
 	onMount(async () => {
 		const reservationLog = await trpc.reservation.getLog.query();
 
-		console.log(reservationLog);
-
 		reservationData = reservationLog.map((reservation) => {
 			return {
 				placeData: reservation.Reservation_Slot.Place,
