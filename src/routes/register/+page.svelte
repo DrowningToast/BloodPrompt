@@ -111,7 +111,7 @@
 		} else if (bloodTypesValue.b) {
 			selectedBloodType = 'b';
 		} else if (bloodTypesValue.o) {
-			selectedBloodType = 'c';
+			selectedBloodType = 'o';
 		} else if (bloodTypesValue.ab) {
 			selectedBloodType = 'ab';
 		}
