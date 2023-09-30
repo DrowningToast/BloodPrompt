@@ -17,7 +17,7 @@ export const load = (async ({ params }) => {
 	});
 
 	if (!hospital) {
-		return {
+		throw {
 			status: 404,
 			error: 'Hospital not found'
 		};
@@ -54,7 +54,6 @@ export const load = (async ({ params }) => {
 	const hospitalAvailability: HospitalAvailability = {
 		id: placeId,
 		name: hospital.name,
-		googleMapUrl: hospital.address,
 		availableDates
 	};
 	console.log(getDatesFrom(new Date(), 14));

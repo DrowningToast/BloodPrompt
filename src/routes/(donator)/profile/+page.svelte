@@ -67,8 +67,12 @@
 	open={showLogoutConfirmDialog}
 	title="ออกจากระบบหรือไม่ ?"
 	description="ยืนยันที่จะออกจากระบบหรือไม่ คุณสามารถเข้าสู่ระบบใหม่ได้โดยใช้เบอร์โทรศัพท์และรหัสผ่าน"
-	actionLabel="ออกจากระบบ"
+	actionLabel="ยกเลิก"
 	onAction={() => {
+		showLogoutConfirmDialog = false;
+	}}
+	secondaryLabel="ออกจากระบบ"
+	onSecondaryAction={() => {
 		trpc.auth.logout
 			.mutate()
 			.then(() => {
@@ -78,10 +82,6 @@
 				alert('ไม่สามารถออกจากระบบ โปรดลองใหม่อีกครั้ง');
 				console.log(error);
 			});
-	}}
-	secondaryLabel="ยกเลิก"
-	onSecondaryAction={() => {
-		showLogoutConfirmDialog = false;
 	}}
 />
 

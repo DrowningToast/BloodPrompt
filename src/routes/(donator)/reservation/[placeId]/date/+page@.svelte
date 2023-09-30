@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Sheet from '$lib/components/ui/sheet';
+	import { trpc } from '$lib/trpc';
 	import ReservationHeader from '../../ReservationHeader.svelte';
 	import type { PageData } from './$types';
 	import ReservationCalendar from './ReservationCalendar.svelte';
@@ -57,11 +58,11 @@
 	const handleConfirm = async () => {
 		if (!selectedDate) return;
 		if (!selectedTime) return;
-		goto(`/reservation/${data.hospitalData.id}/confirm?date=${selectedTime.getTime()}`);
-		// mock api call
-		console.log(selectedTime);
-		console.log(selectedTime.getTime());
-		// done!, go to next page
+		try {
+			await goto(`/reservation/${data.hospitalData.id}/confirm?date=${selectedTime.getTime()}`);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 </script>
 

@@ -1,7 +1,6 @@
 export interface HospitalAvailability {
 	id: string;
 	name: string;
-	googleMapUrl: string;
 	availableDates: {
 		date: Date;
 		periods:
@@ -13,7 +12,7 @@ export interface HospitalAvailability {
 	}[];
 }
 
-export const SEAT_PER_TIME_SLOT = 3;
+export const MAX_SEAT_PER_TIME_SLOT = 3;
 export const DEFAULT_TIME_SLOT = [
 	{ time: '09:00', available: true },
 	{ time: '10:00', available: true },
@@ -78,6 +77,5 @@ export const mock_hospitalData = (placeId: any): HospitalAvailability => ({
 				{ time: '17:00', available: true }
 			]
 		}
-	],
-	googleMapUrl: 'https://www.google.com/maps/place/1.3521,103.8198'
+	]
 });

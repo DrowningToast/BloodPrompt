@@ -1,6 +1,13 @@
 import { z } from 'zod';
 import { createRouter, publicProcedure } from '../context';
 import prisma from '../database';
+import { TRPCError } from '@trpc/server';
+import {
+	DEFAULT_TIME_SLOT,
+	MAX_SEAT_PER_TIME_SLOT
+} from '../../../routes/(donator)/reservation/[placeId]/utils';
+import { get24HoursTimeString } from '../../../routes/(donator)/reservation/[placeId]/date/utils';
+import reservationController from '../database/controllers/reservationController';
 
 export const reservationSlotsRouter = createRouter({
 	findByDate: publicProcedure
@@ -19,5 +26,75 @@ export const reservationSlotsRouter = createRouter({
 				}
 			});
 			return reservationSlots;
+		}),
+	reserve: publicProcedure
+		.input(
+			z.object({
+				placeId: z.string(),
+				timeSlotInMillisecond: z.number()
+			})
+		)
+		.mutation(async ({ ctx, input }) => {
+			const { placeId, timeSlotInMillisecond } = input;
+			const { sessionToken } = ctx;
+
+			const session = await prisma.session.findUnique({
+				where: {
+					session_token: sessionToken
+				}
+			});
+
+			const timeSlot = new Date(timeSlotInMillisecond);
+
+			// validate the place id
+			const place = await prisma.places.findUnique({
+				where: {
+					id: placeId
+				}
+			});
+			if (!place) {
+				throw new TRPCError({
+					code: 'NOT_FOUND',
+					message: 'Place not found'
+				});
+			}
+
+			// validate the time slot
+			const validateSlot = DEFAULT_TIME_SLOT.find((slot) => {
+				return slot.time === get24HoursTimeString(timeSlot);
+			});
+			if (!validateSlot) {
+				throw new TRPCError({
+					code: 'NOT_FOUND',
+					message: 'Time slot not found'
+				});
+			}
+
+			// check if the slot is still free or not
+			const alreadyReserved = await prisma.reservation_Slots.findMany({
+				where: {
+					Place: {
+						id: placeId
+					},
+					reserve_date: timeSlot
+				}
+			});
+			if (alreadyReserved.length >= MAX_SEAT_PER_TIME_SLOT) {
+				throw new TRPCError({
+					code: 'NOT_FOUND',
+					message: 'Time slot is fully booked'
+				});
+			}
+
+			const reservation = await reservationController.createReservation(
+				{
+					id: session?.donator_id!
+				},
+				{
+					id: placeId
+				},
+				timeSlot
+			);
+			return reservation;
 		})
 });
