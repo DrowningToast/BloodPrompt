@@ -19,10 +19,28 @@
 	import { getFormattedOpeningDate } from '$lib/utils';
 	import { Button } from '$lib/components/ui/button';
 	import AlertDialog from '$lib/components/svelte/alert/AlertDialog.svelte';
+	import { trpc } from '$lib/trpc';
 
 	export let data: PageData;
+	const { redemptionHistory, place } = data;
 
 	let showCancelConfirmDialog: boolean = false;
+
+	const handleCancelRedeem = async () => {
+		if (redemptionHistory) {
+			await trpc.reward.cancelRedeem
+				.mutate({
+					donatorId: redemptionHistory?.donator_id,
+					redemptionHistoryId: redemptionHistory?.id,
+					rewardId: redemptionHistory?.reward_id
+				})
+				.then(() => {
+					alert('ระบบยกเลิกรายการแลกของรางวัลของคุณแล้ว');
+					goto('/reward/history');
+				})
+				.catch((error) => console.error(error));
+		}
+	};
 </script>
 
 <div class="bg-[#F5F5F5] min-h-screen">
@@ -39,7 +57,7 @@
 		<p class="text-md font-bold">รายละเอียดการแลกของรางวัล</p>
 	</div>
 
-	{#if $selectedRedemptionHistory}
+	{#if redemptionHistory && place}
 		<div class="p-6">
 			<Card.Root class="rounded-xl shadow">
 				<Card.Content class="p-0">
@@ -52,45 +70,52 @@
 						<div class="mt-2">
 							<p class="flex flex-row items-center gap-1">
 								สถานะการแลก:
-								{#if $selectedRedemptionHistory.redemtionData.status === 'RECEIVED'}
+								{#if redemptionHistory.status === 'RECEIVED'}
 									<span class="font-bold text-green-600">ได้รับของแล้ว</span>
-								{:else if $selectedRedemptionHistory.redemtionData.status === 'REDEEMED'}
+								{:else if redemptionHistory.status === 'REDEEMED'}
 									<p class="font-bold text-blue-600">แลกของรางวัลแล้ว</p>
-								{:else if $selectedRedemptionHistory.redemtionData.status === 'CANCELLED'}
+								{:else if redemptionHistory.status === 'CANCELLED'}
 									<p class="font-bold text-red-600">ยกเลิกการแลก</p>
 								{/if}
 							</p>
 							<p>
+								หมายเลขการแลก: <span class="font-bold text-sm">
+									{redemptionHistory.id.slice(-5)}
+								</span>
+							</p>
+							<p>
 								แลกของรางวัลเมื่อ: <span class="font-bold text-sm">
-									{$selectedRedemptionHistory.redemtionData.created_at.toLocaleDateString('th')}
+									{new Date(redemptionHistory.created_at).toLocaleDateString('th')}
 								</span>
 							</p>
 							<p>
 								จำนวนของรางวัลที่ถูกแลก: <span class="font-bold text-sm">
-									{$selectedRedemptionHistory.redemtionData.redeem_amount} ชิ้น
+									{redemptionHistory.redeem_amount} ชิ้น
 								</span>
 							</p>
 							<p>
 								แต้มสะสมที่ใช้: <span class="font-bold text-sm">
-									{$selectedRedemptionHistory.redemtionData.used_points.toLocaleString('en')} แต้ม
+									{redemptionHistory.used_points.toLocaleString('en')} แต้ม
 								</span>
 							</p>
 						</div>
 
-						<Button
-							on:click={() => {
-								showCancelConfirmDialog = true;
-							}}
-							class="rounded-2xl bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600 w-full mt-4"
-						>
-							ยกเลิกรายการ
-						</Button>
+						{#if redemptionHistory.status === 'REDEEMED'}
+							<Button
+								on:click={() => {
+									showCancelConfirmDialog = true;
+								}}
+								class="rounded-2xl bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600 w-full mt-4"
+							>
+								ยกเลิกรายการ
+							</Button>
+						{/if}
 
 						<AlertDialog
 							title="ยืนยันยกเลิกการแลกนี้หรือไม่ ?"
 							description="รายการนี้จะถูกยกเลิก และคุณจะได้รับแต้มที่ใช้ไปคืน ยืนยันที่จะยกเลิกหรือไม่ ?"
 							actionLabel="ยืนยันและยกเลิกรายการ"
-							onAction={() => {}}
+							onAction={handleCancelRedeem}
 							secondaryLabel={'ยกเลิก'}
 							onSecondaryAction={() => {
 								showCancelConfirmDialog = false;
@@ -110,17 +135,17 @@
 						</div>
 						<div class="mt-4">
 							<img
-								src={$selectedRedemptionHistory.rewardData.image_src}
+								src={redemptionHistory.Reward.image_src}
 								alt="reward_image"
 								class=" object-cover w-32 mx-auto rounded-lg"
 							/>
 
 							<div class="mt-4">
 								<p class="font-bold">
-									{$selectedRedemptionHistory.rewardData.name}
+									{redemptionHistory.Reward.name}
 								</p>
 								<p class=" text-slate-400 text-sm mt-1">
-									{$selectedRedemptionHistory.rewardData.description}
+									{redemptionHistory.Reward.description}
 								</p>
 							</div>
 						</div>
@@ -133,7 +158,7 @@
 					<div class="p-4">
 						<div class="flex flex-row justify-between items-stretch mt-2 relative">
 							<a
-								href={`https://www.google.com/maps/search/${$selectedRedemptionHistory.placeData.name}`}
+								href={`https://www.google.com/maps/search/${place.name}`}
 								target="_blank"
 								rel="noopener noreferrer"
 							>
@@ -148,49 +173,47 @@
 						<p class="font-bold">ข้อมูลการสถานที่รับของรางวัล</p>
 						<div class="mt-2">
 							<p class="text-sm font-bold">
-								{$selectedRedemptionHistory.placeData.name}
+								{place.name}
 							</p>
 
 							<div class="flex flex-col gap-3 mt-4">
 								<div class="flex flex-row items-center gap-2">
 									<Clock size={20} />
 									<p class="text-sm">
-										{`เปิดทำการเวลา ${$selectedRedemptionHistory.placeData.opening_time.toFixed(
+										{`เปิดทำการเวลา ${place.opening_time.toFixed(
 											2
-										)} น. - ${$selectedRedemptionHistory.placeData.closing_time.toFixed(2)} น.`}
+										)} น. - ${place.closing_time.toFixed(2)} น.`}
 									</p>
 								</div>
 
 								<div class="flex flex-row items-center gap-2">
 									<CalendarClock size={28} />
 									<p class="text-sm">
-										{`เปิดทำการทุกวัน ${getFormattedOpeningDate(
-											$selectedRedemptionHistory.placeData.opening_day
-										)}`}
+										{`เปิดทำการทุกวัน ${getFormattedOpeningDate(place.opening_day)}`}
 									</p>
 								</div>
 
 								<div class="flex flex-row items-center gap-2">
 									<Phone size={20} />
 									<p class="text-sm">
-										{`เบอร์โทรติดต่อ ${$selectedRedemptionHistory.placeData.phone_number}`}
+										{`เบอร์โทรติดต่อ ${place.phone_number}`}
 									</p>
 								</div>
 
-								{#if $selectedRedemptionHistory.placeData.email}
+								{#if place.email}
 									<div class="flex flex-row items-center gap-2">
 										<Mail size={20} />
 										<p class="text-sm">
-											{`อีเมล ${$selectedRedemptionHistory.placeData.email}`}
+											{`อีเมล ${place.email}`}
 										</p>
 									</div>
 								{/if}
 
-								{#if $selectedRedemptionHistory.placeData.website_url}
+								{#if place.website_url}
 									<div class="flex flex-row items-center gap-2">
 										<Globe size={20} />
 										<p class="text-sm">
-											{`เว็บไซต์ ${$selectedRedemptionHistory.placeData.website_url}`}
+											{`เว็บไซต์ ${place.website_url}`}
 										</p>
 									</div>
 								{/if}

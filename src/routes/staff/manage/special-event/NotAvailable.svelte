@@ -38,7 +38,7 @@
 </script>
 
 <div class="flex justify-between bg-gray-300 min-w-screen min-h-[100vh] h-screen w-full">
-    <div class="flex flex-col bg-[#191F2F] w-3/12 h-full">
+	<div class="flex flex-col bg-[#191F2F] w-3/12 h-full">
 		<div class="flex flex-row px-8 py-16 justify-center">
 			<img src={bloodpromptlogo} alt="" class="w-16" />
 			<h1 class="translate-y-4 text-xl font-bold text-white px-3">BLOODPROMPT</h1>
@@ -47,28 +47,30 @@
 			<div class="flex flex-col gap-8 w-full">
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-                    on:click={()=>{
-                        if (browser) {
-                        goto('/staff/home')
-                    }}}
-				><Home class="w-5 h-5 " />หน้าหลัก</Button>
+					on:click={() => {
+						if (browser) {
+							goto('/staff/home');
+						}
+					}}><Home class="w-5 h-5 " />หน้าหลัก</Button
+				>
 
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-                    on:click={()=>{
-                        if (browser) {
-                        goto('/staff/manage/reservation')
-                    }}}
-				><FileText class="w-5 h-5" />การจองคิว</Button>
+					on:click={() => {
+						if (browser) {
+							goto('/staff/manage/reservation');
+						}
+					}}><FileText class="w-5 h-5" />การจองคิว</Button
+				>
 
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-                    on:click={()=>{
-                        if (browser) {
-                            goto('/staff/manage/reward')
-                        }
-                    }}
-				><Gift class="w-5 h-5" />จัดการรางวัล</Button>
+					on:click={() => {
+						if (browser) {
+							goto('/staff/manage/reward');
+						}
+					}}><Gift class="w-5 h-5" />จัดการรางวัล</Button
+				>
 
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#EF4444] bg-[#EF4444] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
@@ -79,17 +81,18 @@
 			</div>
 			<Button
 				class="flex justify-start gap-2 text-white text-start px-6 py-3 items-center bg-[#191F2F] mb-9"
-                on:click={()=>{
-                    if (browser) {
-                    goto('/staff/login')
-                }}}
-			><LogOut class="mr-2 h-5 w-5 stroke-white" />ออกจากระบบ</Button>
+				on:click={() => {
+					if (browser) {
+						goto('/staff/login');
+					}
+				}}><LogOut class="mr-2 h-5 w-5 stroke-white" />ออกจากระบบ</Button
+			>
 		</div>
 	</div>
-    <div class="flex flex-col justify-center items-center w-9/12 h-auto">
-        <div class="w-full h-20 bg-white grid grid-cols-3 items-center justify-center px-8">
+	<div class="flex flex-col justify-center items-center w-9/12 h-auto">
+		<div class="w-full h-20 bg-white grid grid-cols-3 items-center justify-center px-8">
 			<div class="items-center justify-center flex" />
-			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
+			<div class="items-center justify-center flex text-2xl font-semibold">{$placeName}</div>
 			<div class="items-center justify-end flex gap-2">
 				<div class="flex flex-row items-center gap-3">
                     <UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8"/>

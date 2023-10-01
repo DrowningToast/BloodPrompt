@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Places, Reservations } from '../../../../generated-zod';
+	import type { Places, Reservation_Slots, Reservations } from '../../../../generated-zod';
 	import * as Card from '$lib/components/ui/card';
 	import { Calendar, CheckCircle2, Clock, History, XCircle } from 'lucide-svelte';
 	import { toDateString } from '$lib/utils';
@@ -16,7 +16,7 @@
 
 <div class="flex flex-col gap-6">
 	{#if reservationHistoryData}
-		{#each reservationHistoryData as { reservationData, placeData }}
+		{#each reservationHistoryData as { reservationData, placeData, reservationSlot }}
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
 			<div
@@ -30,7 +30,7 @@
 							<div class="flex flex-row items-center gap-1">
 								<History size={18} />
 								<p class="text-sm">
-									ประวัติการบริจาคเลือดเลขที่: <span class="font-bold">{reservationData.id}</span>
+									ประวัติการจองเลขที่: <span class="font-bold">{reservationData.id.slice(-5)}</span>
 								</p>
 							</div>
 							<div class="mt-2">
@@ -63,7 +63,11 @@
 
 								<div class="flex flex-row items-center gap-1">
 									<Clock size={16} />
-									<p class="font-semibold text-sm">{'10.00 - 11.00'}</p>
+									<p class="font-semibold text-sm">
+										{new Date(reservationSlot.reserve_time).getHours().toFixed(2) +
+											' - ' +
+											(new Date(reservationSlot.reserve_time).getHours() + 1).toFixed(2)}
+									</p>
 								</div>
 							</div>
 						</div>

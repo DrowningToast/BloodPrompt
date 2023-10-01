@@ -8,17 +8,30 @@
 	import { getFormattedOpeningDate, toDateTimeString, toDateString } from '$lib/utils';
 	import { Button } from '$lib/components/ui/button';
 	import QRCode from '@castlenine/svelte-qrcode';
+	import { trpc } from '$lib/trpc';
 
 	export let data: PageData;
 	const { reservationData, donatorData, placeData } = data;
 	let showCancelConfirmDialog: boolean = false;
+
+	const handleCancelReservation = async () => {
+		trpc.reservation.cancelReservation
+			.query({ reservationId: reservationData.id })
+			.then(() => {
+				alert('ระบบยกเลิกการจองของคุณแล้ว !');
+				goto('/history');
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	};
 </script>
 
 <AlertDialog
 	title="ยืนยันยกเลิกการจองหรือไม่ ?"
 	description="รายการจองคิวนี้จะถูกยกเลิก และอาจเสียสิทธิ์การจองที่ทำไว้แล้วได้ ยืนยันยกเลิกหรือไม่"
 	actionLabel="ยืนยันและยกเลิกรายการ"
-	onAction={() => {}}
+	onAction={handleCancelReservation}
 	secondaryLabel={'ยกเลิก'}
 	onSecondaryAction={() => {
 		showCancelConfirmDialog = false;
@@ -74,22 +87,30 @@
 
 							<div>
 								<p class="text-slate-500 text-sm">เวลา</p>
-								<p class="font-bold text-sm">{'10.00 - 11.00'}</p>
+								<p class="font-bold text-sm">
+									{new Date(reservationData.Reservation_Slot.reserve_time).getHours().toFixed(2) +
+										' - ' +
+										(
+											new Date(reservationData.Reservation_Slot.reserve_time).getHours() + 1
+										).toFixed(2)}
+								</p>
 							</div>
 						</div>
 
-						<div class="flex items-center justify-center my-2">
-							<QRCode content="http://www.google.com" size={175} />
-						</div>
+						{#if reservationData.status === 'BOOKED'}
+							<div class="flex items-center justify-center my-2">
+								<QRCode content="http://www.google.com" size={175} />
+							</div>
 
-						<Button
-							on:click={() => {
-								showCancelConfirmDialog = true;
-							}}
-							class="rounded-2xl bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600 w-full"
-						>
-							ยกเลิกการจอง
-						</Button>
+							<Button
+								on:click={() => {
+									showCancelConfirmDialog = true;
+								}}
+								class="rounded-2xl bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600 w-full"
+							>
+								ยกเลิกการจอง
+							</Button>
+						{/if}
 					</div>
 				</div>
 			</Card.Content>

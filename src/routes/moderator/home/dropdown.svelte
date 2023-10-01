@@ -24,7 +24,7 @@
 				variant="outline"
 				builders={[builder]}
 				class="p-0 m-0 border-transparent bg-white hover:bg-white"
-				><ChevronDown class="p-0 m-0 fill-black stroke-none" /></Button
+				><ChevronDown class="p-0 m-0 w-5 fill-black stroke-none" /></Button
 			>
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content class="flex flex-col">
