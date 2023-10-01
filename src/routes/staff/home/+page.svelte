@@ -7,6 +7,7 @@
 		FileText,
 		Gift,
 		CalendarHeart,
+		CalendarClock,
 		Megaphone
 	} from 'lucide-svelte';
 	import bloodPromptLogo from '$lib/images/bloodprompt-logo.png';
@@ -158,6 +159,28 @@
 				<div
 					class="flex flex-row w-8/12 rounded-3xl justify-between items-center shadow-xl gap-4 bg-white"
 				>
+					<!-- <img src={graphExample} class="" alt="" />
+					<div class="flex flex-col gap-8">
+						<p class="text-2xl font-bold">จำนวนเลือดในคลังทั้งหมด</p>
+						<div>
+							<p class="font-semibold text-[#888]">จำนวนเลือดทั้งหมด</p>
+							<p>4,444</p>
+						</div>
+						<div class="flex flex-col gap-11">
+							<div class="flex gap-5">
+								<p class="font-semibold text-[#888]">หมู่เลือด A :</p>
+								<span class="text-xl font-semibold">1111</span>
+								<p class="font-semibold text-[#888]">หมู่เลือด O :</p>
+								<span class="text-xl font-semibold">1111</span>
+							</div>
+							<div class="flex gap-5">
+								<p class="font-semibold text-[#888]">หมู่เลือด B :</p>
+								<span class="text-xl font-semibold">1111</span>
+								<p class="font-semibold text-[#888]">หมู่เลือด AB :</p>
+								<span class="text-xl font-semibold">1111</span>
+							</div>
+						</div>
+					</div> -->
 					<div class=" bg-white rounded-xl p-6">
 						<DonutChart data={data.bloodTypeCount} options={donutChartOptions} />
 					</div>

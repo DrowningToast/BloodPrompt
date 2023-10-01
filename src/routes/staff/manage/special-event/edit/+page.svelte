@@ -2,18 +2,13 @@
 	import {
 		Home,
 		LogOut,
-		CalendarDays,
 		UserCircle,
 		FileText,
 		Gift,
 		CalendarHeart,
-		Lock,
-		PlusCircle,
 		Image,
 		Info,
-		Eye,
-		Trash2,
-        Megaphone
+		Megaphone
 	} from 'lucide-svelte';
 	import bloodpromptlogo from '$lib/images/bloodprompt-logo.png';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
@@ -24,38 +19,33 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { trpc } from '$lib/trpc';
-	import type { PageData } from '../../../../$types';
-    import { medicalStaffName, placeName } from '$lib/stores/staffStores';
-    export let data:PageData;
-    const currentEvent = data.currentEvent;
+	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
+	import { page } from '$app/stores';
 
-    let fileInput:HTMLInputElement;
-    let  sp_event:any;
-    const onFileSelected =(e:any)=>{
-        let image = e.target?.files[0];
-        let reader = new FileReader();
-        reader.readAsDataURL(image);
-        reader.onload = e => {
-     	    sp_event = e.target?.result
-        };
-        console.log(reader);
-    }
+	const data = $page.data;
 
-    let name = currentEvent.name;
-    let description = currentEvent.description;
-    let id = currentEvent.id;
+	const currentEvent = data.currentEvent;
 
-    const goBack = () => {
-        if(browser){
-                goto("/staff/manage/special-event");
-            }
-    }
-    
-    const editEventHandler = async() =>{
-        await trpc.specialEvent.update.mutate({id ,name, description, sp_event})
-        .then(goBack)
-    }
+	let fileInput: HTMLInputElement;
+	let sp_event: string | null;
+	const onFileSelected = (e: any) => {
+		let image = e.target?.files[0];
+		let reader = new FileReader();
+		reader.readAsDataURL(image);
+		reader.onload = (e) => {
+			sp_event = e.target?.result as string;
+		};
+	};
 
+	let name = currentEvent.name;
+	let description = currentEvent.description;
+	let id = currentEvent.id;
+
+	const goBack = () => {
+		if (browser) {
+			goto('/staff/manage/special-event');
+		}
+	};
 </script>
 
 <div class="flex justify-between bg-gray-300 min-w-screen min-h-[100vh] h-screen w-full">
@@ -75,13 +65,13 @@
 					}}><Home class="w-5 h-5 " />หน้าหลัก</Button
 				>
 
-                <Button
+				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F]  text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-                    on:click={()=>{
-                        if (browser) {
-                        goto('/staff/manage/announcement')
-                    }}}
-				><Megaphone  class="w-5 h-7 pb-[2px] " />จัดการประกาศประชาสัมพันธ์</Button
+					on:click={() => {
+						if (browser) {
+							goto('/staff/manage/announcement');
+						}
+					}}><Megaphone class="w-5 h-7 pb-[2px] " />จัดการประกาศประชาสัมพันธ์</Button
 				>
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
@@ -165,12 +155,11 @@
 			</div>
 			<div class="flex justify-between items-center gap-4">
 				<Button
-					class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-10 py-4 text-base font-bold text-white hover:bg-[#EF4444]" on:click={editEventHandler}
-                
+					class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-10 py-4 text-base font-bold text-white hover:bg-[#EF4444]"
 					>บันทึกข้อมูล</Button
 				>
 				<Button
-					class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white" on:click={goBack}
+					class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white"
 					>ยกเลิกการแก้ไข</Button
 				>
 			</div>
@@ -220,16 +209,23 @@
 					</div>
 				</div>
 
-                <div class="flex flex-col gap-5 w-6/12">
-                    <div class="flex items-center gap-2">
-                        <Info class="w-5"/>
-                        <h1 class="font-bold py-2">ข้อมูลพื้นฐานของกิจกรรมพิเศษนี้</h1>
-                    </div>
-                    <Input placeholder="ชื่อกิจกรรมพิเศษ" class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4" bind:value={name}/>
-                    <Textarea placeholder="รายละเอียดกิจกรรมพิเศษ" class="rounded-xl border-2 border-gray-300 h-[200px] w-full px-4 py-4 resize-none" bind:value={description}/>
-                    
-                </div>
-            </div>
-        </div>
-    </div>
+				<div class="flex flex-col gap-5 w-6/12">
+					<div class="flex items-center gap-2">
+						<Info class="w-5" />
+						<h1 class="font-bold py-2">ข้อมูลพื้นฐานของกิจกรรมพิเศษนี้</h1>
+					</div>
+					<Input
+						placeholder="ชื่อกิจกรรมพิเศษ"
+						class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4"
+						bind:value={name}
+					/>
+					<Textarea
+						placeholder="รายละเอียดกิจกรรมพิเศษ"
+						class="rounded-xl border-2 border-gray-300 h-[200px] w-full px-4 py-4 resize-none"
+						bind:value={description}
+					/>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

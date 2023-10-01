@@ -14,26 +14,29 @@
 	import bloodpromptlogo from '$lib/images/bloodprompt-logo.png';
 	import * as Select from '$lib/components/ui/select';
 	import { Button } from '$lib/components/ui/button';
+	import { ChevronDown } from 'lucide-svelte';
 	import { Input } from '$lib/components/ui/input';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
+	import { trpc } from '$lib/trpc';
 	import Dropdown from '../../../../moderator/home/dropdown.svelte';
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 
 	let fileInput: HTMLInputElement;
-	let selectedImage: any;
+	let imageSeleceted: any;
 	const onFileSelected = (e: any) => {
 		let image = e.target.files[0];
 		let reader = new FileReader();
 		reader.readAsDataURL(image);
 		reader.onload = (e) => {
-			selectedImage = e.target?.result;
+			imageSeleceted = e.target?.result;
 		};
 	};
 
 	let name: string = '';
 	let description: string = '';
+	let image_src: string = '';
 
 	const types = [
 		{ value: 'normal', label: 'แบบทั่วไป' },
@@ -191,10 +194,10 @@
 					</div>
 
 					<div class="flex flex-col items-center justify-center w-full h-5/6 rounded-3xl">
-						{#if selectedImage}
+						{#if imageSeleceted}
 							<img
 								class="flex justify-center h-fit w-full rounded-xl"
-								src={selectedImage}
+								src={imageSeleceted}
 								alt="d"
 							/>
 						{:else}
@@ -224,7 +227,7 @@
 						<Button
 							variant="link"
 							class="flex justify-center gap-2 rounded-full text-center h-[40px] w-[84px] px-5 py-4 text-base font-bold text-[#EF4444]"
-							on:click={() => (selectedImage = null)}>ลบรูปภาพ</Button
+							on:click={() => (imageSeleceted = null)}>ลบรูปภาพ</Button
 						>
 					</div>
 				</div>

@@ -2,15 +2,20 @@
 	import {
 		Home,
 		LogOut,
+		CalendarDays,
 		UserCircle,
 		FileText,
 		Gift,
 		CalendarHeart,
 		PlusCircle,
+		Image,
+		Info,
 		Megaphone
 	} from 'lucide-svelte';
 	import bloodpromptlogo from '$lib/images/bloodprompt-logo.png';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Button } from '$lib/components/ui/button';
+	import { ChevronDown } from 'lucide-svelte';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import Dropdown from '../../../moderator/home/dropdown.svelte';
