@@ -12,9 +12,7 @@
 		"postinstall": "pnpm db:push",
 		"studio": "pnpx prisma studio",
 		"db:push": "prisma db push",
-		"db:force-push": "prisma db push --accept-data-loss",
 		"db:generate": "prisma generate",
-		"db:force-reset": "prisma db push --force-reset",
 		"db:pull": "prisma db pull"
 	},
 	"devDependencies": {
