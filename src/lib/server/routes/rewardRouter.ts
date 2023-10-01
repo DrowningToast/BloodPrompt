@@ -160,6 +160,9 @@ export const rewardRouter = createRouter({
 				include: {
 					Donator: true,
 					Reward: true
+				},
+				orderBy: {
+					created_at: 'desc'
 				}
 			});
 			return redemptionHistory;

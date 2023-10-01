@@ -27,7 +27,7 @@
 	};
 </script>
 
-<div class="bg-[#F5222D] h-screen pb-28">
+<div class="bg-[#F5222D] h-screen pb-32">
 	<div class="bg-white shadow-md p-5 flex flex-row items-center justify-start gap-4">
 		<button
 			on:click={() => {
@@ -61,7 +61,7 @@
 			<img src={rewardImage} alt="reward_logo" class=" w-32" />
 		</div>
 
-		<div class="h-screen bg-[#F5F5F5] mt-6 p-6 rounded-t-[36px]">
+		<div class="min-h-screen bg-[#F5F5F5] mt-6 p-6 rounded-t-[36px] pb-32">
 			<div>
 				<p class="text-lg font-bold">ของรางวัลทั้งหมด</p>
 

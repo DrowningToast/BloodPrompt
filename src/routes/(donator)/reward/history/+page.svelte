@@ -21,6 +21,21 @@
 
 	export let data: PageData;
 	const { redemptionHistories } = data;
+	let filteredRedemptionHistroyData = redemptionHistories;
+
+	const handleFilterStatusChange = (event: any) => {
+		if (event.value == 0) {
+			filteredRedemptionHistroyData = redemptionHistories;
+		} else if (event.value == 1) {
+			filteredRedemptionHistroyData = redemptionHistories.filter(
+				(data) => data.status === 'RECEIVED'
+			);
+		} else if (event.value == 2) {
+			filteredRedemptionHistroyData = redemptionHistories.filter(
+				(data) => data.status === 'CANCELLED'
+			);
+		}
+	};
 </script>
 
 <div class="bg-[#F5F5F5] min-h-screen pb-24">
@@ -65,7 +80,7 @@
 				</Select.Trigger>
 				<Select.Content>
 					<Select.Item value="0" class="py-2">รายการใหม่ - เก่า</Select.Item>
-					<Select.Item value="1" class="py-2">รายการใหม่ - เก่า</Select.Item>
+					<Select.Item value="1" class="py-2">รายการเก่า - ใหม่</Select.Item>
 					<Select.Item value="2" class="py-2">ใช้แต้มสะสมมาก - น้อย</Select.Item>
 					<Select.Item value="3" class="py-2">ใช้แต้มสะสมน้อย - มาก</Select.Item>
 				</Select.Content>
@@ -75,7 +90,7 @@
 		<div class="items-center flex flex-row justify-between mt-2 mx-2">
 			<p>รายการของรางวัล</p>
 
-			<Select.Root>
+			<Select.Root onSelectedChange={handleFilterStatusChange}>
 				<Select.Trigger class="border-none flex flex-row gap-2 w-3/2 pr-0">
 					<Filter size={16} />
 					<p>ตัวกรอง</p>
@@ -83,9 +98,7 @@
 				<Select.Content>
 					<Select.Item value="0" class="py-2">ทั้งหมด</Select.Item>
 					<Select.Item value="1" class="py-2">ได้รับแล้ว</Select.Item>
-
-					<Select.Item value="2" class="py-2">จัดส่งแล้ว</Select.Item>
-					<Select.Item value="3" class="py-2">ยกเลิก</Select.Item>
+					<Select.Item value="2" class="py-2">ยกเลิก</Select.Item>
 				</Select.Content>
 			</Select.Root>
 		</div>
@@ -93,7 +106,7 @@
 		<div class="mt-2 flex flex-col gap-4">
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			{#each redemptionHistories as data}
+			{#each filteredRedemptionHistroyData as data}
 				<div on:click={() => handleClickRewardHistoryItem(data)}>
 					<RewardHistoryCard
 						name={data.Reward.name}
