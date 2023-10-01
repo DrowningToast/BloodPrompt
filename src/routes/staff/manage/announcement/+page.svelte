@@ -20,9 +20,14 @@
 	import { goto } from '$app/navigation';
 	import Dropdown from '../../../moderator/home/dropdown.svelte';
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
+	import type { PageData } from './$types';
+	import { toDateTimeString } from '$lib/utils';
+
+	export let data: PageData;
+	const { announcements } = data;
 </script>
 
-<div class="flex justify-between bg-gray-300 h-full w-full max-w-[100vw] min-h-[100vh]">
+<div class="flex justify-between bg-gray-300 h-full w-full max-w-[100vw] min-h-screen">
 	<div class="flex flex-col bg-[#191F2F] w-3/12 h-auto">
 		<div class="flex flex-row px-8 py-16 justify-center">
 			<img src={bloodpromptlogo} alt="" class="w-16" />
@@ -114,177 +119,45 @@
 				>
 			</div>
 		</div>
-		<div class="flex justify-center items-center h-full w-full py-2 gap-10">
-			<!-- left -->
-			<div class="flex flex-col justify-start items-center h-full w-full pl-10 py-2 gap-10">
-				<div
-					class="flex flex-col justify-start gap-6 bg-white w-full h-fit rounded-3xl shadow-2xl px-10 py-10"
-				>
-					<div class="flex justify-between items-center w-full gap-5">
-						<div class="flex justify-start items-center gap-5">
-							<img
-								src={bloodpromptlogo}
-								alt=""
-								class="h-14 w-14 border-2 border-gray-100 rounded-lg px-1 py-1"
-							/>
-							<div class="flex-col justify-between items-start gap-2">
-								<h1 class="text-black text-lg font-semibold">ชื่อโรงพยาบาล</h1>
-								<p class="text-black text-sm">เวลา</p>
+
+		<div class="flex justify-center items-center h-full w-full flex-wrap gap-8">
+			{#each announcements as announcement}
+				<div class="flex flex-col justify-start items-center h-full min-w-[45%] min-w-[45%]">
+					<div
+						class="flex flex-col justify-start gap-6 bg-white w-full h-fit rounded-3xl shadow-2xl px-10 py-10"
+					>
+						<div class="flex justify-between items-center w-full gap-5">
+							<div class="flex justify-start items-center gap-5">
+								<img
+									src={announcement.Place.icon_src}
+									alt=""
+									class="h-14 w-14 border-2 border-gray-100 rounded-lg px-1 py-1"
+								/>
+								<div class="flex-col justify-between items-start gap-2">
+									<h1 class="text-black text-lg font-semibold">{announcement.Place.name}</h1>
+									<p class="text-black text-sm">
+										{toDateTimeString(new Date(announcement.created_at))}
+									</p>
+								</div>
 							</div>
+							<Button
+								class="flex justify-center items-center gap-1 bg-white rounded-full text-center h-10 w-20 px-4 py-4 text-base font-bold text-[#EF4444] hover:bg-white border-[#EF4444] border-2"
+								on:click={() => {
+									if (browser) {
+										goto('/staff/manage/announcement/edit/' + announcement.id);
+									}
+								}}>แก้ไข</Button
+							>
 						</div>
-						<Button
-							class="flex justify-center items-center gap-1 bg-white rounded-full text-center h-10 w-20 px-4 py-4 text-base font-bold text-[#EF4444] hover:bg-white border-[#EF4444] border-2"
-							on:click={() => {
-								if (browser) {
-									goto('/staff/manage/announcement/edit');
-								}
-							}}>แก้ไข</Button
-						>
-					</div>
-					<p class="flex justify-start items-start text-base font-normal">
-						โรงพยาบาลราชวิถี ร่วมกับดีไซน์วิลเลจ จัดกิจกรรมรับบริจาคโลหิตครั้งที่ 2
-						ช่วยเหลือผู้ป่วยที่มีความต้องการโลหิตและเติมโลหิตคงคลัง วันที่ 5 มีนาคม 2566 มีรายงานว่า
-						ดีไซน์วิลเลจ เกษตร-นวมินทร์ ร่วมกับโรงพยาบาลราชวิถี จัดกิจกรรมดีต่อใจเปิดรับบริจาคโลหิต
-						ครั้งที่ 2
-						เพื่อช่วยเหลือผู้ป่วยที่มีความต้องการโลหิตและเติมโลหิตคงคลังให้เพียงพอเพื่อไม่ให้ขาดแคลน
-						ย้ำสโลแกนทุกคนเป็น Hero ได้ด้วยการบริจาคเลือด โดยกิจกรรมจัดขึ้นเมื่อวันที่ 27-28
-						กุมภาพันธ์ ที่ผ่านมา ณ บริเวณลาน ชั้น 1
-					</p>
-					<div class="flex rounded-xl justify-center">
-						<img
-							src="https://static.thairath.co.th/media/Dtbezn3nNUxytg04aiKTuSDxWCQaz9s4h4yJIYnXoZKvJR.webp"
-							alt=""
-							class="rounded-2xl"
-						/>
+						<p class="flex justify-start items-start text-base font-normal">
+							{announcement.content}
+						</p>
+						<div class="flex rounded-xl justify-center">
+							<img src={announcement.image_src} alt="" class="max-h-60 object-cover rounded-2xl" />
+						</div>
 					</div>
 				</div>
-				<div
-					class="flex flex-col justify-start gap-6 bg-white w-full h-fit rounded-3xl shadow-2xl px-10 py-10"
-				>
-					<div class="flex justify-between items-center w-full gap-5">
-						<div class="flex justify-start items-center gap-5">
-							<img
-								src={bloodpromptlogo}
-								alt=""
-								class="h-14 w-14 border-2 border-gray-100 rounded-lg px-1 py-1"
-							/>
-							<div class="flex-col justify-between items-start gap-2">
-								<h1 class="text-black text-lg font-semibold">ชื่อโรงพยาบาล</h1>
-								<p class="text-black text-sm">เวลา</p>
-							</div>
-						</div>
-						<Button
-							class="flex justify-center items-center gap-1 bg-white rounded-full text-center h-10 w-20 px-4 py-4 text-base font-bold text-[#EF4444] hover:bg-white border-[#EF4444] border-2"
-							on:click={() => {
-								if (browser) {
-									goto('/staff/manage/announcement/edit');
-								}
-							}}>แก้ไข</Button
-						>
-					</div>
-					<p class="flex justify-start items-start text-base font-normal">
-						โรงพยาบาลราชวิถี ร่วมกับดีไซน์วิลเลจ จัดกิจกรรมรับบริจาคโลหิตครั้งที่ 2
-						ช่วยเหลือผู้ป่วยที่มีความต้องการโลหิตและเติมโลหิตคงคลัง วันที่ 5 มีนาคม 2566 มีรายงานว่า
-						ดีไซน์วิลเลจ เกษตร-นวมินทร์ ร่วมกับโรงพยาบาลราชวิถี จัดกิจกรรมดีต่อใจเปิดรับบริจาคโลหิต
-						ครั้งที่ 2
-						เพื่อช่วยเหลือผู้ป่วยที่มีความต้องการโลหิตและเติมโลหิตคงคลังให้เพียงพอเพื่อไม่ให้ขาดแคลน
-						ย้ำสโลแกนทุกคนเป็น Hero ได้ด้วยการบริจาคเลือด โดยกิจกรรมจัดขึ้นเมื่อวันที่ 27-28
-						กุมภาพันธ์ ที่ผ่านมา ณ บริเวณลาน ชั้น 1
-					</p>
-					<div class="flex rounded-xl justify-center">
-						<img
-							src="https://static.thairath.co.th/media/Dtbezn3nNUxytg04aiKTuSDxWCQaz9s4h4yJIYnXoZKvJR.webp"
-							alt=""
-							class="rounded-2xl"
-						/>
-					</div>
-				</div>
-			</div>
-			<!-- rigth -->
-			<div class="flex flex-col justify-start items-center h-full w-full pr-10 py-2 gap-10">
-				<div
-					class="flex flex-col justify-start gap-6 bg-white w-full h-fit rounded-3xl shadow-2xl px-10 py-10"
-				>
-					<div class="flex justify-between items-center w-full gap-5">
-						<div class="flex justify-start items-center gap-5">
-							<img
-								src={bloodpromptlogo}
-								alt=""
-								class="h-14 w-14 border-2 border-gray-100 rounded-lg px-1 py-1"
-							/>
-							<div class="flex-col justify-between items-start gap-2">
-								<h1 class="text-black text-lg font-semibold">ชื่อโรงพยาบาล</h1>
-								<p class="text-black text-sm">เวลา</p>
-							</div>
-						</div>
-						<Button
-							class="flex justify-center items-center gap-1 bg-white rounded-full text-center h-10 w-20 px-4 py-4 text-base font-bold text-[#EF4444] hover:bg-white border-[#EF4444] border-2"
-							on:click={() => {
-								if (browser) {
-									goto('/staff/manage/announcement/edit');
-								}
-							}}>แก้ไข</Button
-						>
-					</div>
-					<p class="flex justify-start items-start text-base font-normal">
-						โรงพยาบาลราชวิถี ร่วมกับดีไซน์วิลเลจ จัดกิจกรรมรับบริจาคโลหิตครั้งที่ 2
-						ช่วยเหลือผู้ป่วยที่มีความต้องการโลหิตและเติมโลหิตคงคลัง วันที่ 5 มีนาคม 2566 มีรายงานว่า
-						ดีไซน์วิลเลจ เกษตร-นวมินทร์ ร่วมกับโรงพยาบาลราชวิถี จัดกิจกรรมดีต่อใจเปิดรับบริจาคโลหิต
-						ครั้งที่ 2
-						เพื่อช่วยเหลือผู้ป่วยที่มีความต้องการโลหิตและเติมโลหิตคงคลังให้เพียงพอเพื่อไม่ให้ขาดแคลน
-						ย้ำสโลแกนทุกคนเป็น Hero ได้ด้วยการบริจาคเลือด โดยกิจกรรมจัดขึ้นเมื่อวันที่ 27-28
-						กุมภาพันธ์ ที่ผ่านมา ณ บริเวณลาน ชั้น 1
-					</p>
-					<div class="flex rounded-xl justify-center">
-						<img
-							src="https://static.thairath.co.th/media/Dtbezn3nNUxytg04aiKTuSDxWCQaz9s4h4yJIYnXoZKvJR.webp"
-							alt=""
-							class="rounded-2xl"
-						/>
-					</div>
-				</div>
-				<div
-					class="flex flex-col justify-start gap-6 bg-white w-full h-fit rounded-3xl shadow-2xl px-10 py-10"
-				>
-					<div class="flex justify-between items-center w-full gap-5">
-						<div class="flex justify-start items-center gap-5">
-							<img
-								src={bloodpromptlogo}
-								alt=""
-								class="h-14 w-14 border-2 border-gray-100 rounded-lg px-1 py-1"
-							/>
-							<div class="flex-col justify-between items-start gap-2">
-								<h1 class="text-black text-lg font-semibold">ชื่อโรงพยาบาล</h1>
-								<p class="text-black text-sm">เวลา</p>
-							</div>
-						</div>
-						<Button
-							class="flex justify-center items-center gap-1 bg-white rounded-full text-center h-10 w-20 px-4 py-4 text-base font-bold text-[#EF4444] hover:bg-white border-[#EF4444] border-2"
-							on:click={() => {
-								if (browser) {
-									goto('/staff/manage/announcement/edit');
-								}
-							}}>แก้ไข</Button
-						>
-					</div>
-					<p class="flex justify-start items-start text-base font-normal">
-						โรงพยาบาลราชวิถี ร่วมกับดีไซน์วิลเลจ จัดกิจกรรมรับบริจาคโลหิตครั้งที่ 2
-						ช่วยเหลือผู้ป่วยที่มีความต้องการโลหิตและเติมโลหิตคงคลัง วันที่ 5 มีนาคม 2566 มีรายงานว่า
-						ดีไซน์วิลเลจ เกษตร-นวมินทร์ ร่วมกับโรงพยาบาลราชวิถี จัดกิจกรรมดีต่อใจเปิดรับบริจาคโลหิต
-						ครั้งที่ 2
-						เพื่อช่วยเหลือผู้ป่วยที่มีความต้องการโลหิตและเติมโลหิตคงคลังให้เพียงพอเพื่อไม่ให้ขาดแคลน
-						ย้ำสโลแกนทุกคนเป็น Hero ได้ด้วยการบริจาคเลือด โดยกิจกรรมจัดขึ้นเมื่อวันที่ 27-28
-						กุมภาพันธ์ ที่ผ่านมา ณ บริเวณลาน ชั้น 1
-					</p>
-					<div class="flex rounded-xl justify-center">
-						<img
-							src="https://static.thairath.co.th/media/Dtbezn3nNUxytg04aiKTuSDxWCQaz9s4h4yJIYnXoZKvJR.webp"
-							alt=""
-							class="rounded-2xl"
-						/>
-					</div>
-				</div>
-			</div>
+			{/each}
 		</div>
 	</div>
 </div>
