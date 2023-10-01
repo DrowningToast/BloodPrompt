@@ -25,9 +25,9 @@ export const appRouter = createRouter({
 	places: placesRouter,
 	medicalStaff: medicalStaffRouter,
 	preFeedback: preFeedBackRouter,
-	reservation: reservationSlotsRouter
+	reservation: reservationSlotsRouter,
 	moderator: moderatorRoutes,
-  reward: rewardRouter
+	reward: rewardRouter
 });
 
 export type AppRouter = typeof appRouter;
