@@ -7,6 +7,7 @@
     import { ChevronDown } from "lucide-svelte";
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
+    import Dropdown from '../../../moderator/home/dropdown.svelte';
 
 </script>
 
@@ -69,34 +70,18 @@
 			><LogOut class="mr-2 h-5 w-5 stroke-white" />ออกจากระบบ</Button>
 		</div>
 	</div>
-    <div class="flex flex-col justify-center items-center w-9/12 h-auto">
-        <div class="w-full h-20 bg-white grid grid-cols-3 items-center justify-center px-8">
+    <div class="flex flex-col w-9/12 items-center h-full">
+		<div class="w-full bg-white grid grid-cols-3 items-center justify-center px-8 h-16">
 			<div class="items-center justify-center flex" />
 			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
 			<div class="items-center justify-end flex gap-2">
-				<div class="flex flex-row items-center gap-3">
-                    <UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8"/>
-                    <h1 class="font-bold">ศรุตา โทรัตน์</h1>
-                    <div>
-                        <DropdownMenu.Root>
-                            <DropdownMenu.Trigger asChild let:builder>
-                                <Button variant="outline" builders={[builder]} class="p-0 m-0 border-transparent bg-white hover:bg-white"><ChevronDown class="p-0 m-0 fill-black stroke-none"/></Button>
-                            </DropdownMenu.Trigger>
-                            <DropdownMenu.Content class="">
-                              <DropdownMenu.Item class="cursor-pointer">
-                                <LogOut class="mr-2 h-4 w-4" />
-                                <div on:click={()=>{
-                                    if (browser) {
-                                        goto('/staff/login')
-                                    }}
-                                }>ออกจากระบบ</div>
-                              </DropdownMenu.Item>
-                            </DropdownMenu.Content>
-                        </DropdownMenu.Root>
-                    </div>
-                </div>
+				<div class="flex flex-row items-center gap-1">
+					<UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8" />
+					<h1 class="font-semibold">ศรุตา โทรัตน์</h1>
+					<Dropdown />
+				</div>
 			</div>
-        </div>
+		</div>
         <!-- content -->
         <div class="flex flex-row items-center justify-between px-14 h-32 w-full">
             <div class="flex flex-col">

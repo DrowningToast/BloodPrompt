@@ -9,6 +9,7 @@
     import { Textarea } from "$lib/components/ui/textarea";
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
+    import Dropdown from '../../../moderator/home/dropdown.svelte';
 
     let fileInput:HTMLInputElement;
     let  sp_event;

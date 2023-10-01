@@ -11,7 +11,6 @@
 	import { goto } from '$app/navigation';
     import { trpc } from '$lib/trpc';
 	import Dropdown from '../../../../moderator/home/dropdown.svelte';
-	import { string } from 'zod';
 
     let fileInput:HTMLInputElement;
     let imageSeleceted : any;
@@ -134,18 +133,18 @@
 
 		</div>
     </div>
-    <div class="flex flex-col items-center w-9/12">
-        <div class="w-full h-20 bg-white grid grid-cols-3 items-center justify-center px-8">
+    <div class="flex flex-col w-9/12 items-center h-full">
+		<div class="w-full bg-white grid grid-cols-3 items-center justify-center px-8 h-16">
 			<div class="items-center justify-center flex" />
 			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
 			<div class="items-center justify-end flex gap-2">
 				<div class="flex flex-row items-center gap-1">
-                    <UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8" />
+					<UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8" />
 					<h1 class="font-semibold">ศรุตา โทรัตน์</h1>
 					<Dropdown />
-                </div>
+				</div>
 			</div>
-        </div>
+		</div>
         <!-- content -->
         <div class="flex flex-row items-center justify-between px-14 h-32 w-full">
             <div class="flex flex-col">
