@@ -3,18 +3,20 @@ import type { PageServerLoad } from './$types';
 
 export const load = (async ({ fetch }) => {
 	const trpc = trpcOnServer(fetch);
+	const user = await trpc.auth.getUser.query();
 
+	if (user?.type !== 'DONATOR') {
+		throw new Error('User is not a donator');
+	}
+
+	// fetch announcemnet
 	const announcements = await trpc.announcement.getAnnouncements.query().catch((err) => {
 		console.log(err);
 		return [];
 	});
-	const user = await trpc.auth.getUser.query();
 
-	console.log(user);
+	// fetch for post feedback status
+	const pendingFeedback = await trpc.postFeedback.checkPendingFeedback.query();
 
-	if (user?.type === 'DONATOR') {
-		return { announcements, user: user.user };
-	} else {
-		throw new Error('User is not a donator');
-	}
+	return { announcements, user: user.user, pendingFeedback };
 }) satisfies PageServerLoad;
