@@ -18,7 +18,7 @@ model Medical_Accounts {
   account_status AccountStatus
   is_activated   Boolean       @default(false)
   created_at     DateTime      @default(now())
-  updated_at     DateTime?
+  updated_at     DateTime      @updatedAt
   Donators       Donators[]
 }
 
@@ -36,7 +36,7 @@ model Donators {
   password            String
   reward_point        Int                   @default(0)
   created_at          DateTime              @default(now())
-  updated_at          DateTime?
+  updated_at          DateTime              @updatedAt
   Medical_Account     Medical_Accounts      @relation(fields: [medical_account_id], references: [id])
   Redemption_History  Redemption_History[]
   Reservations        Reservations[]
@@ -45,12 +45,12 @@ model Donators {
 }
 
 model Reward_Transactions {
-  id         String    @id @unique @default(cuid())
+  id         String   @id @unique @default(cuid())
   donator_id String
   points     Int
-  created_at DateTime  @default(now())
-  updated_at DateTime?
-  Donator    Donators  @relation(fields: [donator_id], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  Donator    Donators @relation(fields: [donator_id], references: [id])
 }
 
 model Redemption_History {
@@ -59,7 +59,7 @@ model Redemption_History {
   used_points   Int
   redeem_amount Int
   created_at    DateTime         @default(now())
-  updated_at    DateTime?
+  updated_at    DateTime         @updatedAt
   donator_id    String
   reward_id     String
   Donator       Donators         @relation(fields: [donator_id], references: [id])
@@ -75,7 +75,7 @@ model Rewards {
   is_available       Boolean?             @default(true)
   amount_left        Int
   created_at         DateTime             @default(now())
-  updated_at         DateTime?
+  updated_at         DateTime             @updatedAt
   deleted_at         DateTime?
   place_id           String
   Redemption_History Redemption_History[]
@@ -97,7 +97,7 @@ model Places {
   closing_time         Float
   is_available         Boolean                @default(true)
   created_at           DateTime               @default(now())
-  updated_at           DateTime?
+  updated_at           DateTime               @updatedAt
   deleted_at           DateTime?
   Announcements        Announcements[]
   Medical_Staff        Medical_Staff[]
@@ -123,7 +123,7 @@ model Announcements {
   content    String
   image_src  String?
   created_at DateTime
-  updated_at DateTime?
+  updated_at DateTime   @updatedAt
   deleted_at DateTime?
   place_id   String
   Place      Places     @relation(fields: [place_id], references: [id])
@@ -134,7 +134,7 @@ model Special_Events {
   name        String
   description String
   created_at  DateTime  @default(now())
-  updated_at  DateTime?
+  updated_at  DateTime  @updatedAt
   deleted_at  DateTime?
   place_id    String
   img_src     String?
@@ -146,7 +146,7 @@ model Reservation_Slots {
   reserve_date DateTime
   reserve_time DateTime
   created_at   DateTime      @default(now())
-  updated_at   DateTime?
+  updated_at   DateTime      @updatedAt
   cancelled_at DateTime?
   place_id     String
   Place        Places        @relation(fields: [place_id], references: [id])
@@ -160,7 +160,7 @@ model Medical_Staff {
   email      String    @unique
   password   String
   created_at DateTime  @default(now())
-  updated_at DateTime?
+  updated_at DateTime  @updatedAt
   place_id   String
   Place      Places    @relation(fields: [place_id], references: [id])
   Session    Session[]
@@ -171,7 +171,7 @@ model Session {
   session_token    String         @unique @default(cuid())
   expires          DateTime?
   created_at       DateTime       @default(now())
-  updated_at       DateTime?
+  updated_at       DateTime       @updatedAt
   moderator_id     String?
   donator_id       String?
   medical_staff_id String?
@@ -185,7 +185,7 @@ model Reservations {
   status                 ReservationStatus
   created_at             DateTime               @default(now())
   cancelled_at           DateTime?
-  updated_at             DateTime?
+  updated_at             DateTime               @updatedAt
   reservation_slot_id    String                 @unique
   donator_id             String
   pre_donation_fb_id     String                 @unique
@@ -241,7 +241,7 @@ model Donation_History {
   blood_type             BloodType
   status                 DonationStatus
   created_at             DateTime                 @default(now())
-  updated_at             DateTime?
+  updated_at             DateTime                 @updatedAt
   deleted_at             DateTime?
   reservation_id         String
   post_donation_db_id    String?
@@ -274,7 +274,7 @@ model Moderators {
   email        String
   password     String
   created_at   DateTime  @default(now())
-  updated_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
   Session      Session[]
 }
 
