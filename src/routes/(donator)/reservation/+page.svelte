@@ -33,7 +33,7 @@
 		{#each hospitals as hospital, index}
 			<PlaceCard
 				name={hospital.name}
-				address={hospital.description ?? ''}
+				address={hospital.address ?? ''}
 				rating={hospital.review.rating}
 				ratingCount={hospital.review.count}
 				imageSrc={hospital?.image_src ?? ''}

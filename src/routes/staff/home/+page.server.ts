@@ -73,10 +73,8 @@ export const load = (async ({ fetch }) => {
 		});
 	}
 
-	console.log(donationCount);
+	const specialEvent = await trpc.specialEvent.getEvent.query();
 
-	console.log(bloodTypeAggregations);
-	console.log(groupedByDay);
 	return {
 		places,
 		medicalAccounts,
@@ -84,6 +82,7 @@ export const load = (async ({ fetch }) => {
 		bloodTypeCount,
 		donationCount,
 		currentStaff,
-		allReservation
+		allReservation,
+		specialEvent
 	};
 }) satisfies PageServerLoad;
