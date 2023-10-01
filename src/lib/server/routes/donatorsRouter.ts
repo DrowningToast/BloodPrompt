@@ -9,7 +9,6 @@ import prisma from '../database';
 
 export const donatorsRouter = createRouter({
 	signUp: publicProcedure.input(signUpRegister).mutation(async ({ input, ctx }) => {
-		console.log('signUp()');
 		const { donatorData, medicalAccountData } = input;
 
 		const encodedPassword = encodePassword(donatorData.password);

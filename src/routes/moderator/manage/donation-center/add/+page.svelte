@@ -70,8 +70,6 @@
 	};
 
 	const handleAddDonationPlace = async () => {
-		console.log(placeData);
-		console.log(staffAccounts);
 		const place = await trpc.places.create.mutate({
 			address: placeData.address,
 			closing_time: parseInt(placeData.closing_time),
@@ -92,7 +90,6 @@
 			.then((res) => {
 				alert('สร้างสถานที่รับบริจาคเลือดสำเร็จ !');
 				goto('/moderator/manage/donation-center');
-				console.log(res);
 			})
 			.catch((error) => {
 				console.error(error);
@@ -122,7 +119,6 @@
 
 	const deleteMedicalStaff = (index: number) => {
 		const filteredArray = staffAccounts.filter((account) => account.id !== index);
-		console.log(filteredArray);
 		staffAccounts = [...filteredArray];
 	};
 </script>
@@ -293,7 +289,7 @@
 								<Select.Item value={day.value}>{day.label}</Select.Item>
 							{/each}
 						</Select.Content>
-						<Select.Input name="select" multiple on:change={(value) => console.log(value)} />
+						<Select.Input name="select" multiple />
 					</Select.Root>
 
 					<div class="flex justify-start items-center gap-3">

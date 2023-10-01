@@ -12,7 +12,6 @@ export const authRouter = createRouter({
 		return userContext;
 	}),
 	logout: publicProcedure.mutation(async ({ ctx }) => {
-		console.log(ctx.sessionToken);
 		await prisma.session.delete({
 			where: {
 				session_token: ctx.sessionToken
@@ -29,8 +28,6 @@ export const authRouter = createRouter({
 			})
 		)
 		.mutation(async ({ input, ctx }) => {
-			console.log('donatorLogin()');
-
 			// Get phone_number and password from user input
 			const { phone_number, password } = input;
 
@@ -48,8 +45,6 @@ export const authRouter = createRouter({
 			}
 
 			const decodedPassword = decryptPassword(user?.password || '');
-
-			console.log(decodedPassword);
 
 			if (password !== decodedPassword) {
 				throw new TRPCError({
@@ -98,8 +93,6 @@ export const authRouter = createRouter({
 					}
 				});
 			}
-
-			console.log('staffLogin() user: ', user);
 
 			const decodedPassword = decryptPassword(user?.password || '');
 

@@ -16,7 +16,6 @@
 		Trash2
 	} from 'lucide-svelte';
 	import bloodpromptlogo from '$lib/images/staff/bloodprompt-logo.png';
-	import * as Table from '$lib/components/ui/table';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Button } from '$lib/components/ui/button';
 	import { ChevronDown } from 'lucide-svelte';
@@ -26,25 +25,22 @@
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import { trpc } from '$lib/trpc';
-	import type { Medical_Accounts, Medical_Staff } from '../../../../../../../generated-zod';
 
 	export let data: PageData;
 	const { place, placeId } = data;
 
 	let placeData = {
-		name: place?.name,
-		address: place?.address,
-		phone_number: place?.phone_number,
-		website: place?.website_url,
-		email: place?.email,
+		name: place.name,
+		address: place.address,
+		phone_number: place.phone_number,
+		website: place.website_url,
+		email: place.email,
 		opening_days: 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY',
-		opening_time: place?.opening_time,
-		closing_time: place?.closing_time
+		opening_time: place.opening_time,
+		closing_time: place.closing_time
 	};
 
-	let selectedImage: any = place?.image_src || '';
-
-	console.log(place);
+	let selectedImage: any = place.image_src || '';
 
 	const days = [
 		{ value: 'MONDAY', label: 'วันจันทร์' },
@@ -73,9 +69,9 @@
 			.mutate({
 				data: {
 					address: placeData.address,
-					closing_time: parseInt(placeData.closing_time),
+					closing_time: placeData.closing_time,
 					name: placeData.name,
-					opening_time: parseInt(placeData.opening_time),
+					opening_time: placeData.opening_time,
 					opening_day: placeData.opening_days,
 					phone_number: placeData.phone_number,
 					website_url: placeData.website,
@@ -85,7 +81,6 @@
 				placeId: placeId
 			})
 			.then((res) => {
-				console.log(res);
 				alert('ระบบบันทึกข้อมูการแก้ไขของคุณแล้ว !');
 				goto('/moderator/manage/donation-center');
 			})
@@ -98,7 +93,6 @@
 		trpc.places.delete
 			.mutate({ placeId: placeId })
 			.then((res) => {
-				console.log(res);
 				alert('ลบสถานที่ของคุณแล้ว !');
 				goto('/moderator/manage/donation-center');
 			})
@@ -275,7 +269,7 @@
 									<Select.Item value={day.value}>{day.label}</Select.Item>
 								{/each}
 							</Select.Content>
-							<Select.Input name="select" multiple on:change={(value) => console.log(value)} />
+							<Select.Input name="select" multiple />
 						</Select.Root>
 
 						<div class="flex justify-start items-center gap-3">

@@ -13,7 +13,6 @@
 
 	const handleClick = (day: number) => () => {
 		selectedDate = new Date(date.getFullYear(), date.getMonth(), day);
-		console.log(selectedDate);
 	};
 </script>
 

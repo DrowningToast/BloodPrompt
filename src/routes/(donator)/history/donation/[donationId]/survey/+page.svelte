@@ -24,8 +24,6 @@
 	export let data: PageData;
 	const { donationHistoryData, placeData, donationHistoryId, questions } = data;
 
-	console.log(questions);
-
 	interface Answers {
 		[key: string]: {
 			[key: string]: boolean;
@@ -76,7 +74,6 @@
 				};
 			});
 
-			console.log(payload);
 			const res = await trpc.postFeedback.createFeedback.mutate({
 				data: {
 					Donation_History: {
@@ -225,7 +222,7 @@
 					<Card.Root class="mx-auto rounded-xl shadow">
 						<Card.Content class="p-0 py-4">
 							<div class="px-6 py-2">
-								<p class="text-sm font-bold">{question.order}. {question.title}</p>
+								<p class="text-sm font-bold">{question.order + 1}. {question.title}</p>
 								<p class="text-sm font-semibold text-gray-400 mt-1">
 									(โปรดเลือกคำตอบตามจริง ใช่ หรือ ไม่ ?)
 								</p>
@@ -238,7 +235,7 @@
 										{#each question.Survey_Choices as choice}
 											<div class="flex items-center space-x-2">
 												<RadioGroup.Item value={choice.id} id={'r1-' + question.id} />
-												<Label for={'r1-' + question.id}>ใช่</Label>
+												<Label for={'r1-' + question.id}>{choice.label}</Label>
 											</div>
 										{/each}
 										<RadioGroup.Input name="spacing" />
