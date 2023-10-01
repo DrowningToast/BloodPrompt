@@ -120,9 +120,9 @@
 			</div>
 		</div>
 
-		<div class="flex justify-center items-center h-full w-full flex-wrap gap-8">
+		<div class="flex justify-center items-start h-full w-full flex-wrap gap-8">
 			{#each announcements as announcement}
-				<div class="flex flex-col justify-start items-center h-full min-w-[45%] min-w-[45%]">
+				<div class="flex flex-col justify-start items-center h-full max-w-[45%]">
 					<div
 						class="flex flex-col justify-start gap-6 bg-white w-full h-fit rounded-3xl shadow-2xl px-10 py-10"
 					>
@@ -140,14 +140,16 @@
 									</p>
 								</div>
 							</div>
-							<Button
-								class="flex justify-center items-center gap-1 bg-white rounded-full text-center h-10 w-20 px-4 py-4 text-base font-bold text-[#EF4444] hover:bg-white border-[#EF4444] border-2"
-								on:click={() => {
-									if (browser) {
-										goto('/staff/manage/announcement/edit/' + announcement.id);
-									}
-								}}>แก้ไข</Button
-							>
+							{#if announcement.Place.name === $placeName}
+								<Button
+									class="flex justify-center items-center gap-1 bg-white rounded-full text-center h-10 w-20 px-4 py-4 text-base font-bold text-[#EF4444] hover:bg-white border-[#EF4444] border-2"
+									on:click={() => {
+										if (browser) {
+											goto('/staff/manage/announcement/edit/' + announcement.id);
+										}
+									}}>แก้ไข</Button
+								>
+							{/if}
 						</div>
 						<p class="flex justify-start items-start text-base font-normal">
 							{announcement.content}

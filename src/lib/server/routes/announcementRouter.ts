@@ -103,6 +103,24 @@ export const announcementsRouter = createRouter({
 			});
 			return announcement;
 		}),
+	delete: publicProcedure
+		.input(
+			z.object({
+				announcementId: z.string().min(1)
+			})
+		)
+		.query(async ({ input }) => {
+			const { announcementId } = input;
+			const announcement = await prisma.announcements.delete({
+				where: {
+					id: announcementId
+				},
+				include: {
+					Place: true
+				}
+			});
+			return announcement;
+		}),
 	getAll: publicProcedure.query(async () => {
 		const announcements = await prisma.announcements.findMany({
 			where: {
