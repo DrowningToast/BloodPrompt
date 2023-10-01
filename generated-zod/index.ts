@@ -1006,7 +1006,7 @@ export const Survey_QuestionsSelectSchema: z.ZodType<Prisma.Survey_QuestionsSele
 //------------------------------------------------------
 
 export const Donation_HistoryIncludeSchema: z.ZodType<Prisma.Donation_HistoryInclude> = z.object({
-  Resevation: z.union([z.boolean(),z.lazy(() => ReservationsArgsSchema)]).optional(),
+  Reservation: z.union([z.boolean(),z.lazy(() => ReservationsArgsSchema)]).optional(),
   Post_Donation_Feedback: z.union([z.boolean(),z.lazy(() => Post_Donation_FeedbacksArgsSchema)]).optional(),
 }).strict()
 
@@ -1026,7 +1026,7 @@ export const Donation_HistorySelectSchema: z.ZodType<Prisma.Donation_HistorySele
   deleted_at: z.boolean().optional(),
   reservation_id: z.boolean().optional(),
   post_donation_db_id: z.boolean().optional(),
-  Resevation: z.union([z.boolean(),z.lazy(() => ReservationsArgsSchema)]).optional(),
+  Reservation: z.union([z.boolean(),z.lazy(() => ReservationsArgsSchema)]).optional(),
   Post_Donation_Feedback: z.union([z.boolean(),z.lazy(() => Post_Donation_FeedbacksArgsSchema)]).optional(),
 }).strict()
 
@@ -2498,7 +2498,7 @@ export const Donation_HistoryWhereInputSchema: z.ZodType<Prisma.Donation_History
   deleted_at: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   reservation_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   post_donation_db_id: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
-  Resevation: z.union([ z.lazy(() => ReservationsRelationFilterSchema),z.lazy(() => ReservationsWhereInputSchema) ]).optional(),
+  Reservation: z.union([ z.lazy(() => ReservationsRelationFilterSchema),z.lazy(() => ReservationsWhereInputSchema) ]).optional(),
   Post_Donation_Feedback: z.union([ z.lazy(() => Post_Donation_FeedbacksNullableRelationFilterSchema),z.lazy(() => Post_Donation_FeedbacksWhereInputSchema) ]).optional().nullable(),
 }).strict();
 
@@ -2513,7 +2513,7 @@ export const Donation_HistoryOrderByWithRelationInputSchema: z.ZodType<Prisma.Do
   deleted_at: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   reservation_id: z.lazy(() => SortOrderSchema).optional(),
   post_donation_db_id: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
-  Resevation: z.lazy(() => ReservationsOrderByWithRelationInputSchema).optional(),
+  Reservation: z.lazy(() => ReservationsOrderByWithRelationInputSchema).optional(),
   Post_Donation_Feedback: z.lazy(() => Post_Donation_FeedbacksOrderByWithRelationInputSchema).optional()
 }).strict();
 
@@ -2534,7 +2534,7 @@ export const Donation_HistoryWhereUniqueInputSchema: z.ZodType<Prisma.Donation_H
   deleted_at: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   reservation_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   post_donation_db_id: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
-  Resevation: z.union([ z.lazy(() => ReservationsRelationFilterSchema),z.lazy(() => ReservationsWhereInputSchema) ]).optional(),
+  Reservation: z.union([ z.lazy(() => ReservationsRelationFilterSchema),z.lazy(() => ReservationsWhereInputSchema) ]).optional(),
   Post_Donation_Feedback: z.union([ z.lazy(() => Post_Donation_FeedbacksNullableRelationFilterSchema),z.lazy(() => Post_Donation_FeedbacksWhereInputSchema) ]).optional().nullable(),
 }).strict());
 
@@ -3780,7 +3780,7 @@ export const ReservationsCreateInputSchema: z.ZodType<Prisma.ReservationsCreateI
   cancelled_at: z.coerce.date().optional().nullable(),
   updated_at: z.coerce.date().optional().nullable(),
   Reservation_Slot: z.lazy(() => Reservation_SlotsCreateNestedOneWithoutReservationsInputSchema),
-  Donation_History: z.lazy(() => Donation_HistoryCreateNestedManyWithoutResevationInputSchema).optional(),
+  Donation_History: z.lazy(() => Donation_HistoryCreateNestedManyWithoutReservationInputSchema).optional(),
   Donator: z.lazy(() => DonatorsCreateNestedOneWithoutReservationsInputSchema),
   Pre_Donation_Feedbacks: z.lazy(() => Pre_Donation_FeedbacksCreateNestedOneWithoutReservationsInputSchema)
 }).strict();
@@ -3794,7 +3794,7 @@ export const ReservationsUncheckedCreateInputSchema: z.ZodType<Prisma.Reservatio
   reservation_slot_id: z.string(),
   donator_id: z.string(),
   pre_donation_fb_id: z.string(),
-  Donation_History: z.lazy(() => Donation_HistoryUncheckedCreateNestedManyWithoutResevationInputSchema).optional()
+  Donation_History: z.lazy(() => Donation_HistoryUncheckedCreateNestedManyWithoutReservationInputSchema).optional()
 }).strict();
 
 export const ReservationsUpdateInputSchema: z.ZodType<Prisma.ReservationsUpdateInput> = z.object({
@@ -3804,7 +3804,7 @@ export const ReservationsUpdateInputSchema: z.ZodType<Prisma.ReservationsUpdateI
   cancelled_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   Reservation_Slot: z.lazy(() => Reservation_SlotsUpdateOneRequiredWithoutReservationsNestedInputSchema).optional(),
-  Donation_History: z.lazy(() => Donation_HistoryUpdateManyWithoutResevationNestedInputSchema).optional(),
+  Donation_History: z.lazy(() => Donation_HistoryUpdateManyWithoutReservationNestedInputSchema).optional(),
   Donator: z.lazy(() => DonatorsUpdateOneRequiredWithoutReservationsNestedInputSchema).optional(),
   Pre_Donation_Feedbacks: z.lazy(() => Pre_Donation_FeedbacksUpdateOneRequiredWithoutReservationsNestedInputSchema).optional()
 }).strict();
@@ -3818,7 +3818,7 @@ export const ReservationsUncheckedUpdateInputSchema: z.ZodType<Prisma.Reservatio
   reservation_slot_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   donator_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   pre_donation_fb_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  Donation_History: z.lazy(() => Donation_HistoryUncheckedUpdateManyWithoutResevationNestedInputSchema).optional()
+  Donation_History: z.lazy(() => Donation_HistoryUncheckedUpdateManyWithoutReservationNestedInputSchema).optional()
 }).strict();
 
 export const ReservationsCreateManyInputSchema: z.ZodType<Prisma.ReservationsCreateManyInput> = z.object({
@@ -4080,7 +4080,7 @@ export const Donation_HistoryCreateInputSchema: z.ZodType<Prisma.Donation_Histor
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
   deleted_at: z.coerce.date().optional().nullable(),
-  Resevation: z.lazy(() => ReservationsCreateNestedOneWithoutDonation_HistoryInputSchema),
+  Reservation: z.lazy(() => ReservationsCreateNestedOneWithoutDonation_HistoryInputSchema),
   Post_Donation_Feedback: z.lazy(() => Post_Donation_FeedbacksCreateNestedOneWithoutDonation_HistoryInputSchema).optional()
 }).strict();
 
@@ -4106,7 +4106,7 @@ export const Donation_HistoryUpdateInputSchema: z.ZodType<Prisma.Donation_Histor
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   deleted_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  Resevation: z.lazy(() => ReservationsUpdateOneRequiredWithoutDonation_HistoryNestedInputSchema).optional(),
+  Reservation: z.lazy(() => ReservationsUpdateOneRequiredWithoutDonation_HistoryNestedInputSchema).optional(),
   Post_Donation_Feedback: z.lazy(() => Post_Donation_FeedbacksUpdateOneWithoutDonation_HistoryNestedInputSchema).optional()
 }).strict();
 
@@ -6518,10 +6518,10 @@ export const Reservation_SlotsCreateNestedOneWithoutReservationsInputSchema: z.Z
   connect: z.lazy(() => Reservation_SlotsWhereUniqueInputSchema).optional()
 }).strict();
 
-export const Donation_HistoryCreateNestedManyWithoutResevationInputSchema: z.ZodType<Prisma.Donation_HistoryCreateNestedManyWithoutResevationInput> = z.object({
-  create: z.union([ z.lazy(() => Donation_HistoryCreateWithoutResevationInputSchema),z.lazy(() => Donation_HistoryCreateWithoutResevationInputSchema).array(),z.lazy(() => Donation_HistoryUncheckedCreateWithoutResevationInputSchema),z.lazy(() => Donation_HistoryUncheckedCreateWithoutResevationInputSchema).array() ]).optional(),
-  connectOrCreate: z.union([ z.lazy(() => Donation_HistoryCreateOrConnectWithoutResevationInputSchema),z.lazy(() => Donation_HistoryCreateOrConnectWithoutResevationInputSchema).array() ]).optional(),
-  createMany: z.lazy(() => Donation_HistoryCreateManyResevationInputEnvelopeSchema).optional(),
+export const Donation_HistoryCreateNestedManyWithoutReservationInputSchema: z.ZodType<Prisma.Donation_HistoryCreateNestedManyWithoutReservationInput> = z.object({
+  create: z.union([ z.lazy(() => Donation_HistoryCreateWithoutReservationInputSchema),z.lazy(() => Donation_HistoryCreateWithoutReservationInputSchema).array(),z.lazy(() => Donation_HistoryUncheckedCreateWithoutReservationInputSchema),z.lazy(() => Donation_HistoryUncheckedCreateWithoutReservationInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => Donation_HistoryCreateOrConnectWithoutReservationInputSchema),z.lazy(() => Donation_HistoryCreateOrConnectWithoutReservationInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => Donation_HistoryCreateManyReservationInputEnvelopeSchema).optional(),
   connect: z.union([ z.lazy(() => Donation_HistoryWhereUniqueInputSchema),z.lazy(() => Donation_HistoryWhereUniqueInputSchema).array() ]).optional(),
 }).strict();
 
@@ -6537,10 +6537,10 @@ export const Pre_Donation_FeedbacksCreateNestedOneWithoutReservationsInputSchema
   connect: z.lazy(() => Pre_Donation_FeedbacksWhereUniqueInputSchema).optional()
 }).strict();
 
-export const Donation_HistoryUncheckedCreateNestedManyWithoutResevationInputSchema: z.ZodType<Prisma.Donation_HistoryUncheckedCreateNestedManyWithoutResevationInput> = z.object({
-  create: z.union([ z.lazy(() => Donation_HistoryCreateWithoutResevationInputSchema),z.lazy(() => Donation_HistoryCreateWithoutResevationInputSchema).array(),z.lazy(() => Donation_HistoryUncheckedCreateWithoutResevationInputSchema),z.lazy(() => Donation_HistoryUncheckedCreateWithoutResevationInputSchema).array() ]).optional(),
-  connectOrCreate: z.union([ z.lazy(() => Donation_HistoryCreateOrConnectWithoutResevationInputSchema),z.lazy(() => Donation_HistoryCreateOrConnectWithoutResevationInputSchema).array() ]).optional(),
-  createMany: z.lazy(() => Donation_HistoryCreateManyResevationInputEnvelopeSchema).optional(),
+export const Donation_HistoryUncheckedCreateNestedManyWithoutReservationInputSchema: z.ZodType<Prisma.Donation_HistoryUncheckedCreateNestedManyWithoutReservationInput> = z.object({
+  create: z.union([ z.lazy(() => Donation_HistoryCreateWithoutReservationInputSchema),z.lazy(() => Donation_HistoryCreateWithoutReservationInputSchema).array(),z.lazy(() => Donation_HistoryUncheckedCreateWithoutReservationInputSchema),z.lazy(() => Donation_HistoryUncheckedCreateWithoutReservationInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => Donation_HistoryCreateOrConnectWithoutReservationInputSchema),z.lazy(() => Donation_HistoryCreateOrConnectWithoutReservationInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => Donation_HistoryCreateManyReservationInputEnvelopeSchema).optional(),
   connect: z.union([ z.lazy(() => Donation_HistoryWhereUniqueInputSchema),z.lazy(() => Donation_HistoryWhereUniqueInputSchema).array() ]).optional(),
 }).strict();
 
@@ -6556,17 +6556,17 @@ export const Reservation_SlotsUpdateOneRequiredWithoutReservationsNestedInputSch
   update: z.union([ z.lazy(() => Reservation_SlotsUpdateToOneWithWhereWithoutReservationsInputSchema),z.lazy(() => Reservation_SlotsUpdateWithoutReservationsInputSchema),z.lazy(() => Reservation_SlotsUncheckedUpdateWithoutReservationsInputSchema) ]).optional(),
 }).strict();
 
-export const Donation_HistoryUpdateManyWithoutResevationNestedInputSchema: z.ZodType<Prisma.Donation_HistoryUpdateManyWithoutResevationNestedInput> = z.object({
-  create: z.union([ z.lazy(() => Donation_HistoryCreateWithoutResevationInputSchema),z.lazy(() => Donation_HistoryCreateWithoutResevationInputSchema).array(),z.lazy(() => Donation_HistoryUncheckedCreateWithoutResevationInputSchema),z.lazy(() => Donation_HistoryUncheckedCreateWithoutResevationInputSchema).array() ]).optional(),
-  connectOrCreate: z.union([ z.lazy(() => Donation_HistoryCreateOrConnectWithoutResevationInputSchema),z.lazy(() => Donation_HistoryCreateOrConnectWithoutResevationInputSchema).array() ]).optional(),
-  upsert: z.union([ z.lazy(() => Donation_HistoryUpsertWithWhereUniqueWithoutResevationInputSchema),z.lazy(() => Donation_HistoryUpsertWithWhereUniqueWithoutResevationInputSchema).array() ]).optional(),
-  createMany: z.lazy(() => Donation_HistoryCreateManyResevationInputEnvelopeSchema).optional(),
+export const Donation_HistoryUpdateManyWithoutReservationNestedInputSchema: z.ZodType<Prisma.Donation_HistoryUpdateManyWithoutReservationNestedInput> = z.object({
+  create: z.union([ z.lazy(() => Donation_HistoryCreateWithoutReservationInputSchema),z.lazy(() => Donation_HistoryCreateWithoutReservationInputSchema).array(),z.lazy(() => Donation_HistoryUncheckedCreateWithoutReservationInputSchema),z.lazy(() => Donation_HistoryUncheckedCreateWithoutReservationInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => Donation_HistoryCreateOrConnectWithoutReservationInputSchema),z.lazy(() => Donation_HistoryCreateOrConnectWithoutReservationInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => Donation_HistoryUpsertWithWhereUniqueWithoutReservationInputSchema),z.lazy(() => Donation_HistoryUpsertWithWhereUniqueWithoutReservationInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => Donation_HistoryCreateManyReservationInputEnvelopeSchema).optional(),
   set: z.union([ z.lazy(() => Donation_HistoryWhereUniqueInputSchema),z.lazy(() => Donation_HistoryWhereUniqueInputSchema).array() ]).optional(),
   disconnect: z.union([ z.lazy(() => Donation_HistoryWhereUniqueInputSchema),z.lazy(() => Donation_HistoryWhereUniqueInputSchema).array() ]).optional(),
   delete: z.union([ z.lazy(() => Donation_HistoryWhereUniqueInputSchema),z.lazy(() => Donation_HistoryWhereUniqueInputSchema).array() ]).optional(),
   connect: z.union([ z.lazy(() => Donation_HistoryWhereUniqueInputSchema),z.lazy(() => Donation_HistoryWhereUniqueInputSchema).array() ]).optional(),
-  update: z.union([ z.lazy(() => Donation_HistoryUpdateWithWhereUniqueWithoutResevationInputSchema),z.lazy(() => Donation_HistoryUpdateWithWhereUniqueWithoutResevationInputSchema).array() ]).optional(),
-  updateMany: z.union([ z.lazy(() => Donation_HistoryUpdateManyWithWhereWithoutResevationInputSchema),z.lazy(() => Donation_HistoryUpdateManyWithWhereWithoutResevationInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => Donation_HistoryUpdateWithWhereUniqueWithoutReservationInputSchema),z.lazy(() => Donation_HistoryUpdateWithWhereUniqueWithoutReservationInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => Donation_HistoryUpdateManyWithWhereWithoutReservationInputSchema),z.lazy(() => Donation_HistoryUpdateManyWithWhereWithoutReservationInputSchema).array() ]).optional(),
   deleteMany: z.union([ z.lazy(() => Donation_HistoryScalarWhereInputSchema),z.lazy(() => Donation_HistoryScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
@@ -6586,17 +6586,17 @@ export const Pre_Donation_FeedbacksUpdateOneRequiredWithoutReservationsNestedInp
   update: z.union([ z.lazy(() => Pre_Donation_FeedbacksUpdateToOneWithWhereWithoutReservationsInputSchema),z.lazy(() => Pre_Donation_FeedbacksUpdateWithoutReservationsInputSchema),z.lazy(() => Pre_Donation_FeedbacksUncheckedUpdateWithoutReservationsInputSchema) ]).optional(),
 }).strict();
 
-export const Donation_HistoryUncheckedUpdateManyWithoutResevationNestedInputSchema: z.ZodType<Prisma.Donation_HistoryUncheckedUpdateManyWithoutResevationNestedInput> = z.object({
-  create: z.union([ z.lazy(() => Donation_HistoryCreateWithoutResevationInputSchema),z.lazy(() => Donation_HistoryCreateWithoutResevationInputSchema).array(),z.lazy(() => Donation_HistoryUncheckedCreateWithoutResevationInputSchema),z.lazy(() => Donation_HistoryUncheckedCreateWithoutResevationInputSchema).array() ]).optional(),
-  connectOrCreate: z.union([ z.lazy(() => Donation_HistoryCreateOrConnectWithoutResevationInputSchema),z.lazy(() => Donation_HistoryCreateOrConnectWithoutResevationInputSchema).array() ]).optional(),
-  upsert: z.union([ z.lazy(() => Donation_HistoryUpsertWithWhereUniqueWithoutResevationInputSchema),z.lazy(() => Donation_HistoryUpsertWithWhereUniqueWithoutResevationInputSchema).array() ]).optional(),
-  createMany: z.lazy(() => Donation_HistoryCreateManyResevationInputEnvelopeSchema).optional(),
+export const Donation_HistoryUncheckedUpdateManyWithoutReservationNestedInputSchema: z.ZodType<Prisma.Donation_HistoryUncheckedUpdateManyWithoutReservationNestedInput> = z.object({
+  create: z.union([ z.lazy(() => Donation_HistoryCreateWithoutReservationInputSchema),z.lazy(() => Donation_HistoryCreateWithoutReservationInputSchema).array(),z.lazy(() => Donation_HistoryUncheckedCreateWithoutReservationInputSchema),z.lazy(() => Donation_HistoryUncheckedCreateWithoutReservationInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => Donation_HistoryCreateOrConnectWithoutReservationInputSchema),z.lazy(() => Donation_HistoryCreateOrConnectWithoutReservationInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => Donation_HistoryUpsertWithWhereUniqueWithoutReservationInputSchema),z.lazy(() => Donation_HistoryUpsertWithWhereUniqueWithoutReservationInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => Donation_HistoryCreateManyReservationInputEnvelopeSchema).optional(),
   set: z.union([ z.lazy(() => Donation_HistoryWhereUniqueInputSchema),z.lazy(() => Donation_HistoryWhereUniqueInputSchema).array() ]).optional(),
   disconnect: z.union([ z.lazy(() => Donation_HistoryWhereUniqueInputSchema),z.lazy(() => Donation_HistoryWhereUniqueInputSchema).array() ]).optional(),
   delete: z.union([ z.lazy(() => Donation_HistoryWhereUniqueInputSchema),z.lazy(() => Donation_HistoryWhereUniqueInputSchema).array() ]).optional(),
   connect: z.union([ z.lazy(() => Donation_HistoryWhereUniqueInputSchema),z.lazy(() => Donation_HistoryWhereUniqueInputSchema).array() ]).optional(),
-  update: z.union([ z.lazy(() => Donation_HistoryUpdateWithWhereUniqueWithoutResevationInputSchema),z.lazy(() => Donation_HistoryUpdateWithWhereUniqueWithoutResevationInputSchema).array() ]).optional(),
-  updateMany: z.union([ z.lazy(() => Donation_HistoryUpdateManyWithWhereWithoutResevationInputSchema),z.lazy(() => Donation_HistoryUpdateManyWithWhereWithoutResevationInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => Donation_HistoryUpdateWithWhereUniqueWithoutReservationInputSchema),z.lazy(() => Donation_HistoryUpdateWithWhereUniqueWithoutReservationInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => Donation_HistoryUpdateManyWithWhereWithoutReservationInputSchema),z.lazy(() => Donation_HistoryUpdateManyWithWhereWithoutReservationInputSchema).array() ]).optional(),
   deleteMany: z.union([ z.lazy(() => Donation_HistoryScalarWhereInputSchema),z.lazy(() => Donation_HistoryScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
@@ -7731,7 +7731,7 @@ export const ReservationsCreateWithoutDonatorInputSchema: z.ZodType<Prisma.Reser
   cancelled_at: z.coerce.date().optional().nullable(),
   updated_at: z.coerce.date().optional().nullable(),
   Reservation_Slot: z.lazy(() => Reservation_SlotsCreateNestedOneWithoutReservationsInputSchema),
-  Donation_History: z.lazy(() => Donation_HistoryCreateNestedManyWithoutResevationInputSchema).optional(),
+  Donation_History: z.lazy(() => Donation_HistoryCreateNestedManyWithoutReservationInputSchema).optional(),
   Pre_Donation_Feedbacks: z.lazy(() => Pre_Donation_FeedbacksCreateNestedOneWithoutReservationsInputSchema)
 }).strict();
 
@@ -7743,7 +7743,7 @@ export const ReservationsUncheckedCreateWithoutDonatorInputSchema: z.ZodType<Pri
   updated_at: z.coerce.date().optional().nullable(),
   reservation_slot_id: z.string(),
   pre_donation_fb_id: z.string(),
-  Donation_History: z.lazy(() => Donation_HistoryUncheckedCreateNestedManyWithoutResevationInputSchema).optional()
+  Donation_History: z.lazy(() => Donation_HistoryUncheckedCreateNestedManyWithoutReservationInputSchema).optional()
 }).strict();
 
 export const ReservationsCreateOrConnectWithoutDonatorInputSchema: z.ZodType<Prisma.ReservationsCreateOrConnectWithoutDonatorInput> = z.object({
@@ -9082,7 +9082,7 @@ export const ReservationsCreateWithoutReservation_SlotInputSchema: z.ZodType<Pri
   created_at: z.coerce.date().optional(),
   cancelled_at: z.coerce.date().optional().nullable(),
   updated_at: z.coerce.date().optional().nullable(),
-  Donation_History: z.lazy(() => Donation_HistoryCreateNestedManyWithoutResevationInputSchema).optional(),
+  Donation_History: z.lazy(() => Donation_HistoryCreateNestedManyWithoutReservationInputSchema).optional(),
   Donator: z.lazy(() => DonatorsCreateNestedOneWithoutReservationsInputSchema),
   Pre_Donation_Feedbacks: z.lazy(() => Pre_Donation_FeedbacksCreateNestedOneWithoutReservationsInputSchema)
 }).strict();
@@ -9095,7 +9095,7 @@ export const ReservationsUncheckedCreateWithoutReservation_SlotInputSchema: z.Zo
   updated_at: z.coerce.date().optional().nullable(),
   donator_id: z.string(),
   pre_donation_fb_id: z.string(),
-  Donation_History: z.lazy(() => Donation_HistoryUncheckedCreateNestedManyWithoutResevationInputSchema).optional()
+  Donation_History: z.lazy(() => Donation_HistoryUncheckedCreateNestedManyWithoutReservationInputSchema).optional()
 }).strict();
 
 export const ReservationsCreateOrConnectWithoutReservation_SlotInputSchema: z.ZodType<Prisma.ReservationsCreateOrConnectWithoutReservation_SlotInput> = z.object({
@@ -9582,7 +9582,7 @@ export const Reservation_SlotsCreateOrConnectWithoutReservationsInputSchema: z.Z
   create: z.union([ z.lazy(() => Reservation_SlotsCreateWithoutReservationsInputSchema),z.lazy(() => Reservation_SlotsUncheckedCreateWithoutReservationsInputSchema) ]),
 }).strict();
 
-export const Donation_HistoryCreateWithoutResevationInputSchema: z.ZodType<Prisma.Donation_HistoryCreateWithoutResevationInput> = z.object({
+export const Donation_HistoryCreateWithoutReservationInputSchema: z.ZodType<Prisma.Donation_HistoryCreateWithoutReservationInput> = z.object({
   id: z.string().cuid().optional(),
   rewarded_points: z.number().int(),
   blood_quality_status: z.string().optional().nullable(),
@@ -9594,7 +9594,7 @@ export const Donation_HistoryCreateWithoutResevationInputSchema: z.ZodType<Prism
   Post_Donation_Feedback: z.lazy(() => Post_Donation_FeedbacksCreateNestedOneWithoutDonation_HistoryInputSchema).optional()
 }).strict();
 
-export const Donation_HistoryUncheckedCreateWithoutResevationInputSchema: z.ZodType<Prisma.Donation_HistoryUncheckedCreateWithoutResevationInput> = z.object({
+export const Donation_HistoryUncheckedCreateWithoutReservationInputSchema: z.ZodType<Prisma.Donation_HistoryUncheckedCreateWithoutReservationInput> = z.object({
   id: z.string().cuid().optional(),
   rewarded_points: z.number().int(),
   blood_quality_status: z.string().optional().nullable(),
@@ -9606,13 +9606,13 @@ export const Donation_HistoryUncheckedCreateWithoutResevationInputSchema: z.ZodT
   post_donation_db_id: z.string().optional().nullable()
 }).strict();
 
-export const Donation_HistoryCreateOrConnectWithoutResevationInputSchema: z.ZodType<Prisma.Donation_HistoryCreateOrConnectWithoutResevationInput> = z.object({
+export const Donation_HistoryCreateOrConnectWithoutReservationInputSchema: z.ZodType<Prisma.Donation_HistoryCreateOrConnectWithoutReservationInput> = z.object({
   where: z.lazy(() => Donation_HistoryWhereUniqueInputSchema),
-  create: z.union([ z.lazy(() => Donation_HistoryCreateWithoutResevationInputSchema),z.lazy(() => Donation_HistoryUncheckedCreateWithoutResevationInputSchema) ]),
+  create: z.union([ z.lazy(() => Donation_HistoryCreateWithoutReservationInputSchema),z.lazy(() => Donation_HistoryUncheckedCreateWithoutReservationInputSchema) ]),
 }).strict();
 
-export const Donation_HistoryCreateManyResevationInputEnvelopeSchema: z.ZodType<Prisma.Donation_HistoryCreateManyResevationInputEnvelope> = z.object({
-  data: z.union([ z.lazy(() => Donation_HistoryCreateManyResevationInputSchema),z.lazy(() => Donation_HistoryCreateManyResevationInputSchema).array() ]),
+export const Donation_HistoryCreateManyReservationInputEnvelopeSchema: z.ZodType<Prisma.Donation_HistoryCreateManyReservationInputEnvelope> = z.object({
+  data: z.union([ z.lazy(() => Donation_HistoryCreateManyReservationInputSchema),z.lazy(() => Donation_HistoryCreateManyReservationInputSchema).array() ]),
   skipDuplicates: z.boolean().optional()
 }).strict();
 
@@ -9709,20 +9709,20 @@ export const Reservation_SlotsUncheckedUpdateWithoutReservationsInputSchema: z.Z
   place_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
-export const Donation_HistoryUpsertWithWhereUniqueWithoutResevationInputSchema: z.ZodType<Prisma.Donation_HistoryUpsertWithWhereUniqueWithoutResevationInput> = z.object({
+export const Donation_HistoryUpsertWithWhereUniqueWithoutReservationInputSchema: z.ZodType<Prisma.Donation_HistoryUpsertWithWhereUniqueWithoutReservationInput> = z.object({
   where: z.lazy(() => Donation_HistoryWhereUniqueInputSchema),
-  update: z.union([ z.lazy(() => Donation_HistoryUpdateWithoutResevationInputSchema),z.lazy(() => Donation_HistoryUncheckedUpdateWithoutResevationInputSchema) ]),
-  create: z.union([ z.lazy(() => Donation_HistoryCreateWithoutResevationInputSchema),z.lazy(() => Donation_HistoryUncheckedCreateWithoutResevationInputSchema) ]),
+  update: z.union([ z.lazy(() => Donation_HistoryUpdateWithoutReservationInputSchema),z.lazy(() => Donation_HistoryUncheckedUpdateWithoutReservationInputSchema) ]),
+  create: z.union([ z.lazy(() => Donation_HistoryCreateWithoutReservationInputSchema),z.lazy(() => Donation_HistoryUncheckedCreateWithoutReservationInputSchema) ]),
 }).strict();
 
-export const Donation_HistoryUpdateWithWhereUniqueWithoutResevationInputSchema: z.ZodType<Prisma.Donation_HistoryUpdateWithWhereUniqueWithoutResevationInput> = z.object({
+export const Donation_HistoryUpdateWithWhereUniqueWithoutReservationInputSchema: z.ZodType<Prisma.Donation_HistoryUpdateWithWhereUniqueWithoutReservationInput> = z.object({
   where: z.lazy(() => Donation_HistoryWhereUniqueInputSchema),
-  data: z.union([ z.lazy(() => Donation_HistoryUpdateWithoutResevationInputSchema),z.lazy(() => Donation_HistoryUncheckedUpdateWithoutResevationInputSchema) ]),
+  data: z.union([ z.lazy(() => Donation_HistoryUpdateWithoutReservationInputSchema),z.lazy(() => Donation_HistoryUncheckedUpdateWithoutReservationInputSchema) ]),
 }).strict();
 
-export const Donation_HistoryUpdateManyWithWhereWithoutResevationInputSchema: z.ZodType<Prisma.Donation_HistoryUpdateManyWithWhereWithoutResevationInput> = z.object({
+export const Donation_HistoryUpdateManyWithWhereWithoutReservationInputSchema: z.ZodType<Prisma.Donation_HistoryUpdateManyWithWhereWithoutReservationInput> = z.object({
   where: z.lazy(() => Donation_HistoryScalarWhereInputSchema),
-  data: z.union([ z.lazy(() => Donation_HistoryUpdateManyMutationInputSchema),z.lazy(() => Donation_HistoryUncheckedUpdateManyWithoutResevationInputSchema) ]),
+  data: z.union([ z.lazy(() => Donation_HistoryUpdateManyMutationInputSchema),z.lazy(() => Donation_HistoryUncheckedUpdateManyWithoutReservationInputSchema) ]),
 }).strict();
 
 export const Donation_HistoryScalarWhereInputSchema: z.ZodType<Prisma.Donation_HistoryScalarWhereInput> = z.object({
@@ -9844,7 +9844,7 @@ export const ReservationsCreateWithoutPre_Donation_FeedbacksInputSchema: z.ZodTy
   cancelled_at: z.coerce.date().optional().nullable(),
   updated_at: z.coerce.date().optional().nullable(),
   Reservation_Slot: z.lazy(() => Reservation_SlotsCreateNestedOneWithoutReservationsInputSchema),
-  Donation_History: z.lazy(() => Donation_HistoryCreateNestedManyWithoutResevationInputSchema).optional(),
+  Donation_History: z.lazy(() => Donation_HistoryCreateNestedManyWithoutReservationInputSchema).optional(),
   Donator: z.lazy(() => DonatorsCreateNestedOneWithoutReservationsInputSchema)
 }).strict();
 
@@ -9856,7 +9856,7 @@ export const ReservationsUncheckedCreateWithoutPre_Donation_FeedbacksInputSchema
   updated_at: z.coerce.date().optional().nullable(),
   reservation_slot_id: z.string(),
   donator_id: z.string(),
-  Donation_History: z.lazy(() => Donation_HistoryUncheckedCreateNestedManyWithoutResevationInputSchema).optional()
+  Donation_History: z.lazy(() => Donation_HistoryUncheckedCreateNestedManyWithoutReservationInputSchema).optional()
 }).strict();
 
 export const ReservationsCreateOrConnectWithoutPre_Donation_FeedbacksInputSchema: z.ZodType<Prisma.ReservationsCreateOrConnectWithoutPre_Donation_FeedbacksInput> = z.object({
@@ -9908,7 +9908,7 @@ export const ReservationsUpdateWithoutPre_Donation_FeedbacksInputSchema: z.ZodTy
   cancelled_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   Reservation_Slot: z.lazy(() => Reservation_SlotsUpdateOneRequiredWithoutReservationsNestedInputSchema).optional(),
-  Donation_History: z.lazy(() => Donation_HistoryUpdateManyWithoutResevationNestedInputSchema).optional(),
+  Donation_History: z.lazy(() => Donation_HistoryUpdateManyWithoutReservationNestedInputSchema).optional(),
   Donator: z.lazy(() => DonatorsUpdateOneRequiredWithoutReservationsNestedInputSchema).optional()
 }).strict();
 
@@ -9920,7 +9920,7 @@ export const ReservationsUncheckedUpdateWithoutPre_Donation_FeedbacksInputSchema
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   reservation_slot_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   donator_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  Donation_History: z.lazy(() => Donation_HistoryUncheckedUpdateManyWithoutResevationNestedInputSchema).optional()
+  Donation_History: z.lazy(() => Donation_HistoryUncheckedUpdateManyWithoutReservationNestedInputSchema).optional()
 }).strict();
 
 export const Survey_QuestionsCreateWithoutPre_Feedback_AnswersInputSchema: z.ZodType<Prisma.Survey_QuestionsCreateWithoutPre_Feedback_AnswersInput> = z.object({
@@ -10454,7 +10454,7 @@ export const Donation_HistoryCreateWithoutPost_Donation_FeedbackInputSchema: z.Z
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional().nullable(),
   deleted_at: z.coerce.date().optional().nullable(),
-  Resevation: z.lazy(() => ReservationsCreateNestedOneWithoutDonation_HistoryInputSchema)
+  Reservation: z.lazy(() => ReservationsCreateNestedOneWithoutDonation_HistoryInputSchema)
 }).strict();
 
 export const Donation_HistoryUncheckedCreateWithoutPost_Donation_FeedbackInputSchema: z.ZodType<Prisma.Donation_HistoryUncheckedCreateWithoutPost_Donation_FeedbackInput> = z.object({
@@ -10924,7 +10924,7 @@ export const ReservationsUpdateWithoutDonatorInputSchema: z.ZodType<Prisma.Reser
   cancelled_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   Reservation_Slot: z.lazy(() => Reservation_SlotsUpdateOneRequiredWithoutReservationsNestedInputSchema).optional(),
-  Donation_History: z.lazy(() => Donation_HistoryUpdateManyWithoutResevationNestedInputSchema).optional(),
+  Donation_History: z.lazy(() => Donation_HistoryUpdateManyWithoutReservationNestedInputSchema).optional(),
   Pre_Donation_Feedbacks: z.lazy(() => Pre_Donation_FeedbacksUpdateOneRequiredWithoutReservationsNestedInputSchema).optional()
 }).strict();
 
@@ -10936,7 +10936,7 @@ export const ReservationsUncheckedUpdateWithoutDonatorInputSchema: z.ZodType<Pri
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   reservation_slot_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   pre_donation_fb_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  Donation_History: z.lazy(() => Donation_HistoryUncheckedUpdateManyWithoutResevationNestedInputSchema).optional()
+  Donation_History: z.lazy(() => Donation_HistoryUncheckedUpdateManyWithoutReservationNestedInputSchema).optional()
 }).strict();
 
 export const ReservationsUncheckedUpdateManyWithoutDonatorInputSchema: z.ZodType<Prisma.ReservationsUncheckedUpdateManyWithoutDonatorInput> = z.object({
@@ -11247,7 +11247,7 @@ export const ReservationsUpdateWithoutReservation_SlotInputSchema: z.ZodType<Pri
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   cancelled_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  Donation_History: z.lazy(() => Donation_HistoryUpdateManyWithoutResevationNestedInputSchema).optional(),
+  Donation_History: z.lazy(() => Donation_HistoryUpdateManyWithoutReservationNestedInputSchema).optional(),
   Donator: z.lazy(() => DonatorsUpdateOneRequiredWithoutReservationsNestedInputSchema).optional(),
   Pre_Donation_Feedbacks: z.lazy(() => Pre_Donation_FeedbacksUpdateOneRequiredWithoutReservationsNestedInputSchema).optional()
 }).strict();
@@ -11260,7 +11260,7 @@ export const ReservationsUncheckedUpdateWithoutReservation_SlotInputSchema: z.Zo
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   donator_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   pre_donation_fb_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  Donation_History: z.lazy(() => Donation_HistoryUncheckedUpdateManyWithoutResevationNestedInputSchema).optional()
+  Donation_History: z.lazy(() => Donation_HistoryUncheckedUpdateManyWithoutReservationNestedInputSchema).optional()
 }).strict();
 
 export const ReservationsUncheckedUpdateManyWithoutReservation_SlotInputSchema: z.ZodType<Prisma.ReservationsUncheckedUpdateManyWithoutReservation_SlotInput> = z.object({
@@ -11313,7 +11313,7 @@ export const SessionUncheckedUpdateManyWithoutMedical_StaffInputSchema: z.ZodTyp
   donator_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
-export const Donation_HistoryCreateManyResevationInputSchema: z.ZodType<Prisma.Donation_HistoryCreateManyResevationInput> = z.object({
+export const Donation_HistoryCreateManyReservationInputSchema: z.ZodType<Prisma.Donation_HistoryCreateManyReservationInput> = z.object({
   id: z.string().cuid().optional(),
   rewarded_points: z.number().int(),
   blood_quality_status: z.string().optional().nullable(),
@@ -11325,7 +11325,7 @@ export const Donation_HistoryCreateManyResevationInputSchema: z.ZodType<Prisma.D
   post_donation_db_id: z.string().optional().nullable()
 }).strict();
 
-export const Donation_HistoryUpdateWithoutResevationInputSchema: z.ZodType<Prisma.Donation_HistoryUpdateWithoutResevationInput> = z.object({
+export const Donation_HistoryUpdateWithoutReservationInputSchema: z.ZodType<Prisma.Donation_HistoryUpdateWithoutReservationInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   rewarded_points: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   blood_quality_status: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -11337,7 +11337,7 @@ export const Donation_HistoryUpdateWithoutResevationInputSchema: z.ZodType<Prism
   Post_Donation_Feedback: z.lazy(() => Post_Donation_FeedbacksUpdateOneWithoutDonation_HistoryNestedInputSchema).optional()
 }).strict();
 
-export const Donation_HistoryUncheckedUpdateWithoutResevationInputSchema: z.ZodType<Prisma.Donation_HistoryUncheckedUpdateWithoutResevationInput> = z.object({
+export const Donation_HistoryUncheckedUpdateWithoutReservationInputSchema: z.ZodType<Prisma.Donation_HistoryUncheckedUpdateWithoutReservationInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   rewarded_points: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   blood_quality_status: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -11349,7 +11349,7 @@ export const Donation_HistoryUncheckedUpdateWithoutResevationInputSchema: z.ZodT
   post_donation_db_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
-export const Donation_HistoryUncheckedUpdateManyWithoutResevationInputSchema: z.ZodType<Prisma.Donation_HistoryUncheckedUpdateManyWithoutResevationInput> = z.object({
+export const Donation_HistoryUncheckedUpdateManyWithoutReservationInputSchema: z.ZodType<Prisma.Donation_HistoryUncheckedUpdateManyWithoutReservationInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   rewarded_points: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   blood_quality_status: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -11536,7 +11536,7 @@ export const Donation_HistoryUpdateWithoutPost_Donation_FeedbackInputSchema: z.Z
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   deleted_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  Resevation: z.lazy(() => ReservationsUpdateOneRequiredWithoutDonation_HistoryNestedInputSchema).optional()
+  Reservation: z.lazy(() => ReservationsUpdateOneRequiredWithoutDonation_HistoryNestedInputSchema).optional()
 }).strict();
 
 export const Donation_HistoryUncheckedUpdateWithoutPost_Donation_FeedbackInputSchema: z.ZodType<Prisma.Donation_HistoryUncheckedUpdateWithoutPost_Donation_FeedbackInput> = z.object({

@@ -6,6 +6,8 @@
 	import Searchbar from './Searchbar.svelte';
 	import AnnouncementList from './AnnouncementList.svelte';
 	import SurveyCard from '$lib/components/svelte/card/survey/SurveyCard.svelte';
+	import { get24HoursTimeString } from '../reservation/[placeId]/date/utils';
+	import { number } from 'zod';
 
 	// TODO: Searchbar Functionality
 
@@ -18,19 +20,26 @@
 	// };
 
 	export let data: PageData;
+
+	const pendingPostFeedback = data.pendingFeedback;
 </script>
 
 <div class="pb-24">
 	<Banner name={data.user?.first_name + ' ' + data.user?.last_name} />
 
-	<div class="px-8 pt-6">
-		<SurveyCard
-			donateDate={new Date()}
-			donateTime={12.3}
-			donationHistoryId={'001'}
-			placeName="โรงพยาบาลพระจอมเกล้าเจ้าคุณทหาร"
-		/>
-	</div>
+	<!-- Still unfinished post survey -->
+	{#if pendingPostFeedback}
+		<div class="px-8 pt-6">
+			<SurveyCard
+				donateDate={pendingPostFeedback.Reservation.Reservation_Slot.reserve_date}
+				donateTime={+get24HoursTimeString(
+					pendingPostFeedback.Reservation.Reservation_Slot.reserve_time
+				).replace(':', '.')}
+				donationHistoryId={pendingPostFeedback.id}
+				placeName={pendingPostFeedback.Reservation.Reservation_Slot.Place.name}
+			/>
+		</div>
+	{/if}
 
 	<section class="px-8 py-8">
 		<SpecialEvent />
