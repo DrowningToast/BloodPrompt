@@ -10,8 +10,8 @@ import { rewardRouter } from './routes/rewardRouter';
 import { moderatorRoutes } from './routes/moderatorsRoutes';
 import { announcementsRouter } from './routes/announcementRouter';
 import { postFeedbackRouter } from './routes/postFeedbackRouter';
-import { donationHistoryController } from './database/controllers/donationHistoryController';
 import { donationHistoryRouter } from './routes/donationHistory';
+import { reservationsRouter } from './routes/reservationsRouter';
 
 export const appRouter = createRouter({
 	greet: publicProcedure
@@ -30,7 +30,8 @@ export const appRouter = createRouter({
 	medicalStaff: medicalStaffRouter,
 	preFeedback: preFeedBackRouter,
 	postFeedback: postFeedbackRouter,
-	reservation: reservationSlotsRouter,
+	reservation: reservationsRouter,
+	reservationSlot: reservationSlotsRouter,
 	moderator: moderatorRoutes,
 	reward: rewardRouter,
 	announcement: announcementsRouter,
