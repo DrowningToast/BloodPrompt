@@ -55,6 +55,18 @@ export const donationHistoryRouter = createRouter({
 					Reservation: true
 				}
 			});
+
+			await prisma.donators.update({
+				where: {
+					id: reservation.donator_id
+				},
+				data: {
+					reward_point: {
+						increment: data.rewarded_points
+					}
+				}
+			});
+
 			return donationHistory;
 		}),
 	getAllDonationHistoryByDonatorId: publicProcedure
