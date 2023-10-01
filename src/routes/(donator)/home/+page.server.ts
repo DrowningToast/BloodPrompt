@@ -4,7 +4,11 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch }) => {
 	const trpc = trpcOnServer(fetch);
-	const user = await trpc.auth.getUser.query();
+
+	const [user, announcements] = await Promise.all([
+		trpc.auth.getUser.query(),
+		trpc.announcement.getAnnouncements.query()
+	]);
 
 	if (user?.type !== 'DONATOR') {
 		throw redirect(307, '/login');
@@ -13,10 +17,6 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	if (user.user?.id === undefined) {
 		throw redirect(307, '/login');
 	}
-
-	// fetch announcemnet
-	const announcements = await trpc.announcement.getAnnouncements.query();
-
 	// fetch for post feedback status
 	const pendingFeedback = await trpc.postFeedback.checkPendingFeedback.query({
 		id: user.user.id

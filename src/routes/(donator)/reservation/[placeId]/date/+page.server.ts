@@ -9,12 +9,27 @@ import type { PageServerLoad } from './$types';
 import { checkEquivalenceDate, get24HoursTimeString } from './utils';
 
 export const load = (async ({ params }) => {
+	const { placeId } = params;
+
+	const [hospital, alreadyReserved] = await Promise.all([
+		prisma.places.findUnique({
+			where: {
+				id: placeId
+			}
+		}),
+		prisma.reservation_Slots.findMany({
+			where: {
+				Place: {
+					id: placeId
+				},
+				reserve_date: {
+					gt: new Date()
+				}
+			}
+		})
+	]);
+
 	// check if placeId exists or not
-	const hospital = await prisma.places.findUnique({
-		where: {
-			id: params.placeId
-		}
-	});
 
 	if (!hospital) {
 		throw {
@@ -22,19 +37,6 @@ export const load = (async ({ params }) => {
 			error: 'Hospital not found'
 		};
 	}
-
-	const { placeId } = params;
-
-	const alreadyReserved = await prisma.reservation_Slots.findMany({
-		where: {
-			Place: {
-				id: placeId
-			},
-			reserve_date: {
-				gt: new Date()
-			}
-		}
-	});
 
 	const availableDates = getDatesFrom(new Date(), 14).map((date) => ({
 		date,
@@ -55,9 +57,6 @@ export const load = (async ({ params }) => {
 		name: hospital.name,
 		availableDates
 	};
-
-	// mock get hospital data from database
-	// const hospitalData: HospitalAvailability = mock_hospitalData(placeId);
 
 	return { hospitalData: hospitalAvailability };
 }) satisfies PageServerLoad;

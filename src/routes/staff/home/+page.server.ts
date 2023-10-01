@@ -23,14 +23,35 @@ function groupDatesByDay(dateArray: Date[]): Record<string, Date[]> {
 
 export const load = (async ({ fetch }) => {
 	const trpc = trpcOnServer(fetch);
-	const places = await trpc.places.findAll.query();
-	const medicalAccounts = await trpc.medicalStaff.findAll.query();
-	const donators = await trpc.donators.findAll.query();
-	const currentUser = await trpc.auth.getUser.query();
+
+	const [
+		places,
+		medicalAccounts,
+		donators,
+		currentUser,
+		reservations,
+		bloodTypeAggregations,
+		donationHistories,
+		specialEvent
+	] = await Promise.all([
+		trpc.places.findAll.query(),
+		trpc.medicalStaff.findAll.query(),
+		trpc.donators.findAll.query(),
+		trpc.auth.getUser.query(),
+		trpc.reservation.findAll.query(),
+		prisma.donation_History.groupBy({
+			by: ['blood_type'],
+			_count: {
+				blood_type: true
+			}
+		}),
+		prisma.donation_History.findMany(),
+		trpc.specialEvent.getEvent.query()
+	]);
+
 	const currentStaff = await trpc.medicalStaff.findById.query({
 		medicalStaffId: currentUser?.user.id || ''
 	});
-	const reservations = await trpc.reservation.findAll.query();
 	const allReservation = [];
 	for (const reservation of reservations) {
 		if (reservation.Reservation_Slot.place_id === currentStaff?.Place.id) {
@@ -38,17 +59,8 @@ export const load = (async ({ fetch }) => {
 		}
 	}
 
-	// Prisma Group by
-	const bloodTypeAggregations = await prisma.donation_History.groupBy({
-		by: ['blood_type'],
-		_count: {
-			blood_type: true
-		}
-	});
-
 	// Sample array of date objects
 	const dateArray: Date[] = [];
-	const donationHistories = await prisma.donation_History.findMany();
 	for (const data of donationHistories) {
 		dateArray.push(new Date(data.created_at));
 	}
@@ -72,8 +84,6 @@ export const load = (async ({ fetch }) => {
 			value: value.length
 		});
 	}
-
-	const specialEvent = await trpc.specialEvent.getEvent.query();
 
 	return {
 		places,
