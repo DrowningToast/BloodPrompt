@@ -1,6 +1,10 @@
 import { z } from 'zod';
 import { createRouter, publicProcedure } from '../context';
-import prisma from '../database';
+import prisma, {
+	Donation_HistoryWhereInputSchema,
+	Donation_HistoryWhereUniqueInputSchema
+} from '../database';
+import { donationHistoryController } from '../database/controllers/donationHistoryController';
 
 export const donationHistoryRouter = createRouter({
 	submitBloodDonation: publicProcedure
@@ -44,7 +48,7 @@ export const donationHistoryRouter = createRouter({
 					rewarded_points: data.rewarded_points,
 					status: data.status,
 					blood_quality_status: data.blood_quality_status,
-					Resevation: {
+					Reservation: {
 						connect: {
 							id: reservation.id
 						}
@@ -52,7 +56,7 @@ export const donationHistoryRouter = createRouter({
 				},
 				include: {
 					Post_Donation_Feedback: true,
-					Resevation: true
+					Reservation: true
 				}
 			});
 			return donationHistory;
@@ -67,13 +71,13 @@ export const donationHistoryRouter = createRouter({
 			const { donatorId } = input;
 			const allDonationHistory = await prisma.donation_History.findMany({
 				where: {
-					Resevation: {
+					Reservation: {
 						donator_id: donatorId
 					}
 				},
 				include: {
 					Post_Donation_Feedback: true,
-					Resevation: {
+					Reservation: {
 						include: {
 							Reservation_Slot: {
 								include: {
@@ -88,5 +92,15 @@ export const donationHistoryRouter = createRouter({
 				}
 			});
 			return allDonationHistory;
+		}),
+	getDonationHistory: publicProcedure
+		.input(Donation_HistoryWhereUniqueInputSchema)
+		.query(async ({ input }) => {
+			return await donationHistoryController.getDonationHistory(input);
+		}),
+	getDonationHistories: publicProcedure
+		.input(Donation_HistoryWhereInputSchema)
+		.query(async ({ input }) => {
+			return await donationHistoryController.getDonationHistories(input);
 		})
 });

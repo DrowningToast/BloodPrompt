@@ -1,4 +1,5 @@
 import { trpcOnServer } from '$lib/trpc';
+import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch }) => {
@@ -6,7 +7,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	const user = await trpc.auth.getUser.query();
 
 	if (user?.type !== 'DONATOR') {
-		throw new Error('User is not a donator');
+		throw redirect(307, '/login');
 	}
 
 	// fetch announcemnet

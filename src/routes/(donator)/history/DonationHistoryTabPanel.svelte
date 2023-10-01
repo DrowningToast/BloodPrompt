@@ -31,7 +31,7 @@
 
 							<div class="mt-2">
 								<p class="text-slate-500 text-sm">สถานที่</p>
-								<p class="font-bold text-sm">{data.Resevation.Reservation_Slot.Place.name}</p>
+								<p class="font-bold text-sm">{data.Reservation.Reservation_Slot.Place.name}</p>
 							</div>
 							<div class="mt-2">
 								<p class="text-slate-500 text-sm">สถานะ</p>
@@ -80,10 +80,12 @@
 								<div class="flex flex-row items-center gap-1">
 									<Clock size={16} />
 									<p class="font-semibold text-sm">
-										{new Date(data.Resevation.Reservation_Slot.reserve_time).getHours().toFixed(2) +
+										{new Date(data.Reservation.Reservation_Slot.reserve_time)
+											.getHours()
+											.toFixed(2) +
 											' - ' +
 											(
-												new Date(data.Resevation.Reservation_Slot.reserve_time).getHours() + 1
+												new Date(data.Reservation.Reservation_Slot.reserve_time).getHours() + 1
 											).toFixed(2)}
 									</p>
 								</div>

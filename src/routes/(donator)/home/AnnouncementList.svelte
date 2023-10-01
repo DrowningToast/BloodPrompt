@@ -4,7 +4,7 @@
 	import type { Announcements, Places } from '@prisma/client';
 
 	interface AnnouncementsWithPlace extends Announcements {
-		place: Places;
+		Place: Places;
 	}
 
 	export let data: AnnouncementsWithPlace[] = [];
@@ -25,7 +25,7 @@
 				emergencyBloodType={`${announcement.blood_type}`}
 				post_type={announcement.post_type}
 				post_img={announcement.image_src}
-				icon_src={announcement.place.image_src}
+				icon_src={announcement.Place.image_src}
 			/>
 		</button>
 		{#if data.length > 1}

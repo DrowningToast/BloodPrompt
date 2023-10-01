@@ -220,13 +220,11 @@
 			</div>
 
 			<div class="items-center flex flex-row gap-4 w-full justify-around">
-				<p>วัน/เดือน/ปีเกิด :</p>
-				<DateInput
-					class="rounded-2xl place-items-center flex flex-grow"
+				<p class="w-full">วัน/เดือน/ปีเกิด :</p>
+				<Input
+					type="date"
+					class="rounded-xl place-items-center flex flex-grow"
 					bind:value={date}
-					{locale}
-					closeOnSelection
-					format="dd/MM/yyyy"
 					placeholder="เลือกวันเกิดของคุณ"
 				/>
 			</div>
