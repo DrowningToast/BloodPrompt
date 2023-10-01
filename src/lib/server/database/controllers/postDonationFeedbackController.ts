@@ -1,4 +1,4 @@
-import prisma from '..';
+import prisma, { Prisma } from '..';
 
 export const postDonationFeedbackController = {
 	getPendingFeedback: async () => {
@@ -39,5 +39,10 @@ export const postDonationFeedbackController = {
 			}
 		});
 		return questions;
+	},
+	createFeedback: async (feedback: Prisma.Post_Donation_FeedbacksCreateArgs) => {
+		return await prisma.post_Donation_Feedbacks.create({
+			...feedback
+		});
 	}
 };

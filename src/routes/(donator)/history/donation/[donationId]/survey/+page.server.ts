@@ -12,7 +12,12 @@ export const load = (async ({ params, fetch }) => {
 	});
 
 	if (!donationHistory) {
-		throw redirect(307, '/history/donation');
+		throw redirect(307, '/history');
+	}
+
+	// already make a feedback
+	if (donationHistory.post_donation_db_id) {
+		throw redirect(307, '/history');
 	}
 
 	const place = donationHistory?.Resevation.Reservation_Slot.Place;

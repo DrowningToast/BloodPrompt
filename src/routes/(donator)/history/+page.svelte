@@ -114,8 +114,6 @@
 				reservationData: { ...reservation }
 			};
 		});
-
-		console.log(reservationData);
 	});
 </script>
 

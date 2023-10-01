@@ -1,7 +1,12 @@
 import { createRouter, publicProcedure } from '../context';
 import { z } from 'zod';
-import prisma, { PlacesUpdateInputSchema } from '../database';
+import prisma, {
+	Place_Review_HistoryCreateArgsSchema,
+	Place_Review_HistoryCreateInputSchema,
+	PlacesUpdateInputSchema
+} from '../database';
 import { PlacesCreateInputSchema } from '../database';
+import { PlaceReviewHistoryController } from '../database/controllers/PlaceReviewHistoryController';
 
 export const placesRouter = createRouter({
 	findAll: publicProcedure.query(async () => {
@@ -69,5 +74,11 @@ export const placesRouter = createRouter({
 			}
 		});
 		return place;
-	})
+	}),
+	createReview: publicProcedure
+		.input(Place_Review_HistoryCreateInputSchema)
+		.mutation(async ({ input }) => {
+			const review = await PlaceReviewHistoryController.createReview(input);
+			return review;
+		})
 });

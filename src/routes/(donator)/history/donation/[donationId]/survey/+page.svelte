@@ -19,6 +19,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import AlertDialog from '$lib/components/svelte/alert/AlertDialog.svelte';
 	import { trpc } from '$lib/trpc';
+	import { mock_hospitalData } from '../../../../reservation/[placeId]/utils';
 
 	export let data: PageData;
 	const { donationHistoryData, placeData, donationHistoryId, questions } = data;
@@ -65,18 +66,50 @@
 	};
 
 	const handleSubmit = async () => {
-		const payload = Object.entries(answers).map((pair) => {
-			const questionId = pair[0];
-			const choiceId = Object.keys(pair[1])[0];
-			return {
-				question_id: questionId,
-				choice_id: choiceId
-			};
-		});
+		try {
+			const payload = Object.entries(answers).map((pair) => {
+				const questionId = pair[0];
+				const choiceId = Object.keys(pair[1])[0];
+				return {
+					question_id: questionId,
+					choice_id: choiceId
+				};
+			});
 
-		console.log(payload);
+			console.log(payload);
+			const res = await trpc.postFeedback.createFeedback.mutate({
+				data: {
+					Donation_History: {
+						connect: {
+							id: donationHistoryData.id
+						}
+					},
+					Post_Feedback_Answers: {
+						createMany: {
+							data: payload
+						}
+					}
+				}
+			});
 
-		// showSurveyResultDialog = true;
+			// if the user rated the place
+			if (rating !== undefined) {
+				await trpc.places.createReview.mutate({
+					Place: {
+						connect: {
+							id: placeData.id
+						}
+					},
+					rating
+				});
+			}
+
+			alert('บันทึกข้อมูลเรียบร้อย ขอบคุณสำหรับการประเมิน');
+			await goto('/home');
+		} catch (e) {
+			console.log(e);
+			alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล โปรดลองใหม่อีกครั้ง');
+		}
 	};
 
 	let rating: undefined | number = undefined;
