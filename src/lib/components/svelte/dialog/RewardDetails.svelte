@@ -6,10 +6,26 @@
 	import { selectedReward } from '$lib/stores/rewardStores';
 	import AlertDialog from '../alert/AlertDialog.svelte';
 	import { browser } from '$app/environment';
+	import type { Donators } from '../../../../../generated-zod';
+	import { trpc } from '$lib/trpc';
 	export let open: boolean = false;
 	export let onClose: () => void;
 
 	let showConfirmRedeemDialog: boolean = false;
+	export let donatorData: Donators;
+
+	const handleRedeemReward = async () => {
+		await trpc.reward.redeem
+			.mutate({
+				rewardId: $selectedReward?.rewardData.id || '',
+				donatorId: donatorData.id
+			})
+			.then((res) => {
+				alert('แลกของรางวัลวำเร็จ');
+				goto('/reward/history/' + res.redemptionHistory.id);
+			})
+			.catch((error) => console.error(error));
+	};
 </script>
 
 {#if $selectedReward}
@@ -21,11 +37,7 @@
 		)} แต้ม เพื่อปลกของรางวัลชิ้นนี้ ยืนยันที่จะดำเนินการต่อหรือไม่ ?`}
 		secondaryLabel="แลกของรางวัล"
 		actionLabel="ยกเลิก"
-		onSecondaryAction={() => {
-			if (browser) {
-				goto('/reward/history');
-			}
-		}}
+		onSecondaryAction={handleRedeemReward}
 		onAction={() => {
 			showConfirmRedeemDialog = false;
 		}}
@@ -74,8 +86,6 @@
 
 					<p class="text-slate-500 text-sm mt-2">
 						{$selectedReward.rewardData.description}
-						{$selectedReward.rewardData.description}
-						{$selectedReward.rewardData.description}
 					</p>
 					<div class="text-left relative mt-6">
 						<p class="font-bold">{$selectedReward.placeData.name}</p>
@@ -104,6 +114,7 @@
 
 			<Dialog.Footer class="flex flex-col gap-4 w-full justify-end text-center p-4 pt-4">
 				<Button
+					disabled={!(donatorData.reward_point >= $selectedReward.rewardData.required_points)}
 					on:click={() => {
 						showConfirmRedeemDialog = true;
 					}}
