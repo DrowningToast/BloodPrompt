@@ -9,6 +9,9 @@
     import { Textarea } from "$lib/components/ui/textarea";
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
+	import { trpc } from '$lib/trpc';
+	import SpecialEventHero from '../../../../(donator)/home/SpecialEventHero.svelte';
+
 
     let fileInput:HTMLInputElement;
     let  sp_event;
@@ -19,6 +22,13 @@
         reader.onload = e => {
      	    sp_event = e.target.result
         };
+    }
+
+    let name = '';
+    let description = '';
+
+    const edited = async() =>{
+        await trpc.specialEvent.update.mutate({name:name,description:description})
     }
 
 </script>
@@ -109,9 +119,14 @@
                 <p class="text-base text-gray-500">สามารถแก้ไขข้อมูลของกิจกรรมพิเศษจองสถานที่นั้นๆ</p>
             </div>
             <div class="flex justify-between items-center gap-4">
-                <Button class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-10 py-4 text-base font-bold text-white hover:bg-[#EF4444]">บันทึกข้อมูล</Button>
+                <Button class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-10 py-4 text-base font-bold text-white hover:bg-[#EF4444]" on:click={()=>{
+                    edited();
+                    if (browser) {
+                        goto('/staff/manage/special-event')
+                    }
+                }}>บันทึกข้อมูล</Button>
                 <Button class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white" on:click={()=>{
-                    if(browser){
+                    if (browser) {
                         goto('/staff/manage/special-event')
                     }
                 }}>ยกเลิกการแก้ไข</Button>
@@ -149,8 +164,8 @@
                         <Info class="w-5"/>
                         <h1 class="font-bold py-2">ข้อมูลพื้นฐานของกิจกรรมพิเศษนี้</h1>
                     </div>
-                    <Input placeholder="ชื่อกิจกรรมพิเศษ" class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4"/>
-                    <Textarea placeholder="รายละเอียดกิจกรรมพิเศษ" class="rounded-xl border-2 border-gray-300 h-[200px] w-full px-4 py-4 resize-none"/>
+                    <Input placeholder="ชื่อกิจกรรมพิเศษ" class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4" bind:value={name}/>
+                    <Textarea placeholder="รายละเอียดกิจกรรมพิเศษ" class="rounded-xl border-2 border-gray-300 h-[200px] w-full px-4 py-4 resize-none" bind:value={description}/>
                     <div class="flex gap-3 items-center">
                         <CalendarDays class="w-5"/>
                         <h1 class="font-bold py-2">ระยะเวลากิจกรรม</h1>

@@ -6,16 +6,12 @@
     import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
     import Dropdown from '../../../moderator/home/dropdown.svelte';
-
-    let imageSelected:any;
-
-</script>
-    {#if !imageSelected}
-         <!-- content here -->
-    {:else}
-         <!-- else content here -->
-    {/if}
-
+    
+    import type { PageData } from './$types';
+	export let data:PageData;
+    
+    
+</script>   
 <div class="flex flex-row w-full justify-between bg-gray-300 max-w-[100vw] min-h-[100vh">
     <div class="flex flex-col bg-[#191F2F] w-3/12 h-100%">
 		<div class="flex flex-row px-8 py-16 justify-center">
@@ -101,12 +97,10 @@
                     <p class="font-bold pl-8">01/08/2023 08:00 - 12/08/2023 16:00</p>
                 </div>
                 <div class="flex justify-end gap-6 mt-auto">
-                    <Button class="flex self-center text-[#EF4444] border-[#EF4444] border-2 w-32 h-10 gap-1 bg-white hover:bg-white rounded-3xl" on:click={()=>{
-                        if (browser) {
-                            goto('/staff/manage/special-event/edit')
-                        }
-                    }}>แก้ไข</Button>
-                    <Button class="flex self-center text-white rounded-3xl w-32 h-10 gap-1 bg-[#EF4444] hover:bg-[#EF4444] rounded-3xls">ลบ</Button>
+                    <Button on:click={()=>{if(browser)goto("/staff/manage/special-event/edit")}} class="flex self-center text-[#EF4444] border-[#EF4444] border-2 w-32 h-10 gap-1 bg-white hover:bg-white rounded-3xl">แก้ไข</Button>
+                    <Button class="flex self-center text-white rounded-3xl w-32 h-10 gap-1 bg-[#EF4444] hover:bg-[#EF4444] rounded-3xls" on:click={()=>{
+
+                    }}>ลบ</Button>
                 </div>
             </div>
         </div>

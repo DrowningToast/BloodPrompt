@@ -1,60 +1,73 @@
-import { createRouter, publicProcedure } from "../context";
-import {z} from 'zod';
-import prisma, { Special_EventsUncheckedCreateInputSchema } from "../database";
-import { Special_EventsCreateInputSchema } from '../database'
+import { createRouter, publicProcedure } from '../context';
+import { z } from 'zod';
+import prisma, { Special_EventsUpdateInputSchema, Special_EventsCreateInputSchema, Special_EventsCreateWithoutPlaceInputSchema } from '../database';
 
 export const specialEventRouter = createRouter({
-    findAll: publicProcedure.query(async () => {
-		const special_Event = await prisma.special_Events.findMany();
-		return special_Event;
-	}),
-	findById: publicProcedure.input(z.object({ specialEventId: z.string() })).query(async ({ input }) => {
-		const { specialEventId } = input;
-		const special_Event = await prisma.special_Events.findUnique({
-			where: {
-				id: specialEventId
-			}
-		});
-		return special_Event;
-	}),
-    create: publicProcedure.input(Special_EventsCreateInputSchema).mutation(async({input})=>{
+	create: publicProcedure
+    .input(
+        z.object({
+            name:z.string(),
+            description: z.string()
+    }))
+    .mutation(async ({ input,ctx }) => {
+        const sessionToken = ctx.sessionToken;
+        const session = await prisma.session.findUnique({
+            where:{
+                session_token: sessionToken
+            },
+            include:{
+                Medical_Staff:true
+            }
+        });
         const specialEvent = await prisma.special_Events.create({
             data:{
-                ...input
+                ...input,
+                place_id:session?.Medical_Staff?.place_id || ''
             }
         });
         return specialEvent;
-    }),
-    update: publicProcedure
-    .input(
-        z.object({
-            data: Special_EventsUncheckedCreateInputSchema,
-            specialEventId: z.string()
-        })
-    )
-    .mutation(async({input})=>{
-        const {data, specialEventId} = input;
-        const special_Event = await prisma.special_Events.update({
+	}),
+	update: publicProcedure
+		.input(
+			z.object({
+				name:z.string(),
+                description: z.string(),
+			})
+		)
+		.mutation(async ({ input,ctx }) => {
+        const sessionToken = ctx.sessionToken;
+        const session = await prisma.session.findUnique({
             where:{
-                id:specialEventId
+                session_token: sessionToken
             },
-            data:{
-                ...data
+            include:{
+                Medical_Staff:true
             }
         });
-        return special_Event;
-    }),
-    delete: publicProcedure
-    .input(z.object({ specialEventId: z.string() })).mutation(async({ input }) => {
-        const {specialEventId} = input;
-        const special_Event = await prisma.special_Events.update({
-            where:{
-                id: specialEventId
-            },
-            data:{
-                deleted_at:new Date()
-            }
-        });
-        return special_Event;
+        // const placeId = session?.Medical_Staff?.place_id || '';
+		// 	const special_Events = await prisma.special_Events.update({
+		// 		// where: {
+		// 		// 	place_id:placeId
+		// 		// },
+		// 		data: {
+		// 			...input
+		// 		}
+		// 	});
+		// 	return special_Events;
+		}),
+	delete: publicProcedure.input(z.object({ specialEventId: z.string() })).mutation(async ({ input, ctx }) => {
+		const { specialEventId } = input;
+
+		const special_Events = await prisma.special_Events.delete({
+			where: {
+				id: specialEventId
+			},
+		});
+		return special_Events;
+	}),
+    getEvent: publicProcedure.query(async()=>{
+        const sp_event = await prisma.special_Events.findFirst();
+        return sp_event;
     })
+
 });

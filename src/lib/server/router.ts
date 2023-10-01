@@ -4,7 +4,7 @@ import { donatorsRouter } from './routes/donatorsRouter';
 import { authRouter } from './routes/authRouter';
 import { placesRouter } from './routes/placesRouter';
 import { medicalStaffRouter } from './routes/medicalStaffRouter';
-import { specialEventRouter } from './routes/specialEventRouter';
+import { specialEventRouter } from './routes/specialEventRouter'
 
 export const appRouter = createRouter({
 	greet: publicProcedure
