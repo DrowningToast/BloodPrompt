@@ -38,7 +38,6 @@
 	};
 
 	const handleEditStaffAccount = () => {
-		console.log(selectedStaff);
 		const [first_name, last_name] = selectedStaff.name.split(' ');
 		trpc.medicalStaff.update
 			.mutate({
@@ -51,7 +50,6 @@
 				}
 			})
 			.then((res) => {
-				console.log(res);
 				alert('บันทึกการแก้ไขข้อมูลของคุณแล้ว');
 			})
 			.catch((error) => {

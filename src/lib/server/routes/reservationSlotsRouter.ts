@@ -52,10 +52,6 @@ export const reservationSlotsRouter = createRouter({
 
 			const timeSlot = new Date(timeSlotInMillisecond);
 
-			console.log('========= timeslot =========');
-			console.log(timeSlot);
-			console.log(timeSlotInMillisecond);
-
 			// validate the place id
 			const place = await prisma.places.findUnique({
 				where: {

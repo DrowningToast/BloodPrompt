@@ -9,7 +9,6 @@ export const load = (async ({ params, fetch }) => {
 	const place = await trpc.places.findById.query({
 		placeId: redemptionHistory?.Reward.place_id || ''
 	});
-	console.log(redemptionHistory);
 	return {
 		redemptionHistory,
 		place

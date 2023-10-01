@@ -18,7 +18,6 @@
 	let searchKeyword = '';
 
 	const handleSearchKeywordChange = (event: any) => {
-		console.log(event.target);
 		if (event.target.value) {
 			filteredRewards = rewards.filter((reward) => reward.name.includes(event.target.value));
 		} else {

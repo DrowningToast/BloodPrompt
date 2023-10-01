@@ -22,7 +22,6 @@
 	export let data: PageData;
 
 	const pendingPostFeedback = data.pendingFeedback;
-	console.log(data);
 </script>
 
 <div class="pb-24">

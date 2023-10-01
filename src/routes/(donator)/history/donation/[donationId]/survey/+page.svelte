@@ -24,8 +24,6 @@
 	export let data: PageData;
 	const { donationHistoryData, placeData, donationHistoryId, questions } = data;
 
-	console.log(questions);
-
 	interface Answers {
 		[key: string]: {
 			[key: string]: boolean;
@@ -76,7 +74,6 @@
 				};
 			});
 
-			console.log(payload);
 			const res = await trpc.postFeedback.createFeedback.mutate({
 				data: {
 					Donation_History: {

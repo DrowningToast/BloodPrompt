@@ -58,7 +58,6 @@
 	});
 
 	onMount(async () => {
-		console.log($preFeedbackStore.Pre_Feedback_Answers.length);
 		if ($preFeedbackStore.Pre_Feedback_Answers.length > 0) {
 		} else {
 			await goto('/reservation/survey');
@@ -113,9 +112,6 @@
 							displayTime={timeSlot}
 							{selectedDate}
 							bind:selectedTime
-							on:click={() => {
-								console.log(timeSlot);
-							}}
 						/>
 					{/each}
 				</div>

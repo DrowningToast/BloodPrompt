@@ -118,7 +118,6 @@
 
 		const blood_type =
 			((selectedBloodType + '_' + bloodRhValue).toUpperCase() as BloodType) || 'A_POSITIVE';
-		console.log(blood_type);
 
 		await trpc.donators.signUp
 			.mutate({
@@ -143,7 +142,6 @@
 				alert(
 					'สมัครสมาชิกสำเร็จ คุณสามารถทำการเข้าสู่ระบบโดยใช้หมายเลขโทรศัพท์ และรหัสผ่านที่ได้ทำการสมัครสมาชิก'
 				);
-				console.log(res);
 				goto('/verification');
 			})
 			.catch((error) => {

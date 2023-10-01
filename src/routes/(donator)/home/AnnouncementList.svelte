@@ -8,8 +8,6 @@
 	}
 
 	export let data: AnnouncementsWithPlace[] = [];
-
-	console.log(data);
 </script>
 
 <div class="flex flex-col gap-y-4 pt-4">

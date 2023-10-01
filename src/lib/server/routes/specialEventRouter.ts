@@ -12,7 +12,6 @@ export const specialEventRouter = createRouter({
 			})
 		)
 		.mutation(async ({ input, ctx }) => {
-			console.log(input);
 			const { sessionToken } = ctx;
 			const session = await prisma.session.findUnique({
 				where: {

@@ -44,8 +44,6 @@
 
 	let selectedImage: any = place?.image_src || '';
 
-	console.log(place);
-
 	const days = [
 		{ value: 'MONDAY', label: 'วันจันทร์' },
 		{ value: 'TUESDAY', label: 'วันอังคาร' },
@@ -85,7 +83,6 @@
 				placeId: placeId
 			})
 			.then((res) => {
-				console.log(res);
 				alert('ระบบบันทึกข้อมูการแก้ไขของคุณแล้ว !');
 				goto('/moderator/manage/donation-center');
 			})
@@ -98,7 +95,6 @@
 		trpc.places.delete
 			.mutate({ placeId: placeId })
 			.then((res) => {
-				console.log(res);
 				alert('ลบสถานที่ของคุณแล้ว !');
 				goto('/moderator/manage/donation-center');
 			})
@@ -275,7 +271,7 @@
 									<Select.Item value={day.value}>{day.label}</Select.Item>
 								{/each}
 							</Select.Content>
-							<Select.Input name="select" multiple on:change={(value) => console.log(value)} />
+							<Select.Input name="select" multiple />
 						</Select.Root>
 
 						<div class="flex justify-start items-center gap-3">
