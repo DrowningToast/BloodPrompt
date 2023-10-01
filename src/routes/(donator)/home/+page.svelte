@@ -6,7 +6,6 @@
 	import AnnouncementList from './AnnouncementList.svelte';
 	import SurveyCard from '$lib/components/svelte/card/survey/SurveyCard.svelte';
 	import { get24HoursTimeString } from '../reservation/[placeId]/date/utils';
-	import { number } from 'zod';
 	import type { PageData } from './$types';
 
 	// TODO: Searchbar Functionality

@@ -6,7 +6,6 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import RewardItemCard from '$lib/components/svelte/card/reward/RewardItemCard.svelte';
-	import rewardMockImage from '$lib/images/reward/reward_mock.png';
 	import { goto } from '$app/navigation';
 	import RewardDetails from '$lib/components/svelte/dialog/RewardDetails.svelte';
 	import { selectedReward } from '$lib/stores/rewardStores';
