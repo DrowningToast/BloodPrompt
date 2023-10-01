@@ -20,11 +20,15 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { trpc } from '$lib/trpc';
-	import Dropdown from '../../../../moderator/home/dropdown.svelte';
+	import Dropdown from '../../../../../moderator/home/dropdown.svelte';
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
+	const { announcement } = data;
 
 	let fileInput: HTMLInputElement;
-	let imageSeleceted: any;
+	let imageSeleceted: any = announcement?.image_src;
 	const onFileSelected = (e: any) => {
 		let image = e.target.files[0];
 		let reader = new FileReader();
@@ -34,29 +38,30 @@
 		};
 	};
 
-	let name: string = '';
-	let description: string = '';
-	let image_src: string = '';
-	let selectedBloodType: string = 'a';
+	let name = announcement?.title;
+	let description = announcement?.content;
+	let image_src = announcement?.image_src;
+
+	let selctedRhValue = announcement?.blood_type?.split('_')[1].toLowerCase();
+	let selectedBloodType = announcement?.blood_type?.split('_')[0].toLowerCase();
 
 	const types = [
 		{ value: 'normal', label: 'แบบทั่วไป' },
 		{ value: 'emergency', label: 'แบบฉุกเฉิน' }
 	];
-	let isEmergencyType: boolean;
-	isEmergencyType = false;
+	let isEmergency: boolean;
+	isEmergency = announcement?.post_type === 'EMERGENCY' ? true : false;
 
-	let bloodRhValue: string | undefined | any = '';
+	let bloodRhValue: string | undefined | any = selctedRhValue;
 	let bloodTypesValue = {
-		a: true,
-		b: false,
-		o: false,
-		ab: false
+		a: selectedBloodType === 'a' ? true : false,
+		b: selectedBloodType === 'b' ? true : false,
+		o: selectedBloodType === 'o' ? true : false,
+		ab: selectedBloodType === 'ab' ? true : false
 	};
 	const handleBloodTypeChange = (event: any) => {
 		const target = event.target;
 		if (target.id === 'a') {
-			selectedBloodType = 'a';
 			bloodTypesValue = {
 				a: true,
 				b: false,
@@ -64,7 +69,6 @@
 				ab: false
 			};
 		} else if (target.id === 'b') {
-			selectedBloodType = 'b';
 			bloodTypesValue = {
 				a: false,
 				b: true,
@@ -72,7 +76,6 @@
 				ab: false
 			};
 		} else if (target.id === 'o') {
-			selectedBloodType = 'o';
 			bloodTypesValue = {
 				a: false,
 				b: false,
@@ -80,7 +83,6 @@
 				ab: false
 			};
 		} else {
-			selectedBloodType = 'ab';
 			bloodTypesValue = {
 				a: false,
 				b: false,
@@ -90,13 +92,19 @@
 		}
 	};
 
-	const handleAddNewAnnouncement = async () => {
-		const currentUser = await trpc.auth.getUser.query();
-		const medicalStaff = await trpc.medicalStaff.findById.query({
-			medicalStaffId: currentUser?.user.id || ''
-		});
-		if (!isEmergencyType) {
-			await trpc.announcement.create
+	const handleDeleteAnnouncement = async () => {
+		trpc.announcement.delete
+			.query({ announcementId: announcement?.id || '' })
+			.then(() => {
+				alert('ระบบลบประกาศของคุณแล้ว');
+				goto('/staff/manage/announcement');
+			})
+			.catch((error) => console.error(error));
+	};
+
+	const handleUpdateAnnouncement = async () => {
+		if (!isEmergency) {
+			await trpc.announcement.update
 				.mutate({
 					data: {
 						post_type: 'NORMAL',
@@ -104,17 +112,17 @@
 						content: description,
 						image_src: imageSeleceted
 					},
-					placeId: medicalStaff?.Place.id || ''
+					announcementId: announcement?.id || ''
 				})
 				.then(() => {
-					alert('เพ้ิ่มประกาศใหม่เข้าระบบเรียบร้อยแล้ว');
+					alert('แก้ไขประกาศเรียบร้อยแล้ว');
 					goto('/staff/manage/announcement');
 				})
 				.catch((error) => {
 					console.error(error);
 				});
 		} else {
-			await trpc.announcement.create
+			await trpc.announcement.update
 				.mutate({
 					data: {
 						blood_type: (selectedBloodType + '_' + bloodRhValue).toUpperCase(),
@@ -123,10 +131,10 @@
 						content: description,
 						image_src: imageSeleceted
 					},
-					placeId: medicalStaff?.Place.id || ''
+					announcementId: announcement?.id || ''
 				})
 				.then(() => {
-					alert('เพ้ิ่มประกาศใหม่เข้าระบบเรียบร้อยแล้ว');
+					alert('แก้ไขประกาศเรียบร้อยแล้ว');
 					goto('/staff/manage/announcement');
 				})
 				.catch((error) => {
@@ -214,15 +222,15 @@
 		<!-- content -->
 		<div class="flex flex-row items-center justify-between px-14 h-32 w-full">
 			<div class="flex flex-col">
-				<p class="font-bold text-xl">การเพิ่มประกาศประชาสัมพันธ์</p>
-				<p class="text-base text-gray-500">สามารถเพิ่มประกาศประชาสัมพันธ์</p>
+				<p class="font-bold text-xl">การแก้ไขประกาศประชาสัมพันธ์</p>
+				<p class="text-base text-gray-500">สามารถแก้ข้อมูลของการประกาศประชาสัมพันธ์</p>
 			</div>
 			<div class="flex justify-between items-center gap-4">
 				<Button
-					on:click={handleAddNewAnnouncement}
-					class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-72 px-4 py-4 text-base font-bold text-white hover:bg-[#EF4444]"
-					><PlusCircle class="fill-white stroke-[#EF4444]" />
-					เพิ่มเพิ่มประกาศประชาสัมพันธ์
+					on:click={handleUpdateAnnouncement}
+					class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-52 px-4 py-4 text-base font-bold text-white hover:bg-[#EF4444]"
+				>
+					บันทึกข้อมูล
 				</Button>
 
 				<Button
@@ -230,7 +238,13 @@
 						goto('/staff/manage/announcement');
 					}}
 					class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white"
-					>ยกเลิกการเพิ่ม</Button
+					>ยกเลิกการแก้ไข</Button
+				>
+
+				<Button
+					on:click={handleDeleteAnnouncement}
+					class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white"
+					>ลบ</Button
 				>
 			</div>
 		</div>
@@ -287,25 +301,25 @@
 						<Info class="w-5" />
 						<h1 class="font-bold py-2">ข้อมูลของประกาศประชาสัมพันธ์</h1>
 					</div>
-					<Select.Root>
+					<Select.Root selected={{ value: isEmergency ? 'emergency' : 'normal' }} disabled>
 						<Select.Trigger class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4">
-							<Select.Value placeholder="เลือกประเภทของประกาศประชาสัมพันธ์" />
+							<Select.Value placeholder={isEmergency ? 'แบบฉุกเฉิน' : 'แบบทั่วไป'} />
 						</Select.Trigger>
 						<Select.Content>
 							<Select.Group>
 								<Select.Label>ประเภทประกาศประชาสัมพันธ์</Select.Label>
 								<Select.Item
-									value={types[0].value}
+									value={'normal'}
 									on:click={() => {
-										isEmergencyType = false;
+										isEmergency = false;
 									}}
 								>
 									{types[0].label}
 								</Select.Item>
 								<Select.Item
-									value={types[1].value}
+									value={'emergency'}
 									on:click={() => {
-										isEmergencyType = true;
+										isEmergency = true;
 									}}
 								>
 									{types[1].label}
@@ -324,7 +338,7 @@
 						placeholder="เนื้อหาของประกาศประชาสัมพันธ์"
 						class="rounded-xl border-2 border-gray-300 h-[200px] w-full px-4 py-4 resize-none"
 					/>
-					{#if isEmergencyType}
+					{#if isEmergency}
 						<div class="flex flex-col gap-5 w-full">
 							<div class="flex flex-row w-full border-2 justify-around p-1 rounded-xl gap-1">
 								<Button
@@ -362,7 +376,7 @@
 								</Button>
 							</div>
 							<Select.Root
-								required
+								selected={{ value: selctedRhValue }}
 								onSelectedChange={(event) => (bloodRhValue = event?.value || 'positive')}
 							>
 								<Select.Trigger
@@ -371,7 +385,9 @@
 								>
 									<Select.Value
 										class={`${bloodRhValue ? 'text-black' : 'text-gray-400'}`}
-										placeholder="กลุ่มหมู่เลือด Rh"
+										placeholder={selctedRhValue === 'pisitive'
+											? 'เลือดบวก (Positive)'
+											: 'เลือดลบ (Negative)'}
 									/>
 								</Select.Trigger>
 								<Select.Content>
