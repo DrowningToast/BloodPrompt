@@ -8,6 +8,7 @@ import { reservationSlotsRouter } from './routes/reservationSlotsRouter';
 import { preFeedBackRouter } from './routes/preFeedBackRouter';
 import { rewardRouter } from './routes/rewardRouter';
 import { moderatorRoutes } from './routes/moderatorsRoutes';
+import { announcementsRouter } from './routes/announcementRouter';
 
 export const appRouter = createRouter({
 	greet: publicProcedure
@@ -27,7 +28,8 @@ export const appRouter = createRouter({
 	preFeedback: preFeedBackRouter,
 	reservation: reservationSlotsRouter,
 	moderator: moderatorRoutes,
-	reward: rewardRouter
+	reward: rewardRouter,
+	announcement: announcementsRouter
 });
 
 export type AppRouter = typeof appRouter;
