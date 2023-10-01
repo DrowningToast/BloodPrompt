@@ -7,9 +7,10 @@
 		FileText,
 		Gift,
 		CalendarHeart,
-		CalendarClock
+		CalendarClock,
+		Megaphone
 	} from 'lucide-svelte';
-	import bloodPromptLogo from '$lib/images/moderator/login/bloodprompt-logo.png';
+	import bloodPromptLogo from '$lib/images/bloodprompt-logo.png';
 	import graph_mock from '$lib/images/staff/home/long_graph.png';
 	import graphExample from '$lib/images/staff/home/grpah.png';
 	import * as Table from '$lib/components/ui/table';
@@ -18,50 +19,53 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { trpc } from '$lib/trpc';
-	const places = [
-		{
-			name: 'INV001',
-			status: 'Paid',
-			address: '$250.00',
-			contact: 'Credit Card'
+
+	import {
+		BarChartSimple,
+		DonutChart,
+		type BarChartOptions,
+		type DonutChartOptions
+	} from '@carbon/charts-svelte';
+	import '@carbon/charts-svelte/styles.css';
+	import type { PageData } from './$types';
+	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
+
+	export let data: PageData;
+
+	placeName.set(data.currentStaff?.Place.name || '');
+	medicalStaffName.set(data.currentStaff?.first_name + ' ' + data.currentStaff?.last_name);
+
+	const donutChartOptions: DonutChartOptions = {
+		title: 'จำนวนเลือดในคลังทั้งหมด',
+		resizable: true,
+		legend: {
+			alignment: 'center'
 		},
-		{
-			name: 'INV002',
-			status: 'Pending',
-			address: '$150.00',
-			contact: 'PayPal'
+		donut: {
+			center: {
+				label: 'จำนวนครั้งการบริจาคเลือด'
+			},
+			alignment: 'center'
 		},
-		{
-			name: 'INV003',
-			status: 'Unpaid',
-			address: '$350.00',
-			contact: 'Bank Transfer'
+		height: '400px',
+		width: '325px'
+	};
+
+	const barChartOptions: BarChartOptions = {
+		title: 'สถิติการบริจาคเลือดย้อนหลัง',
+		resizable: true,
+		axes: {
+			left: {
+				mapsTo: 'value'
+			},
+			bottom: {
+				mapsTo: 'group',
+				scaleType: 'labels'
+			}
 		},
-		{
-			name: 'INV004',
-			status: 'Paid',
-			address: '$450.00',
-			contact: 'Credit Card'
-		},
-		{
-			name: 'INV005',
-			status: 'Paid',
-			address: '$550.00',
-			contact: 'PayPal'
-		},
-		{
-			name: 'INV006',
-			status: 'Pending',
-			address: '$200.00',
-			contact: 'Bank Transfer'
-		},
-		{
-			name: 'INV007',
-			status: 'Unpaid',
-			address: '$300.00',
-			contact: 'Credit Card'
-		}
-	];
+		height: '400px',
+		width: '350px'
+	};
 
 	const handleLogout = async () => {
 		await trpc.auth.logout
@@ -91,14 +95,22 @@
 						}
 					}}><Home class="w-5 h-5 " />หน้าหลัก</Button
 				>
+				<Button
+					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F]  text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/manage/announcement')
+                    }}}
+				><Megaphone  class="w-5 h-7 pb-[2px] " />จัดการประกาศประชาสัมพันธ์</Button>
 
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-                    on:click={()=>{
-                        if (browser) {
-                        goto('/staff/reservation')
-                    }}}
-				><FileText class="w-5 h-5" />การจองคิว</Button>
+					on:click={() => {
+						if (browser) {
+							goto('/staff/manage/reservation');
+						}
+					}}><FileText class="w-5 h-5" />การจองคิว</Button
+				>
 
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
@@ -131,11 +143,13 @@
 	<div class="flex flex-col w-9/12 items-center h-full">
 		<div class="w-full bg-white grid grid-cols-3 items-center justify-center px-8 h-16">
 			<div class="items-center justify-center flex" />
-			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
+			<div class="items-center justify-center flex text-2xl font-semibold">{$placeName}</div>
 			<div class="items-center justify-end flex gap-2">
 				<div class="flex flex-row items-center gap-1">
 					<UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8" />
-					<h1 class="font-bold">ศรุตา โทรัตน์</h1>
+					<h1 class="font-bold">
+						{$medicalStaffName}
+					</h1>
 					<Dropdown />
 				</div>
 			</div>
@@ -143,8 +157,10 @@
 		<div class="flex flex-col w-full h-full p-7 gap-9">
 			<!-- 1 -->
 			<div class="flex w-full h-4/12 gap-12">
-				<div class="flex w-8/12 rounded-3xl p-11 justify-between items-center shadow-xl bg-white">
-					<img src={graphExample} class="" alt="" />
+				<div
+					class="flex flex-row w-8/12 rounded-3xl justify-between items-center shadow-xl gap-4 bg-white"
+				>
+					<!-- <img src={graphExample} class="" alt="" />
 					<div class="flex flex-col gap-8">
 						<p class="text-2xl font-bold">จำนวนเลือดในคลังทั้งหมด</p>
 						<div>
@@ -165,6 +181,12 @@
 								<span class="text-xl font-semibold">1111</span>
 							</div>
 						</div>
+					</div> -->
+					<div class=" bg-white rounded-xl p-6">
+						<DonutChart data={data.bloodTypeCount} options={donutChartOptions} />
+					</div>
+					<div class=" bg-white rounded-xl p-6">
+						<BarChartSimple data={data.donationCount} options={barChartOptions} />
 					</div>
 				</div>
 				<div class="flex shadow-xl w-4/12 rounded-3xl p-4 bg-white">
@@ -178,15 +200,17 @@
 			<div class="flex w-full h-[50%] gap-12">
 				<div class="flex flex-col w-8/12 rounded-3xl p-11 gap-10 shadow-xl bg-white">
 					<div>
-						<p class="text-2xl font-bold">สถิติการบริจาคเลือดย้อนหลัง</p>
-						<p class="text-lg text-[#888] font-bold">จำนวนการบริจาคเลือดทั้งหมด : 9,999 ครั้ง</p>
+						<div class=" bg-white rounded-xl p-6">
+							<BarChartSimple data={data.donationCount} options={barChartOptions} />
+						</div>
 					</div>
-					<img class="w-full" src={graph_mock} alt="" />
 				</div>
 				<div class="flex flex-col shadow-xl w-4/12 rounded-3xl p-4 bg-white">
 					<div class="pl-2">
-						<p class="text-2xl font-bold">คิวการบริจาคเลือดวันนี้</p>
-						<p class="text-lg text-[#888] font-bold">จำนวนวันนี้ 100 คิว</p>
+						<p class="text-2xl font-bold">คิวการบริจาคเลือด</p>
+						<p class="text-lg text-[#888] font-bold">
+							จำนวนคิดทั้งหมด: {data.allReservation.length}
+						</p>
 					</div>
 					<div class="flex bg-white rounded-3xl h-5/6 w-[305px] px-4 py-4">
 						<Table.Root class="bg-white rounded-full">
@@ -197,10 +221,14 @@
 								</Table.Row>
 							</Table.Header>
 							<Table.Body>
-								{#each places as place}
+								{#each data.allReservation as reservation}
 									<Table.Row>
-										<Table.Cell>{place.status}</Table.Cell>
-										<Table.Cell>{place.name}</Table.Cell>
+										<Table.Cell>{reservation.id.slice(-5)}</Table.Cell>
+										<Table.Cell
+											>{reservation.Donator.first_name +
+												' ' +
+												reservation.Donator.last_name}</Table.Cell
+										>
 									</Table.Row>
 								{/each}
 							</Table.Body>

@@ -110,6 +110,9 @@ const reservationController = {
 						Place: true
 					}
 				}
+			},
+			orderBy: {
+				created_at: 'desc'
 			}
 		});
 	}

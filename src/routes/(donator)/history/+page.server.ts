@@ -10,3 +10,5 @@ export const load = (async ({ fetch }) => {
 
 	return { reservationLog, donationHistoryData, pendingFeedback };
 }) satisfies PageServerLoad;
+
+export const ssr = false;
