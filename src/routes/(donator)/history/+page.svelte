@@ -8,10 +8,10 @@
 	import DonationHistoryTabPanel from './DonationHistoryTabPanel.svelte';
 	import ReservationTabPanel from './ReservationTabPanel.svelte';
 	import SurveyCard from '$lib/components/svelte/card/survey/SurveyCard.svelte';
-	import { trpc } from '$lib/trpc';
-	import { onMount } from 'svelte';
+	import { get24HoursTimeString } from '../reservation/[placeId]/date/utils';
 
 	export let data: PageData;
+	const { pendingFeedback } = data;
 
 	let currentTabIndex: number = 0;
 
@@ -33,32 +33,10 @@
 		placeData: Places;
 	};
 
-	const PLACE_DATA = {
-		id: '01',
-		name: 'โรงพยาบาลพระจอมเกล้าเจ้าคุณทหาร',
-		description:
-			"สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง (King Mongkut's Institute of Technology Ladkrabang) เป็นมหาวิทยาลัยในกำกับของรัฐ ก่อตั้งด้วยความช่วยเหลือของรัฐบาลญี่ปุ่น (มหาวิทยาลัยโตไก) โดยเน้นการเรียนการสอนด้านวิทยาศาสตร์และเทคโนโลยี ตั้งอยู่เขตลาดกระบัง กรุงเทพมหานคร",
-		image_src:
-			'https://scontent.fbkk7-3.fna.fbcdn.net/v/t1.6435-9/75625360_2708828382511763_3205029120262012928_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=e3f864&_nc_eui2=AeGOqQxnGM18lHXUfqJyW9DEOBRkihhNDX44FGSKGE0NfjS7uhqfp3lMIjdWkpXnd6iyNHxq0ifH0GfTFlfA0PPh&_nc_ohc=j9h9QLsMYgIAX_jfuFK&_nc_ht=scontent.fbkk7-3.fna&oh=00_AfA-v_P2xu40hWBwbC0ZnItdEstjeWUU1JqjvTZFtO4IKg&oe=6539C618',
-		phone_number: '0656526769',
-		email: '65070219@kmitl.ac.th',
-		icon_src: '',
-		address: 'ถนนฉลองกรุง เขตลาดกระบัง กรุงเทพฯ 10520, ประเทศไทย',
-		opening_day: 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY',
-		opening_time: 9,
-		closing_time: 16.3,
-		is_available: true,
-		created_at: new Date(new Date().getTime()),
-		updated_at: new Date(new Date().getTime()),
-		deleted_at: null,
-		website_url: 'https://www.it.kmitl.ac.th'
-	};
-
-	// MOCK
 	const donationHistoryData: DonationHistory[] = data.donationHistoryData.map((donation) => {
 		return {
 			donationData: donation,
-			placeData: PLACE_DATA
+			placeData: donation.Reservation.Reservation_Slot.Place
 		};
 	});
 
@@ -84,14 +62,18 @@
 		<p class="text-md font-bold">ประวัติการจองคิวและบริจาคเลือด</p>
 	</div>
 
-	<div class="px-6 pt-6">
-		<SurveyCard
-			donateDate={new Date()}
-			donateTime={12.3}
-			donationHistoryId={'001'}
-			placeName="โรงพยาบาลพระจอมเกล้าเจ้าคุณทหาร"
-		/>
-	</div>
+	{#if pendingFeedback}
+		<div class="px-6 pt-6">
+			<SurveyCard
+				donateDate={pendingFeedback.Reservation.Reservation_Slot.reserve_date}
+				donateTime={+get24HoursTimeString(
+					pendingFeedback.Reservation.Reservation_Slot.reserve_time
+				).replace(':', '.')}
+				donationHistoryId={pendingFeedback.id}
+				placeName={pendingFeedback.Reservation.Reservation_Slot.Place.name}
+			/>
+		</div>
+	{/if}
 
 	<div class="p-6">
 		<div class="flex flex-row w-full border-2 justify-around p-1 rounded-xl">

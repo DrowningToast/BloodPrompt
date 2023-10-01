@@ -6,6 +6,7 @@ export const load = (async ({ fetch }) => {
 
 	const reservationLog = await trpc.reservation.getLog.query();
 	const donationHistoryData = await trpc.donationHistory.getDonationHistories.query();
+	const pendingFeedback = await trpc.postFeedback.checkPendingFeedback.query();
 
-	return { reservationLog, donationHistoryData };
+	return { reservationLog, donationHistoryData, pendingFeedback };
 }) satisfies PageServerLoad;
