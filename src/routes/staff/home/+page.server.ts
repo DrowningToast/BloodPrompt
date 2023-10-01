@@ -30,6 +30,13 @@ export const load = (async ({ fetch }) => {
 	const currentStaff = await trpc.medicalStaff.findById.query({
 		medicalStaffId: currentUser?.user.id || ''
 	});
+	const reservations = await trpc.reservation.findAll.query();
+	const allReservation = [];
+	for (const reservation of reservations) {
+		if (reservation.Reservation_Slot.place_id === currentStaff?.Place.id) {
+			allReservation.push(reservation);
+		}
+	}
 
 	// Prisma Group by
 	const bloodTypeAggregations = await prisma.donation_History.groupBy({
@@ -76,6 +83,7 @@ export const load = (async ({ fetch }) => {
 		donators,
 		bloodTypeCount,
 		donationCount,
-		currentStaff
+		currentStaff,
+		allReservation
 	};
 }) satisfies PageServerLoad;

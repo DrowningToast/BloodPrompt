@@ -89,6 +89,18 @@
 				console.error(error);
 			});
 	};
+
+	const handleFilterStatusChange = (event: any) => {
+		if (event.value === 'all') {
+			filteredReservationData = allReservation;
+		} else if (event.value === '1') {
+			filteredReservationData = allReservation.filter((data) => data.status === 'BOOKED');
+		} else if (event.value === '2') {
+			filteredReservationData = allReservation.filter((data) => data.status === 'COMPLETED');
+		} else if (event.value === '3') {
+			filteredReservationData = allReservation.filter((data) => data.status === 'CANCELLED');
+		}
+	};
 </script>
 
 <div class="flex flex-row">
@@ -165,17 +177,15 @@
 				<div>ค้นหาโดยใช้หมายเลขการจองคิว</div>
 			</div>
 			<div class="flex flex-row gap-8 items-center mt-2">
-				<Select.Root>
+				<Select.Root onSelectedChange={handleFilterStatusChange}>
 					<Select.Trigger class="w-96 bg-white h-12 rounded-lg">
 						<Select.Value placeholder="ทั้งหมด" />
 					</Select.Trigger>
 					<Select.Content class="py-2">
 						<Select.Item value="all" class="py-2">ทั้งหมด</Select.Item>
-						<Select.Item value="new" class="py-2">ใหม่สุด</Select.Item>
-						<Select.Item value="old" class="py-2">เก่าสุด</Select.Item>
-						<Select.Item value="thisDay" class="py-2">วันนี้</Select.Item>
-						<Select.Item value="thisMonth" class="py-2">เดือนนี้</Select.Item>
-						<Select.Item value="thisYear" class="py-2">ปีนี้</Select.Item>
+						<Select.Item value="1" class="py-2">จองคิวสำเร็จ</Select.Item>
+						<Select.Item value="2" class="py-2">เสร็จสิ้น / เข้ารับบริการแล้ว</Select.Item>
+						<Select.Item value="3" class="py-2">ยกเลิก</Select.Item>
 					</Select.Content>
 				</Select.Root>
 				<Input placeholder="ระบุหมายเลขการจองคิว" class=" w-96 bg-white h-12 rounded-lg" />
@@ -220,7 +230,7 @@
 								>
 								<Table.Cell
 									><Dialog.Root>
-										{#if reservation.status === 'BOOKED'}
+										{#if reservation.status === 'BOOKED' || reservation.status === 'COMPLETED'}
 											<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}>
 												รายละเอียด
 											</Dialog.Trigger>
@@ -396,24 +406,28 @@
 															</div>
 														</div>
 														<div class=" w-96 h-16 flex justify-end items-center">
-															<button
-																class=" bg-[#191F2F] w-40 h-10 text-white rounded-full"
-																on:click={() =>
-																	handleUpdateDonationData(
-																		reservation.Donator.Medical_Account.blood_type,
-																		reservation.id
-																	)}>บันทึกการแก้ไข</button
-															>
+															{#if reservation.status === 'BOOKED'}
+																<button
+																	class=" bg-[#191F2F] w-40 h-10 text-white rounded-full"
+																	on:click={() =>
+																		handleUpdateDonationData(
+																			reservation.Donator.Medical_Account.blood_type,
+																			reservation.id
+																		)}>บันทึกการแก้ไข</button
+																>
+															{/if}
 														</div>
 													</div>
 												</div>
 											</div>
 											<div class=" w-auto h-16 flex justify-end items-center mx-14 mt-5">
-												<button
-													class=" w-40 h-10 text-white rounded-full bg-[#ef4444]"
-													on:click={() => handleCancelReservation(reservation.id)}
-													>ยกเลิกการจองคิว</button
-												>
+												{#if reservation.status === 'BOOKED'}
+													<button
+														class=" w-40 h-10 text-white rounded-full bg-[#ef4444]"
+														on:click={() => handleCancelReservation(reservation.id)}
+														>ยกเลิกการจองคิว</button
+													>
+												{/if}
 											</div></Dialog.Content
 										>
 									</Dialog.Root></Table.Cell

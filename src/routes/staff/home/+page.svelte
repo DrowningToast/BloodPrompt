@@ -29,51 +29,6 @@
 	import type { PageData } from './$types';
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 
-	const places = [
-		{
-			name: 'INV001',
-			status: 'Paid',
-			address: '$250.00',
-			contact: 'Credit Card'
-		},
-		{
-			name: 'INV002',
-			status: 'Pending',
-			address: '$150.00',
-			contact: 'PayPal'
-		},
-		{
-			name: 'INV003',
-			status: 'Unpaid',
-			address: '$350.00',
-			contact: 'Bank Transfer'
-		},
-		{
-			name: 'INV004',
-			status: 'Paid',
-			address: '$450.00',
-			contact: 'Credit Card'
-		},
-		{
-			name: 'INV005',
-			status: 'Paid',
-			address: '$550.00',
-			contact: 'PayPal'
-		},
-		{
-			name: 'INV006',
-			status: 'Pending',
-			address: '$200.00',
-			contact: 'Bank Transfer'
-		},
-		{
-			name: 'INV007',
-			status: 'Unpaid',
-			address: '$300.00',
-			contact: 'Credit Card'
-		}
-	];
-
 	export let data: PageData;
 
 	placeName.set(data.currentStaff?.Place.name || '');
@@ -81,7 +36,7 @@
 
 	const donutChartOptions: DonutChartOptions = {
 		title: 'จำนวนเลือดในคลังทั้งหมด',
-		resizable: false,
+		resizable: true,
 		legend: {
 			alignment: 'center'
 		},
@@ -92,12 +47,12 @@
 			alignment: 'center'
 		},
 		height: '400px',
-		width: '700px'
+		width: '325px'
 	};
 
 	const barChartOptions: BarChartOptions = {
 		title: 'สถิติการบริจาคเลือดย้อนหลัง',
-		resizable: false,
+		resizable: true,
 		axes: {
 			left: {
 				mapsTo: 'value'
@@ -108,7 +63,7 @@
 			}
 		},
 		height: '400px',
-		width: '700px'
+		width: '350px'
 	};
 
 	const handleLogout = async () => {
@@ -194,7 +149,9 @@
 		<div class="flex flex-col w-full h-full p-7 gap-9">
 			<!-- 1 -->
 			<div class="flex w-full h-4/12 gap-12">
-				<div class="flex w-8/12 rounded-3xl p-11 justify-between items-center shadow-xl bg-white">
+				<div
+					class="flex flex-row w-8/12 rounded-3xl justify-between items-center shadow-xl gap-4 bg-white"
+				>
 					<!-- <img src={graphExample} class="" alt="" />
 					<div class="flex flex-col gap-8">
 						<p class="text-2xl font-bold">จำนวนเลือดในคลังทั้งหมด</p>
@@ -220,6 +177,9 @@
 					<div class=" bg-white rounded-xl p-6">
 						<DonutChart data={data.bloodTypeCount} options={donutChartOptions} />
 					</div>
+					<div class=" bg-white rounded-xl p-6">
+						<BarChartSimple data={data.donationCount} options={barChartOptions} />
+					</div>
 				</div>
 				<div class="flex shadow-xl w-4/12 rounded-3xl p-4 bg-white">
 					<div class="flex flex-col justify-center items-center m-auto gap-5">
@@ -239,8 +199,10 @@
 				</div>
 				<div class="flex flex-col shadow-xl w-4/12 rounded-3xl p-4 bg-white">
 					<div class="pl-2">
-						<p class="text-2xl font-bold">คิวการบริจาคเลือดวันนี้</p>
-						<p class="text-lg text-[#888] font-bold">จำนวนวันนี้ 100 คิว</p>
+						<p class="text-2xl font-bold">คิวการบริจาคเลือด</p>
+						<p class="text-lg text-[#888] font-bold">
+							จำนวนคิดทั้งหมด: {data.allReservation.length}
+						</p>
 					</div>
 					<div class="flex bg-white rounded-3xl h-5/6 w-[305px] px-4 py-4">
 						<Table.Root class="bg-white rounded-full">
@@ -251,10 +213,14 @@
 								</Table.Row>
 							</Table.Header>
 							<Table.Body>
-								{#each places as place}
+								{#each data.allReservation as reservation}
 									<Table.Row>
-										<Table.Cell>{place.status}</Table.Cell>
-										<Table.Cell>{place.name}</Table.Cell>
+										<Table.Cell>{reservation.id.slice(-5)}</Table.Cell>
+										<Table.Cell
+											>{reservation.Donator.first_name +
+												' ' +
+												reservation.Donator.last_name}</Table.Cell
+										>
 									</Table.Row>
 								{/each}
 							</Table.Body>
