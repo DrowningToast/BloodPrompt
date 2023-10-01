@@ -7,7 +7,7 @@
 
 	export let data: PageData;
 
-	export let announcementData = data.announcement[0];
+	export let announcementData = data.announcement;
 </script>
 
 <div class="pb-24">
@@ -22,7 +22,7 @@
 			<ChevronLeft />
 		</button>
 		<p class="text-md font-bold overflow-hidden truncate">
-			โพสของ {data.announcement[0].Place.name}
+			โพสของ {announcementData.Place.name}
 		</p>
 	</div>
 
@@ -52,7 +52,7 @@
 		</div>
 
 		<img
-			src="https://picsum.photos/1920/1080"
+			src={announcementData.image_src}
 			alt="place_image"
 			class=" rounded-xl h-60 w-full object-cover mt-6"
 		/>
