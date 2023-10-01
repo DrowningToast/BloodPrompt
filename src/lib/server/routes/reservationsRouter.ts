@@ -168,7 +168,8 @@ export const reservationsRouter = createRouter({
 				include: {
 					Reservation_Slot: true,
 					Donator: true,
-					Pre_Feedback_Answers: true
+					Donation_History: true,
+					Pre_Donation_Feedbacks: true
 				}
 			});
 

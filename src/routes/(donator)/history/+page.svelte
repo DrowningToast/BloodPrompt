@@ -106,7 +106,7 @@
 	let reservationData: ReservationHistory[] = [];
 
 	onMount(async () => {
-		const reservationLog = await trpc.reservation.getLog.query();
+		const reservationLog = await trpc.reservationSlot.getLog.query();
 
 		reservationData = reservationLog.map((reservation) => {
 			return {

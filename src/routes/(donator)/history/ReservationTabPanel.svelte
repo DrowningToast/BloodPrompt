@@ -30,7 +30,7 @@
 							<div class="flex flex-row items-center gap-1">
 								<History size={18} />
 								<p class="text-sm">
-									ประวัติการบริจาคเลือดเลขที่: <span class="font-bold">{reservationData.id}</span>
+									ประวัติการจองเลขที่: <span class="font-bold">{reservationData.id.slice(-5)}</span>
 								</p>
 							</div>
 							<div class="mt-2">
