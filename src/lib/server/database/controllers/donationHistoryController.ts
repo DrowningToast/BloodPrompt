@@ -12,7 +12,8 @@ export const donationHistoryController = {
 							include: {
 								Place: true
 							}
-						}
+						},
+						Donator: true
 					}
 				}
 			}

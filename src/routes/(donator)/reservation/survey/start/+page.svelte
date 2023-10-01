@@ -53,8 +53,6 @@
 	};
 
 	const handleSubmit = async () => {
-		// console.log(await trpc.preFeedback.getLastFeedback.query());
-
 		const payload = Object.entries(answers).map((pair) => {
 			const questionId = pair[0];
 			const choiceId = Object.keys(pair[1])[0];

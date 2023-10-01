@@ -29,11 +29,6 @@ export const createSvelteKitContext =
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	(locals: App.Locals) => async (opts: FetchCreateContextFnOptions) => {
 		const cookie = opts.req.headers.get('Cookie');
-		if (cookie) {
-			console.log(getCookie(cookie, 'session-token'));
-		} else {
-			console.log('no cookie!!');
-		}
 
 		let userContext: UserContext;
 

@@ -1,5 +1,5 @@
 import { trpcOnServer } from '$lib/trpc';
-import type { PageLoad } from './$types';
+import type { PageServerLoad } from './$types';
 
 export const load = (async ({ params, fetch }) => {
 	const trpc = trpcOnServer(fetch);
@@ -9,9 +9,8 @@ export const load = (async ({ params, fetch }) => {
 	const place = await trpc.places.findById.query({
 		placeId: redemptionHistory?.Reward.place_id || ''
 	});
-	console.log(redemptionHistory);
 	return {
 		redemptionHistory,
 		place
 	};
-}) satisfies PageLoad;
+}) satisfies PageServerLoad;

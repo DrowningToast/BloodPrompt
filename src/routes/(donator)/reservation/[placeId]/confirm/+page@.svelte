@@ -23,7 +23,6 @@
 	};
 
 	onMount(async () => {
-		console.log($preFeedbackStore.Pre_Feedback_Answers.length);
 		if ($preFeedbackStore.Pre_Feedback_Answers.length > 0) {
 		} else {
 			await goto('/reservation/survey');

@@ -15,8 +15,6 @@
 	const handleShowPlaceDetailsDialog = (hospital: HospitalWithReviews) => () => {
 		selectedPlace = hospital;
 	};
-
-	$: console.log(selectedPlace);
 </script>
 
 <div class="pb-24">

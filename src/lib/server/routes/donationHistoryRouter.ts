@@ -44,7 +44,7 @@ export const donationHistoryRouter = createRouter({
 					rewarded_points: data.rewarded_points,
 					status: data.status,
 					blood_quality_status: data.blood_quality_status,
-					Resevation: {
+					Reservation: {
 						connect: {
 							id: reservation.id
 						}
@@ -52,7 +52,7 @@ export const donationHistoryRouter = createRouter({
 				},
 				include: {
 					Post_Donation_Feedback: true,
-					Resevation: true
+					Reservation: true
 				}
 			});
 			return donationHistory;
@@ -67,13 +67,13 @@ export const donationHistoryRouter = createRouter({
 			const { donatorId } = input;
 			const allDonationHistory = await prisma.donation_History.findMany({
 				where: {
-					Resevation: {
+					Reservation: {
 						donator_id: donatorId
 					}
 				},
 				include: {
 					Post_Donation_Feedback: true,
-					Resevation: {
+					Reservation: {
 						include: {
 							Reservation_Slot: {
 								include: {

@@ -125,11 +125,13 @@
 	</div>
 	<div class="flex flex-col items-center w-9/12 h-full">
 		<div class="flex items-center bg-white px-14 w-full py-6 justify-between h-16">
-			<h1 class="items-center justify-center flex text-2xl font-semibold">BloodPrompt (สำหรับผู้ดูเเลระบบ)</h1>
+			<h1 class="items-center justify-center flex text-2xl font-semibold">
+				BloodPrompt (สำหรับผู้ดูเเลระบบ)
+			</h1>
 			<div class="flex flex-row items-center gap-3">
 				<UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8" />
-					<h1 class="font-semibold">ศรุตา โทรัตน์</h1>
-					<Dropdown />
+				<h1 class="font-semibold">ศรุตา โทรัตน์</h1>
+				<Dropdown />
 			</div>
 		</div>
 		<!-- content -->

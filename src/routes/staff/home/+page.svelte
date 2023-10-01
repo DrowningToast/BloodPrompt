@@ -7,24 +7,21 @@
 		FileText,
 		Gift,
 		CalendarHeart,
-		CalendarClock,
 		Megaphone
 	} from 'lucide-svelte';
 	import bloodPromptLogo from '$lib/images/bloodprompt-logo.png';
-	import graph_mock from '$lib/images/staff/home/long_graph.png';
-	import graphExample from '$lib/images/staff/home/grpah.png';
 	import * as Table from '$lib/components/ui/table';
 	import { Button } from '$lib/components/ui/button';
 	import Dropdown from '../../moderator/home/dropdown.svelte';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { trpc } from '$lib/trpc';
-
 	import {
 		BarChartSimple,
 		DonutChart,
 		type BarChartOptions,
-		type DonutChartOptions
+		type DonutChartOptions,
+		Alignments
 	} from '@carbon/charts-svelte';
 	import '@carbon/charts-svelte/styles.css';
 	import type { PageData } from './$types';
@@ -39,13 +36,13 @@
 		title: 'จำนวนเลือดในคลังทั้งหมด',
 		resizable: true,
 		legend: {
-			alignment: 'center'
+			alignment: Alignments.CENTER // Potential Bug
 		},
 		donut: {
 			center: {
 				label: 'จำนวนครั้งการบริจาคเลือด'
 			},
-			alignment: 'center'
+			alignment: Alignments.CENTER // Potential Bug
 		},
 		height: '400px',
 		width: '700px'
@@ -60,7 +57,7 @@
 			},
 			bottom: {
 				mapsTo: 'group',
-				scaleType: 'labels'
+				scaleType: 'labels' // Potential Bug
 			}
 		},
 		height: '400px',

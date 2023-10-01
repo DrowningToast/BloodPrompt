@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { PageData } from './$types';
 	import Banner from './Banner.svelte';
 	import SpecialEvent from './SpecialEventHero.svelte';
 
@@ -7,7 +6,7 @@
 	import AnnouncementList from './AnnouncementList.svelte';
 	import SurveyCard from '$lib/components/svelte/card/survey/SurveyCard.svelte';
 	import { get24HoursTimeString } from '../reservation/[placeId]/date/utils';
-	import { number } from 'zod';
+	import type { PageData } from './$types';
 
 	// TODO: Searchbar Functionality
 
@@ -28,7 +27,7 @@
 	<Banner name={data.user?.first_name + ' ' + data.user?.last_name} />
 
 	<!-- Still unfinished post survey -->
-	{#if pendingPostFeedback}
+	{#if pendingPostFeedback?.reservation_id}
 		<div class="px-8 pt-6">
 			<SurveyCard
 				donateDate={pendingPostFeedback.Reservation.Reservation_Slot.reserve_date}

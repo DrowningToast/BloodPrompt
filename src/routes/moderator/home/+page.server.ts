@@ -62,10 +62,6 @@ export const load = (async ({ fetch }) => {
 		});
 	}
 
-	console.log(donationCount);
-
-	console.log(bloodTypeAggregations);
-	console.log(groupedByDay);
 	return {
 		places,
 		medicalAccounts,
