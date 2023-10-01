@@ -56,5 +56,37 @@ export const donationHistoryRouter = createRouter({
 				}
 			});
 			return donationHistory;
+		}),
+	getAllDonationHistoryByDonatorId: publicProcedure
+		.input(
+			z.object({
+				donatorId: z.string().min(1)
+			})
+		)
+		.query(async ({ input }) => {
+			const { donatorId } = input;
+			const allDonationHistory = await prisma.donation_History.findMany({
+				where: {
+					Resevation: {
+						donator_id: donatorId
+					}
+				},
+				include: {
+					Post_Donation_Feedback: true,
+					Resevation: {
+						include: {
+							Reservation_Slot: {
+								include: {
+									Place: true
+								}
+							}
+						}
+					}
+				},
+				orderBy: {
+					created_at: 'desc'
+				}
+			});
+			return allDonationHistory;
 		})
 });

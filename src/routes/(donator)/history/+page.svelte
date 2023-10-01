@@ -34,6 +34,7 @@
 	};
 
 	let reservationData;
+	let donationHistoryData = data.donationHistoryData;
 
 	onMount(async () => {
 		const reservationLog = await trpc.reservationSlot.getLog.query();
@@ -45,8 +46,6 @@
 				reservationSlot: reservation.Reservation_Slot
 			};
 		});
-
-		console.log(reservationData);
 	});
 </script>
 
