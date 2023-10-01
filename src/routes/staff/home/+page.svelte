@@ -18,6 +18,17 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { trpc } from '$lib/trpc';
+
+	import {
+		BarChartSimple,
+		DonutChart,
+		type BarChartOptions,
+		type DonutChartOptions
+	} from '@carbon/charts-svelte';
+	import '@carbon/charts-svelte/styles.css';
+	import type { PageData } from './$types';
+	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
+
 	const places = [
 		{
 			name: 'INV001',
@@ -63,6 +74,43 @@
 		}
 	];
 
+	export let data: PageData;
+
+	placeName.set(data.currentStaff?.Place.name || '');
+	medicalStaffName.set(data.currentStaff?.first_name + ' ' + data.currentStaff?.last_name);
+
+	const donutChartOptions: DonutChartOptions = {
+		title: 'จำนวนเลือดในคลังทั้งหมด',
+		resizable: false,
+		legend: {
+			alignment: 'center'
+		},
+		donut: {
+			center: {
+				label: 'จำนวนครั้งการบริจาคเลือด'
+			},
+			alignment: 'center'
+		},
+		height: '400px',
+		width: '700px'
+	};
+
+	const barChartOptions: BarChartOptions = {
+		title: 'สถิติการบริจาคเลือดย้อนหลัง',
+		resizable: false,
+		axes: {
+			left: {
+				mapsTo: 'value'
+			},
+			bottom: {
+				mapsTo: 'group',
+				scaleType: 'labels'
+			}
+		},
+		height: '400px',
+		width: '700px'
+	};
+
 	const handleLogout = async () => {
 		await trpc.auth.logout
 			.mutate()
@@ -94,11 +142,12 @@
 
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-                    on:click={()=>{
-                        if (browser) {
-                        goto('/staff/reservation')
-                    }}}
-				><FileText class="w-5 h-5" />การจองคิว</Button>
+					on:click={() => {
+						if (browser) {
+							goto('/staff/reservation');
+						}
+					}}><FileText class="w-5 h-5" />การจองคิว</Button
+				>
 
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
@@ -131,11 +180,13 @@
 	<div class="flex flex-col w-9/12 items-center h-full">
 		<div class="w-full bg-white grid grid-cols-3 items-center justify-center px-8 h-16">
 			<div class="items-center justify-center flex" />
-			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
+			<div class="items-center justify-center flex text-2xl font-semibold">{$placeName}</div>
 			<div class="items-center justify-end flex gap-2">
 				<div class="flex flex-row items-center gap-1">
 					<UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8" />
-					<h1 class="font-bold">ศรุตา โทรัตน์</h1>
+					<h1 class="font-bold">
+						{$medicalStaffName}
+					</h1>
 					<Dropdown />
 				</div>
 			</div>
@@ -144,7 +195,7 @@
 			<!-- 1 -->
 			<div class="flex w-full h-4/12 gap-12">
 				<div class="flex w-8/12 rounded-3xl p-11 justify-between items-center shadow-xl bg-white">
-					<img src={graphExample} class="" alt="" />
+					<!-- <img src={graphExample} class="" alt="" />
 					<div class="flex flex-col gap-8">
 						<p class="text-2xl font-bold">จำนวนเลือดในคลังทั้งหมด</p>
 						<div>
@@ -165,6 +216,9 @@
 								<span class="text-xl font-semibold">1111</span>
 							</div>
 						</div>
+					</div> -->
+					<div class=" bg-white rounded-xl p-6">
+						<DonutChart data={data.bloodTypeCount} options={donutChartOptions} />
 					</div>
 				</div>
 				<div class="flex shadow-xl w-4/12 rounded-3xl p-4 bg-white">
@@ -178,10 +232,10 @@
 			<div class="flex w-full h-[50%] gap-12">
 				<div class="flex flex-col w-8/12 rounded-3xl p-11 gap-10 shadow-xl bg-white">
 					<div>
-						<p class="text-2xl font-bold">สถิติการบริจาคเลือดย้อนหลัง</p>
-						<p class="text-lg text-[#888] font-bold">จำนวนการบริจาคเลือดทั้งหมด : 9,999 ครั้ง</p>
+						<div class=" bg-white rounded-xl p-6">
+							<BarChartSimple data={data.donationCount} options={barChartOptions} />
+						</div>
 					</div>
-					<img class="w-full" src={graph_mock} alt="" />
 				</div>
 				<div class="flex flex-col shadow-xl w-4/12 rounded-3xl p-4 bg-white">
 					<div class="pl-2">
