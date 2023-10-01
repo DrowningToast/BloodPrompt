@@ -5,7 +5,7 @@ export const postDonationFeedbackController = {
 		// get latest reservation
 		const unfinsihed = await prisma.donation_History.findFirst({
 			where: {
-				Resevation: {
+				Reservation: {
 					status: 'COMPLETED'
 				},
 				post_donation_db_id: {
@@ -13,7 +13,7 @@ export const postDonationFeedbackController = {
 				}
 			},
 			include: {
-				Resevation: {
+				Reservation: {
 					include: {
 						Reservation_Slot: {
 							include: {

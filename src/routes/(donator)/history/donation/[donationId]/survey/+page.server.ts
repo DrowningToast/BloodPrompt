@@ -20,7 +20,7 @@ export const load = (async ({ params, fetch }) => {
 		throw redirect(307, '/history');
 	}
 
-	const place = donationHistory?.Resevation.Reservation_Slot.Place;
+	const place = donationHistory?.Reservation.Reservation_Slot.Place;
 	const questions = await trpc.postFeedback.getPostFeedbackQuestions.query();
 
 	return {

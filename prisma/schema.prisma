@@ -303,7 +303,7 @@ model Donation_History {
   created_at             DateTime                 @default(now())
   updated_at             DateTime?
   deleted_at             DateTime?
-  Resevation             Reservations             @relation(fields: [reservation_id], references: [id])
+  Reservation            Reservations             @relation(fields: [reservation_id], references: [id])
   Post_Donation_Feedback Post_Donation_Feedbacks? @relation(fields: [post_donation_db_id], references: [id])
   reservation_id         String
   post_donation_db_id    String?

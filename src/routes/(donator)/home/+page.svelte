@@ -31,12 +31,12 @@
 	{#if pendingPostFeedback}
 		<div class="px-8 pt-6">
 			<SurveyCard
-				donateDate={pendingPostFeedback.Resevation.Reservation_Slot.reserve_date}
+				donateDate={pendingPostFeedback.Reservation.Reservation_Slot.reserve_date}
 				donateTime={+get24HoursTimeString(
-					pendingPostFeedback.Resevation.Reservation_Slot.reserve_time
+					pendingPostFeedback.Reservation.Reservation_Slot.reserve_time
 				).replace(':', '.')}
 				donationHistoryId={pendingPostFeedback.id}
-				placeName={pendingPostFeedback.Resevation.Reservation_Slot.Place.name}
+				placeName={pendingPostFeedback.Reservation.Reservation_Slot.Place.name}
 			/>
 		</div>
 	{/if}

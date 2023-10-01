@@ -6,7 +6,7 @@ export const donationHistoryController = {
 		const res = await prisma.donation_History.findUnique({
 			where: filter,
 			include: {
-				Resevation: {
+				Reservation: {
 					include: {
 						Reservation_Slot: {
 							include: {
@@ -18,5 +18,21 @@ export const donationHistoryController = {
 			}
 		});
 		return res;
+	},
+	getDonationHistories: async (filter: Prisma.Donation_HistoryWhereInput) => {
+		return await prisma.donation_History.findMany({
+			where: filter,
+			include: {
+				Reservation: {
+					include: {
+						Reservation_Slot: {
+							include: {
+								Place: true
+							}
+						}
+					}
+				}
+			}
+		});
 	}
 };

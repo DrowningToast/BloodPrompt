@@ -55,65 +55,18 @@
 	};
 
 	// MOCK
-	const donationHistoryData: DonationHistory[] = [
-		{
-			donationData: {
-				id: '00001',
-				blood_quality_status: 'QUALIFY',
-				blood_type: 'B_POSITIVE',
-				created_at: new Date(),
-				deleted_at: null,
-				post_donation_db_id: '001',
-				reservation_id: '001',
-				rewarded_points: 300,
-				status: 'SUCCESS',
-				updated_at: new Date()
-			},
+	const donationHistoryData: DonationHistory[] = data.donationHistoryData.map((donation) => {
+		return {
+			donationData: donation,
 			placeData: PLACE_DATA
-		},
-		{
-			donationData: {
-				id: '00002',
-				blood_quality_status: 'DISQUALIFY',
-				blood_type: 'B_POSITIVE',
-				created_at: new Date(),
-				deleted_at: null,
-				post_donation_db_id: '002',
-				reservation_id: '002',
-				rewarded_points: 300,
-				status: 'FAILED',
-				updated_at: new Date()
-			},
-			placeData: PLACE_DATA
-		},
-		{
-			donationData: {
-				id: '00003',
-				blood_quality_status: null,
-				blood_type: 'B_POSITIVE',
-				created_at: new Date(),
-				deleted_at: null,
-				post_donation_db_id: '0',
-				reservation_id: '003',
-				rewarded_points: 300,
-				status: 'WAIT_BLOOD_QUALITY',
-				updated_at: new Date()
-			},
-			placeData: PLACE_DATA
-		}
-	];
+		};
+	});
 
-	let reservationData: ReservationHistory[] = [];
-
-	onMount(async () => {
-		const reservationLog = await trpc.reservation.getLog.query();
-
-		reservationData = reservationLog.map((reservation) => {
-			return {
-				placeData: reservation.Reservation_Slot.Place,
-				reservationData: { ...reservation }
-			};
-		});
+	let reservationData: ReservationHistory[] = data.reservationLog.map((reservation) => {
+		return {
+			placeData: reservation.Reservation_Slot.Place,
+			reservationData: reservation
+		};
 	});
 </script>
 
