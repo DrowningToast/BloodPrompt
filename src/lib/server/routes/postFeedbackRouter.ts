@@ -14,7 +14,6 @@ export const postFeedbackRouter = createRouter({
 	createFeedback: publicProcedure
 		.input(Post_Donation_FeedbacksCreateArgsSchema)
 		.mutation(async ({ input }) => {
-			console.log(input);
 			const feedback = await postDonationFeedbackController.createFeedback(input);
 			return feedback;
 		})

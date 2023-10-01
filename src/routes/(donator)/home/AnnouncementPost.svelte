@@ -9,6 +9,7 @@
 	export let desc: string;
 	export let post_type: PostTypeType;
 	export let post_img: string | null | undefined = '';
+	export let icon_src: string | null | undefined;
 
 	$: displayedDate = postedDate?.toLocaleDateString('th-TH', {
 		year: 'numeric',
@@ -23,7 +24,7 @@
 
 <div class="flex flex-col gap-y-6 px-6 py-6">
 	<div class="flex gap-x-2">
-		<img class="w-12 h-12" src={kmitlLogo} alt={kmitlLogo} />
+		<img class="w-12 h-12" src={icon_src ?? ''} alt={`${icon_src} alt`} />
 		<div class="flex flex-col justify-center gap-y-1 font-bold">
 			<div class="flex gap-x-2 items-center">
 				<p class=" font-bold text-sm">{title}</p>

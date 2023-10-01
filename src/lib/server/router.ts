@@ -33,7 +33,7 @@ export const appRouter = createRouter({
 	specialEvent: specialEventRouter,
 	preFeedback: preFeedBackRouter,
 	postFeedback: postFeedbackRouter,
-	reservation: reservationSlotsRouter,
+	reservation: reservationsRouter,
 	reservationSlot: reservationSlotsRouter,
 	moderator: moderatorRoutes,
 	reward: rewardRouter,

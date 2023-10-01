@@ -1,10 +1,15 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import type { Announcements } from '@prisma/client';
 	import AnnouncementPost from './AnnouncementPost.svelte';
-	import type { ComponentProps } from 'svelte';
+	import type { Announcements, Places } from '@prisma/client';
 
-	export let data: Announcements[] = [];
+	interface AnnouncementsWithPlace extends Announcements {
+		place: Places;
+	}
+
+	export let data: AnnouncementsWithPlace[] = [];
+
+	console.log(data);
 </script>
 
 <div class="flex flex-col gap-y-4 pt-4">
@@ -22,6 +27,7 @@
 				emergencyBloodType={`${announcement.blood_type}`}
 				post_type={announcement.post_type}
 				post_img={announcement.image_src}
+				icon_src={announcement.place.image_src}
 			/>
 		</button>
 		{#if data.length > 1}
