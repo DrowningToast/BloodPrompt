@@ -6,12 +6,13 @@ export const specialEventRouter = createRouter({
 	create: publicProcedure
 		.input(
 			z.object({
-				name: z.string(),
-				description: z.string(),
-				image_src: z.string().optional()
+				name: z.string().min(1),
+				description: z.string().min(1),
+				img_src: z.string().optional()
 			})
 		)
 		.mutation(async ({ input, ctx }) => {
+			console.log(input);
 			const { sessionToken } = ctx;
 			const session = await prisma.session.findUnique({
 				where: {
@@ -21,7 +22,6 @@ export const specialEventRouter = createRouter({
 					Medical_Staff: true
 				}
 			});
-			console.log(session?.Medical_Staff);
 			const specialEvent = await prisma.special_Events.create({
 				data: {
 					...input,
@@ -39,7 +39,8 @@ export const specialEventRouter = createRouter({
 			z.object({
 				id: z.string().min(1),
 				name: z.string(),
-				description: z.string()
+				description: z.string(),
+				img_src: z.string().optional()
 			})
 		)
 		.mutation(async ({ input }) => {
@@ -49,11 +50,12 @@ export const specialEventRouter = createRouter({
 				},
 				data: {
 					name: input.name,
-					description: input.description
+					description: input.description,
+					img_src: input.img_src
 				}
 			});
 		}),
-	delete: publicProcedure.input(z.string()).mutation(async ({ input, ctx }) => {
+	delete: publicProcedure.input(z.string()).mutation(async ({ input }) => {
 		const special_Events = await prisma.special_Events.delete({
 			where: {
 				id: input
@@ -61,7 +63,6 @@ export const specialEventRouter = createRouter({
 		});
 		return special_Events;
 	}),
-
 	getEvent: publicProcedure.query(async () => {
 		const sp_event = await prisma.special_Events.findFirst();
 		return sp_event;

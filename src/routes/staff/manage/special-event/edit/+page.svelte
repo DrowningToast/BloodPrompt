@@ -16,13 +16,14 @@
 
     let fileInput:HTMLInputElement;
     let  sp_event;
-    const onFileSelected =(e)=>{
-        let image = e.target.files[0];
+    const onFileSelected =(e:Event)=>{
+        let image = e.target?.files[0];
         let reader = new FileReader();
         reader.readAsDataURL(image);
         reader.onload = e => {
-     	    sp_event = e.target.result
+     	    sp_event = e.target?.result
         };
+        console.log(reader);
     }
 
     let name = currentEvent.name;
@@ -36,7 +37,7 @@
     }
     
     const editEventHandler = async() =>{
-        await trpc.specialEvent.update.mutate({id ,name, description})
+        await trpc.specialEvent.update.mutate({id ,name, description, sp_event})
         .then(goBack)
     }
 
@@ -167,20 +168,7 @@
                     </div>
                     <Input placeholder="ชื่อกิจกรรมพิเศษ" class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4" bind:value={name}/>
                     <Textarea placeholder="รายละเอียดกิจกรรมพิเศษ" class="rounded-xl border-2 border-gray-300 h-[200px] w-full px-4 py-4 resize-none" bind:value={description}/>
-                    <div class="flex gap-3 items-center">
-                        <CalendarDays class="w-5"/>
-                        <h1 class="font-bold py-2">ระยะเวลากิจกรรม</h1>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <h1 class="font-bold py-2 w-2/12">ตั้งเเต่</h1>
-                        <Input placeholder="วันเริ่มกิจกกรม" class="rounded-xl border-2 border-gray-300 h-[50px] w-6/12 px-4 py-4"/>
-                        <Input placeholder="เวลาเริ่มกิจกรรม" class="rounded-xl border-2 border-gray-300 h-[50px] w-5/12  /12 px-4 py-4"/>
-                    </div>
-                    <div class="flex items-center gap-2 justify-start">
-                        <h1 class="font-bold py-2 w-2/12">จนถึง</h1>
-                        <Input placeholder="วันสิ้นสุดกิจกรรม" class="rounded-xl border-2 border-gray-300 h-[50px] w-6/12 px-4 py-4"/>
-                        <Input placeholder="เวลาสิ้นสุดกิจกรรม" class="rounded-xl border-2 border-gray-300 h-[50px] w-5/12 px-4 py-4"/>
-                    </div>
+                    
                 </div>
             </div>
         </div>

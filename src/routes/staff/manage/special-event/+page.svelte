@@ -1,17 +1,24 @@
 <script lang="ts">
     import type { PageData } from './$types';
     import NotAvailable from './NotAvailable.svelte';
-    import sEventImg from '$lib/images/staff/manage_specialevent/Rectangle 24.png';
     import { Home, LogOut, UserCircle, FileText, Gift, CalendarHeart, CalendarClock } from 'lucide-svelte';
     import bloodPromptLogo from '$lib/images/bloodprompt-logo.png';
     import { Button } from "$lib/components/ui/button";
     import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
     import Dropdown from '../../../moderator/home/dropdown.svelte';
+	import { trpc } from '$lib/trpc';
     export let data: PageData;
     const currentEvent = data.eventNow;
 
-    
+    const deleteEventHandler = async () => {
+		await trpc.specialEvent.delete.mutate(data.eventNow?.id || '').then(() => {
+			if (browser) {
+				window.location.reload();
+			}
+		});
+	};
+
 </script>
 {#if !data.isEventOnGoing}
     <NotAvailable/>
@@ -86,7 +93,7 @@
             </div>
             <div class="flex w-[1100px] h-[524px] bg-white rounded-[20px] mt-12 justify-between p-4">
                 <div class="w-1/2">
-                    <img src={sEventImg} alt="" class="w-[90%] h-full">
+                    <img src={currentEvent?.img_src} alt="" class="w-[90%] h-full">
                 </div>
                 <div class="flex flex-col w-1/2 gap-7">
                     <div>
@@ -102,7 +109,7 @@
                     <div class="flex justify-end gap-6 mt-auto">
                         <Button on:click={()=>{if(browser)goto("/staff/manage/special-event/edit")}} class="flex self-center text-[#EF4444] border-[#EF4444] border-2 w-32 h-10 gap-1 bg-white hover:bg-white rounded-3xl">แก้ไข</Button>
                         <Button class="flex self-center text-white rounded-3xl w-32 h-10 gap-1 bg-[#EF4444] hover:bg-[#EF4444] rounded-3xls" 
-                        on:click={data.deleteEventHandler}>ลบ</Button>
+                        on:click={deleteEventHandler}>ลบ</Button>
                     </div>
                 </div>
             </div>

@@ -11,13 +11,13 @@
 	import { trpc } from '$lib/trpc';
 
     let fileInput:HTMLInputElement;
-    let sp_event;
-    const onFileSelected =(e)=>{
-        let image = e.target.files[0];
+    let img_src: any;
+    const onFileSelected =(e:any)=>{
+        let image = e.target?.files[0];
         let reader = new FileReader();
         reader.readAsDataURL(image);
         reader.onload = e => {
-     	    sp_event = e.target.result
+     	    img_src = e.target?.result
         };
     }
 
@@ -26,8 +26,13 @@
     let description='';
 
     const submission= async () =>{
-        await trpc.specialEvent.create.mutate({name:name,description:description})
-        .then(()=>{if (browser){ window.location.reload()}})
+        await trpc.specialEvent.create.mutate({name,description, img_src})
+        .then(()=>{if (browser){window.location.reload() }})
+        .catch((error)=>{
+                alert('ไม่สามารถเพิ่มของรางวัลได้ โปรดตรวจสอบข้อมูลการเพิ่มของรางวัล');
+                console.log(error);
+            });
+        console.log(img_src);
     }
 
 </script>
@@ -94,7 +99,7 @@
                             <DropdownMenu.Trigger asChild let:builder>
                                 <Button variant="outline" builders={[builder]} class="p-0 m-0 border-transparent bg-white hover:bg-white"><ChevronDown class="p-0 m-0 fill-black stroke-none"/></Button>
                             </DropdownMenu.Trigger>
-                            <DropdownMenu.Content class="">
+                            <DropdownMenu.Content>
                               <DropdownMenu.Item class="cursor-pointer">
                                 <LogOut class="mr-2 h-4 w-4" />
                                 <div on:click={()=>{
@@ -128,8 +133,8 @@
                     </div>
 
                     <div class="flex flex-col items-center justify-center w-full h-5/6 rounded-3xl">
-                        {#if sp_event}
-                        <img class="flex justify-center h-fit w-full rounded-xl" src="{sp_event}" alt="d"/>
+                        {#if img_src}
+                        <img class="flex justify-center h-fit w-full rounded-xl" src="{img_src}" alt="d"/>
                         {:else}
                         <div class="flex flex-col items-center justify-center bg-gray-200 w-full h-full rounded-3xl">
                             <p>ยังไม่ได้เลือกรูปภาพ</p>
@@ -141,7 +146,7 @@
                     <div class="flex flex-row justify-center items-center w-full gap-5">
                         <input type="file" id="file" on:change={(e)=>onFileSelected(e)} bind:this={fileInput} class="hidden">
                         <Button class="flex justify-center gap-2 bg-black rounded-full text-center h-[40px] w-[200px] px-10 py-4 text-base font-bold text-white" on:click={()=>{fileInput.click();}}>เลือกรูปภาพ</Button>
-                        <Button variant="link" class="flex justify-center gap-2 rounded-full text-center h-[40px] w-[84px] px-5 py-4 text-base font-bold text-[#EF4444]" on:click={() => sp_event=null}>ลบรูปภาพ</Button>
+                        <Button variant="link" class="flex justify-center gap-2 rounded-full text-center h-[40px] w-[84px] px-5 py-4 text-base font-bold text-[#EF4444]" on:click={() => img_src=null}>ลบรูปภาพ</Button>
                     </div>
                 </div>
 
@@ -153,20 +158,8 @@
                     </div>
                     <Input placeholder="ชื่อกิจกรรมพิเศษ" class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4" bind:value={name}/>
                     <Textarea placeholder="รายละเอียดกิจกรรมพิเศษ" class="rounded-xl border-2 border-gray-300 h-[200px] w-full px-4 py-4 resize-none" bind:value={description} />
-                    <div class="flex gap-3 items-center">
-                        <CalendarDays class="w-5"/>
-                        <h1 class="font-bold py-2">ระยะเวลากิจกรรม</h1>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <h1 class="font-bold py-2 w-2/12">ตั้งเเต่</h1>
-                        <Input placeholder="วันเริ่มกิจกกรม" class="rounded-xl border-2 border-gray-300 h-[50px] w-6/12 px-4 py-4" />
-                        <Input placeholder="เวลาเริ่มกิจกรรม" class="rounded-xl border-2 border-gray-300 h-[50px] w-5/12  /12 px-4 py-4"/>
-                    </div>
-                    <div class="flex items-center gap-2 justify-start">
-                        <h1 class="font-bold py-2 w-2/12">จนถึง</h1>
-                        <Input placeholder="วันสิ้นสุดกิจกรรม" class="rounded-xl border-2 border-gray-300 h-[50px] w-6/12 px-4 py-4"/>
-                        <Input placeholder="เวลาสิ้นสุดกิจกรรม" class="rounded-xl border-2 border-gray-300 h-[50px] w-5/12 px-4 py-4"/>
-                    </div>
+                 
+                   
                 </div>
             </div>
         </div>

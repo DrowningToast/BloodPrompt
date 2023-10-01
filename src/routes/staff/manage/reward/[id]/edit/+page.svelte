@@ -15,7 +15,6 @@
     let rewardImg:any;
 
     let currentReward = data.eachReward; 
-
     let name_value = currentReward?.name;
     let description_value = currentReward?.description;
     let required_points_value = currentReward?.required_points;
@@ -31,7 +30,7 @@
            image_src: image_src_value || "" 
         }, rewardId: currentReward?.id || "1"}).then(()=>{goto("/staff/manage/reward")})
     }
-    const onFileSelected =(e:Event|null)=>{
+    const onFileSelected =(e:any)=>{
         let image = e?.target?.files[0];
         let reader = new FileReader();
         reader.readAsDataURL(image);
