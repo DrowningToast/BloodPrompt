@@ -6,7 +6,6 @@
 		FileText,
 		UserCircle,
 		Gift,
-		PlusCircle,
 		Image,
 		Info,
 		Megaphone
@@ -14,12 +13,10 @@
 	import bloodpromptlogo from '$lib/images/bloodprompt-logo.png';
 	import * as Select from '$lib/components/ui/select';
 	import { Button } from '$lib/components/ui/button';
-	import { ChevronDown } from 'lucide-svelte';
 	import { Input } from '$lib/components/ui/input';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { trpc } from '$lib/trpc';
 	import Dropdown from '../../../../moderator/home/dropdown.svelte';
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 	let fileInput: HTMLInputElement;
@@ -29,7 +26,7 @@
 		let reader = new FileReader();
 		reader.readAsDataURL(image);
 		reader.onload = (e) => {
-			imageSeleceted = e.target.result;
+			imageSeleceted = e.target?.result;
 		};
 	};
 

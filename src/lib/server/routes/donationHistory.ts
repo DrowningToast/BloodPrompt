@@ -1,37 +1,92 @@
-import { TRPCError } from '@trpc/server';
+import { z } from 'zod';
 import { createRouter, publicProcedure } from '../context';
-import {
-	Donation_HistoryWhereInputSchema,
-	Donation_HistoryWhereUniqueInputSchema
-} from '../database';
-import { donationHistoryController } from '../database/controllers/donationHistoryController';
+import prisma from '../database';
 
 export const donationHistoryRouter = createRouter({
-	getDonationHistory: publicProcedure
-		.input(Donation_HistoryWhereUniqueInputSchema)
-		.query(async ({ ctx, input }) => {
-			return await donationHistoryController.getDonationHistory(input);
-		}),
-	getDonationHistories: publicProcedure
-		.input(Donation_HistoryWhereInputSchema.optional())
-		.query(async ({ ctx, input }) => {
-			if (input) {
-				return await donationHistoryController.getDonationHistories(input);
-			}
+	submitBloodDonation: publicProcedure
+		.input(
+			z.object({
+				data: z.object({
+					rewarded_points: z.coerce.number(),
+					blood_type: z.enum([
+						'A_POSITIVE',
+						'B_POSITIVE',
+						'O_POSITIVE',
+						'AB_POSITIVE',
+						'A_NEGATIVE',
+						'B_NEGATIVE',
+						'O_NEGATIVE',
+						'AB_NEGATIVE'
+					]),
+					blood_quality_status: z.string(),
+					status: z.enum(['WAIT_BLOOD_QUALITY', 'SUCCESS', 'FAILED']),
+					reservation_id: z.string().min(1)
+				})
+			})
+		)
+		.mutation(async ({ input }) => {
+			const { data } = input;
 
-			if (ctx.userContext?.type !== 'DONATOR') {
-				throw new TRPCError({
-					code: 'UNAUTHORIZED',
-					message: 'You are not authorized to perform this action'
-				});
-			}
-
-			return await donationHistoryController.getDonationHistories({
-				Reservation: {
-					Donator: {
-						id: ctx.userContext.user.id
-					}
+			// Update Status to success
+			const reservation = await prisma.reservations.update({
+				where: {
+					id: data.reservation_id
+				},
+				data: {
+					status: 'COMPLETED'
 				}
 			});
+
+			// Create new donation history
+			const donationHistory = await prisma.donation_History.create({
+				data: {
+					blood_type: data.blood_type,
+					rewarded_points: data.rewarded_points,
+					status: data.status,
+					blood_quality_status: data.blood_quality_status,
+					Resevation: {
+						connect: {
+							id: reservation.id
+						}
+					}
+				},
+				include: {
+					Post_Donation_Feedback: true,
+					Resevation: true
+				}
+			});
+			return donationHistory;
+		}),
+	getAllDonationHistoryByDonatorId: publicProcedure
+		.input(
+			z.object({
+				donatorId: z.string().min(1)
+			})
+		)
+		.query(async ({ input }) => {
+			const { donatorId } = input;
+			const allDonationHistory = await prisma.donation_History.findMany({
+				where: {
+					Resevation: {
+						donator_id: donatorId
+					}
+				},
+				include: {
+					Post_Donation_Feedback: true,
+					Resevation: {
+						include: {
+							Reservation_Slot: {
+								include: {
+									Place: true
+								}
+							}
+						}
+					}
+				},
+				orderBy: {
+					created_at: 'desc'
+				}
+			});
+			return allDonationHistory;
 		})
 });

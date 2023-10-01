@@ -7,12 +7,9 @@
 		FileText,
 		Gift,
 		CalendarHeart,
-		CalendarClock,
 		Megaphone
 	} from 'lucide-svelte';
 	import bloodPromptLogo from '$lib/images/bloodprompt-logo.png';
-	import graph_mock from '$lib/images/staff/home/long_graph.png';
-	import graphExample from '$lib/images/staff/home/grpah.png';
 	import * as Table from '$lib/components/ui/table';
 	import { Button } from '$lib/components/ui/button';
 	import Dropdown from '../../moderator/home/dropdown.svelte';
@@ -39,13 +36,13 @@
 		title: 'จำนวนเลือดในคลังทั้งหมด',
 		resizable: true,
 		legend: {
-			alignment: 'center'
+			alignment: 'center' // Potential Bug
 		},
 		donut: {
 			center: {
 				label: 'จำนวนครั้งการบริจาคเลือด'
 			},
-			alignment: 'center'
+			alignment: 'center' // Potential Bug
 		},
 		height: '400px',
 		width: '325px'
@@ -60,7 +57,7 @@
 			},
 			bottom: {
 				mapsTo: 'group',
-				scaleType: 'labels'
+				scaleType: 'labels' // Potential Bug
 			}
 		},
 		height: '400px',
@@ -97,11 +94,12 @@
 				>
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F]  text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-                    on:click={()=>{
-                        if (browser) {
-                        goto('/staff/manage/announcement')
-                    }}}
-				><Megaphone  class="w-5 h-7 pb-[2px] " />จัดการประกาศประชาสัมพันธ์</Button>
+					on:click={() => {
+						if (browser) {
+							goto('/staff/manage/announcement');
+						}
+					}}><Megaphone class="w-5 h-7 pb-[2px] " />จัดการประกาศประชาสัมพันธ์</Button
+				>
 
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
@@ -160,28 +158,6 @@
 				<div
 					class="flex flex-row w-8/12 rounded-3xl justify-between items-center shadow-xl gap-4 bg-white"
 				>
-					<!-- <img src={graphExample} class="" alt="" />
-					<div class="flex flex-col gap-8">
-						<p class="text-2xl font-bold">จำนวนเลือดในคลังทั้งหมด</p>
-						<div>
-							<p class="font-semibold text-[#888]">จำนวนเลือดทั้งหมด</p>
-							<p>4,444</p>
-						</div>
-						<div class="flex flex-col gap-11">
-							<div class="flex gap-5">
-								<p class="font-semibold text-[#888]">หมู่เลือด A :</p>
-								<span class="text-xl font-semibold">1111</span>
-								<p class="font-semibold text-[#888]">หมู่เลือด O :</p>
-								<span class="text-xl font-semibold">1111</span>
-							</div>
-							<div class="flex gap-5">
-								<p class="font-semibold text-[#888]">หมู่เลือด B :</p>
-								<span class="text-xl font-semibold">1111</span>
-								<p class="font-semibold text-[#888]">หมู่เลือด AB :</p>
-								<span class="text-xl font-semibold">1111</span>
-							</div>
-						</div>
-					</div> -->
 					<div class=" bg-white rounded-xl p-6">
 						<DonutChart data={data.bloodTypeCount} options={donutChartOptions} />
 					</div>
