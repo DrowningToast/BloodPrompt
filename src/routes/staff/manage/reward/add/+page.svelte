@@ -1,6 +1,6 @@
 <script lang="ts">
 
-    import { Home, LogOut, CalendarHeart,FileText , UserCircle, Gift, PlusCircle, Image, Info} from 'lucide-svelte';
+    import { Home,Megaphone, LogOut, CalendarHeart,FileText , UserCircle, Gift, PlusCircle, Image, Info} from 'lucide-svelte';
     import bloodpromptlogo from '$lib/images/bloodprompt-logo.png';
     import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
     import { Button } from "$lib/components/ui/button";
@@ -68,7 +68,14 @@
                         goto('/staff/home')
                     }}}
 				><Home class="w-5 h-5 " />หน้าหลัก</Button>
-
+                <Button
+					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F]  text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/manage/announcement')
+                    }}}
+				><Megaphone  class="w-5 h-7 pb-[2px] " />จัดการประกาศประชาสัมพันธ์</Button
+				>
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
                     on:click={()=>{
