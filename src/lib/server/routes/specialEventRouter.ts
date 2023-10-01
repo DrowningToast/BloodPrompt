@@ -67,6 +67,11 @@ export const specialEventRouter = createRouter({
 		return sp_event;
 	}),
 
+	getEvents: publicProcedure.query(async () => {
+		const sp_events = await prisma.special_Events.findMany();
+		return sp_events;
+	}),
+
 	isEvent: publicProcedure.query(async ({ ctx }) => {
 		const sessionToken = ctx.sessionToken;
 		const session = await prisma.session.findUnique({

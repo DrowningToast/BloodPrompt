@@ -5,9 +5,10 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ fetch }) => {
 	const trpc = trpcOnServer(fetch);
 
-	const [user, announcements] = await Promise.all([
+	const [user, announcements, sp_events] = await Promise.all([
 		trpc.auth.getUser.query(),
-		trpc.announcement.getAnnouncements.query()
+		trpc.announcement.getAnnouncements.query(),
+		trpc.specialEvent.getEvents.query()
 	]);
 
 	if (user?.type !== 'DONATOR') {
@@ -22,5 +23,10 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		id: user.user.id
 	});
 
-	return { announcements, user: user.user, pendingFeedback: pendingFeedback ?? undefined };
+	return {
+		announcements,
+		user: user.user,
+		pendingFeedback: pendingFeedback ?? undefined,
+		sp_events
+	};
 };
