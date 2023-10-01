@@ -34,7 +34,16 @@ export const rewardRouter = createRouter({
 	getAllRewards: publicProcedure.query(async () => {
 		const allRewards = await prisma.rewards.findMany({
 			include: {
-				Place: true
+				Place: true,
+				Redemption_History: true
+			},
+			orderBy: {
+				created_at: 'desc'
+			},
+			where: {
+				deleted_at: {
+					equals: null
+				}
 			}
 		});
 		return allRewards;
@@ -186,6 +195,7 @@ export const rewardRouter = createRouter({
 			});
 			return redemptionHistory;
 		}),
+
 	cancelRedeem: publicProcedure
 		.input(
 			z.object({
@@ -239,6 +249,20 @@ export const rewardRouter = createRouter({
 			]);
 			return true;
 		}),
+	markAsReceived: publicProcedure
+		.input(z.object({ redemptionHistoryId: z.string().min(1) }))
+		.mutation(async ({ input }) => {
+			const { redemptionHistoryId } = input;
+			const res = await prisma.redemption_History.update({
+				where: {
+					id: redemptionHistoryId
+				},
+				data: {
+					status: 'RECEIVED'
+				}
+			});
+			return res;
+		}),
 	getRedemptionHistoryById: publicProcedure
 		.input(z.object({ redemptionHistoryId: z.string() }))
 		.query(async ({ input }) => {
@@ -252,5 +276,17 @@ export const rewardRouter = createRouter({
 				}
 			});
 			return redemptionHistory;
-		})
+		}),
+	getAllRedemptionHistory: publicProcedure.query(async () => {
+		const redemptionHistories = await prisma.redemption_History.findMany({
+			orderBy: {
+				created_at: 'desc'
+			},
+			include: {
+				Reward: true,
+				Donator: true
+			}
+		});
+		return redemptionHistories;
+	})
 });

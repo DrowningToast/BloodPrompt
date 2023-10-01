@@ -77,7 +77,7 @@
 				</div>
 			</div>
 
-			<div class="mt-4 flex flex-col gap-2">
+			<div class="mt-4 flex flex-col gap-4">
 				{#each filteredRewards as reward}
 					<button
 						class="flex text-left"

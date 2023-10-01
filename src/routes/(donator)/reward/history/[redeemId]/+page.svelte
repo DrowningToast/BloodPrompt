@@ -79,6 +79,11 @@
 								{/if}
 							</p>
 							<p>
+								หมายเลขการแลก: <span class="font-bold text-sm">
+									{redemptionHistory.id.slice(-5)}
+								</span>
+							</p>
+							<p>
 								แลกของรางวัลเมื่อ: <span class="font-bold text-sm">
 									{new Date(redemptionHistory.created_at).toLocaleDateString('th')}
 								</span>
@@ -95,14 +100,16 @@
 							</p>
 						</div>
 
-						<Button
-							on:click={() => {
-								showCancelConfirmDialog = true;
-							}}
-							class="rounded-2xl bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600 w-full mt-4"
-						>
-							ยกเลิกรายการ
-						</Button>
+						{#if redemptionHistory.status === 'REDEEMED'}
+							<Button
+								on:click={() => {
+									showCancelConfirmDialog = true;
+								}}
+								class="rounded-2xl bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600 w-full mt-4"
+							>
+								ยกเลิกรายการ
+							</Button>
+						{/if}
 
 						<AlertDialog
 							title="ยืนยันยกเลิกการแลกนี้หรือไม่ ?"
