@@ -1,13 +1,16 @@
 <script lang="ts">
     import sEventImg from '$lib/images/staff/manage_specialevent/Rectangle 24.png';
-    import { Home, LogOut, UserCircle, FileText, Gift, CalendarHeart, CalendarClock } from 'lucide-svelte';
+    import { Home,Megaphone, LogOut, UserCircle, FileText, Gift, CalendarHeart, CalendarClock } from 'lucide-svelte';
     import bloodPromptLogo from '$lib/images/bloodprompt-logo.png';
     import { Button } from "$lib/components/ui/button";
     import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
     import Dropdown from '../../../moderator/home/dropdown.svelte';
-
-</script>
+    
+    import type { PageData } from './$types';
+	export let data:PageData;
+    
+</script>   
 <div class="flex flex-row w-full justify-between bg-gray-300 max-w-[100vw] min-h-[100vh">
     <div class="flex flex-col bg-[#191F2F] w-3/12 h-100%">
 		<div class="flex flex-row px-8 py-16 justify-center">
@@ -23,7 +26,14 @@
                         goto('/staff/home')
                     }}}
 				><Home class="w-5 h-5 " />หน้าหลัก</Button>
-
+                <Button
+					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F]  text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/manage/announcement')
+                    }}}
+				><Megaphone  class="w-5 h-7 pb-[2px] " />จัดการประกาศประชาสัมพันธ์</Button
+				>
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
                     on:click={()=>{
@@ -66,9 +76,9 @@
 			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
 			<div class="items-center justify-end flex gap-2">
 				<div class="flex flex-row items-center gap-1">
-                    <UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8"/>
-                    <h1 class="font-bold ">ศรุตา โทรัตน์</h1>
-                        <Dropdown/> 
+                    <UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8" />
+					<h1 class="font-semibold">ศรุตา โทรัตน์</h1>
+					<Dropdown />
                 </div>
 			</div>
         </div>
@@ -93,8 +103,10 @@
                     <p class="font-bold pl-8">01/08/2023 08:00 - 12/08/2023 16:00</p>
                 </div>
                 <div class="flex justify-end gap-6 mt-auto">
-                    <Button class="flex self-center text-[#EF4444] border-[#EF4444] border-2 w-32 h-10 gap-1 bg-white hover:bg-white rounded-3xl">แก้ไข</Button>
-                    <Button class="flex self-center text-white rounded-3xl w-32 h-10 gap-1 bg-[#EF4444] hover:bg-[#EF4444] rounded-3xls">ลบ</Button>
+                    <Button on:click={()=>{if(browser)goto("/staff/manage/special-event/edit")}} class="flex self-center text-[#EF4444] border-[#EF4444] border-2 w-32 h-10 gap-1 bg-white hover:bg-white rounded-3xl">แก้ไข</Button>
+                    <Button class="flex self-center text-white rounded-3xl w-32 h-10 gap-1 bg-[#EF4444] hover:bg-[#EF4444] rounded-3xls" on:click={()=>{
+
+                    }}>ลบ</Button>
                 </div>
             </div>
         </div>

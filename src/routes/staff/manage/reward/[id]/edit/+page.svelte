@@ -1,27 +1,19 @@
 <script lang="ts">
-	import type { PageData } from './$types';
-	import {
-		Home,
-		LogOut,
-		CalendarHeart,
-		FileText,
-		UserCircle,
-		Gift,
-		Save,
-		Image,
-		Info
-	} from 'lucide-svelte';
-	import bloodpromptlogo from '$lib/images/staff/bloodprompt-logo.png';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import { Button } from '$lib/components/ui/button';
-	import { ChevronDown } from 'lucide-svelte';
-	import { Input } from '$lib/components/ui/input';
-	import { Textarea } from '$lib/components/ui/textarea';
+    import type { PageData } from './$types';
+    import { Home,Megaphone, LogOut, CalendarHeart,FileText , UserCircle, Gift, Save , Image, Info} from 'lucide-svelte';
+    import bloodpromptlogo from '$lib/images/staff/bloodprompt-logo.png';
+    import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
+    import { Button } from "$lib/components/ui/button";
+    import { ChevronDown } from "lucide-svelte";
+    import { Input } from "$lib/components/ui/input";
+    import { Textarea } from "$lib/components/ui/textarea";
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { trpc } from '$lib/trpc';
-	export let data: PageData;
-	let fileInput: HTMLInputElement;
+	import Dropdown from '../../../../../moderator/home/dropdown.svelte';
+    export let data: PageData;
+    let fileInput:HTMLInputElement;
+    let rewardImg:any;
 
 	let currentReward = data.eachReward;
 
@@ -67,21 +59,26 @@
 			<div class="flex flex-col gap-8 w-full">
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					on:click={() => {
-						if (browser) {
-							goto('/staff/home');
-						}
-					}}><Home class="w-5 h-5 " />หน้าหลัก</Button
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/home')
+                    }}}
+				><Home class="w-5 h-5 " />หน้าหลัก</Button>
+                <Button
+					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F]  text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/manage/announcement')
+                    }}}
+				><Megaphone  class="w-5 h-7 pb-[2px] " />จัดการประกาศประชาสัมพันธ์</Button
 				>
-
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					on:click={() => {
-						if (browser) {
-							goto('/staff/reservation');
-						}
-					}}><FileText class="w-5 h-5" />การจองคิว</Button
-				>
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/manage/reservation')
+                    }}}
+				><FileText class="w-5 h-5" />การจองคิว</Button>
 
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#EF4444] bg-[#EF4444] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
@@ -116,36 +113,11 @@
 			<div class="items-center justify-center flex" />
 			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
 			<div class="items-center justify-end flex gap-2">
-				<div class="flex flex-row items-center gap-3">
-					<UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8" />
-					<h1 class="font-bold">ศรุตา โทรัตน์</h1>
-					<div>
-						<DropdownMenu.Root>
-							<DropdownMenu.Trigger asChild let:builder>
-								<Button
-									variant="outline"
-									builders={[builder]}
-									class="p-0 m-0 border-transparent bg-white hover:bg-white"
-									><ChevronDown class="p-0 m-0 fill-black stroke-none" /></Button
-								>
-							</DropdownMenu.Trigger>
-							<DropdownMenu.Content>
-								<DropdownMenu.Item class="cursor-pointer">
-									<LogOut class="mr-2 h-4 w-4" />
-									<div
-										on:click={() => {
-											if (browser) {
-												goto('/staff/login');
-											}
-										}}
-									>
-										ออกจากระบบ
-									</div>
-								</DropdownMenu.Item>
-							</DropdownMenu.Content>
-						</DropdownMenu.Root>
-					</div>
-				</div>
+				<div class="flex flex-row items-center gap-1">
+                    <UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8" />
+					<h1 class="font-semibold">ศรุตา โทรัตน์</h1>
+					<Dropdown />
+                </div>
 			</div>
 		</div>
 		<!-- content -->

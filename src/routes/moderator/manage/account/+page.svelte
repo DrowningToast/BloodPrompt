@@ -20,6 +20,7 @@
 	import type { PageData } from './$types';
 	import type { Moderators } from '../../../../../generated-zod';
 	import { trpc } from '$lib/trpc';
+	import Dropdown from '../../home/dropdown.svelte';
 
 	export let data: PageData;
 	const { moderator } = data;
@@ -66,7 +67,7 @@
 </script>
 
 <div class="flex flex-row w-full justify-between bg-gray-300 min-w-[100vw] min-h-[100vh]">
-	<div class="flex flex-col bg-[#191F2F] w-3/12">
+	<div class="flex flex-col bg-[#191F2F] w-3/12 h-100%">
 		<div class="flex flex-row px-8 py-16 justify-center">
 			<img src={bloodpromptlogo} alt="" class="w-16" />
 			<h1 class="translate-y-4 text-xl font-bold text-white px-3">BLOODPROMPT</h1>
@@ -122,30 +123,13 @@
 			>
 		</div>
 	</div>
-	<div class="flex flex-col items-center w-9/12">
+	<div class="flex flex-col items-center w-9/12 h-full">
 		<div class="flex items-center bg-white px-14 w-full py-6 justify-between h-16">
-			<h1 class=" font-bold text-lg">BloodPrompt (สำหรับผู้ดูเเลระบบ)</h1>
+			<h1 class="items-center justify-center flex text-2xl font-semibold">BloodPrompt (สำหรับผู้ดูเเลระบบ)</h1>
 			<div class="flex flex-row items-center gap-3">
 				<UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8" />
-				<h1 class="font-bold">ผู้ดูเเลระบบ</h1>
-				<div>
-					<DropdownMenu.Root>
-						<DropdownMenu.Trigger asChild let:builder>
-							<Button
-								variant="outline"
-								builders={[builder]}
-								class="p-0 m-0 border-transparent bg-white hover:bg-white"
-								><ChevronDown class="p-0 m-0 fill-black stroke-none" /></Button
-							>
-						</DropdownMenu.Trigger>
-						<DropdownMenu.Content class="w-56">
-							<DropdownMenu.Item>
-								<LogOut class="mr-2 h-4 w-4" />
-								<span>ออกจากระบบ</span>
-							</DropdownMenu.Item>
-						</DropdownMenu.Content>
-					</DropdownMenu.Root>
-				</div>
+					<h1 class="font-semibold">ศรุตา โทรัตน์</h1>
+					<Dropdown />
 			</div>
 		</div>
 		<!-- content -->

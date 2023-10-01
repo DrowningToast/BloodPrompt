@@ -1,17 +1,8 @@
 <script lang="ts">
-	import EventImg from '$lib/images/staff/reward/reward1.png';
-	import {
-		Home,
-		LogOut,
-		UserCircle,
-		FileText,
-		Gift,
-		CalendarHeart,
-		PlusCircle,
-		History
-	} from 'lucide-svelte';
-	import bloodPromptLogo from '$lib/images/bloodprompt-logo.png';
-	import { Button } from '$lib/components/ui/button';
+    import sEventImg from '$lib/images/staff/reward/reward1.png';
+    import { Home,Megaphone, LogOut, UserCircle, FileText, Gift, CalendarHeart, PlusCircle, History } from 'lucide-svelte';
+    import bloodPromptLogo from '$lib/images/bloodprompt-logo.png';
+    import { Button } from "$lib/components/ui/button";
 	import Reward from './reward.svelte';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
@@ -31,13 +22,18 @@
 			<div class="flex flex-col gap-8 w-full">
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					on:click={() => {
-						if (browser) {
-							goto('/staff/home');
-						}
-					}}><Home class="w-5 h-5 " />หน้าหลัก</Button
-				>
-
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/home')
+                    }}}
+				><Home class="w-5 h-5 " />หน้าหลัก</Button>
+				<Button
+					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F]  text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/manage/announcement')
+                    }}}
+				><Megaphone  class="w-5 h-7 pb-[2px] " />จัดการประกาศประชาสัมพันธ์</Button>
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
 					on:click={() => {
@@ -81,12 +77,12 @@
 			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
 			<div class="items-center justify-end flex gap-2">
 				<div class="flex flex-row items-center gap-1">
-					<UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8" />
-					<h1 class="font-bold">ศรุตา โทรัตน์</h1>
-					<div>
-						<Dropdown />
-					</div>
-				</div>
+                    <UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8"/>
+                    <h1 class="font-semibold">ศรุตา โทรัตน์</h1>
+                    <div>
+                        <Dropdown/>
+                    </div>
+                </div>
 			</div>
 		</div>
 		<div class="flex w-full justify-between px-9">

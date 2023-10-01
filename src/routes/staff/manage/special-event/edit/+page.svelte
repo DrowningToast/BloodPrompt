@@ -1,6 +1,6 @@
 <script lang="ts">
 
-    import { Home, LogOut, CalendarDays, UserCircle, FileText, Gift, CalendarHeart, Lock, PlusCircle, Image, Info,Eye, Trash2 } from 'lucide-svelte';
+    import { Home,Megaphone, LogOut, CalendarDays, UserCircle, FileText, Gift, CalendarHeart, Lock, PlusCircle, Image, Info,Eye, Trash2 } from 'lucide-svelte';
     import bloodpromptlogo from '$lib/images/bloodprompt-logo.png';
     import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
     import { Button } from "$lib/components/ui/button";
@@ -9,6 +9,7 @@
     import { Textarea } from "$lib/components/ui/textarea";
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
+    import Dropdown from '../../../moderator/home/dropdown.svelte';
 
     let fileInput:HTMLInputElement;
     let  sp_event;
@@ -40,6 +41,14 @@
                     }}}
 				><Home class="w-5 h-5 " />หน้าหลัก</Button>
 
+                <Button
+					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F]  text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/manage/announcement')
+                    }}}
+				><Megaphone  class="w-5 h-7 pb-[2px] " />จัดการประกาศประชาสัมพันธ์</Button
+				>
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
                     on:click={()=>{
@@ -111,7 +120,11 @@
             </div>
             <div class="flex justify-between items-center gap-4">
                 <Button class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-10 py-4 text-base font-bold text-white hover:bg-[#EF4444]">บันทึกข้อมูล</Button>
-                <Button class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white">ยกเลิกการแก้ไข</Button>
+                <Button class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white" on:click={()=>{
+                    if (browser) {
+                        goto('/staff/manage/special-event')
+                    }
+                }}>ยกเลิกการแก้ไข</Button>
             </div>
         </div>
         <div class="flex flex-col justify-start items-center h-full w-full px-14 py-2">

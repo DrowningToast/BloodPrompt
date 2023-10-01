@@ -20,7 +20,10 @@
 		Calendar,
 		Clock,
 		Syringe,
-		FileCheck
+		FileCheck,
+		UserCircle,
+		Megaphone
+
 	} from 'lucide-svelte';
 
 	export let data: PageData;
@@ -37,6 +40,7 @@
 	import wallet from '$lib/images/wallet.png';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
+	import Dropdown from '../../../moderator/home/dropdown.svelte';
 </script>
 
 <div class="flex flex-row">
@@ -55,6 +59,14 @@
 						}
 					}}><Home class="w-5 h-5 " />หน้าหลัก</Button
 				>
+				<Button
+					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F]  text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/manage/announcement')
+                    }}}
+				><Megaphone  class="w-5 h-7 pb-[2px] " />จัดการประกาศประชาสัมพันธ์</Button>
+
 				<Button
 					class="flex justify-start items-center gap-3 bg-[#EF4444] hover:bg-[#ef4444] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
 					on:click={() => {
@@ -95,12 +107,16 @@
 			<div class="items-center justify-center flex" />
 			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
 			<div class="items-center justify-end flex gap-2">
-				<div class="bg-[#EF4444] w-9 h-8 rounded-full flex items-center justify-center">
-					<User class="text-white" />
+				<div class="flex items-center gap-1">
+					<div>
+						<UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8" />
+					</div>
+					<h1 class="font-semibold">ศรุตา โทรัตน์</h1>
+					<div>
+						<Dropdown/>
+					</div>
 				</div>
-
-				<div class=" text-base">ศรุตา โทรัตน์</div>
-			</div>
+				</div>
 		</div>
 		<div class="px-8 py-8">
 			<div class="text-2xl font-bold">รายการจองคิว</div>
