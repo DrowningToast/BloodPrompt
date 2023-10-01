@@ -10,6 +10,8 @@ import { rewardRouter } from './routes/rewardRouter';
 import { moderatorRoutes } from './routes/moderatorsRoutes';
 import { announcementsRouter } from './routes/announcementRouter';
 import { postFeedbackRouter } from './routes/postFeedbackRouter';
+import { donationHistoryController } from './database/controllers/donationHistoryController';
+import { donationHistoryRouter } from './routes/donationHistory';
 
 export const appRouter = createRouter({
 	greet: publicProcedure
@@ -31,7 +33,8 @@ export const appRouter = createRouter({
 	reservation: reservationSlotsRouter,
 	moderator: moderatorRoutes,
 	reward: rewardRouter,
-	announcement: announcementsRouter
+	announcement: announcementsRouter,
+	donationHistory: donationHistoryRouter
 });
 
 export type AppRouter = typeof appRouter;

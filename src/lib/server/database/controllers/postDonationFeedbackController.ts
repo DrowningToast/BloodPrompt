@@ -25,5 +25,19 @@ export const postDonationFeedbackController = {
 			}
 		});
 		return unfinsihed;
+	},
+	getPostSurveyQuestions: async () => {
+		const questions = await prisma.survey_Questions.findMany({
+			where: {
+				type: 'POST_SURVEY'
+			},
+			include: {
+				Survey_Choices: true
+			},
+			orderBy: {
+				order: 'asc'
+			}
+		});
+		return questions;
 	}
 };
