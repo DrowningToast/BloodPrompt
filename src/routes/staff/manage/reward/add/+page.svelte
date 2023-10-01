@@ -19,7 +19,7 @@
 		let reader = new FileReader();
 		reader.readAsDataURL(image);
 		reader.onload = (e) => {
-			reward = e.target.result;
+			reward = e.target?.result;
 		};
 	};
 

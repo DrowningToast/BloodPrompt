@@ -165,6 +165,7 @@ model Special_Events {
   id          String    @id @unique @default(cuid())
   name        String
   description String
+  img_src     String?
   created_at  DateTime  @default(now())
   updated_at  DateTime?
   deleted_at  DateTime?

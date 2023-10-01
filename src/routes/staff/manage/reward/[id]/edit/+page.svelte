@@ -14,6 +14,33 @@
 	export let data: PageData;
 	let fileInput: HTMLInputElement;
 
+<<<<<<< HEAD
+    let currentReward = data.eachReward; 
+    let name_value = currentReward?.name;
+    let description_value = currentReward?.description;
+    let required_points_value = currentReward?.required_points;
+    let amount_left_value = currentReward?.amount_left;
+    let image_src_value = currentReward?.image_src;
+
+    const saveDataHandler = async() => {
+        await trpc.reward.update.mutate({data: {
+           name : name_value || "",
+           amount_left : amount_left_value || 0,
+           description : description_value || "",
+           required_points : required_points_value || 0,
+           image_src: image_src_value || "" 
+        }, rewardId: currentReward?.id || "1"}).then(()=>{goto("/staff/manage/reward")})
+    }
+    const onFileSelected =(e:any)=>{
+        let image = e?.target?.files[0];
+        let reader = new FileReader();
+        reader.readAsDataURL(image);
+        reader.onload = e => {
+     	    rewardImg = e?.target?.result
+        };
+    }
+   
+=======
 	let currentReward = data.eachReward;
 
 	let name_value = currentReward?.name;
@@ -46,6 +73,7 @@
 			image_src_value = e?.target?.result;
 		};
 	};
+>>>>>>> 97d688451fe46d810a7f562f85ef57d68a714087
 </script>
 
 <div class="flex justify-between bg-gray-300 min-w-screen min-h-[100vh] h-full w-full">

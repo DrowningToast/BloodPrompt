@@ -4,6 +4,7 @@ import { donatorsRouter } from './routes/donatorsRouter';
 import { authRouter } from './routes/authRouter';
 import { placesRouter } from './routes/placesRouter';
 import { medicalStaffRouter } from './routes/medicalStaffRouter';
+import { specialEventRouter } from './routes/specialEventRouter';
 import { reservationSlotsRouter } from './routes/reservationSlotsRouter';
 import { preFeedBackRouter } from './routes/preFeedBackRouter';
 import { rewardRouter } from './routes/rewardRouter';
@@ -29,6 +30,7 @@ export const appRouter = createRouter({
 	auth: authRouter,
 	places: placesRouter,
 	medicalStaff: medicalStaffRouter,
+	specialEvent: specialEventRouter,
 	preFeedback: preFeedBackRouter,
 	postFeedback: postFeedbackRouter,
 	reservation: reservationSlotsRouter,

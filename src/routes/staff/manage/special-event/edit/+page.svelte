@@ -12,7 +12,8 @@
 		Image,
 		Info,
 		Eye,
-		Trash2
+		Trash2,
+        Megaphone
 	} from 'lucide-svelte';
 	import bloodpromptlogo from '$lib/images/bloodprompt-logo.png';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
@@ -22,18 +23,39 @@
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
+	import { trpc } from '$lib/trpc';
+	import type { PageData } from '../../../../$types';
+    import { medicalStaffName, placeName } from '$lib/stores/staffStores';
+    export let data:PageData;
+    const currentEvent = data.currentEvent;
 
-	let fileInput: HTMLInputElement;
-	let sp_event;
-	const onFileSelected = (e) => {
-		let image = e.target.files[0];
-		let reader = new FileReader();
-		reader.readAsDataURL(image);
-		reader.onload = (e) => {
-			sp_event = e.target.result;
-		};
-	};
+    let fileInput:HTMLInputElement;
+    let  sp_event:any;
+    const onFileSelected =(e:any)=>{
+        let image = e.target?.files[0];
+        let reader = new FileReader();
+        reader.readAsDataURL(image);
+        reader.onload = e => {
+     	    sp_event = e.target?.result
+        };
+        console.log(reader);
+    }
+
+    let name = currentEvent.name;
+    let description = currentEvent.description;
+    let id = currentEvent.id;
+
+    const goBack = () => {
+        if(browser){
+                goto("/staff/manage/special-event");
+            }
+    }
+    
+    const editEventHandler = async() =>{
+        await trpc.specialEvent.update.mutate({id ,name, description, sp_event})
+        .then(goBack)
+    }
+
 </script>
 
 <div class="flex justify-between bg-gray-300 min-w-screen min-h-[100vh] h-screen w-full">
@@ -143,11 +165,12 @@
 			</div>
 			<div class="flex justify-between items-center gap-4">
 				<Button
-					class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-10 py-4 text-base font-bold text-white hover:bg-[#EF4444]"
+					class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-10 py-4 text-base font-bold text-white hover:bg-[#EF4444]" on:click={editEventHandler}
+                
 					>บันทึกข้อมูล</Button
 				>
 				<Button
-					class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white"
+					class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white" on:click={goBack}
 					>ยกเลิกการแก้ไข</Button
 				>
 			</div>
@@ -197,47 +220,16 @@
 					</div>
 				</div>
 
-				<div class="flex flex-col gap-5 w-6/12">
-					<div class="flex items-center gap-2">
-						<Info class="w-5" />
-						<h1 class="font-bold py-2">ข้อมูลพื้นฐานของกิจกรรมพิเศษนี้</h1>
-					</div>
-					<Input
-						placeholder="ชื่อกิจกรรมพิเศษ"
-						class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4"
-					/>
-					<Textarea
-						placeholder="รายละเอียดกิจกรรมพิเศษ"
-						class="rounded-xl border-2 border-gray-300 h-[200px] w-full px-4 py-4 resize-none"
-					/>
-					<div class="flex gap-3 items-center">
-						<CalendarDays class="w-5" />
-						<h1 class="font-bold py-2">ระยะเวลากิจกรรม</h1>
-					</div>
-					<div class="flex items-center gap-2">
-						<h1 class="font-bold py-2 w-2/12">ตั้งเเต่</h1>
-						<Input
-							placeholder="วันเริ่มกิจกกรม"
-							class="rounded-xl border-2 border-gray-300 h-[50px] w-6/12 px-4 py-4"
-						/>
-						<Input
-							placeholder="เวลาเริ่มกิจกรรม"
-							class="rounded-xl border-2 border-gray-300 h-[50px] w-5/12  /12 px-4 py-4"
-						/>
-					</div>
-					<div class="flex items-center gap-2 justify-start">
-						<h1 class="font-bold py-2 w-2/12">จนถึง</h1>
-						<Input
-							placeholder="วันสิ้นสุดกิจกรรม"
-							class="rounded-xl border-2 border-gray-300 h-[50px] w-6/12 px-4 py-4"
-						/>
-						<Input
-							placeholder="เวลาสิ้นสุดกิจกรรม"
-							class="rounded-xl border-2 border-gray-300 h-[50px] w-5/12 px-4 py-4"
-						/>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                <div class="flex flex-col gap-5 w-6/12">
+                    <div class="flex items-center gap-2">
+                        <Info class="w-5"/>
+                        <h1 class="font-bold py-2">ข้อมูลพื้นฐานของกิจกรรมพิเศษนี้</h1>
+                    </div>
+                    <Input placeholder="ชื่อกิจกรรมพิเศษ" class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4" bind:value={name}/>
+                    <Textarea placeholder="รายละเอียดกิจกรรมพิเศษ" class="rounded-xl border-2 border-gray-300 h-[200px] w-full px-4 py-4 resize-none" bind:value={description}/>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
