@@ -8,10 +8,10 @@
 	import DonationHistoryTabPanel from './DonationHistoryTabPanel.svelte';
 	import ReservationTabPanel from './ReservationTabPanel.svelte';
 	import SurveyCard from '$lib/components/svelte/card/survey/SurveyCard.svelte';
-	import { trpc } from '$lib/trpc';
-	import { onMount } from 'svelte';
+	import { get24HoursTimeString } from '../reservation/[placeId]/date/utils';
 
 	export let data: PageData;
+	const { pendingFeedback } = data;
 
 	let currentTabIndex: number = 0;
 
@@ -33,19 +33,18 @@
 		placeData: Places;
 	};
 
-	let reservationData;
-	let donationHistoryData = data.donationHistoryData;
+	const donationHistoryData: DonationHistory[] = data.donationHistoryData.map((donation) => {
+		return {
+			donationData: donation,
+			placeData: donation.Reservation.Reservation_Slot.Place
+		};
+	});
 
-	onMount(async () => {
-		const reservationLog = await trpc.reservationSlot.getLog.query();
-
-		reservationData = reservationLog.map((reservation) => {
-			return {
-				placeData: reservation.Reservation_Slot.Place,
-				reservationData: { ...reservation },
-				reservationSlot: reservation.Reservation_Slot
-			};
-		});
+	let reservationData: ReservationHistory[] = data.reservationLog.map((reservation) => {
+		return {
+			placeData: reservation.Reservation_Slot.Place,
+			reservationData: reservation
+		};
 	});
 </script>
 
@@ -63,14 +62,18 @@
 		<p class="text-md font-bold">ประวัติการจองคิวและบริจาคเลือด</p>
 	</div>
 
-	<div class="px-6 pt-6">
-		<SurveyCard
-			donateDate={new Date()}
-			donateTime={12.3}
-			donationHistoryId={'001'}
-			placeName="โรงพยาบาลพระจอมเกล้าเจ้าคุณทหาร"
-		/>
-	</div>
+	{#if pendingFeedback}
+		<div class="px-6 pt-6">
+			<SurveyCard
+				donateDate={pendingFeedback.Reservation.Reservation_Slot.reserve_date}
+				donateTime={+get24HoursTimeString(
+					pendingFeedback.Reservation.Reservation_Slot.reserve_time
+				).replace(':', '.')}
+				donationHistoryId={pendingFeedback.id}
+				placeName={pendingFeedback.Reservation.Reservation_Slot.Place.name}
+			/>
+		</div>
+	{/if}
 
 	<div class="p-6">
 		<div class="flex flex-row w-full border-2 justify-around p-1 rounded-xl">

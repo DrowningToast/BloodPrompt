@@ -1,6 +1,6 @@
 import prisma from '$lib/server/database';
 
-export const init = async () => {
+export const seed_preFeedback = async () => {
 	await prisma.survey_Questions.createMany({
 		data: [
 			{

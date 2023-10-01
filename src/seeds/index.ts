@@ -1,5 +1,7 @@
 import { init as initPlace } from './place';
-import { init as initPreFeedback } from './pre_feedback';
+import { seed_preFeedback as initPreFeedback } from './pre_feedback';
+import { seed_postFeedback as initPostFeedback } from './post_feedback';
 
-await initPlace();
-await initPreFeedback();
+// await initPlace();
+// await initPreFeedback();
+await initPostFeedback();

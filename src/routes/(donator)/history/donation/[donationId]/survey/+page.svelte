@@ -18,59 +18,103 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Button } from '$lib/components/ui/button';
 	import AlertDialog from '$lib/components/svelte/alert/AlertDialog.svelte';
+	import { trpc } from '$lib/trpc';
+	import { mock_hospitalData } from '../../../../reservation/[placeId]/utils';
 
 	export let data: PageData;
 	const { donationHistoryData, placeData, donationHistoryId, questions } = data;
 
-	let answers = {
-		q1: null,
-		q2: null,
-		q3: null,
-		q4: null,
-		q5: null
+	console.log(questions);
+
+	interface Answers {
+		[key: string]: {
+			[key: string]: boolean;
+		};
+	}
+
+	let answers: Answers = {
+		...questions.reduce((prev, current) => {
+			return {
+				...prev,
+				[current.id]: {
+					...current.Survey_Choices.reduce((prev, current) => {
+						return { ...prev, [current.id]: false };
+					}, {})
+				}
+			};
+		}, {})
 	};
 
 	let isAnswerAllQuestion: boolean = false;
 	let isNormal = false;
 	let showSurveyResultDialog: boolean = false;
 
-	const handleAnswerChange = (event: any) => {
-		const key = 'q' + event.split('_')[0];
-		const value = event.split('_')[1];
-		console.log(value);
+	const handleAnswerChange = (questionId: string) => (event: string | undefined) => {
+		if (!event) return;
+		if (!event) return;
 		answers = {
 			...answers,
-			[key]: value
+			[questionId]: {
+				[event]: true
+			}
 		};
-		let isAnswerAll = true;
-		for (const [key, value] of Object.entries(answers)) {
-			console.log(key, value);
-			if (value === null || value === false) {
-				isAnswerAll = false;
-			}
-		}
-		isAnswerAllQuestion = isAnswerAll;
+		// isAnswerAllQuestion = answers;
+		isAnswerAllQuestion = Object.entries(answers).every((answer) => {
+			const hasSelected = Object.values(answer[1]).some((value) => value === true);
+			return hasSelected;
+		});
 	};
 
-	const handleSubmit = () => {
-		for (const [key, value] of Object.entries(answers)) {
-			console.log(key, value);
-			if (value === 'false') {
-				isNormal = false;
-				break;
+	const handleSubmit = async () => {
+		try {
+			const payload = Object.entries(answers).map((pair) => {
+				const questionId = pair[0];
+				const choiceId = Object.keys(pair[1])[0];
+				return {
+					question_id: questionId,
+					choice_id: choiceId
+				};
+			});
+
+			console.log(payload);
+			const res = await trpc.postFeedback.createFeedback.mutate({
+				data: {
+					Donation_History: {
+						connect: {
+							id: donationHistoryData.id
+						}
+					},
+					Post_Feedback_Answers: {
+						createMany: {
+							data: payload
+						}
+					}
+				}
+			});
+
+			// if the user rated the place
+			if (rating !== undefined) {
+				await trpc.places.createReview.mutate({
+					Place: {
+						connect: {
+							id: placeData.id
+						}
+					},
+					rating
+				});
 			}
 
-			if (key === 'q5' && value === 'true') {
-				isNormal = true;
-			}
+			alert('บันทึกข้อมูลเรียบร้อย ขอบคุณสำหรับการประเมิน');
+			await goto('/home');
+		} catch (e) {
+			console.log(e);
+			alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล โปรดลองใหม่อีกครั้ง');
 		}
-		showSurveyResultDialog = true;
 	};
 
-	$: rating = 0;
+	let rating: undefined | number = undefined;
 	const handleOnChangeRating = (x: number) => {
 		rating = x;
-		console.log(rating);
 	};
 </script>
 
@@ -129,20 +173,20 @@
 
 						<div class="mt-4">
 							<p class="text-slate-500 text-sm">ทำการบริจาคเมื่อ</p>
-							<p class="font-bold text-sm">{toDateTimeString(donationHistoryData.created_at)}</p>
+							<p class="font-bold text-sm">{toDateTimeString(donationHistoryData?.created_at)}</p>
 						</div>
 
 						<div class="flex flex-row items-center gap-14">
 							<div class="mt-4">
 								<p class="text-slate-500 text-sm">สถานะการบริจาค</p>
 								<p class="font-bold text-sm flex flex-row items-center gap-1">
-									{#if donationHistoryData.status === 'SUCCESS'}
+									{#if donationHistoryData?.status === 'SUCCESS'}
 										<p>บริจาคสำเร็จ</p>
 										<CheckCircle2 size={16} />
-									{:else if donationHistoryData.status === 'FAILED'}
+									{:else if donationHistoryData?.status === 'FAILED'}
 										<p>บริจาคไม่สำเร็จ</p>
 										<XCircle size={16} />
-									{:else if donationHistoryData.status === 'WAIT_BLOOD_QUALITY'}
+									{:else if donationHistoryData?.status === 'WAIT_BLOOD_QUALITY'}
 										<p>รอผลการบริจาค</p>
 										<RefreshCcw size={16} />
 									{/if}
@@ -181,21 +225,22 @@
 					<Card.Root class="mx-auto rounded-xl shadow">
 						<Card.Content class="p-0 py-4">
 							<div class="px-6 py-2">
-								<p class="text-sm font-bold">{question.id}. {question.label}</p>
+								<p class="text-sm font-bold">{question.order}. {question.title}</p>
 								<p class="text-sm font-semibold text-gray-400 mt-1">
 									(โปรดเลือกคำตอบตามจริง ใช่ หรือ ไม่ ?)
 								</p>
 
 								<div class="mt-4">
-									<RadioGroup.Root value="comfortable" onValueChange={handleAnswerChange}>
-										<div class="flex items-center space-x-2">
-											<RadioGroup.Item value={question.id + '_true'} id={'r1-' + question.id} />
-											<Label for={'r1-' + question.id}>ใช่</Label>
-										</div>
-										<div class="flex items-center space-x-2">
-											<RadioGroup.Item value={question.id + '_false'} id={'r2-' + question.id} />
-											<Label for={'r2-' + question.id}>ไม่ใช่</Label>
-										</div>
+									<RadioGroup.Root
+										value="comfortable"
+										onValueChange={handleAnswerChange(question.id)}
+									>
+										{#each question.Survey_Choices as choice}
+											<div class="flex items-center space-x-2">
+												<RadioGroup.Item value={choice.id} id={'r1-' + question.id} />
+												<Label for={'r1-' + question.id}>ใช่</Label>
+											</div>
+										{/each}
 										<RadioGroup.Input name="spacing" />
 									</RadioGroup.Root>
 								</div>
@@ -240,26 +285,58 @@
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div class="mt-4 flex flex-row gap-2 justify-center items-center">
 					<div class="flex flex-col items-center" on:click={() => handleOnChangeRating(1)}>
-						<Star class={`${rating >= 1 && 'fill-yellow-500 text-yellow-500'}`} />
+						<Star
+							class={`${rating !== undefined && rating >= 1 && 'fill-yellow-500 text-yellow-500'}`}
+						/>
 						<p class={`text-slate-500 text-xs `}>1</p>
 					</div>
 					<div class="flex flex-col items-center" on:click={() => handleOnChangeRating(2)}>
-						<Star class={`${rating >= 2 && 'fill-yellow-500 text-yellow-500'}`} />
+						<Star
+							class={`${rating !== undefined && rating >= 2 && 'fill-yellow-500 text-yellow-500'}`}
+						/>
 						<p class="text-slate-500 text-xs">2</p>
 					</div>
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div class="flex flex-col items-center" id="3" on:click={() => handleOnChangeRating(3)}>
-						<Star class={`${rating >= 3 && 'fill-yellow-500 text-yellow-500'}`} />
+						<Star
+							class={`${rating !== undefined && rating >= 3 && 'fill-yellow-500 text-yellow-500'}`}
+						/>
 						<p class="text-slate-500 text-xs">3</p>
 					</div>
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div class="flex flex-col items-center" id="4" on:click={() => handleOnChangeRating(4)}>
-						<Star class={`${rating >= 4 && 'fill-yellow-500 text-yellow-500'}`} />
+						<Star
+							class={`${rating !== undefined && rating >= 4 && 'fill-yellow-500 text-yellow-500'}`}
+						/>
 						<p class="text-slate-500 text-xs">4</p>
 					</div>
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div class="flex flex-col items-center" on:click={() => handleOnChangeRating(5)}>
-						<Star class={`${rating >= 5 && 'fill-yellow-500 text-yellow-500'}`} />
+						<Star
+							class={`${rating !== undefined && rating >= 5 && 'fill-yellow-500 text-yellow-500'}`}
+						/>
 						<p class="text-slate-500 text-xs">5</p>
 					</div>
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<!-- svelte-ignore a11y-no-static-element-interactions -->
 				</div>
+				{#if rating !== undefined}
+					<div class="grid place-items-center">
+						<span
+							on:keydown={() => {
+								rating = undefined;
+							}}
+							on:click={() => {
+								rating = undefined;
+							}}
+							class="text-sm text-center mx-auto text-gray-400 underline underline-offset-2"
+							>รีเซ๊ตคะแนนการประเมิน</span
+						>
+					</div>
+				{/if}
 			</Card.Content>
 		</Card.Root>
 
