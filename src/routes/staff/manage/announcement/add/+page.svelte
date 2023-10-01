@@ -30,20 +30,21 @@
 		let reader = new FileReader();
 		reader.readAsDataURL(image);
 		reader.onload = (e) => {
-			imageSeleceted = e.target.result;
+			imageSeleceted = e.target?.result;
 		};
 	};
 
 	let name: string = '';
 	let description: string = '';
 	let image_src: string = '';
+	let selectedBloodType: string = 'a';
 
 	const types = [
 		{ value: 'normal', label: 'แบบทั่วไป' },
 		{ value: 'emergency', label: 'แบบฉุกเฉิน' }
 	];
-	let selected: string | null;
-	selected = null;
+	let isEmergencyType: boolean;
+	isEmergencyType = false;
 
 	let bloodRhValue: string | undefined | any = '';
 	let bloodTypesValue = {
@@ -55,6 +56,7 @@
 	const handleBloodTypeChange = (event: any) => {
 		const target = event.target;
 		if (target.id === 'a') {
+			selectedBloodType = 'a';
 			bloodTypesValue = {
 				a: true,
 				b: false,
@@ -62,6 +64,7 @@
 				ab: false
 			};
 		} else if (target.id === 'b') {
+			selectedBloodType = 'b';
 			bloodTypesValue = {
 				a: false,
 				b: true,
@@ -69,6 +72,7 @@
 				ab: false
 			};
 		} else if (target.id === 'o') {
+			selectedBloodType = 'o';
 			bloodTypesValue = {
 				a: false,
 				b: false,
@@ -76,12 +80,58 @@
 				ab: false
 			};
 		} else {
+			selectedBloodType = 'ab';
 			bloodTypesValue = {
 				a: false,
 				b: false,
 				o: false,
 				ab: true
 			};
+		}
+	};
+
+	const handleAddNewAnnouncement = async () => {
+		const currentUser = await trpc.auth.getUser.query();
+		const medicalStaff = await trpc.medicalStaff.findById.query({
+			medicalStaffId: currentUser?.user.id || ''
+		});
+		if (!isEmergencyType) {
+			await trpc.announcement.create
+				.mutate({
+					data: {
+						post_type: 'NORMAL',
+						title: name,
+						content: description,
+						image_src: imageSeleceted
+					},
+					placeId: medicalStaff?.Place.id || ''
+				})
+				.then(() => {
+					alert('เพ้ิ่มประกาศใหม่เข้าระบบเรียบร้อยแล้ว');
+					goto('/staff/manage/announcement');
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+		} else {
+			await trpc.announcement.create
+				.mutate({
+					data: {
+						blood_type: (selectedBloodType + '_' + bloodRhValue).toUpperCase(),
+						post_type: 'EMERGENCY',
+						title: name,
+						content: description,
+						image_src: imageSeleceted
+					},
+					placeId: medicalStaff?.Place.id || ''
+				})
+				.then(() => {
+					alert('เพ้ิ่มประกาศใหม่เข้าระบบเรียบร้อยแล้ว');
+					goto('/manage/announcement');
+				})
+				.catch((error) => {
+					console.error(error);
+				});
 		}
 	};
 </script>
@@ -169,6 +219,7 @@
 			</div>
 			<div class="flex justify-between items-center gap-4">
 				<Button
+					on:click={handleAddNewAnnouncement}
 					class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-72 px-4 py-4 text-base font-bold text-white hover:bg-[#EF4444]"
 					><PlusCircle class="fill-white stroke-[#EF4444]" />
 					เพิ่มเพิ่มประกาศประชาสัมพันธ์
@@ -246,7 +297,7 @@
 								<Select.Item
 									value={types[0].value}
 									on:click={() => {
-										selected = null;
+										isEmergencyType = false;
 									}}
 								>
 									{types[0].label}
@@ -254,7 +305,7 @@
 								<Select.Item
 									value={types[1].value}
 									on:click={() => {
-										selected = '';
+										isEmergencyType = true;
 									}}
 								>
 									{types[1].label}
@@ -273,7 +324,7 @@
 						placeholder="เนื้อหาของประกาศประชาสัมพันธ์"
 						class="rounded-xl border-2 border-gray-300 h-[200px] w-full px-4 py-4 resize-none"
 					/>
-					{#if selected !== null}
+					{#if isEmergencyType}
 						<div class="flex flex-col gap-5 w-full">
 							<div class="flex flex-row w-full border-2 justify-around p-1 rounded-xl gap-1">
 								<Button
