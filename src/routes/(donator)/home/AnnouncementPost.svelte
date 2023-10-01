@@ -2,11 +2,13 @@
 	import { AlertCircleIcon, Verified } from 'lucide-svelte';
 	import kmitlLogo from '$lib/images/home/kmitl_logo.png';
 	import bannerMockImage from '$lib/images/home/annoucement_banner_mock.png';
+	import type { PostTypeType } from '../../../../generated-zod';
 
-	export let title = `โรงพยาบาลพระจอมเกล้าเจ้าคุณทหาร`;
-	export let postedDate: Date | undefined = new Date(1695806865000);
-	export let desc =
-		'แล็บซาร์ดีนแรงผลักวอลล์ หงวนฟลุกวาซาบิ วิป เป่ายิงฉุบโซลาร์ไมค์ รันเวย์ โรแมนติคกีวีเพรสโพลารอยด์บรรพชนชินบัญชรป๊อก สตริงบอมบ์โบว์อยุติธรรมฟรังก์ เกรย์โรแมนติค เซี้ยวว้อดก้าซัพพลายสึนามิสตูดิโออุตสาหการเวเฟอร์ออร์แกนิก ชาร์ตฮอต ฮ็อตด็อกเวิร์ครอยัลตี้ แพนด้า สปอตเยอบีราการันตีเวเฟอร์ล็อตเมเปิลกรอบรูป';
+	export let title: string;
+	export let postedDate: Date;
+	export let desc: string;
+	export let post_type: PostTypeType;
+	export let post_img: string | null | undefined = '';
 
 	$: displayedDate = postedDate?.toLocaleDateString('th-TH', {
 		year: 'numeric',
@@ -30,7 +32,7 @@
 			<div class="text-gray-500 text-xs">{displayedDate}</div>
 		</div>
 	</div>
-	{#if emergencyBloodType}
+	{#if post_type === 'EMERGENCY'}
 		<div
 			class="px-2 py-3 text-sm font-bold flex justify-center items-center gap-x-2 bg-red-300 rounded-lg w-full"
 		>
@@ -43,7 +45,7 @@
 	<p class="text-sm">
 		{desc}
 	</p>
-	<div>
-		<img src={bannerMockImage} alt={bannerMockImage} />
-	</div>
+	{#if post_img?.length}
+		<div><img src={post_img} alt={post_img} /></div>
+	{/if}
 </div>

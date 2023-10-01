@@ -66,7 +66,10 @@ export const authRouter = createRouter({
 				ctx.session = session;
 				ctx.user = user;
 				ctx.sessionToken = session.session_token;
-				ctx.opts.resHeaders.append('Set-Cookie', `session-token=${session.session_token}`);
+				ctx.opts.resHeaders.append(
+					'Set-Cookie',
+					`session-token=${session.session_token}; Path=/; HttpOnly`
+				);
 			}
 
 			return { user, session };
@@ -121,7 +124,10 @@ export const authRouter = createRouter({
 				ctx.session = session;
 				ctx.user = user;
 				ctx.sessionToken = session.session_token;
-				ctx.opts.resHeaders.append('Set-Cookie', `session-token=${session.session_token}`);
+				ctx.opts.resHeaders.append(
+					'Set-Cookie',
+					`session-token=${session.session_token}; Path=/; HttpOnly`
+				);
 			}
 
 			return { user, session };
