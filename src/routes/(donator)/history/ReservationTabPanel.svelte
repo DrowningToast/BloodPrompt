@@ -7,7 +7,7 @@
 	import { goto } from '$app/navigation';
 
 	type ReservationHistory = {
-		reservationData: Reservations;
+		reservationData: Omit<Reservations, 'pre_donation_fb_id'>;
 		placeData: Places;
 	};
 

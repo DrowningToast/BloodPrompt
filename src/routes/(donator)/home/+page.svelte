@@ -7,9 +7,17 @@
 	import AnnouncementList from './AnnouncementList.svelte';
 	import SurveyCard from '$lib/components/svelte/card/survey/SurveyCard.svelte';
 
+	// TODO: Searchbar Functionality
+
+	// let searchFilter = {
+	// 	bloodType: 'A',
+	// 	province: 'กรุงเทพมหานคร',
+	// 	district: 'ทุ่งครุ',
+	// 	subDistrict: 'บางมด',
+	// 	placeName: 'โรงพยาบาลพระจอมเกล้าเจ้าคุณทหาร'
+	// };
+
 	export let data: PageData;
-	const { user } = data;
-	console.log(data);
 </script>
 
 <div class="pb-24">
@@ -31,6 +39,6 @@
 		<Searchbar />
 	</section>
 	<section>
-		<AnnouncementList />
+		<AnnouncementList data={data.announcements} />
 	</section>
 </div>

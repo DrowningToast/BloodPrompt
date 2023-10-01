@@ -1,5 +1,5 @@
 <script lang="ts">
-
+    import type { PageData } from './$types';
     import { Home, LogOut, CalendarHeart,FileText , UserCircle, Gift, Save , Image, Info} from 'lucide-svelte';
     import bloodpromptlogo from '$lib/images/staff/bloodprompt-logo.png';
     import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
@@ -9,19 +9,37 @@
     import { Textarea } from "$lib/components/ui/textarea";
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-
+	import { trpc } from '$lib/trpc';
+    export let data: PageData;
     let fileInput:HTMLInputElement;
-    let  reward;
-    const onFileSelected =(e)=>{
-        let image = e.target.files[0];
+    let rewardImg:any;
+
+    let currentReward = data.eachReward; 
+
+    let name_value = currentReward?.name;
+    let description_value = currentReward?.description;
+    let required_points_value = currentReward?.required_points;
+    let amount_left_value = currentReward?.amount_left;
+    let image_src_value = currentReward?.image_src;
+
+    const saveDataHandler = async() => {
+        await trpc.reward.update.mutate({data: {
+           name : name_value || "",
+           amount_left : amount_left_value || 0,
+           description : description_value || "",
+           required_points : required_points_value || 0,
+           image_src: image_src_value || "" 
+        }, rewardId: currentReward?.id || "1"}).then(()=>{goto("/staff/manage/reward")})
+    }
+    const onFileSelected =(e:Event|null)=>{
+        let image = e?.target?.files[0];
         let reader = new FileReader();
         reader.readAsDataURL(image);
         reader.onload = e => {
-     	    reward = e.target.result
+     	    rewardImg = e?.target?.result
         };
     }
-
-
+   
 </script>
 
 <div class="flex justify-between bg-gray-300 min-w-screen min-h-[100vh] h-full w-full">
@@ -87,7 +105,7 @@
                             <DropdownMenu.Trigger asChild let:builder>
                                 <Button variant="outline" builders={[builder]} class="p-0 m-0 border-transparent bg-white hover:bg-white"><ChevronDown class="p-0 m-0 fill-black stroke-none"/></Button>
                             </DropdownMenu.Trigger>
-                            <DropdownMenu.Content class="">
+                            <DropdownMenu.Content>
                               <DropdownMenu.Item class="cursor-pointer">
                                 <LogOut class="mr-2 h-4 w-4" />
                                 <div on:click={()=>{
@@ -109,7 +127,7 @@
                 <p class="text-base text-gray-500">สามารถแก้ไขข้อมูลของรางวัล</p>
             </div>
             <div class="flex justify-between items-center gap-4">
-                <Button class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-4 py-4 text-base font-bold text-white hover:bg-[#EF4444]"><Save  class=" stroke-white w-5" />บันทึกข้อมูล</Button>
+                <Button on:click={saveDataHandler} class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-4 py-4 text-base font-bold text-white hover:bg-[#EF4444]"><Save  class=" stroke-white w-5" />บันทึกข้อมูล</Button>
                 <Button class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white" on:click={()=>{
                     if (browser) {
                         goto('/staff/manage/reward')
@@ -126,8 +144,8 @@
                     </div>
 
                     <div class="flex flex-col items-center justify-center w-full h-5/6 rounded-3xl">
-                        {#if reward}
-                            <img class="flex justify-center h-fit w-full rounded-xl" src="{reward}" alt="d" />
+                        {#if rewardImg}
+                            <img class="flex justify-center h-fit w-full rounded-xl" src="{rewardImg}" alt="d" />
                         {:else}
                             <div class="flex flex-col items-center justify-center bg-gray-200 w-full h-full rounded-3xl">
                                 <p>ยังไม่ได้เลือกรูปภาพ</p>
@@ -139,7 +157,7 @@
                     <div class="flex flex-row justify-center items-center w-full gap-5">
                         <input type="file" id="file" on:change={(e)=>onFileSelected(e)} bind:this={fileInput} class="hidden">
                         <Button class="flex justify-center gap-2 bg-black rounded-full text-center h-[40px] w-[200px] px-10 py-4 text-base font-bold text-white" on:click={() =>{fileInput.click();}}>เลือกรูปภาพ</Button>
-                        <Button variant="link" class="flex justify-center gap-2 rounded-full text-center h-[40px] w-[84px] px-5 py-4 text-base font-bold text-[#EF4444]" on:click={() => reward=null}>ลบรูปภาพ</Button>
+                        <Button variant="link" class="flex justify-center gap-2 rounded-full text-center h-[40px] w-[84px] px-5 py-4 text-base font-bold text-[#EF4444]" on:click={() => rewardImg=null}>ลบรูปภาพ</Button>
                     </div>
                 </div>
                 <div class="flex flex-col gap-5 w-6/12">
@@ -147,10 +165,10 @@
                         <Info class="w-5"/>
                         <h1 class="font-bold py-2">ข้อมูลพื้นฐานของของรางวัล</h1>
                     </div>
-                    <Input placeholder="ชื่อของรางวัล" class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4"/>
-                    <Textarea placeholder="รายละเอียดเบื้องต้นของของรางวัล" class="rounded-xl border-2 border-gray-300 h-[200px] w-full px-4 py-4 resize-none"/>
-                    <Input placeholder="แต้มที่ต้องใช้แลกของรางวัล" class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4"/>
-                    <Input placeholder="จำนวน" class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4"/>
+                    <Input bind:value={name_value} placeholder="ชื่อของรางวัล" class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4"/>
+                    <Textarea bind:value={description_value} placeholder="รายละเอียดเบื้องต้นของของรางวัล" class="rounded-xl border-2 border-gray-300 h-[200px] w-full px-4 py-4 resize-none"/>
+                    <Input bind:value={required_points_value} placeholder="แต้มที่ต้องใช้แลกของรางวัล" class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4"/>
+                    <Input bind:value={amount_left_value} placeholder="จำนวน" class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4"/>
                 </div>
             </div>
         </div>

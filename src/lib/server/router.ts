@@ -4,7 +4,12 @@ import { donatorsRouter } from './routes/donatorsRouter';
 import { authRouter } from './routes/authRouter';
 import { placesRouter } from './routes/placesRouter';
 import { medicalStaffRouter } from './routes/medicalStaffRouter';
-import { specialEventRouter } from './routes/specialEventRouter'
+import { specialEventRouter } from './routes/specialEventRouter';
+import { reservationSlotsRouter } from './routes/reservationSlotsRouter';
+import { preFeedBackRouter } from './routes/preFeedBackRouter';
+import { rewardRouter } from './routes/rewardRouter';
+import { moderatorRoutes } from './routes/moderatorsRoutes';
+import { announcementsRouter } from './routes/announcementRouter';
 
 export const appRouter = createRouter({
 	greet: publicProcedure
@@ -21,7 +26,12 @@ export const appRouter = createRouter({
 	auth: authRouter,
 	places: placesRouter,
 	medicalStaff: medicalStaffRouter,
-	specialEvent: specialEventRouter
+	specialEvent: specialEventRouter,
+	preFeedback: preFeedBackRouter,
+	reservation: reservationSlotsRouter,
+	moderator: moderatorRoutes,
+	reward: rewardRouter,
+	announcement: announcementsRouter
 });
 
 export type AppRouter = typeof appRouter;

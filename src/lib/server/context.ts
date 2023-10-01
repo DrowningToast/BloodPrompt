@@ -1,6 +1,7 @@
 import { initTRPC } from '@trpc/server';
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
 import prisma, { type Donators, type Medical_Staff, type Moderators } from './database';
+import superjson from 'superjson';
 
 type UserContext = DonatorContext | MedicalStaffContext | ModeratorContext | undefined;
 
@@ -28,6 +29,11 @@ export const createSvelteKitContext =
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	(locals: App.Locals) => async (opts: FetchCreateContextFnOptions) => {
 		const cookie = opts.req.headers.get('Cookie');
+		if (cookie) {
+			console.log(getCookie(cookie, 'session-token'));
+		} else {
+			console.log('no cookie!!');
+		}
 
 		let userContext: UserContext;
 
@@ -83,6 +89,8 @@ export const createSvelteKitContext =
 		};
 	};
 
-const t = initTRPC.context<ReturnType<typeof createSvelteKitContext>>().create();
+const t = initTRPC.context<ReturnType<typeof createSvelteKitContext>>().create({
+	transformer: superjson
+});
 export const createRouter = t.router;
 export const publicProcedure = t.procedure;

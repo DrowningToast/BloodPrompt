@@ -4,9 +4,31 @@
 	import type { PageData } from './$types';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { get24HoursTimeString } from '../date/utils';
+	import { trpc } from '$lib/trpc';
+	import { goto } from '$app/navigation';
+	import { preFeedbackStore } from '$lib/stores/preFeedback';
+	import { onMount } from 'svelte';
 
 	export let data: PageData;
 	const { dateTime, hospitalData } = data;
+
+	const handleClick = async () => {
+		const response = await trpc.reservation.reserve.mutate({
+			placeId: hospitalData.id,
+			timeSlotInMillisecond: dateTime.getTime(),
+			preFeedback: $preFeedbackStore
+		});
+
+		await goto(`/history/reservation/${response.id}`);
+	};
+
+	onMount(async () => {
+		console.log($preFeedbackStore.Pre_Feedback_Answers.length);
+		if ($preFeedbackStore.Pre_Feedback_Answers.length > 0) {
+		} else {
+			await goto('/reservation/survey');
+		}
+	});
 </script>
 
 <div class="min-h-screen flex flex-col pb-8">
@@ -16,7 +38,7 @@
 		<div class="absolute inset-8 z-0">
 			<a
 				class="bg-red-600 text-white rounded-full w-10 h-10 grid place-items-center absolute top-0 right-0"
-				href={`${hospitalData.googleMapUrl}`}
+				href={`https://www.google.com/maps/search/${hospitalData.name}`}
 				target="_blank"
 			>
 				<MapPinIcon class="w-6 h-6 mx-auto" />
@@ -50,7 +72,10 @@
 			</div>
 		</div>
 	</div>
-	<Button href="" class="mx-24 mt-auto text-lg rounded-3xl px-4 py-8 bg-red-600 font-semibold"
+	<Button
+		on:click={handleClick}
+		href=""
+		class="mx-24 mt-auto text-lg rounded-3xl px-4 py-8 bg-red-600 font-semibold"
 		>ยืนยันการจอง</Button
 	>
 </div>

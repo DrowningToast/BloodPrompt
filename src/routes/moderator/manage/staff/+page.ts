@@ -1,12 +1,13 @@
 import type { PageLoad } from './$types';
 import { trpcOnServer } from '$lib/trpc';
 
-export const load = (async ({ fetch }) => {
+export const load = (async () => {
 	const trpc = trpcOnServer(fetch);
-	const user = await trpc.auth.getUser.query();
-	console.log('====', user);
+	const places = await trpc.places.findAll.query();
+	const medicalAccounts = await trpc.medicalStaff.findAll.query();
 	return {
-		user: user?.user
+		places,
+		medicalAccounts
 	};
 }) satisfies PageLoad;
 

@@ -99,6 +99,10 @@
 	let isLoading: boolean = false;
 
 	const handleRegister = async () => {
+		if (!isAcceptedTerms || isLoading) {
+			return;
+		}
+
 		isLoading = true;
 
 		let selectedBloodType = '';
@@ -107,7 +111,7 @@
 		} else if (bloodTypesValue.b) {
 			selectedBloodType = 'b';
 		} else if (bloodTypesValue.o) {
-			selectedBloodType = 'c';
+			selectedBloodType = 'o';
 		} else if (bloodTypesValue.ab) {
 			selectedBloodType = 'ab';
 		}
@@ -170,8 +174,8 @@
 		<p class="text-md font-bold">สร้างบัญชี BloodPrompt</p>
 	</div>
 
-	<div class="p-10 px-8 py-6">
-		<div class="flex flex-col justify-center w-full py-6 pt-2 gap-6">
+	<div class="p-10 px-8 py-3">
+		<div class="flex flex-col justify-center w-full py-3 pt-2 gap-6">
 			<div
 				class="relative rounded-full w-24 h-24 bg-[#F5222D] mx-auto flex items-center justify-center"
 			>
@@ -183,14 +187,16 @@
 				</div>
 			</div>
 			<Input
+				required
 				type="text"
-				class="w-full mt-2 py-6 rounded-xl border-2 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500"
+				class="w-full mt-2 py-3 rounded-xl border-2 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500"
 				placeholder="ชื่อ"
 				bind:value={donatorData.first_name}
 			/>
 			<Input
+				required
 				type="text"
-				class="w-full py-6 rounded-xl border-2 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500"
+				class="w-full py-3 rounded-xl border-2 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500"
 				placeholder="นามสกุล"
 				bind:value={donatorData.last_name}
 			/>
@@ -218,6 +224,7 @@
 			<div class="items-center flex flex-row gap-4 w-full justify-around">
 				<p>วัน/เดือน/ปีเกิด :</p>
 				<DateInput
+					class="rounded-2xl place-items-center flex flex-grow"
 					bind:value={date}
 					{locale}
 					closeOnSelection
@@ -262,40 +269,50 @@
 				</Button>
 			</div>
 
-			<Select.Root onSelectedChange={(event) => (bloodRhValue = event?.value || 'positive')}>
-				<Select.Trigger class="w-full py-6 rounded-xl border-2" value={bloodRhValue}>
-					<Select.Value placeholder="กลุ่มหมู่เลือด Rh" />
+			<Select.Root
+				required
+				onSelectedChange={(event) => (bloodRhValue = event?.value || 'positive')}
+			>
+				<Select.Trigger class="w-full py-3 rounded-xl border-2" value={bloodRhValue}>
+					<Select.Value
+						class={`${bloodRhValue ? 'text-black' : 'text-gray-400'}`}
+						placeholder="กลุ่มหมู่เลือด Rh"
+					/>
 				</Select.Trigger>
 				<Select.Content>
-					<Select.Item value="positive" class="py-4">เลือดบวก (Positive)</Select.Item>
-					<Select.Item value="negative" class="py-4">เลือดลบ (Negative)</Select.Item>
+					<Select.Item value="positive" class="py-4 text-black">เลือดบวก (Positive)</Select.Item>
+					<Select.Item value="negative" class="py-4 text-black">เลือดลบ (Negative)</Select.Item>
 				</Select.Content>
 			</Select.Root>
 
 			<Textarea
-				class="w-full py-6 rounded-xl border-2 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500"
+				required
+				class="w-full py-3 rounded-xl border-2 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500"
 				placeholder="ที่อยู่"
 				bind:value={donatorData.address}
 			/>
 
 			<Input
+				required
 				type="text"
-				class="w-full py-6 rounded-xl border-2 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500"
+				class="w-full py-3 rounded-xl border-2 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500"
 				placeholder="เบอร์โทรศัพท์"
 				bind:value={donatorData.phone_number}
 			/>
 
 			<Input
-				type="text"
-				class="w-full py-6 rounded-xl border-2 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500"
+				required
+				type="email"
+				class="w-full py-3 rounded-xl border-2 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500"
 				placeholder="อีเมล"
 				bind:value={donatorData.email}
 			/>
 
 			<div class="flex flex-row items-center relative">
 				<Input
+					required
 					type={`${showPassword ? 'text' : 'password'}`}
-					class="w-full py-6 rounded-xl border-2 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500"
+					class="w-full py-3 rounded-xl border-2 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500"
 					placeholder="รหัสผ่าน"
 					bind:value={donatorData.password}
 				/>
@@ -312,8 +329,9 @@
 
 			<div class="flex flex-row items-center relative">
 				<Input
+					required
 					type={`${showPassword ? 'text' : 'password'}`}
-					class="w-full py-6 rounded-xl border-2 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500"
+					class="w-full py-3 rounded-xl border-2 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500"
 					placeholder="ยินยันรหัสผ่าน"
 					bind:value={donatorData.confirmPassword}
 				/>
@@ -330,7 +348,7 @@
 		</div>
 
 		<div class="pl-1 justify-start mt-2 items-top flex space-x-2">
-			<Checkbox bind:checked={isAcceptedTerms} />
+			<Checkbox required bind:checked={isAcceptedTerms} />
 			<div class="grid gap-1.5">
 				<Label for="terms1" class="text-sm font-medium leading-none">
 					ยอมรับ <span class="underline text-[#F5222D]">เงื่อนไขและข้อตกลงการใช้งาน</span>
@@ -343,7 +361,7 @@
 
 		<Button
 			variant="secondary"
-			class="w-full rounded-xl py-6 mt-6 text-md font-bold bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600"
+			class="w-full rounded-xl py-3 mt-6 text-md font-bold bg-[#F5222D] text-white hover:bg-red-600 active:bg-red-600"
 			disabled={!isAcceptedTerms || isLoading}
 			on:click={handleRegister}
 		>
@@ -352,7 +370,7 @@
 			{/if}
 			สมัครบัญชีใหม่
 		</Button>
-		<p class="mt-6 text-center">
+		<p class="mt-6 my-9 text-center">
 			มีบัญชีผู้ใช้แล้ว ? <a href="/login" class="text-[#F5222D] underline"> เข้าสู่ระบบ </a>
 		</p>
 	</div>

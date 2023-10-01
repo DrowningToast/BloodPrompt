@@ -4,49 +4,12 @@
     import bloodPromptLogo from '$lib/images/bloodprompt-logo.png';
     import { Button } from "$lib/components/ui/button";
 	import Reward from './reward.svelte';
-	import rewardImage from "$lib/images/staff/reward/reward1.png"
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import Dropdown from '../../../moderator/home/dropdown.svelte';
-
-	const rewardMockInfo = [
-					{
-					point : 2,
-					remain : 3,
-					title : "แก้วน้ำไอ้เจ",
-					desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นของรางวัล", 
-					img : rewardImage}, 
-					{
-					point : 3,
-					remain : 4,
-					title : "แก้วน้ำไอ้เจ",
-					desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นของรางวัล", 
-					img : rewardImage},
-					{
-					point : 5,
-					remain : 6,
-					title : "แก้วน้ำไอ้เจ",
-					desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นของรางวัล", 
-					img : rewardImage},
-					{
-					point : 7,
-					remain : 8,
-					title : "แก้วน้ำไอ้เจ",
-					desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นของรางวัล", 
-					img : rewardImage},
-					{
-					point : 5,
-					remain : 6,
-					title : "แก้วน้ำไอ้เจ",
-					desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นของรางวัล", 
-					img : rewardImage},
-					{
-					point : 7,
-					remain : 8,
-					title : "แก้วน้ำไอ้เจ",
-					desc : "เป็นแก้วน้ำสุดลิมิเต็ดที่เจได้มาจาก roblox แต่เจดันใช้จนเบื่อแล้วเลยทำมาให้เป็นของรางวัล", 
-					img : rewardImage},
-				]
+	import type { PageData } from './$types';
+	export let data:PageData;
+	let rewards = data.filteredRewards;
 	
 </script>
 <div class="flex flex-row w-full justify-between bg-gray-300 max-w-[100vw] min-h-[100vh]">
@@ -129,7 +92,7 @@
 		<div class="flex gap-8 w-full bg-white mt-4 rounded-3xl p-6 flex-wrap">
 			<!-- #each -->
 			<div class="flex w-full h-1/2 justify-between flex-wrap ">
-					{#each rewardMockInfo as eachReward, i(i)}
+					{#each rewards as eachReward, i(i)}
 						<div class="flex w-1/2">
 							<Reward data={eachReward}/>
 						</div>

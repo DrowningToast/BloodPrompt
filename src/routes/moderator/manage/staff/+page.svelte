@@ -12,58 +12,6 @@
 	import { goto } from '$app/navigation';
 	import { trpc } from '$lib/trpc';
 
-	const staff_information = [
-		{
-			id: '1',
-			fullname: 'Marwan Sulong',
-			email: 'wanyedhod@gmail.com',
-			hospital: 'AllahIsMyLoverHospital',
-			password: 'password'
-		},
-		{
-			id: '2',
-			fullname: 'Supakorn Sathitsuk',
-			email: 'jaysudtei@gmail.com',
-			hospital: 'HospitalABC',
-			password: 'password'
-		},
-		{
-			id: '3',
-			fullname: 'Taiwan China',
-			email: 'gaohertai@gmail.com',
-			hospital: 'HospitalTheChineseOne',
-			password: 'password'
-		},
-		{
-			id: '4',
-			fullname: 'Tyler Adams',
-			email: 'TTROVGG@gmail.com',
-			hospital: 'HospitalMuaMua',
-			password: 'password'
-		},
-		{
-			id: '5',
-			fullname: 'Reece James',
-			email: 'ReeceJames@gmail.com',
-			hospital: 'HospitalMuaMua',
-			password: 'password'
-		},
-		{
-			id: '6',
-			fullname: 'Tendou Souji',
-			email: 'kabutored@gmail.com',
-			hospital: 'HospitalMuaMua',
-			password: 'password'
-		},
-		{
-			id: '7',
-			fullname: 'TheReal SlimeShady',
-			email: 'pleaseStandUpPleaseStandup@gmail.com',
-			hospital: 'HospitalMuaMua',
-			password: 'password'
-		}
-	];
-
 	const handleLogout = async () => {
 		await trpc.auth.logout
 			.mutate()
@@ -73,6 +21,51 @@
 			.catch((error) => {
 				console.error(error);
 			});
+	};
+
+	import type { PageData } from './$types';
+
+	export let data: PageData;
+	const { places, medicalAccounts } = data;
+	let filteredAccounts = medicalAccounts;
+
+	let selectedStaff = {
+		id: '',
+		name: '',
+		email: '',
+		password: '',
+		confirmPassword: ''
+	};
+
+	const handleEditStaffAccount = () => {
+		console.log(selectedStaff);
+		const [first_name, last_name] = selectedStaff.name.split(' ');
+		trpc.medicalStaff.update
+			.mutate({
+				medicalStaffId: selectedStaff.id,
+				data: {
+					first_name,
+					last_name,
+					password: selectedStaff.password
+				}
+			})
+			.then((res) => {
+				console.log(res);
+				alert('บันทึกการแก้ไขข้อมูลของคุณแล้ว');
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	};
+
+	let placeNameValue = '';
+
+	const handlePlaceFilterChange = (value: { label: string }) => {
+		if (!value) {
+			filteredAccounts = medicalAccounts.filter((account) => account.Place.name === value.label);
+		} else {
+			filteredAccounts = medicalAccounts;
+		}
 	};
 </script>
 
@@ -128,11 +121,11 @@
 		</div>
 	</div>
 	<div class="flex flex-col items-center w-9/12">
-		<div class="flex items-center bg-white px-14 h-16 w-full py-6 flex-row justify-between">
-			<h1 class="text-2xl font-semibold">BloodPrompt (สำหรับผู้ดูเเลระบบ)</h1>
-			<div class="flex gap-3 items-center">
-				<UserCircle class="fill-[#EF4444] stroke-white scale-150" />
-				<p>ผู้ดูแลระบบ</p>
+    <div class="flex items-center bg-white px-14  w-full  py-6 justify-between h-16">
+      <h1 class=" font-bold text-xl">BloodPrompt (สำหรับผู้ดูเเลระบบ)</h1>
+      <div class="flex flex-row items-center gap-1">
+          <UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8"/>
+          <h1 class="font-semibold">ผู้ดูเเลระบบ</h1>
 				<Dropdown />
 			</div>
 		</div>
@@ -150,7 +143,18 @@
 				<div class="flex flex-col gap-1">
 					<p class="font-bold">เเสดงข้อมูลทั้งหมด / เลือกเเสดงตามโรงพยาบาล</p>
 					<!-- selector -->
-					<Select.Root>
+					<Select.Root
+						onSelectedChange={(event) => {
+							if (!event) {
+								return;
+							}
+							if (event.value && event.value != 'All') {
+								filteredAccounts = medicalAccounts.filter((x) => x.Place.name === event.value);
+							} else {
+								filteredAccounts = medicalAccounts.filter((x) => x.Place.name !== '');
+							}
+						}}
+					>
 						<Select.Trigger class="w-[475px] h-[50px] bg-white rounded-xl text-[#888]">
 							<Select.Value
 								class="text-base"
@@ -158,9 +162,10 @@
 							/>
 						</Select.Trigger>
 						<Select.Content>
-							<Select.Item value="light">Light</Select.Item>
-							<Select.Item value="dark">Dark</Select.Item>
-							<Select.Item value="system">System</Select.Item>
+							<Select.Item value={'All'}>แสดงทั้งหมด</Select.Item>
+							{#each places as place}
+								<Select.Item value={place.name}>{place.name}</Select.Item>
+							{/each}
 						</Select.Content>
 					</Select.Root>
 				</div>
@@ -175,9 +180,21 @@
 								type="text"
 								placeholder="ระบุชื่อของบุคลากรการเเพทย์เพื่อทำการค้นหา"
 								class="bg-white w-[425px] h-[50px] p-5 rounded-xl"
+								bind:value={placeNameValue}
 							/>
 							<!-- button -->
 							<Button
+								on:click={() => {
+									if (placeNameValue) {
+										filteredAccounts = medicalAccounts.filter(
+											(account) =>
+												account.first_name.includes(placeNameValue) ||
+												account.first_name.includes(placeNameValue)
+										);
+									} else {
+										filteredAccounts = medicalAccounts;
+									}
+								}}
 								class="flex self-center gap-1 w-[107px] h-11 bg-[#EF4444] hover:bg-[#EF4444] rounded-3xls"
 							>
 								<svg
@@ -213,17 +230,32 @@
 					</Table.Header>
 					<Table.Body>
 						<!-- Record -->
-						{#each staff_information as info}
+						{#each filteredAccounts as account}
 							<Table.Row class="text-center">
-								<Table.Cell>{info.id}</Table.Cell>
-								<Table.Cell>{info.fullname}</Table.Cell>
-								<Table.Cell>{info.email}</Table.Cell>
-								<Table.Cell>{info.hospital}</Table.Cell>
+								<Table.Cell>{account.id}</Table.Cell>
+								<Table.Cell>{account.first_name + ' ' + account.last_name}</Table.Cell>
+								<Table.Cell>{account.email}</Table.Cell>
+								<Table.Cell>{account.Place.name}</Table.Cell>
 								<Table.Cell class="flex justify-center">
 									<!-- Dialog Popup -->
 									<Dialog.Root>
 										<Dialog.Trigger>
-											<Search class="cursor-pointer self-center hover:stroke-[#EF4444]" />
+											<button
+												on:click={() => {
+													const selected = medicalAccounts.find((a) => a.id === account.id);
+													if (selected) {
+														selectedStaff = {
+															id: selected.id,
+															name: selected.first_name + ' ' + selected.last_name,
+															email: selected.email,
+															confirmPassword: '',
+															password: ''
+														};
+													}
+												}}
+											>
+												<Search class="cursor-pointer self-center hover:stroke-[#EF4444]" />
+											</button>
 										</Dialog.Trigger>
 										<Dialog.Content class="w-[805px] h-[545px]">
 											<Dialog.Header class="p-0 m-0">
@@ -249,31 +281,40 @@
 											<div class="flex flex-col gap-4">
 												<Label class="text-left font-bold">ข้อมูลส่วนตัวของบุคลากรการเเพทย์</Label>
 												<div class="flex flex-col gap-[10px]">
-													<Input id="name" value={info.fullname} class="border-2 rounded-xl" />
-													<Input id="name" value={info.email} class="border-2 rounded-xl" />
+													<Input
+														id="name"
+														bind:value={selectedStaff.name}
+														class="border-2 rounded-xl"
+													/>
+													<Input
+														id="email"
+														bind:value={selectedStaff.email}
+														class="border-2 rounded-xl"
+													/>
 												</div>
-												<div class="flex flex-col gap-4">
+												<div class="flex flex-col gap-4 mt-4">
 													<Label class="text-left font-bold"
 														>ข้อมูลการเข้าสู่ระบบของบุคลากรการเเพทย์</Label
 													>
 													<div class="flex flex-col gap-[10px]">
 														<Input
 															id="name"
-															value={info.password}
 															type="password"
 															class="border-2 rounded-xl"
+															bind:value={selectedStaff.password}
 														/>
 														<Input
 															id="username"
-															value={info.password}
 															type="password"
 															class="border-2 rounded-xl"
+															bind:value={selectedStaff.confirmPassword}
 														/>
 													</div>
 												</div>
 											</div>
 											<Dialog.Footer>
 												<Button
+													on:click={handleEditStaffAccount}
 													type="submit"
 													class="rounded-3xl bg-[#EF4444] hover:bg-[#EF4444] text-base font-semibold text-white w-[140px] h-11 "
 													>บันทึกข้อมูล</Button

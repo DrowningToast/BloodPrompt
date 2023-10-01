@@ -17,7 +17,7 @@ export const medicalStaffRouter = createRouter({
 			const medicalAccount = await prisma.medical_Staff.create({
 				data: {
 					...data,
-					password: (await encodePassword(data.password)) || '',
+					password: encodePassword(data.password),
 					Place: {
 						connect: {
 							id: placeId
@@ -32,17 +32,20 @@ export const medicalStaffRouter = createRouter({
 		}),
 	createMany: publicProcedure
 		.input(
-			z
-				.object({
-					first_name: z.string().min(1),
-					last_name: z.string().min(1),
-					email: z.string().email().min(1),
-					password: z.string().min(1),
-					place_id: z.string().min(1)
-				})
-				.array()
+			z.object({
+				staffAccounts: z
+					.object({
+						first_name: z.string().min(1),
+						last_name: z.string().min(1),
+						email: z.string().email().min(1),
+						password: z.string().min(1)
+					})
+					.array(),
+				placeId: z.string().min(1)
+			})
 		)
 		.mutation(async ({ input }) => {
+			const { staffAccounts, placeId } = input;
 			const data: {
 				first_name: string;
 				last_name: string;
@@ -51,13 +54,13 @@ export const medicalStaffRouter = createRouter({
 				place_id: string;
 			}[] = [];
 
-			for (const obj of input) {
+			for (const obj of staffAccounts) {
 				data.push({
 					first_name: obj.first_name,
 					last_name: obj.last_name,
 					email: obj.email,
-					password: (await encodePassword(obj.password)) || '',
-					place_id: obj.place_id
+					password: encodePassword(obj.password),
+					place_id: placeId
 				});
 			}
 
@@ -80,7 +83,7 @@ export const medicalStaffRouter = createRouter({
 			const { data, medicalStaffId } = input;
 
 			if (data.password) {
-				data.password = await encodePassword(data.password);
+				data.password = encodePassword(data.password);
 			}
 
 			const medicalStaff = await prisma.medical_Staff.update({
