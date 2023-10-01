@@ -1,6 +1,7 @@
 <script lang="ts">
 	import {
 		Home,
+		Megaphone,
 		LogOut,
 		CalendarHeart,
 		FileText,
@@ -19,6 +20,7 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { trpc } from '$lib/trpc';
+	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 
 	let fileInput: HTMLInputElement;
 	let reward: any;
@@ -27,7 +29,7 @@
 		let reader = new FileReader();
 		reader.readAsDataURL(image);
 		reader.onload = (e) => {
-			reward = e.target.result;
+			reward = e.target?.result;
 		};
 	};
 
@@ -61,8 +63,8 @@
 	};
 </script>
 
-<div class="flex justify-between bg-gray-300 min-w-screen min-h-[100vh] h-full w-full">
-	<div class="flex flex-col bg-[#191F2F] w-3/12 h-auto">
+<div class="flex justify-between bg-gray-300 max-w-[100vw] min-h-[100vh] w-full">
+	<div class="flex flex-col bg-[#191F2F] w-3/12 h-100%">
 		<div class="flex flex-row px-8 py-16 justify-center">
 			<img src={bloodpromptlogo} alt="" class="w-16" />
 			<h1 class="translate-y-4 text-xl font-bold text-white px-3">BLOODPROMPT</h1>
@@ -77,12 +79,19 @@
 						}
 					}}><Home class="w-5 h-5 " />หน้าหลัก</Button
 				>
-
+				<Button
+					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F]  text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+					on:click={() => {
+						if (browser) {
+							goto('/staff/manage/announcement');
+						}
+					}}><Megaphone class="w-5 h-7 pb-[2px] " />จัดการประกาศประชาสัมพันธ์</Button
+				>
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
 					on:click={() => {
 						if (browser) {
-							goto('/staff/ reservation');
+							goto('/staff/manage/reservation');
 						}
 					}}><FileText class="w-5 h-5" />การจองคิว</Button
 				>
@@ -115,14 +124,14 @@
 			>
 		</div>
 	</div>
-	<div class="flex flex-col justify-center items-center w-9/12 h-auto">
+	<div class="flex flex-col items-center w-9/12">
 		<div class="w-full h-20 bg-white grid grid-cols-3 items-center justify-center px-8">
 			<div class="items-center justify-center flex" />
-			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
+			<div class="items-center justify-center flex text-2xl font-semibold">{$placeName}</div>
 			<div class="items-center justify-end flex gap-2">
 				<div class="flex flex-row items-center gap-3">
 					<UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8" />
-					<h1 class="font-bold">ศรุตา โทรัตน์</h1>
+					<h1 class="font-bold">{$medicalStaffName}</h1>
 					<div>
 						<DropdownMenu.Root>
 							<DropdownMenu.Trigger asChild let:builder>

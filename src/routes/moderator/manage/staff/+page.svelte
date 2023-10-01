@@ -60,14 +60,6 @@
 	};
 
 	let placeNameValue = '';
-
-	const handlePlaceFilterChange = (value: { label: string }) => {
-		if (!value) {
-			filteredAccounts = medicalAccounts.filter((account) => account.Place.name === value.label);
-		} else {
-			filteredAccounts = medicalAccounts;
-		}
-	};
 </script>
 
 <div class="flex flex-row w-full justify-between bg-gray-300 max-w-[100vw] min-h-[100vh]">

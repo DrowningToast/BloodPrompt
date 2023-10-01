@@ -20,10 +20,14 @@
 		Calendar,
 		Clock,
 		Syringe,
-		FileCheck
+		FileCheck,
+		UserCircle,
+		Megaphone
 	} from 'lucide-svelte';
 
 	export let data: PageData;
+	const { allReservation } = data;
+	let filteredReservationData = allReservation;
 	import { Input } from '$lib/components/ui/input';
 
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
@@ -37,6 +41,67 @@
 	import wallet from '$lib/images/wallet.png';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
+	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
+	import Dropdown from '../../../moderator/home/dropdown.svelte';
+	import { toDateString } from '$lib/utils';
+	import { trpc } from '$lib/trpc';
+	import type { Reservations } from '../../../../../generated-zod';
+	import type { DonationStatus } from '@prisma/client';
+
+	let selectedBloodQuality = '';
+	let selectedDonationStatus = '';
+
+	const handleBloodQualityChange = (event: any) => {
+		selectedBloodQuality = event.value;
+	};
+
+	const handleDonationStatusChange = (event: any) => {
+		selectedDonationStatus = event.value;
+	};
+
+	const handleUpdateDonationData = async (bloodType: any, reservationId: string) => {
+		trpc.donationHistory.submitBloodDonation
+			.mutate({
+				data: {
+					blood_quality_status: selectedBloodQuality,
+					blood_type: bloodType,
+					reservation_id: reservationId,
+					rewarded_points: selectedDonationStatus === 'SUCCESS' ? 300 : 0,
+					status: selectedDonationStatus as DonationStatus
+				}
+			})
+			.then(() => {
+				alert('บันทึกข้อมูลการบรืจาคเลือดสำเร็จ');
+				window.location.reload();
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	};
+
+	const handleCancelReservation = async (reservationId: string) => {
+		trpc.reservation.cancelReservation
+			.query({ reservationId: reservationId })
+			.then(() => {
+				alert('ระบบยกเลิกการจองนี้เรียบร้อยแล้ว');
+				window.location.reload();
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	};
+
+	const handleFilterStatusChange = (event: any) => {
+		if (event.value === 'all') {
+			filteredReservationData = allReservation;
+		} else if (event.value === '1') {
+			filteredReservationData = allReservation.filter((data) => data.status === 'BOOKED');
+		} else if (event.value === '2') {
+			filteredReservationData = allReservation.filter((data) => data.status === 'COMPLETED');
+		} else if (event.value === '3') {
+			filteredReservationData = allReservation.filter((data) => data.status === 'CANCELLED');
+		}
+	};
 </script>
 
 <div class="flex flex-row">
@@ -55,6 +120,15 @@
 						}
 					}}><Home class="w-5 h-5 " />หน้าหลัก</Button
 				>
+				<Button
+					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F]  text-base  rounded-full text-start px-6 py-4 h-12 text-white"
+					on:click={() => {
+						if (browser) {
+							goto('/staff/manage/announcement');
+						}
+					}}><Megaphone class="w-5 h-7 pb-[2px] " />จัดการประกาศประชาสัมพันธ์</Button
+				>
+
 				<Button
 					class="flex justify-start items-center gap-3 bg-[#EF4444] hover:bg-[#ef4444] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
 					on:click={() => {
@@ -91,15 +165,17 @@
 		</div>
 	</div>
 	<div class="w-9/12 h-100% bg-[#D9D9D9]">
-		<div class="w-full h-16 bg-white grid grid-cols-3 items-center justify-center px-8">
+		<div class="w-full bg-white grid grid-cols-3 items-center justify-center px-8 h-16">
 			<div class="items-center justify-center flex" />
-			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
+			<div class="items-center justify-center flex text-2xl font-semibold">{$placeName}</div>
 			<div class="items-center justify-end flex gap-2">
-				<div class="bg-[#EF4444] w-9 h-8 rounded-full flex items-center justify-center">
-					<User class="text-white" />
+				<div class="flex flex-row items-center gap-1">
+					<UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8" />
+					<h1 class="font-bold">
+						{$medicalStaffName}
+					</h1>
+					<Dropdown />
 				</div>
-
-				<div class=" text-base">ศรุตา โทรัตน์</div>
 			</div>
 		</div>
 		<div class="px-8 py-8">
@@ -111,17 +187,15 @@
 				<div>ค้นหาโดยใช้หมายเลขการจองคิว</div>
 			</div>
 			<div class="flex flex-row gap-8 items-center mt-2">
-				<Select.Root>
+				<Select.Root onSelectedChange={handleFilterStatusChange}>
 					<Select.Trigger class="w-96 bg-white h-12 rounded-lg">
 						<Select.Value placeholder="ทั้งหมด" />
 					</Select.Trigger>
 					<Select.Content class="py-2">
 						<Select.Item value="all" class="py-2">ทั้งหมด</Select.Item>
-						<Select.Item value="new" class="py-2">ใหม่สุด</Select.Item>
-						<Select.Item value="old" class="py-2">เก่าสุด</Select.Item>
-						<Select.Item value="thisDay" class="py-2">วันนี้</Select.Item>
-						<Select.Item value="thisMonth" class="py-2">เดือนนี้</Select.Item>
-						<Select.Item value="thisYear" class="py-2">ปีนี้</Select.Item>
+						<Select.Item value="1" class="py-2">จองคิวสำเร็จ</Select.Item>
+						<Select.Item value="2" class="py-2">เสร็จสิ้น / เข้ารับบริการแล้ว</Select.Item>
+						<Select.Item value="3" class="py-2">ยกเลิก</Select.Item>
 					</Select.Content>
 				</Select.Root>
 				<Input placeholder="ระบุหมายเลขการจองคิว" class=" w-96 bg-white h-12 rounded-lg" />
@@ -132,7 +206,6 @@
 			</div>
 			<div class="bg-white w-auto h-[84vh] rounded-xl mt-8 px-8">
 				<Table.Root>
-					<Table.Caption>A list of reservation.</Table.Caption>
 					<Table.Header>
 						<Table.Row>
 							<Table.Head class="w-[100px]">ID</Table.Head>
@@ -141,89 +214,108 @@
 							<Table.Head>Gender</Table.Head>
 							<Table.Head>DOB</Table.Head>
 							<Table.Head>Blood Type</Table.Head>
-
 							<Table.Head>Date</Table.Head>
 							<Table.Head>Time</Table.Head>
 							<Table.Head class="flex  items-center justify-center">รายละเอียด</Table.Head>
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>
-						<Table.Row>
-							<Table.Cell class="font-medium">121</Table.Cell>
-							<Table.Cell>ศรุตา</Table.Cell>
-							<Table.Cell>โทรัตน์</Table.Cell>
-							<Table.Cell>Female</Table.Cell>
-							<Table.Cell>21/04/2004</Table.Cell>
-							<Table.Cell>AB</Table.Cell>
-
-							<Table.Cell>12/12/2023</Table.Cell>
-							<Table.Cell>13:00 น.</Table.Cell>
-							<Table.Cell
-								><Dialog.Root>
-									<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}>
-										รายละเอียด
-									</Dialog.Trigger>
-									<Dialog.Content class="sm:max-w-[1000px] sm:min-h-[700px] flex flex-col mx-10">
-										<Dialog.Header class="h-1">
-											<Dialog.Title class="text-3xl mx-5 mt-5"
-												>รายละเอียดการจองคิวบริจาคเลือด</Dialog.Title
-											>
-											<div class=" text-base text-slate-500 mx-5">
-												รายละเอียดเพิ่มเติมของจองคิวบริจาคเลือด
-											</div>
-										</Dialog.Header>
-										<div class="flex flex-row mt-28 mx-5 gap-2 h-96">
-											<div class=" basis-1/2 bg-white drop-shadow-md h-full">
-												<div class="w-full flex flex-col items-center justify-center gap-4 my-6">
-													<div class="text-2xl font-semibold">รายละเอียดผู้บริจาคเลือด</div>
-													<div
-														class="w-20 h-20 bg-slate-600 rounded-full flex items-center justify-center my-4 mt-2"
-													>
-														<User class="text-white" />
-													</div>
-													<div class="w-full flex flex-row justify-center items-center gap-6">
-														<div class="w-44 h-52 flex flex-col gap-2">
-															<div class="flex flex-row items-center gap-2">
-																<Heart />
-																<div class="flex flex-col">
-																	<div class="text-sm text-gray-500">รหัสผู้บริจาค</div>
-																	<div>00001</div>
-																</div>
-															</div>
-															<div class="flex flex-row items-center gap-2">
-																<User2 />
-																<div class="flex flex-col">
-																	<div class="text-sm text-gray-500">เพศ</div>
-																	<div>ชาย</div>
-																</div>
-															</div>
-															<div class="flex flex-row items-center gap-2">
-																<Cake />
-																<div class="flex flex-col">
-																	<div class="text-sm text-gray-500">วัน/เดือน/ปีเกิด</div>
-																	<div>21/04/2004</div>
-																</div>
-															</div>
+						{#each filteredReservationData as reservation, index}
+							<Table.Row>
+								<Table.Cell class="font-medium">{index + 1}</Table.Cell>
+								<Table.Cell>{reservation.Donator.first_name}</Table.Cell>
+								<Table.Cell>{reservation.Donator.last_name}</Table.Cell>
+								<Table.Cell>{reservation.Donator.gender === 'MALE' ? 'ชาย' : 'หญิง'}</Table.Cell>
+								<Table.Cell>{toDateString(new Date(reservation.Donator.dob))}</Table.Cell>
+								<Table.Cell>{reservation.Donator.Medical_Account.blood_type}</Table.Cell>
+								<Table.Cell
+									>{toDateString(new Date(reservation.Reservation_Slot.reserve_date))}</Table.Cell
+								>
+								<Table.Cell
+									>{new Date(reservation.Reservation_Slot.reserve_time).getHours().toFixed(2) +
+										' - ' +
+										(new Date(reservation.Reservation_Slot.reserve_time).getHours() + 1).toFixed(
+											2
+										)}</Table.Cell
+								>
+								<Table.Cell
+									><Dialog.Root>
+										{#if reservation.status === 'BOOKED' || reservation.status === 'COMPLETED'}
+											<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}>
+												รายละเอียด
+											</Dialog.Trigger>
+										{:else}
+											<Dialog.Trigger class={buttonVariants({ variant: 'outline' })} disabled>
+												การจองถูกยกเลิก
+											</Dialog.Trigger>
+										{/if}
+										<Dialog.Content class="sm:max-w-[1250px] sm:min-h-[700px] flex flex-col mx-10">
+											<Dialog.Header class="h-1">
+												<Dialog.Title class="text-3xl mx-5 mt-5"
+													>รายละเอียดการจองคิวบริจาคเลือด</Dialog.Title
+												>
+												<div class=" text-base text-slate-500 mx-5">
+													รายละเอียดเพิ่มเติมของจองคิวบริจาคเลือด
+												</div>
+											</Dialog.Header>
+											<div class="flex flex-row mt-28 mx-5 gap-6">
+												<div class=" basis-1/2 bg-white drop-shadow-md h-full">
+													<div class="w-full flex flex-col items-center justify-center gap-8 my-6">
+														<div class="text-2xl font-semibold">รายละเอียดผู้บริจาคเลือด</div>
+														<div
+															class="w-20 h-20 bg-slate-600 rounded-full flex items-center justify-center my-4 mt-2"
+														>
+															<User class="text-white" />
 														</div>
-														<div class=" w-44 h-52">
-															<div class="w-full flex flex-row justify-center items-center gap-6">
-																<div class="w-44 h-52 flex flex-col gap-2">
-																	<div class="flex flex-row items-center gap-2">
-																		<Phone />
-																		<div class="flex flex-col">
-																			<div class="text-sm text-gray-500">เบอร์โทรศัพท์</div>
-																			<div>0618245909</div>
+														<div class="w-full flex flex-row justify-center items-center gap-16">
+															<div class="w-44 h-52 flex flex-col gap-6">
+																<div class="flex flex-row items-center gap-2">
+																	<Heart />
+																	<div class="flex flex-col">
+																		<div class="text-sm text-gray-500">รหัสผู้บริจาค</div>
+																		<div class="text-sm">{reservation.Donator.id}</div>
+																	</div>
+																</div>
+																<div class="flex flex-row items-center gap-2">
+																	<User2 />
+																	<div class="flex flex-col">
+																		<div class="text-sm text-gray-500">เพศ</div>
+																		<div class="text-sm">
+																			{reservation.Donator.gender === 'MALE' ? 'ชาย' : 'หญิง'}
 																		</div>
 																	</div>
-																	<div class="flex flex-row gap-2 justify-start items-start">
-																		<div class="y-full flex justify-start items-start mt-2">
-																			<Home />
+																</div>
+																<div class="flex flex-row items-center gap-2">
+																	<Cake />
+																	<div class="flex flex-col">
+																		<div class="text-sm text-gray-500">วัน/เดือน/ปีเกิด</div>
+																		<div>
+																			{toDateString(new Date(reservation.Donator.dob))}
 																		</div>
-																		<div class="flex flex-col">
-																			<div class="text-sm text-gray-500">ที่อยู่</div>
-																			<div class="text-sm">
-																				1208 วิภาเพลส 655/16 ซอยฉลองกรุง 1 ถนนฉลองกรุง แขวงลาดกระบัง
-																				เขตลาดกระบัง กรุงเทพมหานคร 10520
+																	</div>
+																</div>
+															</div>
+															<div class=" w-44 h-52">
+																<div class="w-full flex flex-row justify-center items-center gap-6">
+																	<div class="w-44 h-52 flex flex-col gap-2">
+																		<div class="flex flex-row items-center gap-2">
+																			<Phone />
+																			<div class="flex flex-col">
+																				<div class="text-sm text-gray-500">เบอร์โทรศัพท์</div>
+																				<div>
+																					{reservation.Donator.phone_number}
+																				</div>
+																			</div>
+																		</div>
+																		<div class="flex flex-row gap-2 justify-start items-start">
+																			<div class="y-full flex justify-start items-start mt-2">
+																				<Home />
+																			</div>
+																			<div class="flex flex-col">
+																				<div class="text-sm text-gray-500">ที่อยู่</div>
+																				<div>
+																					{reservation.Donator.address}
+																				</div>
 																			</div>
 																		</div>
 																	</div>
@@ -232,272 +324,126 @@
 														</div>
 													</div>
 												</div>
-											</div>
-											<div class=" basis-1/2 bg-white drop-shadow-md">
-												<div class="w-full flex flex-col items-center justify-center gap-4 my-6">
-													<div class="text-2xl font-semibold">รายละเอียดการจองคิวบริจาคเลือด</div>
+												<div class=" basis-1/2 bg-white drop-shadow-md">
+													<div class="w-full flex flex-col items-center justify-center gap-4 my-6">
+														<div class="text-2xl font-semibold">รายละเอียดการจองคิวบริจาคเลือด</div>
 
-													<div class="w-full flex flex-row justify-center items-center gap-6">
-														<div class="w-44 h-52 flex flex-col gap-2">
-															<div class="flex flex-row items-center gap-2">
-																<Calendar />
-																<div class="flex flex-col">
-																	<div class="text-sm text-gray-500">วันที่จอง</div>
-																	<div>21/12/2023</div>
-																</div>
-															</div>
-															<div class="flex flex-row items-center gap-2">
-																<Clock />
-																<div class="flex flex-col">
-																	<div class="text-sm text-gray-500">ช่วงเวลา</div>
-																	<div>13:00 น.</div>
-																</div>
-															</div>
-															<div class="flex flex-row items-center gap-2">
-																<Syringe />
-																<div class="flex flex-col">
-																	<div class="text-sm text-gray-500">กรุ๊ปเลือด</div>
-																	<div>AB</div>
-																</div>
-															</div>
-															<div class="flex flex-row items-center gap-2">
-																<FileCheck />
-																<div class="flex flex-col">
-																	<div class="text-sm text-gray-500">สถานะการทำแบบประเมิน</div>
-																	<div>ผ่านการทดสอบ</div>
-																</div>
-															</div>
-														</div>
-														<div class=" w-44 h-52">
-															<div class="w-full flex flex-row justify-center items-center gap-6">
-																<div class="w-44 h-52 flex flex-col gap-2">
-																	<div class="flex flex-row items-center gap-2">
-																		<div class="flex flex-col">
-																			<div class="text-sm text-gray-500">สถานะการบริจาคเลือด</div>
-																			<Select.Root>
-																				<Select.Trigger class=" w-44">
-																					<Select.Value placeholder="สถานะ" />
-																				</Select.Trigger>
-																				<Select.Content>
-																					<Select.Item value="">บริจาคเลือดสำเร็จ</Select.Item>
-																					<Select.Item value="">บริจาคเลือดไม่่สำเร็จ</Select.Item>
-																				</Select.Content>
-																			</Select.Root>
-																		</div>
-																	</div>
-																	<div class="flex flex-row gap-2 justify-start items-start">
-																		<div class="flex flex-col">
-																			<div class="text-sm text-gray-500">สถานะคุณภาพเลือด</div>
-
-																			<Select.Root>
-																				<Select.Trigger class=" w-44">
-																					<Select.Value placeholder="สถานะ" />
-																				</Select.Trigger>
-																				<Select.Content>
-																					<Select.Item value="light">เลือดคุณภาพดี</Select.Item>
-																					<Select.Item value="dark"
-																						>เลือดไม่สามารถบริจาคได้</Select.Item
-																					>
-																				</Select.Content>
-																			</Select.Root>
+														<div class="w-full flex flex-row justify-center items-center gap-6">
+															<div class="w-44 h-52 flex flex-col gap-2">
+																<div class="flex flex-row items-center gap-2">
+																	<Calendar />
+																	<div class="flex flex-col">
+																		<div class="text-sm text-gray-500">วันที่จอง</div>
+																		<div>
+																			{toDateString(
+																				new Date(reservation.Reservation_Slot.reserve_date)
+																			)}
 																		</div>
 																	</div>
 																</div>
-															</div>
-														</div>
-													</div>
-													<div class=" w-96 h-16 flex justify-end items-center">
-														<button class=" bg-[#191F2F] w-40 h-10 text-white rounded-full"
-															>บันทึกการแก้ไข</button
-														>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class=" w-auto h-16 flex justify-end items-center mx-14 mt-5">
-											<button class=" w-40 h-10 text-white rounded-full bg-[#ef4444]"
-												>ยกเลิกการจองคิว</button
-											>
-										</div></Dialog.Content
-									>
-								</Dialog.Root></Table.Cell
-							>
-						</Table.Row>
-						<Table.Row>
-							<Table.Cell class="font-medium">122</Table.Cell>
-							<Table.Cell>ศิลา</Table.Cell>
-							<Table.Cell>สาลี่</Table.Cell>
-							<Table.Cell>Male</Table.Cell>
-							<Table.Cell>99/12/2004</Table.Cell>
-							<Table.Cell>B</Table.Cell>
-
-							<Table.Cell>12/12/2023</Table.Cell>
-							<Table.Cell>14:00 น.</Table.Cell>
-							<Table.Cell
-								><Dialog.Root>
-									<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}>
-										รายละเอียด
-									</Dialog.Trigger>
-									<Dialog.Content class="sm:max-w-[1000px] sm:min-h-[700px] flex flex-col mx-10">
-										<Dialog.Header class="h-1">
-											<Dialog.Title class="text-3xl mx-5 mt-5"
-												>รายละเอียดการจองคิวบริจาคเลือด</Dialog.Title
-											>
-											<div class=" text-base text-slate-500 mx-5">
-												รายละเอียดเพิ่มเติมของจองคิวบริจาคเลือด
-											</div>
-										</Dialog.Header>
-										<div class="flex flex-row mt-28 mx-5 gap-2 h-96">
-											<div class=" basis-1/2 bg-white drop-shadow-md h-full">
-												<div class="w-full flex flex-col items-center justify-center gap-4 my-6">
-													<div class="text-2xl font-semibold">รายละเอียดผู้บริจาคเลือด</div>
-													<div
-														class="w-20 h-20 bg-slate-600 rounded-full flex items-center justify-center my-4 mt-2"
-													>
-														<User class="text-white" />
-													</div>
-													<div class="w-full flex flex-row justify-center items-center gap-6">
-														<div class="w-44 h-52 flex flex-col gap-2">
-															<div class="flex flex-row items-center gap-2">
-																<Heart />
-																<div class="flex flex-col">
-																	<div class="text-sm text-gray-500">รหัสผู้บริจาค</div>
-																	<div>00001</div>
-																</div>
-															</div>
-															<div class="flex flex-row items-center gap-2">
-																<User2 />
-																<div class="flex flex-col">
-																	<div class="text-sm text-gray-500">เพศ</div>
-																	<div>ชาย</div>
-																</div>
-															</div>
-															<div class="flex flex-row items-center gap-2">
-																<Cake />
-																<div class="flex flex-col">
-																	<div class="text-sm text-gray-500">วัน/เดือน/ปีเกิด</div>
-																	<div>21/04/2004</div>
-																</div>
-															</div>
-														</div>
-														<div class=" w-44 h-52">
-															<div class="w-full flex flex-row justify-center items-center gap-6">
-																<div class="w-44 h-52 flex flex-col gap-2">
-																	<div class="flex flex-row items-center gap-2">
-																		<Phone />
-																		<div class="flex flex-col">
-																			<div class="text-sm text-gray-500">เบอร์โทรศัพท์</div>
-																			<div>0618245909</div>
+																<div class="flex flex-row items-center gap-2">
+																	<Clock />
+																	<div class="flex flex-col">
+																		<div class="text-sm text-gray-500">ช่วงเวลา</div>
+																		<div>
+																			{new Date(reservation.Reservation_Slot.reserve_time)
+																				.getHours()
+																				.toFixed(2) +
+																				' - ' +
+																				(
+																					new Date(
+																						reservation.Reservation_Slot.reserve_time
+																					).getHours() + 1
+																				).toFixed(2)}
 																		</div>
 																	</div>
-																	<div class="flex flex-row gap-2 justify-start items-start">
-																		<div class="y-full flex justify-start items-start mt-2">
-																			<Home />
+																</div>
+																<div class="flex flex-row items-center gap-2">
+																	<Syringe />
+																	<div class="flex flex-col">
+																		<div class="text-sm text-gray-500">กรุ๊ปเลือด</div>
+																		<div>{reservation.Donator.Medical_Account.blood_type}</div>
+																	</div>
+																</div>
+																<div class="flex flex-row items-center gap-2">
+																	<FileCheck />
+																	<div class="flex flex-col">
+																		<div class="text-sm text-gray-500">สถานะการทำแบบประเมิน</div>
+																		<div>ผ่านการทดสอบ</div>
+																	</div>
+																</div>
+															</div>
+															<div class=" w-44 h-52">
+																<div class="w-full flex flex-row justify-center items-center gap-6">
+																	<div class="w-44 h-52 flex flex-col gap-2">
+																		<div class="flex flex-row items-center gap-2">
+																			<div class="flex flex-col">
+																				<div class="text-sm text-gray-500">สถานะการบริจาคเลือด</div>
+																				<Select.Root onSelectedChange={handleDonationStatusChange}>
+																					<Select.Trigger class=" w-44">
+																						<Select.Value placeholder="สถานะ" />
+																					</Select.Trigger>
+																					<Select.Content>
+																						<Select.Item value="SUCCESS"
+																							>บริจาคเลือดสำเร็จ</Select.Item
+																						>
+																						<Select.Item value="FAILED"
+																							>บริจาคเลือดไม่่สำเร็จ</Select.Item
+																						>
+																					</Select.Content>
+																				</Select.Root>
+																			</div>
 																		</div>
-																		<div class="flex flex-col">
-																			<div class="text-sm text-gray-500">ที่อยู่</div>
-																			<div class="text-sm">
-																				1208 วิภาเพลส 655/16 ซอยฉลองกรุง 1 ถนนฉลองกรุง แขวงลาดกระบัง
-																				เขตลาดกระบัง กรุงเทพมหานคร 10520
+																		<div class="flex flex-row gap-2 justify-start items-start">
+																			<div class="flex flex-col">
+																				<div class="text-sm text-gray-500">สถานะคุณภาพเลือด</div>
+
+																				<Select.Root onSelectedChange={handleBloodQualityChange}>
+																					<Select.Trigger class=" w-44">
+																						<Select.Value placeholder="สถานะ" />
+																					</Select.Trigger>
+																					<Select.Content>
+																						<Select.Item value="QUALIFY">เลือดคุณภาพดี</Select.Item>
+																						<Select.Item value="DISQUALIFY"
+																							>เลือดไม่สามารถบริจาคได้</Select.Item
+																						>
+																					</Select.Content>
+																				</Select.Root>
 																			</div>
 																		</div>
 																	</div>
 																</div>
 															</div>
 														</div>
+														<div class=" w-96 h-16 flex justify-end items-center">
+															{#if reservation.status === 'BOOKED'}
+																<button
+																	class=" bg-[#191F2F] w-40 h-10 text-white rounded-full"
+																	on:click={() =>
+																		handleUpdateDonationData(
+																			reservation.Donator.Medical_Account.blood_type,
+																			reservation.id
+																		)}>บันทึกการแก้ไข</button
+																>
+															{/if}
+														</div>
 													</div>
 												</div>
 											</div>
-											<div class=" basis-1/2 bg-white drop-shadow-md">
-												<div class="w-full flex flex-col items-center justify-center gap-4 my-6">
-													<div class="text-2xl font-semibold">รายละเอียดการจองคิวบริจาคเลือด</div>
-
-													<div class="w-full flex flex-row justify-center items-center gap-6">
-														<div class="w-44 h-52 flex flex-col gap-2">
-															<div class="flex flex-row items-center gap-2">
-																<Calendar />
-																<div class="flex flex-col">
-																	<div class="text-sm text-gray-500">วันที่จอง</div>
-																	<div>21/12/2023</div>
-																</div>
-															</div>
-															<div class="flex flex-row items-center gap-2">
-																<Clock />
-																<div class="flex flex-col">
-																	<div class="text-sm text-gray-500">ช่วงเวลา</div>
-																	<div>13:00 น.</div>
-																</div>
-															</div>
-															<div class="flex flex-row items-center gap-2">
-																<Syringe />
-																<div class="flex flex-col">
-																	<div class="text-sm text-gray-500">กรุ๊ปเลือด</div>
-																	<div>AB</div>
-																</div>
-															</div>
-															<div class="flex flex-row items-center gap-2">
-																<FileCheck />
-																<div class="flex flex-col">
-																	<div class="text-sm text-gray-500">สถานะการทำแบบประเมิน</div>
-																	<div>ผ่านการทดสอบ</div>
-																</div>
-															</div>
-														</div>
-														<div class=" w-44 h-52">
-															<div class="w-full flex flex-row justify-center items-center gap-6">
-																<div class="w-44 h-52 flex flex-col gap-2">
-																	<div class="flex flex-row items-center gap-2">
-																		<div class="flex flex-col">
-																			<div class="text-sm text-gray-500">สถานะการบริจาคเลือด</div>
-																			<Select.Root>
-																				<Select.Trigger class=" w-44">
-																					<Select.Value placeholder="สถานะ" />
-																				</Select.Trigger>
-																				<Select.Content>
-																					<Select.Item value="">บริจาคเลือดสำเร็จ</Select.Item>
-																					<Select.Item value="">บริจาคเลือดไม่่สำเร็จ</Select.Item>
-																				</Select.Content>
-																			</Select.Root>
-																		</div>
-																	</div>
-																	<div class="flex flex-row gap-2 justify-start items-start">
-																		<div class="flex flex-col">
-																			<div class="text-sm text-gray-500">สถานะคุณภาพเลือด</div>
-
-																			<Select.Root>
-																				<Select.Trigger class=" w-44">
-																					<Select.Value placeholder="สถานะ" />
-																				</Select.Trigger>
-																				<Select.Content>
-																					<Select.Item value="light">เลือดคุณภาพดี</Select.Item>
-																					<Select.Item value="dark"
-																						>เลือดไม่สามารถบริจาคได้</Select.Item
-																					>
-																				</Select.Content>
-																			</Select.Root>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class=" w-96 h-16 flex justify-end items-center">
-														<button class=" bg-[#191F2F] w-40 h-10 text-white rounded-full"
-															>บันทึกการแก้ไข</button
-														>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class=" w-auto h-16 flex justify-end items-center mx-14 mt-5">
-											<button class=" w-40 h-10 text-white rounded-full bg-[#ef4444]"
-												>ยกเลิกการจองคิว</button
-											>
-										</div></Dialog.Content
-									>
-								</Dialog.Root></Table.Cell
-							>
-						</Table.Row>
+											<div class=" w-auto h-16 flex justify-end items-center mx-14 mt-5">
+												{#if reservation.status === 'BOOKED'}
+													<button
+														class=" w-40 h-10 text-white rounded-full bg-[#ef4444]"
+														on:click={() => handleCancelReservation(reservation.id)}
+														>ยกเลิกการจองคิว</button
+													>
+												{/if}
+											</div></Dialog.Content
+										>
+									</Dialog.Root></Table.Cell
+								>
+							</Table.Row>
+						{/each}
 					</Table.Body>
 				</Table.Root>
 			</div>
