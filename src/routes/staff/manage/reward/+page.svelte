@@ -8,6 +8,7 @@
 	import { goto } from '$app/navigation';
 	import Dropdown from '../../../moderator/home/dropdown.svelte';
 	import type { PageData } from './$types';
+	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 	export let data: PageData;
 	let rewards = data.filteredRewards;
 </script>
@@ -72,17 +73,17 @@
 		</div>
 	</div>
 	<div class="flex flex-col items-center w-9/12 h-full">
-		<div class="w-full h-16 bg-white grid grid-cols-3 items-center justify-center px-8">
+		<div class="w-full bg-white grid grid-cols-3 items-center justify-center px-8 h-16">
 			<div class="items-center justify-center flex" />
-			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
+			<div class="items-center justify-center flex text-2xl font-semibold">{$placeName}</div>
 			<div class="items-center justify-end flex gap-2">
 				<div class="flex flex-row items-center gap-1">
-                    <UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8"/>
-                    <h1 class="font-semibold">ศรุตา โทรัตน์</h1>
-                    <div>
-                        <Dropdown/>
-                    </div>
-                </div>
+					<UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8" />
+					<h1 class="font-bold">
+						{$medicalStaffName}
+					</h1>
+					<Dropdown />
+				</div>
 			</div>
 		</div>
 		<div class="flex w-full justify-between px-9">

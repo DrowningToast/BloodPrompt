@@ -27,6 +27,7 @@
 	import { toDateString, toDateTimeString } from '$lib/utils';
 	import { trpc } from '$lib/trpc';
 	import type { Redemption_History } from '../../../../../../generated-zod';
+	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 
 	export let data: PageData;
 	let { redemptionData } = data;
@@ -132,13 +133,13 @@
 	<div class="w-9/12 h-100% bg-[#D9D9D9]">
 		<div class="w-full h-16 bg-white grid grid-cols-3 items-center justify-center px-8">
 			<div class="items-center justify-center flex" />
-			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
+			<div class="items-center justify-center flex text-2xl font-semibold">{$placeName}</div>
 			<div class="items-center justify-end flex gap-2">
 				<div class="bg-[#EF4444] w-9 h-8 rounded-full flex items-center justify-center">
 					<User class="text-white" />
 				</div>
 
-				<div class=" text-base">ศรุตา โทรัตน์</div>
+				<div class=" text-base">{$medicalStaffName}</div>
 			</div>
 		</div>
 		<div class="px-8 py-8">

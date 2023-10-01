@@ -9,8 +9,8 @@
     import { Textarea } from "$lib/components/ui/textarea";
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-    import { trpc } from '$lib/trpc';
-	import Dropdown from '../../../../moderator/home/dropdown.svelte';
+	import { trpc } from '$lib/trpc';
+	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 
 	let fileInput: HTMLInputElement;
 	let reward: any;
@@ -115,13 +115,38 @@
     <div class="flex flex-col items-center w-9/12">
         <div class="w-full h-20 bg-white grid grid-cols-3 items-center justify-center px-8">
 			<div class="items-center justify-center flex" />
-			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
+			<div class="items-center justify-center flex text-2xl font-semibold">{$placeName}</div>
 			<div class="items-center justify-end flex gap-2">
-				<div class="flex flex-row items-center gap-1">
-                    <UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8" />
-					<h1 class="font-semibold">ศรุตา โทรัตน์</h1>
-					<Dropdown />
-                </div>
+				<div class="flex flex-row items-center gap-3">
+					<UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8" />
+					<h1 class="font-bold">{$medicalStaffName}</h1>
+					<div>
+						<DropdownMenu.Root>
+							<DropdownMenu.Trigger asChild let:builder>
+								<Button
+									variant="outline"
+									builders={[builder]}
+									class="p-0 m-0 border-transparent bg-white hover:bg-white"
+									><ChevronDown class="p-0 m-0 fill-black stroke-none" /></Button
+								>
+							</DropdownMenu.Trigger>
+							<DropdownMenu.Content class="">
+								<DropdownMenu.Item class="cursor-pointer">
+									<LogOut class="mr-2 h-4 w-4" />
+									<div
+										on:click={() => {
+											if (browser) {
+												goto('/staff/login');
+											}
+										}}
+									>
+										ออกจากระบบ
+									</div>
+								</DropdownMenu.Item>
+							</DropdownMenu.Content>
+						</DropdownMenu.Root>
+					</div>
+				</div>
 			</div>
 		</div>
 		<!-- content -->
