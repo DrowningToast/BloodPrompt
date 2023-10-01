@@ -71,7 +71,7 @@
 			<div class="items-center justify-end flex gap-2">
 				<div class="flex flex-row items-center gap-1">
                     <UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8"/>
-                    <h1 class="font-bold ">ศรุตา โทรัตน์</h1>
+                    <h1 class="font-semibold">ศรุตา โทรัตน์</h1>
                     <div>
                         <Dropdown/>
                     </div>

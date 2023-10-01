@@ -9,7 +9,7 @@
 		CalendarHeart,
 		CalendarClock
 	} from 'lucide-svelte';
-	import bloodPromptLogo from '$lib/images/moderator/login/bloodprompt-logo.png';
+	import bloodPromptLogo from '$lib/images/bloodprompt-logo.png';
 	import graph_mock from '$lib/images/staff/home/long_graph.png';
 	import graphExample from '$lib/images/staff/home/grpah.png';
 	import * as Table from '$lib/components/ui/table';
@@ -96,10 +96,10 @@
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
                     on:click={()=>{
                         if (browser) {
-                        goto('/staff/reservation')
+                        goto('/staff/manage/reservation')
                     }}}
 				><FileText class="w-5 h-5" />การจองคิว</Button>
-
+					
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
 					on:click={() => {
@@ -135,7 +135,7 @@
 			<div class="items-center justify-end flex gap-2">
 				<div class="flex flex-row items-center gap-1">
 					<UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8" />
-					<h1 class="font-bold">ศรุตา โทรัตน์</h1>
+					<h1 class="font-semibold">ศรุตา โทรัตน์</h1>
 					<Dropdown />
 				</div>
 			</div>

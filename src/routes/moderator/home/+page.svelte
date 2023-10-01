@@ -65,8 +65,8 @@
 	};
 </script>
 
-<div class="flex flex-row w-full justify-between bg-gray-300 max-w-[100vw] min-h-[100vh]">
-	<div class="flex flex-col bg-[#191F2F] w-3/12 h-auto">
+<div class="flex w-full justify-between bg-gray-300 max-w-[100vw] min-h-[100vh]">
+	<div class="flex flex-col bg-[#191F2F] w-3/12 h-100%">
 		<div class="flex flex-row px-8 py-16 justify-center">
 			<img src={bloodpromptlogo} alt="" class="w-16" />
 			<h1 class="translate-y-4 text-xl font-bold text-white px-3">BLOODPROMPT</h1>

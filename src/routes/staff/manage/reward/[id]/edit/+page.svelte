@@ -10,6 +10,7 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { trpc } from '$lib/trpc';
+	import Dropdown from '../../../../../moderator/home/dropdown.svelte';
     export let data: PageData;
     let fileInput:HTMLInputElement;
     let rewardImg:any;
@@ -62,7 +63,7 @@
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
                     on:click={()=>{
                         if (browser) {
-                        goto('/staff/reservation')
+                        goto('/staff/manage/reservation')
                     }}}
 				><FileText class="w-5 h-5" />การจองคิว</Button>
 
@@ -97,26 +98,10 @@
 			<div class="items-center justify-center flex" />
 			<div class="items-center justify-center flex text-2xl font-semibold">โรงพยาบาลลาดกระบัง</div>
 			<div class="items-center justify-end flex gap-2">
-				<div class="flex flex-row items-center gap-3">
-                    <UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8"/>
-                    <h1 class="font-bold">ศรุตา โทรัตน์</h1>
-                    <div>
-                        <DropdownMenu.Root>
-                            <DropdownMenu.Trigger asChild let:builder>
-                                <Button variant="outline" builders={[builder]} class="p-0 m-0 border-transparent bg-white hover:bg-white"><ChevronDown class="p-0 m-0 fill-black stroke-none"/></Button>
-                            </DropdownMenu.Trigger>
-                            <DropdownMenu.Content>
-                              <DropdownMenu.Item class="cursor-pointer">
-                                <LogOut class="mr-2 h-4 w-4" />
-                                <div on:click={()=>{
-                                    if (browser) {
-                                        goto('/staff/login')
-                                    }}
-                                }>ออกจากระบบ</div>
-                              </DropdownMenu.Item>
-                            </DropdownMenu.Content>
-                        </DropdownMenu.Root>
-                    </div>
+				<div class="flex flex-row items-center gap-1">
+                    <UserCircle class="fill-[#EF4444] rounded-full stroke-2 stroke-white w-8 h-8" />
+					<h1 class="font-semibold">ศรุตา โทรัตน์</h1>
+					<Dropdown />
                 </div>
 			</div>
         </div>
