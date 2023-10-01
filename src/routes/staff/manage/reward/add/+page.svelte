@@ -12,18 +12,6 @@
 	import { trpc } from '$lib/trpc';
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 
-<<<<<<< HEAD
-    let fileInput:HTMLInputElement;
-    let reward : any;
-    const onFileSelected =(e : any)=>{
-        let image = e.target.files[0];
-        let reader = new FileReader();
-        reader.readAsDataURL(image);
-        reader.onload = e => {
-     	    reward = e.target?.result
-        };
-    }
-=======
 	let fileInput: HTMLInputElement;
 	let reward: any;
 	const onFileSelected = (e: any) => {
@@ -31,10 +19,9 @@
 		let reader = new FileReader();
 		reader.readAsDataURL(image);
 		reader.onload = (e) => {
-			reward = e.target.result;
+			reward = e.target?.result;
 		};
 	};
->>>>>>> 97d688451fe46d810a7f562f85ef57d68a714087
 
 	let name: string = '';
 	let description: string = '';

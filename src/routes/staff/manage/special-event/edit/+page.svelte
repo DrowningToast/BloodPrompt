@@ -12,7 +12,8 @@
 		Image,
 		Info,
 		Eye,
-		Trash2
+		Trash2,
+        Megaphone
 	} from 'lucide-svelte';
 	import bloodpromptlogo from '$lib/images/bloodprompt-logo.png';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
@@ -24,12 +25,13 @@
 	import { goto } from '$app/navigation';
 	import { trpc } from '$lib/trpc';
 	import type { PageData } from '../../../../$types';
+    import { medicalStaffName, placeName } from '$lib/stores/staffStores';
     export let data:PageData;
     const currentEvent = data.currentEvent;
 
     let fileInput:HTMLInputElement;
-    let  sp_event;
-    const onFileSelected =(e:Event)=>{
+    let  sp_event:any;
+    const onFileSelected =(e:any)=>{
         let image = e.target?.files[0];
         let reader = new FileReader();
         reader.readAsDataURL(image);

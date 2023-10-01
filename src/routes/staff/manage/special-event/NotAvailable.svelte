@@ -9,6 +9,7 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { trpc } from '$lib/trpc';
+    import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 
     let fileInput:HTMLInputElement;
     let img_src: any;
