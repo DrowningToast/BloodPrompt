@@ -45,7 +45,7 @@
 			alignment: Alignments.CENTER // Potential Bug
 		},
 		height: '400px',
-		width: '325px'
+		width: '700px'
 	};
 
 	const barChartOptions: BarChartOptions = {
@@ -61,7 +61,7 @@
 			}
 		},
 		height: '400px',
-		width: '350px'
+		width: '650px'
 	};
 
 	const handleLogout = async () => {
@@ -183,15 +183,30 @@
 					<div class=" bg-white rounded-xl p-6">
 						<DonutChart data={data.bloodTypeCount} options={donutChartOptions} />
 					</div>
-					<div class=" bg-white rounded-xl p-6">
-						<BarChartSimple data={data.donationCount} options={barChartOptions} />
-					</div>
 				</div>
 				<div class="flex shadow-xl w-4/12 rounded-3xl p-4 bg-white">
-					<div class="flex flex-col justify-center items-center m-auto gap-5">
-						<img class="w-[80%] h-[80%]" src={sEventImg} alt="" />
-						<p class="text-center font-bold text-2xl">Special event now</p>
-					</div>
+					{#if data.specialEvent}
+						<div class="p-6">
+							<p class="font-bold font-xl">กิจกรรมพิเศษ - (Speical Event) Now !</p>
+							<img
+								src={data.specialEvent.img_src}
+								alt="special_event image"
+								class="rounded-xl mt-4"
+							/>
+							<p class="mt-4">{data.specialEvent.name}</p>
+							<Button
+								class="w-full mt-4"
+								on:click={() => {
+									goto('/staff/manage/special-event');
+								}}>แก้ไข / ลบกิจกรรมพิเศษ</Button
+							>
+						</div>
+					{:else}
+						<div class="flex flex-col justify-center items-center m-auto gap-5">
+							<img class="w-[80%] h-[80%]" src={sEventImg} alt="" />
+							<p class="text-center font-bold text-2xl">Speical Event</p>
+						</div>
+					{/if}
 				</div>
 			</div>
 			<!-- 2 -->
@@ -205,8 +220,8 @@
 				</div>
 				<div class="flex flex-col shadow-xl w-4/12 rounded-3xl p-4 bg-white">
 					<div class="pl-2">
-						<p class="text-2xl font-bold">คิวการบริจาคเลือด</p>
-						<p class="text-lg text-[#888] font-bold">
+						<p class="text-xl font-bold">คิวการบริจาคเลือด</p>
+						<p class=" text-[#888] font-bold">
 							จำนวนคิดทั้งหมด: {data.allReservation.length}
 						</p>
 					</div>

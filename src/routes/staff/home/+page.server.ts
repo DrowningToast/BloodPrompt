@@ -73,6 +73,8 @@ export const load = (async ({ fetch }) => {
 		});
 	}
 
+	const specialEvent = await trpc.specialEvent.getEvent.query();
+
 	return {
 		places,
 		medicalAccounts,
@@ -80,6 +82,7 @@ export const load = (async ({ fetch }) => {
 		bloodTypeCount,
 		donationCount,
 		currentStaff,
-		allReservation
+		allReservation,
+		specialEvent
 	};
 }) satisfies PageServerLoad;
