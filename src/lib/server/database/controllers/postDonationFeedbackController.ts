@@ -33,7 +33,11 @@ export const postDonationFeedbackController = {
 				type: 'POST_SURVEY'
 			},
 			include: {
-				Survey_Choices: true
+				Survey_Choices: {
+					orderBy: {
+						order: 'asc'
+					}
+				}
 			},
 			orderBy: {
 				order: 'asc'

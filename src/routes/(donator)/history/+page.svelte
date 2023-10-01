@@ -9,6 +9,7 @@
 	import ReservationTabPanel from './ReservationTabPanel.svelte';
 	import SurveyCard from '$lib/components/svelte/card/survey/SurveyCard.svelte';
 	import { get24HoursTimeString } from '../reservation/[placeId]/date/utils';
+	import type { DonationHistory } from './reservation/utils';
 
 	export let data: PageData;
 	const { pendingFeedback } = data;
@@ -21,11 +22,6 @@
 		} else {
 			currentTabIndex = 0;
 		}
-	};
-
-	type DonationHistory = {
-		donationData: Donation_History;
-		placeData: Places;
 	};
 
 	const donationHistoryData: DonationHistory[] = data.donationHistoryData.map((donation) => {
