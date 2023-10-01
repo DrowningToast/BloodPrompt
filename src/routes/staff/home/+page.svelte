@@ -144,7 +144,7 @@
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
 					on:click={() => {
 						if (browser) {
-							goto('/staff/reservation');
+							goto('/staff/manage/reservation');
 						}
 					}}><FileText class="w-5 h-5" />การจองคิว</Button
 				>
