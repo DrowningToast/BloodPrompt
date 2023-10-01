@@ -87,7 +87,13 @@
 
 							<div>
 								<p class="text-slate-500 text-sm">เวลา</p>
-								<p class="font-bold text-sm">{'10.00 - 11.00'}</p>
+								<p class="font-bold text-sm">
+									{new Date(reservationData.Reservation_Slot.reserve_time).getHours().toFixed(2) +
+										' - ' +
+										(
+											new Date(reservationData.Reservation_Slot.reserve_time).getHours() + 1
+										).toFixed(2)}
+								</p>
 							</div>
 						</div>
 

@@ -140,6 +140,9 @@ export const reservationsRouter = createRouter({
 				},
 				Pre_Donation_Feedbacks: true,
 				Reservation_Slot: true
+			},
+			orderBy: {
+				created_at: 'desc'
 			}
 		});
 		return reservations;
