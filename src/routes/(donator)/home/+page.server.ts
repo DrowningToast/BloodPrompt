@@ -10,11 +10,17 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		throw redirect(307, '/login');
 	}
 
+	if (user.user?.id === undefined) {
+		throw redirect(307, '/login');
+	}
+
 	// fetch announcemnet
 	const announcements = await trpc.announcement.getAnnouncements.query();
 
 	// fetch for post feedback status
-	const pendingFeedback = await trpc.postFeedback.checkPendingFeedback.query();
+	const pendingFeedback = await trpc.postFeedback.checkPendingFeedback.query({
+		id: user.user.id
+	});
 
 	return { announcements, user: user.user, pendingFeedback: pendingFeedback ?? undefined };
 };

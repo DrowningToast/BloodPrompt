@@ -28,11 +28,6 @@
 		placeData: Places;
 	};
 
-	type ReservationHistory = {
-		reservationData: Omit<Reservations, 'pre_donation_fb_id'>;
-		placeData: Places;
-	};
-
 	const donationHistoryData: DonationHistory[] = data.donationHistoryData.map((donation) => {
 		return {
 			donationData: donation,
@@ -40,7 +35,7 @@
 		};
 	});
 
-	let reservationData: ReservationHistory[] = data.reservationLog.map((reservation) => {
+	let reservationData = data.reservationLog.map((reservation) => {
 		return {
 			placeData: reservation.Reservation_Slot.Place,
 			reservationData: reservation

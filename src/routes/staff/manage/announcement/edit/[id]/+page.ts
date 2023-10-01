@@ -1,10 +1,10 @@
-import { trpc } from '$lib/trpc';
-import type { PageLoad } from './$types';
+import { trpc, trpcOnServer } from '$lib/trpc';
+import type { PageServerLoad } from './$types';
 
-export const load = (async ({ params }) => {
+export const load = (async ({ params, fetch }) => {
+	const trpc = trpcOnServer(fetch);
+
 	const announcement = await trpc.announcement.getById.query({ announcementId: params.id });
 
 	return { announcement };
-}) satisfies PageLoad;
-
-export const ssr = false;
+}) satisfies PageServerLoad;

@@ -99,8 +99,16 @@ export const donationHistoryRouter = createRouter({
 			return await donationHistoryController.getDonationHistory(input);
 		}),
 	getDonationHistories: publicProcedure
-		.input(Donation_HistoryWhereInputSchema)
-		.query(async ({ input }) => {
+		.input(Donation_HistoryWhereInputSchema.optional())
+		.query(async ({ input, ctx }) => {
+			if (!input) {
+				const user = ctx.userContext?.user.id;
+				return await donationHistoryController.getDonationHistories({
+					Reservation: {
+						donator_id: user
+					}
+				});
+			}
 			return await donationHistoryController.getDonationHistories(input);
 		})
 });

@@ -5,18 +5,22 @@
 	import { toDateString } from '$lib/utils';
 	import { Separator } from '$lib/components/ui/separator';
 	import { goto } from '$app/navigation';
+	import type { Donators } from '@prisma/client';
 
-	type ReservationHistory = {
-		reservationData: Omit<Reservations, 'pre_donation_fb_id'>;
+	interface ReservationHistoryData {
 		placeData: Places;
-	};
+		reservationData: Reservations & {
+			Donator: Donators;
+			Reservation_Slot: Reservation_Slots;
+		};
+	}
 
-	export let reservationHistoryData: ReservationHistory[] | null = null;
+	export let reservationHistoryData: ReservationHistoryData[] = [];
 </script>
 
 <div class="flex flex-col gap-6">
 	{#if reservationHistoryData}
-		{#each reservationHistoryData as { reservationData, placeData, reservationSlot }}
+		{#each reservationHistoryData as { reservationData, placeData }}
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
 			<div
@@ -64,9 +68,11 @@
 								<div class="flex flex-row items-center gap-1">
 									<Clock size={16} />
 									<p class="font-semibold text-sm">
-										{new Date(reservationSlot.reserve_time).getHours().toFixed(2) +
+										{new Date(reservationData.Reservation_Slot.reserve_time).getHours().toFixed(2) +
 											' - ' +
-											(new Date(reservationSlot.reserve_time).getHours() + 1).toFixed(2)}
+											(
+												new Date(reservationData.Reservation_Slot.reserve_time).getHours() + 1
+											).toFixed(2)}
 									</p>
 								</div>
 							</div>

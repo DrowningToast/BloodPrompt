@@ -1,12 +1,13 @@
 import prisma, { Prisma } from '..';
 
 export const postDonationFeedbackController = {
-	getPendingFeedback: async () => {
+	getPendingFeedback: async (donator: Prisma.DonatorsWhereUniqueInput) => {
 		// get latest reservation
 		const unfinsihed = await prisma.donation_History.findFirst({
 			where: {
 				Reservation: {
-					status: 'COMPLETED'
+					status: 'COMPLETED',
+					Donator: donator
 				},
 				post_donation_db_id: {
 					equals: null
