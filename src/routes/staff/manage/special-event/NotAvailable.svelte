@@ -1,6 +1,5 @@
 <script lang="ts">
-
-    import { Home, LogOut, CalendarDays, UserCircle, FileText, Gift, CalendarHeart, Lock, PlusCircle, Image, Info,Eye, Trash2 } from 'lucide-svelte';
+    import { Home, LogOut, CalendarDays, UserCircle, FileText, Gift, CalendarHeart, PlusCircle, Image, Info,Eye, Trash2 } from 'lucide-svelte';
     import bloodpromptlogo from '$lib/images/bloodprompt-logo.png';
     import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
     import { Button } from "$lib/components/ui/button";
@@ -10,12 +9,9 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { trpc } from '$lib/trpc';
-	import type { PageData } from '../../../../$types';
-    export let data:PageData;
-    const currentEvent = data.currentEvent;
 
     let fileInput:HTMLInputElement;
-    let  sp_event;
+    let sp_event;
     const onFileSelected =(e)=>{
         let image = e.target.files[0];
         let reader = new FileReader();
@@ -25,19 +21,13 @@
         };
     }
 
-    let name = currentEvent.name;
-    let description = currentEvent.description;
-    let id = currentEvent.id;
 
-    const goBack = () => {
-        if(browser){
-                goto("/staff/manage/special-event");
-            }
-    }
-    
-    const editEventHandler = async() =>{
-        await trpc.specialEvent.update.mutate({id ,name, description})
-        .then(goBack)
+    let name='';
+    let description='';
+
+    const submission= async () =>{
+        await trpc.specialEvent.create.mutate({name:name,description:description})
+        .then(()=>{if (browser){ window.location.reload()}})
     }
 
 </script>
@@ -78,9 +68,7 @@
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#EF4444] bg-[#EF4444] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
                     on:click={()=>{
-                        if (browser) {
-                        goto('/staff/manage/special-event')
-                    }}}
+                        }}
 				><CalendarHeart class="w-5 h-5" />จัดการกิจกรรมหรือแคมเปญ</Button>
 
 			</div>
@@ -124,13 +112,11 @@
         <!-- content -->
         <div class="flex flex-row items-center justify-between px-14 h-32 w-full">
             <div class="flex flex-col">
-                <p class="font-bold text-xl">แก้ไขข้อมูลกิจกรรมพิเศษ</p>
-                <p class="text-base text-gray-500">สามารถแก้ไขข้อมูลของกิจกรรมพิเศษจองสถานที่นั้นๆ</p>
+                <p class="font-bold text-xl">จัดการกิจกรรมพิเศษ</p>
+                <p class="text-base text-gray-500">สามารถจัดการกิจกรรมพิเศษจองสถานที่นั้นๆ</p>
             </div>
             <div class="flex justify-between items-center gap-4">
-                <Button class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-10 py-4 text-base font-bold text-white hover:bg-[#EF4444]" on:click={editEventHandler}
-                >บันทึกข้อมูล</Button>
-                <Button class="flex justify-center gap-2 bg-black rounded-full text-center h-12 w-60 px-12 py-4 text-base font-bold text-white" on:click={goBack}>ยกเลิกการแก้ไข</Button>
+                <Button class="flex justify-center gap-2 bg-[#EF4444] rounded-full text-center h-12 w-60 px-10 py-4 text-base font-bold text-white hover:bg-[#EF4444]" on:click={submission}><PlusCircle class="fill-white stroke-[#EF4444]" />เพิ่มกิจกรรมพิเศษ</Button>
             </div>
         </div>
         <div class="flex flex-col justify-start items-center h-full w-full px-14 py-2">
@@ -166,14 +152,14 @@
                         <h1 class="font-bold py-2">ข้อมูลพื้นฐานของกิจกรรมพิเศษนี้</h1>
                     </div>
                     <Input placeholder="ชื่อกิจกรรมพิเศษ" class="rounded-xl border-2 border-gray-300 h-[50px] w-full px-4 py-4" bind:value={name}/>
-                    <Textarea placeholder="รายละเอียดกิจกรรมพิเศษ" class="rounded-xl border-2 border-gray-300 h-[200px] w-full px-4 py-4 resize-none" bind:value={description}/>
+                    <Textarea placeholder="รายละเอียดกิจกรรมพิเศษ" class="rounded-xl border-2 border-gray-300 h-[200px] w-full px-4 py-4 resize-none" bind:value={description} />
                     <div class="flex gap-3 items-center">
                         <CalendarDays class="w-5"/>
                         <h1 class="font-bold py-2">ระยะเวลากิจกรรม</h1>
                     </div>
                     <div class="flex items-center gap-2">
                         <h1 class="font-bold py-2 w-2/12">ตั้งเเต่</h1>
-                        <Input placeholder="วันเริ่มกิจกกรม" class="rounded-xl border-2 border-gray-300 h-[50px] w-6/12 px-4 py-4"/>
+                        <Input placeholder="วันเริ่มกิจกกรม" class="rounded-xl border-2 border-gray-300 h-[50px] w-6/12 px-4 py-4" />
                         <Input placeholder="เวลาเริ่มกิจกรรม" class="rounded-xl border-2 border-gray-300 h-[50px] w-5/12  /12 px-4 py-4"/>
                     </div>
                     <div class="flex items-center gap-2 justify-start">
