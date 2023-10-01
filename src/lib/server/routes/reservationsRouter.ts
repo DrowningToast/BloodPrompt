@@ -130,7 +130,18 @@ export const reservationsRouter = createRouter({
 			return reservation;
 		}),
 	findAll: publicProcedure.query(async () => {
-		const reservations = await prisma.reservations.findMany();
+		const reservations = await prisma.reservations.findMany({
+			include: {
+				Donation_History: true,
+				Donator: {
+					include: {
+						Medical_Account: true
+					}
+				},
+				Pre_Donation_Feedbacks: true,
+				Reservation_Slot: true
+			}
+		});
 		return reservations;
 	}),
 	findById: publicProcedure

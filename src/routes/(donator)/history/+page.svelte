@@ -111,7 +111,8 @@
 		reservationData = reservationLog.map((reservation) => {
 			return {
 				placeData: reservation.Reservation_Slot.Place,
-				reservationData: { ...reservation }
+				reservationData: { ...reservation },
+				reservationSlot: reservation.Reservation_Slot
 			};
 		});
 
