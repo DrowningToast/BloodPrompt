@@ -81,7 +81,7 @@ export const rewardRouter = createRouter({
 					name: newData.name,
 					description: newData.description,
 					required_points: newData.required_points,
-					amount_left: newData.required_points,
+					amount_left: newData.amount_left,
 					image_src: newData.image_src
 				}
 			});

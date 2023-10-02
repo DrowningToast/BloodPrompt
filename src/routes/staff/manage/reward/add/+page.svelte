@@ -53,6 +53,12 @@
 				alert('ไม่สามารถเพิ่มของรางวัลได้ โปรดตรวจสอบข้อมูลการเพิ่มของรางวัล');
 				console.log(error);
 			})
+			.then(()=>{
+				alert("การเพิ่มรางวัลสำเร็จ");
+				if(browser){
+					goto("/staff/manage/reward");
+				}
+			})
 			.finally(() => {
 				name = '';
 				description = '';
@@ -78,14 +84,6 @@
 							goto('/staff/home');
 						}
 					}}><Home class="w-5 h-5 " />หน้าหลัก</Button
-				>
-				<Button
-					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F]  text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					on:click={() => {
-						if (browser) {
-							goto('/staff/manage/announcement');
-						}
-					}}><Megaphone class="w-5 h-7 pb-[2px] " />จัดการประกาศประชาสัมพันธ์</Button
 				>
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F]  text-base  rounded-full text-start px-6 py-4 h-12 text-white"
@@ -172,7 +170,7 @@
 		<!-- content -->
 		<div class="flex flex-row items-center justify-between px-14 h-32 w-full">
 			<div class="flex flex-col">
-				<p class="font-bold text-xl">กาารเพิ่มรางวัล</p>
+				<p class="font-bold text-xl">การเพิ่มรางวัล</p>
 				<p class="text-base text-gray-500">สามารถเพิ่มหรือแก้ไขข้อมูลของรางวัล</p>
 			</div>
 			<div class="flex justify-between items-center gap-4">

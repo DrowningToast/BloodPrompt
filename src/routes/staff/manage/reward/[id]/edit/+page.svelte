@@ -1,68 +1,59 @@
 <script lang="ts">
-	import type { PageData } from './$types';
-	import {
-		Home,
-		Megaphone,
-		LogOut,
-		CalendarHeart,
-		FileText,
-		UserCircle,
-		Gift,
-		Save,
-		Image,
-		Info
-	} from 'lucide-svelte';
-	import bloodpromptlogo from '$lib/images/staff/bloodprompt-logo.png';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import { Button } from '$lib/components/ui/button';
-	import { ChevronDown } from 'lucide-svelte';
-	import { Input } from '$lib/components/ui/input';
-	import { Textarea } from '$lib/components/ui/textarea';
+    import type { PageData } from './$types';
+    import { Home,Megaphone, LogOut, CalendarHeart,FileText , UserCircle, Gift, Save , Image, Info} from 'lucide-svelte';
+    import bloodpromptlogo from '$lib/images/bloodprompt-logo.png';
+    import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
+    import { Button } from "$lib/components/ui/button";
+    import { ChevronDown } from "lucide-svelte";
+    import { Input } from "$lib/components/ui/input";
+    import { Textarea } from "$lib/components/ui/textarea";
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { trpc } from '$lib/trpc';
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
+
+	const handleLogout = async () => {
+		await trpc.auth.logout
+			.mutate()
+			.then((res) => {
+				goto('/staff/login');
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	};
+
 	export let data: PageData;
 	let fileInput: HTMLInputElement;
-
+    let rewardImg;
 	let currentReward = data.eachReward;
-
-	let rewardImg = data.image_src;
-
 	let name_value = currentReward?.name;
 	let description_value = currentReward?.description;
 	let required_points_value = currentReward?.required_points;
 	let amount_left_value = currentReward?.amount_left;
 	let image_src_value: any = currentReward?.image_src;
 
-	const saveDataHandler = async () => {
-		await trpc.reward.update
-			.mutate({
-				data: {
-					name: name_value || '',
-					amount_left: Number(amount_left_value) || 0,
-					description: description_value || '',
-					required_points: Number(required_points_value) || 0,
-					image_src: image_src_value || ''
-				},
-				rewardId: currentReward?.id || '1'
-			})
-			.then(() => {
-				goto('/staff/manage/reward');
-			});
-	};
-	const onFileSelected = (e: Event | null) => {
-		/**
-		 * POTENTIAL BUG
-		 */
-		//@ts-ignore
-		let image = e?.target?.files[0];
-		let reader = new FileReader();
-		reader.readAsDataURL(image);
-		reader.onload = (e) => {
-			image_src_value = e?.target?.result;
-		};
-	};
+    const saveDataHandler = async() => {
+        await trpc.reward.update.mutate({data: {
+           name : name_value || "",
+           amount_left : parseInt(amount_left_value) || 0,
+           description : description_value || "",
+           required_points : parseInt(required_points_value) || 0,
+           image_src: image_src_value || "" 
+        }, rewardId: currentReward?.id || "1"}
+		).then(()=>{alert("แก้ไขข้อมูลของรางวัลสำเร็จ");})
+		.finally(()=>{goto("/staff/manage/reward")})
+    }
+
+    const onFileSelected =(e:any)=>{
+        let image = e?.target?.files[0];
+        let reader = new FileReader();
+        reader.readAsDataURL(image);
+        reader.onload = e => {
+     	    rewardImg = e?.target?.result
+        };
+    }
+   
 </script>
 
 <div class="flex justify-between bg-gray-300 min-w-screen min-h-[100vh] h-full w-full">
@@ -75,36 +66,26 @@
 			<div class="flex flex-col gap-8 w-full">
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					on:click={() => {
-						if (browser) {
-							goto('/staff/home');
-						}
-					}}><Home class="w-5 h-5 " />หน้าหลัก</Button
-				>
-				<Button
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/home')
+                    }}}
+				><Home class="w-5 h-5 " />หน้าหลัก</Button>
+                <Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F]  text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					on:click={() => {
-						if (browser) {
-							goto('/staff/manage/announcement');
-						}
-					}}><Megaphone class="w-5 h-7 pb-[2px] " />จัดการประกาศประชาสัมพันธ์</Button
-				>
-				<Button
-					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F]  text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					on:click={() => {
-						if (browser) {
-							goto('/staff/manage/announcement');
-						}
-					}}><Megaphone class="w-5 h-7 pb-[2px] " />จัดการประกาศประชาสัมพันธ์</Button
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/manage/announcement')
+                    }}}
+				><Megaphone  class="w-5 h-7 pb-[2px] " />จัดการประกาศประชาสัมพันธ์</Button
 				>
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#191F2F] bg-[#191F2F] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
-					on:click={() => {
-						if (browser) {
-							goto('/staff/manage/reservation');
-						}
-					}}><FileText class="w-5 h-5" />การจองคิว</Button
-				>
+                    on:click={()=>{
+                        if (browser) {
+                        goto('/staff/manage/reservation')
+                    }}}
+				><FileText class="w-5 h-5" />การจองคิว</Button>
 
 				<Button
 					class="flex justify-start items-center gap-3 hover:bg-[#EF4444] bg-[#EF4444] text-base  rounded-full text-start px-6 py-4 h-12 text-white"
@@ -126,11 +107,7 @@
 			</div>
 			<Button
 				class="flex justify-start gap-2 text-white text-start px-6 py-3 items-center bg-[#191F2F] mb-9"
-				on:click={() => {
-					if (browser) {
-						goto('/staff/login');
-					}
-				}}><LogOut class="mr-2 h-5    w-5 stroke-white" />ออกจากระบบ</Button
+				on:click={handleLogout}><LogOut class="mr-2 h-5    w-5 stroke-white" />ออกจากระบบ</Button
 			>
 		</div>
 	</div>
@@ -156,11 +133,7 @@
 								<DropdownMenu.Item class="cursor-pointer">
 									<LogOut class="mr-2 h-4 w-4" />
 									<div
-										on:click={() => {
-											if (browser) {
-												goto('/staff/login');
-											}
-										}}
+										on:click={handleLogout}
 									>
 										ออกจากระบบ
 									</div>
@@ -253,7 +226,7 @@
 					/>
 					<Textarea
 						bind:value={description_value}
-						placeholder="รายละเอียดเบื้องต้นของของรางวัล"
+						placeholder="รายละเอียดเบื้องต้นของของรางวัล!"
 						class="rounded-xl border-2 border-gray-300 h-[200px] w-full px-4 py-4 resize-none"
 					/>
 					<Input
