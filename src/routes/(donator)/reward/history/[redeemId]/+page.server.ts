@@ -3,6 +3,7 @@ import type { PageServerLoad } from './$types';
 
 export const load = (async ({ params, fetch }) => {
 	const trpc = trpcOnServer(fetch);
+
 	const redemptionHistory = await trpc.reward.getRedemptionHistoryById.query({
 		redemptionHistoryId: params.redeemId
 	});

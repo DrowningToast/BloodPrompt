@@ -23,21 +23,25 @@ function groupDatesByDay(dateArray: Date[]): Record<string, Date[]> {
 
 export const load = (async ({ fetch }) => {
 	const trpc = trpcOnServer(fetch);
-	const places = await trpc.places.findAll.query();
-	const medicalAccounts = await trpc.medicalStaff.findAll.query();
-	const donators = await trpc.donators.findAll.query();
-
-	// Prisma Group by
-	const bloodTypeAggregations = await prisma.donation_History.groupBy({
-		by: ['blood_type'],
-		_count: {
-			blood_type: true
-		}
-	});
 
 	// Sample array of date objects
 	const dateArray: Date[] = [];
-	const donationHistories = await prisma.donation_History.findMany();
+
+	// promise all
+	const [places, medicalAccounts, donators, bloodTypeAggregations, donationHistories] =
+		await Promise.all([
+			trpc.places.findAll.query(),
+			trpc.medicalStaff.findAll.query(),
+			trpc.donators.findAll.query(),
+			prisma.donation_History.groupBy({
+				by: ['blood_type'],
+				_count: {
+					blood_type: true
+				}
+			}),
+			prisma.donation_History.findMany()
+		]);
+
 	for (const data of donationHistories) {
 		dateArray.push(new Date(data.created_at));
 	}

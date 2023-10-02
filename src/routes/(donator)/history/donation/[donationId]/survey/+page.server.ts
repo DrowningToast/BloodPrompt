@@ -7,9 +7,13 @@ export const load = (async ({ params, fetch }) => {
 
 	const trpc = trpcOnServer(fetch);
 
-	const donationHistory = await trpc.donationHistory.getDonationHistory.query({
-		id: donationHistoryId
-	});
+	// promise all
+	const [donationHistory, questions] = await Promise.all([
+		trpc.donationHistory.getDonationHistory.query({
+			id: donationHistoryId
+		}),
+		trpc.postFeedback.getPostFeedbackQuestions.query()
+	]);
 
 	if (!donationHistory) {
 		throw redirect(307, '/history');
@@ -21,7 +25,6 @@ export const load = (async ({ params, fetch }) => {
 	}
 
 	const place = donationHistory?.Reservation.Reservation_Slot.Place;
-	const questions = await trpc.postFeedback.getPostFeedbackQuestions.query();
 
 	return {
 		donationHistoryId: params.donationId,

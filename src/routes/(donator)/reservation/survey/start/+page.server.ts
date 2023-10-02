@@ -19,7 +19,8 @@ export const load = (async () => {
 			Survey_Choices: true
 		}
 	});
-	const preSurveyQuestion = await surveyQuestion
+
+	const preSurveyQuestion = surveyQuestion
 		.filter((question) => question.type === 'PRE_SURVEY')
 		.sort((q1, q2) => q1.order - q2.order)
 		.map((questions) => ({

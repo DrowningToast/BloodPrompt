@@ -71,7 +71,7 @@
 	};
 </script>
 
-<div class="flex flex-row">
+<div class="flex flex-row h-full">
 	<div class="flex flex-col bg-[#191F2F] w-3/12 h-full">
 		<div class="flex flex-row px-8 py-16 justify-center">
 			<img src={bloodPromptLogo} alt="" class="w-16" />

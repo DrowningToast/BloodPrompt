@@ -41,7 +41,7 @@
 	{/if}
 
 	<section class="px-8 py-8">
-		<SpecialEvent />
+		<SpecialEvent sp_events={data.sp_events} />
 	</section>
 	<section class="px-8">
 		<Searchbar />

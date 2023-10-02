@@ -104,8 +104,8 @@
 	};
 </script>
 
-<div class="flex flex-row">
-	<div class="flex flex-col bg-[#191F2F] w-3/12 h-full">
+<div class="flex flex-row w-screen h-full">
+	<div class="flex flex-col bg-[#191F2F] w-3/12 h-100%">
 		<div class="flex flex-row px-8 py-16 justify-center">
 			<img src={bloodPromptLogo} alt="" class="w-16" />
 			<h1 class="translate-y-4 text-xl font-bold text-white px-3">BLOODPROMPT</h1>
@@ -204,7 +204,7 @@
 					<div class=" text-white">ค้นหา</div>
 				</button>
 			</div>
-			<div class="bg-white w-auto h-[84vh] rounded-xl mt-8 px-8">
+			<div class="flex flex-col flex-wrap py-6 bg-white w-auto h-[84vh] rounded-xl mt-8 px-6">
 				<Table.Root>
 					<Table.Header>
 						<Table.Row>

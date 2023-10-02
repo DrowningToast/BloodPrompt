@@ -34,7 +34,7 @@
 			</div>
 			<!-- remain -->
 			<div class="flex flex-col gap-1">
-				<p class="font-bold">แต้มที่ต้องใช้</p>
+				<p class="font-bold">สินค้าคงเหลือ</p>
 				<p>{data.amount_left} ชิ้น</p>
 			</div>
 		</div>
