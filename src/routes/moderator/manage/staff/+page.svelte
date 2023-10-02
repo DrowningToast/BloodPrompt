@@ -115,9 +115,9 @@
 					><Lock class="w-5 h-5" />จัดการบัญชี / เปลี่ยนรหัสผ่าน</Button
 				>
 			</div>
-			<Button
+			<Button on:click={handleLogout}
 				class="flex justify-start gap-2 text-white text-start px-6 py-3 items-center bg-[#191F2F] mb-9"
-				><LogOut class="mr-2 h-5    w-5 stroke-white" on:click={handleLogout} />ออกจากระบบ</Button
+				><LogOut class="mr-2 h-5    w-5 stroke-white"  />ออกจากระบบ</Button
 			>
 		</div>
 	</div>

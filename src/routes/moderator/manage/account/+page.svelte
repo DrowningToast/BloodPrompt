@@ -34,6 +34,17 @@
 		confirmNewPassword: ''
 	};
 
+	const handleLogout = async () => {
+		await trpc.auth.logout
+			.mutate()
+			.then((res) => {
+				goto('/staff/login');
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	};
+
 	const handleUpdateModeratorData = async () => {
 		const [first_name, last_name] = moderatorData.name.split(' ');
 		trpc.moderator.update
@@ -110,15 +121,11 @@
 					}}><Lock class="w-5 h-5" />จัดการบัญชี / เปลี่ยนรหัสผ่าน</Button
 				>
 			</div>
-			<Button
+			<Button on:click={handleLogout}
 				class="flex justify-start gap-2 text-white text-start text-base px-6 py-3 items-center bg-[#191F2F] mb-9"
 				><LogOut
 					class="mr-2 h-5 w-5 stroke-white"
-					on:click={() => {
-						if (browser) {
-							goto('/login');
-						}
-					}}
+					
 				/>ออกจากระบบ</Button
 			>
 		</div>

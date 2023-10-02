@@ -8,8 +8,20 @@
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import type { PageData } from './$types';
+	import { trpc } from '$lib/trpc';
 
 	export let data: PageData;
+
+	const handleLogout = async () => {
+		await trpc.auth.logout
+			.mutate()
+			.then((res) => {
+				goto('/staff/login');
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	};
 </script>
 
 <div class="flex flex-row w-full justify-between bg-gray-300 min-w-[100vw] min-h-[100vh]">
@@ -56,7 +68,7 @@
 					}}><Lock class="w-5 h-5" />จัดการบัญชี / เปลี่ยนรหัสผ่าน</Button
 				>
 			</div>
-			<Button
+			<Button on:click={handleLogout}
 				class="flex justify-start gap-2 text-white text-start text-base px-6 py-3 items-center bg-[#191F2F] mb-9"
 				><LogOut class="mr-2 h-5 w-5 stroke-white" />ออกจากระบบ</Button
 			>
@@ -79,7 +91,7 @@
 							>
 						</DropdownMenu.Trigger>
 						<DropdownMenu.Content class="w-56">
-							<DropdownMenu.Item>
+							<DropdownMenu.Item on:click={handleLogout}>
 								<LogOut class="mr-2 h-4 w-4" />
 								<span>ออกจากระบบ</span>
 							</DropdownMenu.Item>

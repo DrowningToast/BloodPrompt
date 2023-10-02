@@ -20,6 +20,19 @@
 	import { goto } from '$app/navigation';
 	import Dropdown from '../../../moderator/home/dropdown.svelte';
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
+	import { trpc } from '$lib/trpc';
+
+	const handleLogout = async () => {
+		await trpc.auth.logout
+			.mutate()
+			.then((res) => {
+				goto('/staff/login');
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	};
+
 </script>
 
 <div class="flex justify-between bg-gray-300 h-full w-full max-w-[100vw] min-h-[100vh]">
@@ -75,13 +88,9 @@
 					}}><CalendarHeart class="w-5 h-5" />จัดการกิจกรรมหรือแคมเปญ</Button
 				>
 			</div>
-			<Button
+			<Button on:click={handleLogout}
 				class="flex justify-start gap-2 text-white text-start px-6 py-3 items-center bg-[#191F2F] mb-9"
-				on:click={() => {
-					if (browser) {
-						goto('/staff/login');
-					}
-				}}><LogOut class="mr-2 h-5 w-5 stroke-white" />ออกจากระบบ</Button
+				><LogOut class="mr-2 h-5 w-5 stroke-white" />ออกจากระบบ</Button
 			>
 		</div>
 	</div>

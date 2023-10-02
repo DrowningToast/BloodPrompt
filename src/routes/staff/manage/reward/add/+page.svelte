@@ -12,6 +12,17 @@
 	import { trpc } from '$lib/trpc';
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 
+	const handleLogout = async () => {
+		await trpc.auth.logout
+			.mutate()
+			.then((res) => {
+				goto('/staff/login');
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	};
+
 	let fileInput: HTMLInputElement;
 	let reward: any;
 	const onFileSelected = (e: any) => {
@@ -104,11 +115,7 @@
 			</div>
 			<Button
 				class="flex justify-start gap-2 text-white text-start px-6 py-3 items-center bg-[#191F2F] mb-9"
-				on:click={() => {
-					if (browser) {
-						goto('/staff/login');
-					}
-				}}><LogOut class="mr-2 h-5    w-5 stroke-white" />ออกจากระบบ</Button
+				on:click={handleLogout}><LogOut class="mr-2 h-5    w-5 stroke-white" />ออกจากระบบ</Button
 			>
 		</div>
     </div>
@@ -134,11 +141,7 @@
 								<DropdownMenu.Item class="cursor-pointer">
 									<LogOut class="mr-2 h-4 w-4" />
 									<div
-										on:click={() => {
-											if (browser) {
-												goto('/staff/login');
-											}
-										}}
+										on:click={handleLogout}
 									>
 										ออกจากระบบ
 									</div>

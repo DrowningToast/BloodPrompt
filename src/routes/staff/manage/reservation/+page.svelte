@@ -48,6 +48,17 @@
 	import type { Reservations } from '../../../../../generated-zod';
 	import type { DonationStatus } from '@prisma/client';
 
+	const handleLogout = async () => {
+		await trpc.auth.logout
+			.mutate()
+			.then((res) => {
+				goto('/staff/login');
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	};
+
 	let selectedBloodQuality = '';
 	let selectedDonationStatus = '';
 
@@ -105,7 +116,7 @@
 </script>
 
 <div class="flex flex-row">
-	<div class="flex flex-col bg-[#191F2F] w-3/12 h-full">
+	<div class="flex flex-col bg-[#191F2F] w-3/12 h-100%">
 		<div class="flex flex-row px-8 py-16 justify-center">
 			<img src={bloodPromptLogo} alt="" class="w-16" />
 			<h1 class="translate-y-4 text-xl font-bold text-white px-3">BLOODPROMPT</h1>
@@ -156,11 +167,7 @@
 			</div>
 			<Button
 				class="flex justify-start gap-2 text-white text-start px-6 py-3 items-center bg-[#191F2F] mb-9"
-				on:click={() => {
-					if (browser) {
-						goto('/staff/login');
-					}
-				}}><LogOut class="mr-2 h-5    w-5 stroke-white" />ออกจากระบบ</Button
+				on:click={handleLogout}><LogOut class="mr-2 h-5    w-5 stroke-white" />ออกจากระบบ</Button
 			>
 		</div>
 	</div>

@@ -132,11 +132,7 @@
 			</div>
 			<Button
 				class="flex justify-start gap-2 text-white text-start px-6 py-3 items-center bg-[#191F2F] mb-9"
-				on:click={() => {
-					if (browser) {
-						goto('/staff/login');
-					}
-				}}><LogOut class="mr-2 h-5 w-5 stroke-white" on:click={handleLogout} />ออกจากระบบ</Button
+				on:click={handleLogout}><LogOut class="mr-2 h-5 w-5 stroke-white" on:click={handleLogout} />ออกจากระบบ</Button
 			>
 		</div>
 	</div>
