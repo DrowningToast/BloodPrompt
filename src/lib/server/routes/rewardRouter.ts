@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { createRouter, publicProcedure } from '../context';
 import prisma from '../database';
+import { rewardController } from '../database/controllers/rewardController';
+import { TRPCError } from '@trpc/server';
 
 export const rewardRouter = createRouter({
 	create: publicProcedure
@@ -15,48 +17,35 @@ export const rewardRouter = createRouter({
 		)
 		.mutation(async ({ input, ctx }) => {
 			const sessionToken = ctx.sessionToken;
-			const session = await prisma.session.findUnique({
-				where: {
-					session_token: sessionToken
-				},
-				include: {
-					Medical_Staff: true
-				}
-			});
-			const reward = await prisma.rewards.create({
-				data: {
-					...input,
-					place_id: session?.Medical_Staff?.place_id || ''
-				}
-			});
-			return reward;
+
+			try {
+				const { reward } = await rewardController.create({
+					rewardData: input,
+					sessionToken
+				});
+
+				return reward;
+			} catch (error) {
+				throw new TRPCError({
+					code: 'BAD_REQUEST',
+					cause: error
+				});
+			}
 		}),
 	getAllRewards: publicProcedure.query(async () => {
-		const allRewards = await prisma.rewards.findMany({
-			include: {
-				Place: true,
-				Redemption_History: true
-			},
-			orderBy: {
-				created_at: 'desc'
-			},
-			where: {
-				deleted_at: {
-					equals: null
-				}
-			}
-		});
-		return allRewards;
+		try {
+			const allRewards = await rewardController.getAllRewards();
+			return allRewards;
+		} catch (e) {
+			throw new TRPCError({
+				code: 'BAD_REQUEST',
+				cause: e
+			});
+		}
 	}),
 	delete: publicProcedure.input(z.string()).mutation(async ({ input }) => {
-		await prisma.rewards.update({
-			where: {
-				id: input
-			},
-			data: {
-				deleted_at: new Date()
-			}
-		});
+		const deleted = await rewardController.delete(input);
+		return deleted;
 	}),
 	update: publicProcedure
 		.input(
@@ -71,28 +60,34 @@ export const rewardRouter = createRouter({
 				rewardId: z.string().min(1)
 			})
 		)
-		.mutation(async ({ input }) => {
-			const newData = input.data;
-			await prisma.rewards.update({
-				where: {
-					id: input.rewardId
-				},
-				data: {
-					name: newData.name,
-					description: newData.description,
-					required_points: newData.required_points,
-					amount_left: newData.amount_left,
-					image_src: newData.image_src
-				}
-			});
+		.mutation(async ({ input, ctx }) => {
+			try {
+				const updated = await rewardController.updateReward({
+					...input,
+					sessionToken: ctx.sessionToken
+				});
+				return updated;
+			} catch (error) {
+				throw new TRPCError({
+					code: 'BAD_REQUEST',
+					cause: error
+				});
+			}
 		}),
 	findById: publicProcedure.input(z.string().min(1)).query(async ({ input }) => {
-		const currentReward = await prisma.rewards.findUnique({
-			where: {
-				id: input
-			}
-		});
-		return currentReward;
+		try {
+			const currentReward = await prisma.rewards.findUnique({
+				where: {
+					id: input
+				}
+			});
+			return currentReward;
+		} catch (e) {
+			throw new TRPCError({
+				code: 'BAD_REQUEST',
+				cause: e
+			});
+		}
 	}),
 	redeem: publicProcedure
 		.input(
@@ -103,56 +98,25 @@ export const rewardRouter = createRouter({
 		)
 		.mutation(async ({ input }) => {
 			const { rewardId, donatorId } = input;
-			const reward = await prisma.rewards.update({
-				where: {
-					id: rewardId
-				},
-				data: {
-					amount_left: {
-						decrement: 1
-					}
-				}
-			});
-			const redemptionHistory = await prisma.redemption_History.create({
-				data: {
-					redeem_amount: 1,
-					status: 'REDEEMED',
-					used_points: reward?.required_points || 0,
-					reward_id: rewardId,
-					donator_id: donatorId
-				},
-				include: {
-					Donator: true,
-					Reward: true
-				}
-			});
 
-			const rewardTransaction = await prisma.reward_Transactions.create({
-				data: {
-					donator_id: donatorId,
-					points: reward?.required_points ? -reward.required_points : 0
-				},
-				include: {
-					Donator: true
-				}
-			});
+			try {
+				const { redemptionHistory, rewardTransaction, donator } =
+					await rewardController.redeemReward({
+						rewardId,
+						donatorId
+					});
 
-			const donator = await prisma.donators.update({
-				where: {
-					id: donatorId
-				},
-				data: {
-					reward_point: {
-						decrement: reward?.required_points
-					}
-				}
-			});
-
-			return {
-				redemptionHistory,
-				rewardTransaction,
-				donator
-			};
+				return {
+					redemptionHistory,
+					rewardTransaction,
+					donator
+				};
+			} catch (e) {
+				throw new TRPCError({
+					code: 'BAD_REQUEST',
+					cause: e
+				});
+			}
 		}),
 	getRedeemRewardsByDonatorId: publicProcedure
 		.input(
@@ -162,19 +126,20 @@ export const rewardRouter = createRouter({
 		)
 		.query(async ({ input }) => {
 			const { donatorId } = input;
-			const redemptionHistory = await prisma.redemption_History.findMany({
-				where: {
-					donator_id: donatorId
-				},
-				include: {
-					Donator: true,
-					Reward: true
-				},
-				orderBy: {
-					created_at: 'desc'
-				}
-			});
-			return redemptionHistory;
+
+			try {
+				const redemptionHistory = await rewardController.getRedeemRewardsHistory({
+					donatorFilter: {
+						id: donatorId
+					}
+				});
+				return redemptionHistory;
+			} catch (e) {
+				throw new TRPCError({
+					code: 'BAD_REQUEST',
+					cause: e
+				});
+			}
 		}),
 	getRedeemRewardsByRewardId: publicProcedure
 		.input(
@@ -183,110 +148,110 @@ export const rewardRouter = createRouter({
 			})
 		)
 		.query(async ({ input }) => {
-			const { rewardId } = input;
-			const redemptionHistory = await prisma.redemption_History.findMany({
-				where: {
-					reward_id: rewardId
-				},
-				include: {
-					Donator: true,
-					Reward: true
-				}
-			});
-			return redemptionHistory;
-		}),
+			try {
+				const { rewardId } = input;
 
+				const redemptionHistory = await rewardController.getRedeemRewardsHistory({
+					rewardsFilter: { id: rewardId }
+				});
+
+				return redemptionHistory;
+			} catch (error) {
+				throw new TRPCError({
+					code: 'BAD_REQUEST',
+					cause: error
+				});
+			}
+		}),
 	cancelRedeem: publicProcedure
 		.input(
 			z.object({
 				donatorId: z.string(),
-				rewardId: z.string(),
 				redemptionHistoryId: z.string()
 			})
 		)
 		.mutation(async ({ input }) => {
-			const { donatorId, rewardId, redemptionHistoryId } = input;
-			const reward = await prisma.rewards.findUnique({
-				where: {
-					id: rewardId
-				}
-			});
-			await prisma.$transaction([
-				prisma.rewards.update({
-					where: {
-						id: rewardId
-					},
-					data: {
-						amount_left: {
-							increment: 1
-						}
-					}
-				}),
-				prisma.reward_Transactions.create({
-					data: {
-						donator_id: donatorId,
-						points: reward?.required_points || 0
-					}
-				}),
-				prisma.redemption_History.update({
-					where: {
+			const { redemptionHistoryId, donatorId } = input;
+
+			try {
+				await rewardController.cancelRedeem({
+					redemptionHistoryFilter: {
 						id: redemptionHistoryId
 					},
-					data: {
-						status: 'CANCELLED'
-					}
-				}),
-				prisma.donators.update({
-					where: {
+					donatorFilter: {
 						id: donatorId
-					},
-					data: {
-						reward_point: {
-							increment: reward?.required_points
-						}
 					}
-				})
-			]);
+				});
+			} catch (error) {
+				throw new TRPCError({
+					code: 'BAD_REQUEST',
+					cause: error
+				});
+			}
+
 			return true;
 		}),
 	markAsReceived: publicProcedure
 		.input(z.object({ redemptionHistoryId: z.string().min(1) }))
-		.mutation(async ({ input }) => {
+		.mutation(async ({ input, ctx }) => {
 			const { redemptionHistoryId } = input;
-			const res = await prisma.redemption_History.update({
-				where: {
-					id: redemptionHistoryId
-				},
-				data: {
-					status: 'RECEIVED'
-				}
-			});
-			return res;
+			try {
+				const res = await rewardController.redeemComplete({
+					redemptionHistoryFilter: {
+						id: redemptionHistoryId
+					},
+					donatorFilter: {
+						Session: {
+							some: {
+								session_token: ctx.sessionToken
+							}
+						}
+					}
+				});
+				return res;
+			} catch (e) {
+				throw new TRPCError({
+					code: 'BAD_REQUEST',
+					cause: e
+				});
+			}
 		}),
 	getRedemptionHistoryById: publicProcedure
 		.input(z.object({ redemptionHistoryId: z.string() }))
 		.query(async ({ input }) => {
-			const redemptionHistory = await prisma.redemption_History.findUnique({
-				where: {
-					id: input.redemptionHistoryId
-				},
-				include: {
-					Reward: true,
-					Donator: true
+			try {
+				const redemptionHistory = await rewardController.getRedeemRewardsHistory({
+					rewardsFilter: {
+						id: input.redemptionHistoryId
+					}
+				});
+				return redemptionHistory;
+			} catch (error) {
+				throw new TRPCError({
+					code: 'BAD_REQUEST',
+					cause: error
+				});
+			}
+		}),
+	getAllRedemptionHistory: publicProcedure.query(async ({ ctx }) => {
+		const { sessionToken } = ctx;
+
+		try {
+			const redemptionHistories = await rewardController.getAllRedeemRewardsHistory({
+				donatorFilter: {
+					Session: {
+						some: {
+							session_token: sessionToken
+						}
+					}
 				}
 			});
-			return redemptionHistory;
-		}),
-	getAllRedemptionHistory: publicProcedure.query(async () => {
-		const redemptionHistories = await prisma.redemption_History.findMany({
-			orderBy: {
-				created_at: 'desc'
-			},
-			include: {
-				Reward: true,
-				Donator: true
-			}
-		});
-		return redemptionHistories;
+			return redemptionHistories;
+		} catch (e) {
+			throw new TRPCError({
+				code: 'BAD_REQUEST',
+				cause: e
+			});
+		}
 	})
 });
