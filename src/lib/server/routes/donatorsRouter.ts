@@ -53,10 +53,8 @@ export const donatorsRouter = createRouter({
 		)
 		.query(async ({ input }) => {
 			const { donatorId } = input;
-			const user = await prisma.donators.findUnique({
-				where: {
-					id: donatorId
-				}
+			const user = await donatorsController.getDonator({
+				id: donatorId
 			});
 			return user;
 		}),
