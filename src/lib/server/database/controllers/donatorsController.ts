@@ -27,12 +27,12 @@ export const donatorsController = {
 		return res;
 	},
 	getDonator: async (args: Prisma.DonatorsWhereUniqueInput) => {
-		const res = await prisma.donators.findUnique({
+		const donator = await prisma.donators.findUnique({
 			where: args,
 			include: {
 				Medical_Account: true
 			}
 		});
-		return res;
+		return donator;
 	}
 };

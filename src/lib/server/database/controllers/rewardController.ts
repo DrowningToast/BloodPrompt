@@ -154,14 +154,9 @@ export const rewardController = {
 	redeemReward: async (args: RewardControllerRedeemRewardArgs) => {
 		const { rewardId, donatorId } = args;
 
-		const reward = await prisma.rewards.update({
+		const reward = await prisma.rewards.findUnique({
 			where: {
 				id: rewardId
-			},
-			data: {
-				amount_left: {
-					decrement: 1
-				}
 			}
 		});
 
@@ -170,14 +165,13 @@ export const rewardController = {
 			throw new Error('REWARD_NOT_FOUND');
 		}
 
-		const donator = await prisma.donators.update({
+		if (reward.amount_left <= 0) {
+			throw new Error('REWARD_OUT_OF_STOCK');
+		}
+
+		const donator = await prisma.donators.findUnique({
 			where: {
 				id: donatorId
-			},
-			data: {
-				reward_point: {
-					decrement: reward?.required_points
-				}
 			}
 		});
 
@@ -190,6 +184,28 @@ export const rewardController = {
 		if (donator.reward_point < reward?.required_points) {
 			throw new Error('INSUFFICIENT_POINTS');
 		}
+
+		const updatedReward = await prisma.rewards.update({
+			where: {
+				id: rewardId
+			},
+			data: {
+				amount_left: {
+					decrement: 1
+				}
+			}
+		});
+
+		const updatedDonator = await prisma.donators.update({
+			where: {
+				id: donatorId
+			},
+			data: {
+				reward_point: {
+					decrement: reward?.required_points
+				}
+			}
+		});
 
 		const redemptionHistory = await prisma.redemption_History.create({
 			data: {
@@ -217,7 +233,8 @@ export const rewardController = {
 		return {
 			redemptionHistory,
 			rewardTransaction,
-			donator
+			donator: updatedDonator,
+			reward: updatedReward
 		};
 	},
 	getRedeemRewardsHistory: async (args: {
