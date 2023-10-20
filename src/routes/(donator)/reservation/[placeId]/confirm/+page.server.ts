@@ -23,8 +23,12 @@ export const load = (async ({ url, params, fetch }) => {
 	// promise all
 	const [hospital, availableDates] = await Promise.all([
 		trpcServer.places.findById.query({ placeId: placeId }),
-		reservationController.getAvailbleTimeSlots(placeId, selectedDate)
+		reservationController.getAvailbleTimeSlots(placeId)
 	]);
+
+	if (!hospital) {
+		throw redirect(307, `/reservation`);
+	}
 
 	const filteredByDate = availableDates.find((d) => {
 		// check date only

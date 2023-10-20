@@ -6,22 +6,17 @@ import prisma, {
 	PlacesUpdateInputSchema
 } from '../database';
 import { PlacesCreateInputSchema } from '../database';
-import { PlaceReviewHistoryController } from '../database/controllers/PlaceReviewHistoryController';
+import { placeReviewHistoryController } from '../database/controllers/placeReviewHistoryController';
+import { placeController } from '../database/controllers/placeController';
 
 export const placesRouter = createRouter({
 	findAll: publicProcedure.query(async () => {
-		const places = await prisma.places.findMany({
-			where: {
-				deleted_at: {
-					equals: null
-				}
-			}
-		});
+		const places = await placeController.getAll();
 		return places;
 	}),
 	findById: publicProcedure.input(z.object({ placeId: z.string() })).query(async ({ input }) => {
 		const { placeId } = input;
-		const place = await prisma.places.findUnique({
+		const place = await placeController.get({
 			where: {
 				id: placeId
 			},
@@ -78,7 +73,7 @@ export const placesRouter = createRouter({
 	createReview: publicProcedure
 		.input(Place_Review_HistoryCreateInputSchema)
 		.mutation(async ({ input }) => {
-			const review = await PlaceReviewHistoryController.createReview(input);
+			const review = await placeReviewHistoryController.createReview(input);
 			return review;
 		})
 });
