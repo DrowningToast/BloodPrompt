@@ -1,6 +1,9 @@
 import { z } from 'zod';
 import { createRouter, publicProcedure } from '../context';
 import prisma from '../database';
+import { donatorsController } from '../database/controllers/donatorsController';
+import { donationHistoryController } from '../database/controllers/donationHistoryController';
+import reservationController from '../database/controllers/reservationController';
 
 export const donationHistoryRouter = createRouter({
 	submitBloodDonation: publicProcedure
@@ -28,17 +31,10 @@ export const donationHistoryRouter = createRouter({
 			const { data } = input;
 
 			// Update Status to success
-			const reservation = await prisma.reservations.update({
-				where: {
-					id: data.reservation_id
-				},
-				data: {
-					status: 'COMPLETED'
-				}
-			});
+			const reservation = await reservationController.completeReservation(data.reservation_id);
 
 			// Create new donation history
-			const donationHistory = await prisma.donation_History.create({
+			const donationHistory = await donationHistoryController.create({
 				data: {
 					blood_type: data.blood_type,
 					rewarded_points: data.rewarded_points,
@@ -56,16 +52,12 @@ export const donationHistoryRouter = createRouter({
 				}
 			});
 
-			await prisma.donators.update({
-				where: {
+			await donatorsController.updatePoints(
+				{
 					id: reservation.donator_id
 				},
-				data: {
-					reward_point: {
-						increment: data.rewarded_points
-					}
-				}
-			});
+				data.rewarded_points
+			);
 
 			return donationHistory;
 		}),

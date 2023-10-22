@@ -180,6 +180,18 @@ const reservationController = {
 				created_at: 'desc'
 			}
 		});
+	},
+	completeReservation: async (reservationId: string) => {
+		const reservation = await prisma.reservations.update({
+			where: {
+				id: reservationId
+			},
+			data: {
+				status: 'COMPLETED'
+			}
+		});
+
+		return reservation;
 	}
 };
 export default reservationController;

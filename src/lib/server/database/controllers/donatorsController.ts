@@ -34,5 +34,16 @@ export const donatorsController = {
 			}
 		});
 		return donator;
+	},
+	updatePoints: async (filter: Prisma.DonatorsWhereUniqueInput, points: number) => {
+		const donator = await prisma.donators.update({
+			where: filter,
+			data: {
+				reward_point: {
+					increment: points
+				}
+			}
+		});
+		return donator;
 	}
 };

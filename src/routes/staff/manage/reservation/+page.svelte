@@ -4,15 +4,11 @@
 	import {
 		Home,
 		LogOut,
-		MapPin,
-		UserCircle2,
-		Lock,
 		Gift,
 		CalendarHeart,
 		FileText,
 		User,
 		Search,
-		Wallet,
 		Heart,
 		User2,
 		Cake,
@@ -30,22 +26,18 @@
 	let filteredReservationData = allReservation;
 	import { Input } from '$lib/components/ui/input';
 
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Button } from '$lib/components/ui/button';
 	import * as Select from '$lib/components/ui/select';
 	import * as Table from '$lib/components/ui/table';
 	let position = 'bottom';
 	import { buttonVariants } from '$lib/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog';
-	import { Label } from '$lib/components/ui/label';
-	import wallet from '$lib/images/wallet.png';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 	import Dropdown from '../../../moderator/home/dropdown.svelte';
 	import { toDateString } from '$lib/utils';
 	import { trpc } from '$lib/trpc';
-	import type { Reservations } from '../../../../../generated-zod';
 	import type { DonationStatus } from '@prisma/client';
 
 	let selectedBloodQuality = '';
