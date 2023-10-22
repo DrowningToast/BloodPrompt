@@ -100,15 +100,14 @@ export const rewardRouter = createRouter({
 			const { rewardId, donatorId } = input;
 
 			try {
-				const { redemptionHistory, rewardTransaction, donator } =
-					await rewardController.redeemReward({
-						rewardId,
-						donatorId
-					});
+				const { redemptionHistory, donator } = await rewardController.redeemReward({
+					rewardId,
+					donatorId
+				});
 
 				return {
 					redemptionHistory,
-					rewardTransaction,
+
 					donator
 				};
 			} catch (e) {

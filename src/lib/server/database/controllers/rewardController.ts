@@ -1,6 +1,6 @@
 import type { RedemptionHistory } from '$lib/stores/rewardStores';
 import type { DefaultArgs } from '@prisma/client/runtime/library';
-import prisma, { Prisma, type Donators, type Reward_Transactions, type Rewards } from '..';
+import prisma, { Prisma, type Donators, type Rewards } from '..';
 
 export type RewardControllerCreateRewardArgs = {
 	rewardData: Pick<
@@ -221,19 +221,9 @@ export const rewardController = {
 				Reward: true
 			}
 		});
-		const rewardTransaction = await prisma.reward_Transactions.create({
-			data: {
-				donator_id: donatorId,
-				points: reward?.required_points ? -reward.required_points : 0
-			},
-			include: {
-				Donator: true
-			}
-		});
 
 		return {
 			redemptionHistory,
-			rewardTransaction,
 			donator: updatedDonator,
 			reward: updatedReward
 		};
@@ -322,12 +312,6 @@ export const rewardController = {
 					amount_left: {
 						increment: 1
 					}
-				}
-			}),
-			prisma.reward_Transactions.create({
-				data: {
-					donator_id: donator.id,
-					points: reward?.required_points || 0
 				}
 			}),
 			prisma.redemption_History.update({

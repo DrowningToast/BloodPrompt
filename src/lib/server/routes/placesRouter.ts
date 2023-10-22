@@ -6,8 +6,8 @@ import prisma, {
 	PlacesUpdateInputSchema
 } from '../database';
 import { PlacesCreateInputSchema } from '../database';
-import { placeReviewHistoryController } from '../database/controllers/placeReviewHistoryController';
 import { placeController } from '../database/controllers/placeController';
+import { placeReviewHistoryController } from '../database/controllers/PlaceReviewHistoryController';
 
 export const placesRouter = createRouter({
 	findAll: publicProcedure.query(async () => {
