@@ -1,4 +1,5 @@
 import type { RedemptionHistory } from '$lib/stores/rewardStores';
+import type { DefaultArgs } from '@prisma/client/runtime/library';
 import prisma, { Prisma, type Donators, type Reward_Transactions, type Rewards } from '..';
 
 export type RewardControllerCreateRewardArgs = {

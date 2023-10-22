@@ -53,10 +53,10 @@
 				alert('ไม่สามารถเพิ่มของรางวัลได้ โปรดตรวจสอบข้อมูลการเพิ่มของรางวัล');
 				console.log(error);
 			})
-			.then(()=>{
-				alert("การเพิ่มรางวัลสำเร็จ");
-				if(browser){
-					goto("/staff/manage/reward");
+			.then(() => {
+				alert('การเพิ่มรางวัลสำเร็จ');
+				if (browser) {
+					goto('/staff/manage/reward');
 				}
 			})
 			.finally(() => {

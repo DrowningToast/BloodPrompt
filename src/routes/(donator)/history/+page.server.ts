@@ -16,7 +16,7 @@ export const load = (async ({ fetch }) => {
 
 	// promise all
 	const [reservationLog, donationHistoryData, pendingFeedback] = await Promise.all([
-		trpc.reservationSlot.getLog.query(),
+		trpc.reservation.getLog.query(),
 		trpc.donationHistory.getDonationHistories.query(),
 		trpc.postFeedback.checkPendingFeedback.query({
 			id: userContext.user.id
