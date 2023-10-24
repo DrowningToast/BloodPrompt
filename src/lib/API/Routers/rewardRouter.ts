@@ -3,7 +3,7 @@ import { createRouter, publicProcedure } from '../TRPC/context';
 import prisma from '../../ORM';
 import { rewardController } from '../../DatabaseController/rewardController';
 import { TRPCError } from '@trpc/server';
-import { medicalStaffProcedure } from '../TRPC/Procedures/procedures';
+import { medicalStaffProcedure } from '../TRPC/Procedures';
 
 export const rewardRouter = createRouter({
 	create: publicProcedure

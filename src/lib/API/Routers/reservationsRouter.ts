@@ -3,7 +3,7 @@ import { createRouter, publicProcedure } from '../TRPC/context';
 import { TRPCError } from '@trpc/server';
 import reservationController from '../../DatabaseController/reservationController';
 import { validatePreDonationFeedback } from '$lib/stores/preFeedback';
-import { donatorProcedure } from '../TRPC/Procedures/procedures';
+import { donatorProcedure } from '../TRPC/Procedures';
 import prisma, { type Donators } from '$lib/ORM';
 import { DonatorsWhereUniqueInputSchema } from '$lib/generated-zod';
 

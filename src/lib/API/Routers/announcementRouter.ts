@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { createRouter, publicProcedure } from '../TRPC/context';
 
 import { announcementsController } from '../../DatabaseController/announcementController';
-import { medicalStaffProcedure } from '../TRPC/Procedures/procedures';
+import { medicalStaffProcedure } from '../TRPC/Procedures';
 import { TRPCError } from '@trpc/server';
 import {
 	AnnouncementsWhereInputSchema,

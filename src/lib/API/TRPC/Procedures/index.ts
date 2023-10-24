@@ -4,7 +4,7 @@ import {
 	enforceDonator,
 	enforceMedicalStaff,
 	enforceModerator
-} from '../Middlewares/middlewares';
+} from '../Middlewares';
 
 export const donatorProcedure = t.procedure.use(enforceDonator);
 export const medicalStaffProcedure = t.procedure.use(enforceMedicalStaff);
