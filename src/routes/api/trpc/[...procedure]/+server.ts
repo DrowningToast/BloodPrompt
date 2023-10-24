@@ -1,5 +1,5 @@
-import { createSvelteKitContext } from '$lib/server/context';
-import { appRouter } from '$lib/server/router';
+import { createSvelteKitContext } from '$lib/server/API/TRPC/context';
+import { appRouter } from '$lib/server/API/TRPC/router';
 import type { RequestHandler } from '@sveltejs/kit';
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
 

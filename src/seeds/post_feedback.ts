@@ -1,4 +1,4 @@
-import prisma from '$lib/server/database';
+import prisma from '$lib/server/ORM';
 
 export const seed_postFeedback = async () => {
 	await prisma.survey_Questions.createMany({

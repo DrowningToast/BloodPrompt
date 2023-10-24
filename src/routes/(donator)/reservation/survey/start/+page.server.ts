@@ -1,7 +1,7 @@
-import prisma, { Survey_ChoicesSchema } from '$lib/server/database';
+import prisma, { Survey_ChoicesSchema } from '$lib/server/ORM';
 import type { PageServerLoad } from './$types';
 import { z } from 'zod';
-import { preFeedbackController } from '$lib/server/database/controllers/preDonationFeedbackController';
+import { preFeedbackController } from '$lib/server/DatabaseController/preDonationFeedbackController';
 
 const validatePreSurveyQuestion = z.object({
 	id: z.string(),

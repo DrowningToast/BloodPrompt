@@ -1,6 +1,6 @@
 import type { PageServerLoad } from './$types';
 import { trpcOnServer } from '$lib/trpc';
-import prisma from '$lib/server/database';
+import prisma from '$lib/server/ORM';
 
 function groupDatesByDay(dateArray: Date[]): Record<string, Date[]> {
 	const groupedDates: Record<string, Date[]> = {};

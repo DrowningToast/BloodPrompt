@@ -1,7 +1,7 @@
-import prisma from '$lib/server/database';
-import { placeController } from '$lib/server/database/controllers/placeController';
-import reservationController from '$lib/server/database/controllers/reservationController';
-import { placesRouter } from '$lib/server/routes/placesRouter';
+import prisma from '$lib/server/ORM';
+import { placeController } from '$lib/server/DatabaseController/placeController';
+import reservationController from '$lib/server/DatabaseController/reservationController';
+import { placesRouter } from '$lib/server/API/Routers/placesRouter';
 import type { HospitalAvailability } from '../utils';
 
 import type { PageServerLoad } from './$types';
