@@ -8,16 +8,6 @@
 	import { get24HoursTimeString } from '../reservation/[placeId]/date/utils';
 	import type { PageData } from './$types';
 
-	// TODO: Searchbar Functionality
-
-	// let searchFilter = {
-	// 	bloodType: 'A',
-	// 	province: 'กรุงเทพมหานคร',
-	// 	district: 'ทุ่งครุ',
-	// 	subDistrict: 'บางมด',
-	// 	placeName: 'โรงพยาบาลพระจอมเกล้าเจ้าคุณทหาร'
-	// };
-
 	export let data: PageData;
 
 	const pendingPostFeedback = data.pendingFeedback;
