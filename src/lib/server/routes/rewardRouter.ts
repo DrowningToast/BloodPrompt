@@ -3,6 +3,7 @@ import { createRouter, publicProcedure } from '../context';
 import prisma from '../database';
 import { rewardController } from '../database/controllers/rewardController';
 import { TRPCError } from '@trpc/server';
+import { medicalStaffProcedure } from '../procedures';
 
 export const rewardRouter = createRouter({
 	create: publicProcedure
@@ -232,6 +233,40 @@ export const rewardRouter = createRouter({
 				});
 			}
 		}),
+	getAllRedemptionHistoryByPlaceId: medicalStaffProcedure
+		.input(z.string().optional())
+		.query(async ({ ctx, input }) => {
+			const { sessionToken } = ctx;
+
+			const user = ctx.userContext;
+
+			if (user?.type !== 'MEDICAL_STAFF') {
+				throw new TRPCError({
+					code: 'UNAUTHORIZED'
+				});
+			}
+
+			try {
+				const redemptionHistories = await prisma.redemption_History.findMany({
+					where: {
+						Reward: {
+							place_id: input ?? user.user.place_id
+						}
+					},
+					include: {
+						Donator: true,
+						Reward: true
+					}
+				});
+
+				return redemptionHistories;
+			} catch (e) {
+				throw new TRPCError({
+					code: 'BAD_REQUEST',
+					cause: e
+				});
+			}
+		}),
 	getAllRedemptionHistory: publicProcedure.query(async ({ ctx }) => {
 		const { sessionToken } = ctx;
 
@@ -245,6 +280,7 @@ export const rewardRouter = createRouter({
 					}
 				}
 			});
+
 			return redemptionHistories;
 		} catch (e) {
 			throw new TRPCError({

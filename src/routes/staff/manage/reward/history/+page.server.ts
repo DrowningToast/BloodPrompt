@@ -6,7 +6,7 @@ export const load = (async ({ fetch }) => {
 
 	const [currentUser, redemptionHistories] = await Promise.all([
 		trpc.auth.getUser.query(),
-		trpc.reward.getAllRedemptionHistory.query()
+		trpc.reward.getAllRedemptionHistoryByPlaceId.query()
 	]);
 
 	const medicalStaff = await trpc.medicalStaff.findById.query({
@@ -18,6 +18,9 @@ export const load = (async ({ fetch }) => {
 			redemptionData.push(data);
 		}
 	}
+
+	console.log(redemptionData);
+
 	return {
 		redemptionData
 	};
