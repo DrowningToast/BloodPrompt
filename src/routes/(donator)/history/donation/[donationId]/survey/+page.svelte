@@ -18,7 +18,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Button } from '$lib/components/ui/button';
 	import AlertDialog from '$lib/components/svelte/alert/AlertDialog.svelte';
-	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/server/API/TRPC/trpc';
 	import { mock_hospitalData } from '../../../../reservation/[placeId]/utils';
 
 	export let data: PageData;

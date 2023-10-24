@@ -16,7 +16,7 @@
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import Dropdown from '../../../moderator/home/dropdown.svelte';
-	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/server/API/TRPC/trpc';
 	import { page } from '$app/stores';
 	let data = $page.data;
 	const currentEvent = data.eventNow;

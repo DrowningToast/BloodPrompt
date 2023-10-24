@@ -1,6 +1,6 @@
 import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
 import type { FetchEsque } from '@trpc/client/dist/internals/types';
-import type { AppRouter } from './server/API/TRPC/router';
+import type { AppRouter } from './router';
 import SuperJSON from 'superjson';
 
 export const TRPCServerlessFunctionHandler = createTRPCProxyClient<AppRouter>({
