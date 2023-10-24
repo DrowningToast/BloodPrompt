@@ -25,7 +25,7 @@
 	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
 	import { toDateString, toDateTimeString } from '$lib/utils';
-	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/API/TRPC/trpc';
 	import type { Redemption_History } from '../../../../../../generated-zod';
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 

@@ -19,7 +19,7 @@
 	import { browser } from '$app/environment';
 	import type { PageData } from './$types';
 	import type { Moderators } from '../../../../../generated-zod';
-	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/API/TRPC/trpc';
 	import Dropdown from '../../home/dropdown.svelte';
 
 	export let data: PageData;

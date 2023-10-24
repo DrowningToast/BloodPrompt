@@ -1,10 +1,11 @@
 import { z } from 'zod';
 import { createRouter, publicProcedure } from '../TRPC/context';
-import prisma, {
+import prisma from '$lib/ORM';
+import { donationHistoryController } from '../../DatabaseController/donationHistoryController';
+import {
 	Donation_HistoryWhereInputSchema,
 	Donation_HistoryWhereUniqueInputSchema
-} from '../../ORM';
-import { donationHistoryController } from '../../DatabaseController/donationHistoryController';
+} from '$lib/generated-zod';
 
 export const donationHistoryRouter = createRouter({
 	submitBloodDonation: publicProcedure

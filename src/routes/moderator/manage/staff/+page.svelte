@@ -10,7 +10,7 @@
 	import { Home, LogOut, UserCircle, UserCircle2, MapPin, Lock, Search } from 'lucide-svelte';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/API/TRPC/trpc';
 
 	const handleLogout = async () => {
 		await TRPCServerlessFunctionHandler.auth.logout

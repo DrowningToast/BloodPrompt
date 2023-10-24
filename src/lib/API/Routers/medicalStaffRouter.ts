@@ -1,8 +1,8 @@
 import { createRouter, publicProcedure } from '../TRPC/context';
 import { z } from 'zod';
-import { Medical_StaffCreateInputSchema } from '../../ORM';
 import prisma from '../../ORM';
 import { encodePassword } from '$lib/utils';
+import { Medical_StaffCreateInputSchema } from '$lib/generated-zod';
 
 export const medicalStaffRouter = createRouter({
 	create: publicProcedure

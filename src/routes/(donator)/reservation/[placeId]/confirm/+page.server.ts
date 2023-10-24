@@ -1,8 +1,8 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { get24HoursTimeString } from '../date/utils';
-import { trpcOnServer } from '$lib/server/API/TRPC/trpc';
-import reservationController from '$lib/server/DatabaseController/reservationController';
+import { trpcOnServer } from '$lib/API/TRPC/trpc';
+import reservationController from '$lib/DatabaseController/reservationController';
 
 export const load = (async ({ url, params, fetch }) => {
 	const placeId = params.placeId;

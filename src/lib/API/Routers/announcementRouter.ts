@@ -1,14 +1,15 @@
 import { z } from 'zod';
 import { createRouter, publicProcedure } from '../TRPC/context';
-import prisma, {
-	AnnouncementsWhereInputSchema,
-	AnnouncementsWhereUniqueInputSchema,
-	BloodType,
-	type PostTypeType
-} from '../../ORM';
+
 import { announcementsController } from '../../DatabaseController/announcementController';
 import { medicalStaffProcedure } from '../TRPC/Procedures/procedures';
 import { TRPCError } from '@trpc/server';
+import {
+	AnnouncementsWhereInputSchema,
+	AnnouncementsWhereUniqueInputSchema,
+	type PostTypeType
+} from '$lib/generated-zod';
+import prisma, { BloodType } from '$lib/ORM';
 
 export const announcementsRouter = createRouter({
 	getAnnouncements: publicProcedure

@@ -8,7 +8,7 @@
 	import Input from '$lib/components/ui/input/input.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import AlertDialog from '$lib/components/svelte/alert/AlertDialog.svelte';
-	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/API/TRPC/trpc';
 	import { encodePassword, toDateString } from '$lib/utils';
 
 	export let data: PageData;

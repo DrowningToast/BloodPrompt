@@ -1,10 +1,11 @@
 import { z } from 'zod';
 import { createRouter, publicProcedure } from '../TRPC/context';
-import prisma, { type Donators, DonatorsWhereUniqueInputSchema } from '../../ORM';
 import { TRPCError } from '@trpc/server';
 import reservationController from '../../DatabaseController/reservationController';
 import { validatePreDonationFeedback } from '$lib/stores/preFeedback';
 import { donatorProcedure } from '../TRPC/Procedures/procedures';
+import prisma, { type Donators } from '$lib/ORM';
+import { DonatorsWhereUniqueInputSchema } from '$lib/generated-zod';
 
 export const reservationsRouter = createRouter({
 	changeReservationSlot: publicProcedure

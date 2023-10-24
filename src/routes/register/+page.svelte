@@ -10,8 +10,7 @@
 	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
 	import { Label } from '$lib/components/ui/label';
 	import { browser } from '$app/environment';
-	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
-	import type { BloodType, Gender } from '$lib/server/database';
+	import { TRPCServerlessFunctionHandler } from '$lib/API/TRPC/trpc';
 	import { goto } from '$app/navigation';
 
 	let locale = localeFromDateFnsLocale(th);

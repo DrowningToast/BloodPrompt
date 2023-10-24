@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Sheet from '$lib/components/ui/sheet';
-	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/API/TRPC/trpc';
 	import { onMount } from 'svelte';
 	import ReservationHeader from '../../ReservationHeader.svelte';
 	import type { PageData } from './$types';

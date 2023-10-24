@@ -8,7 +8,7 @@
 	import { getFormattedOpeningDate, toDateTimeString, toDateString } from '$lib/utils';
 	import { Button } from '$lib/components/ui/button';
 	import QRCode from '@castlenine/svelte-qrcode';
-	import { TRPCServerlessFunctionHandler } from '$lib/server/API/TRPC/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/API/TRPC/trpc';
 
 	export let data: PageData;
 	const { reservationData, donatorData, placeData } = data;

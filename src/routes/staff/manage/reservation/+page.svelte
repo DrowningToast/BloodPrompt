@@ -37,7 +37,7 @@
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 	import Dropdown from '../../../moderator/home/dropdown.svelte';
 	import { toDateString } from '$lib/utils';
-	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/API/TRPC/trpc';
 	import type { DonationStatus } from '@prisma/client';
 
 	let selectedBloodQuality = '';

@@ -19,7 +19,7 @@
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/API/TRPC/trpc';
 	import Dropdown from '../../../../../moderator/home/dropdown.svelte';
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 	import type { PageData } from './$types';

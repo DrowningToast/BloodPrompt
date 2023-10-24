@@ -1,13 +1,13 @@
 import { createRouter, publicProcedure } from '../TRPC/context';
 import { z } from 'zod';
-import prisma, {
-	Place_Review_HistoryCreateArgsSchema,
-	Place_Review_HistoryCreateInputSchema,
-	PlacesUpdateInputSchema
-} from '../../ORM';
-import { PlacesCreateInputSchema } from '../../ORM';
 import { placeController } from '../../DatabaseController/placeController';
 import { placeReviewHistoryController } from '../../DatabaseController/PlaceReviewHistoryController';
+import {
+	Place_Review_HistoryCreateInputSchema,
+	PlacesCreateInputSchema,
+	PlacesUpdateInputSchema
+} from '$lib/generated-zod';
+import prisma from '$lib/ORM';
 
 export const placesRouter = createRouter({
 	findAll: publicProcedure.query(async () => {

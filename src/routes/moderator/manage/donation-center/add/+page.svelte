@@ -24,7 +24,7 @@
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
-	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/API/TRPC/trpc';
 
 	const days = [
 		{ value: 'MONDAY', label: 'วันจันทร์' },

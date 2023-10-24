@@ -1,4 +1,4 @@
-import reservationController from '$lib/server/DatabaseController/reservationController';
+import reservationController from '$lib/DatabaseController/reservationController';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 

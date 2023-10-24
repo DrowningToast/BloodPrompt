@@ -1,4 +1,4 @@
-import { placeController } from '$lib/server/DatabaseController/placeController';
+import { placeController } from '$lib/DatabaseController/placeController';
 import type { PageServerLoad } from './$types';
 import type { HospitalWithReviews } from './utils';
 

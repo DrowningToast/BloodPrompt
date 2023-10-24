@@ -4,7 +4,7 @@
 	import type { PageData } from './$types';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { get24HoursTimeString } from '../date/utils';
-	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/API/TRPC/trpc';
 	import { goto } from '$app/navigation';
 	import { preFeedbackStore } from '$lib/stores/preFeedback';
 	import { onMount } from 'svelte';

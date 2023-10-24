@@ -22,7 +22,7 @@
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/API/TRPC/trpc';
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 
 	let fileInput: HTMLInputElement;

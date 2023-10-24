@@ -4,16 +4,14 @@
 	import Input from '$lib/components/ui/input/input.svelte';
 	import { Eye, EyeOff, KeyRound, Loader2, Smartphone } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
-	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import { goto } from '$app/navigation';
+	import { TRPCServerlessFunctionHandler } from '$lib/API/TRPC/trpc';
 
 	let showPassword: boolean = false;
 
 	let phoneNumber: string = '';
 	let password: string = '';
 	let isLoading: boolean = false;
-
-	let data: PageData;
 
 	const toggleShowPassword = () => {
 		showPassword = !showPassword;

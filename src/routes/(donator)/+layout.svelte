@@ -1,6 +1,6 @@
 <script lang="ts">
 	import BottomNavBar from '$lib/components/svelte/navbar/BottomNavBar.svelte';
-	import { TRPCServerlessFunctionHandler } from '$lib/server/API/TRPC/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/API/TRPC/trpc';
 	import type { LayoutData } from './$types';
 	import { goto } from '$app/navigation';
 

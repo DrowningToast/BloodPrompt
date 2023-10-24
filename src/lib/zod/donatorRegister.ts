@@ -1,8 +1,8 @@
-import { z } from 'zod';
 import {
 	DonatorsCreateWithoutMedical_AccountInputSchema,
 	Medical_AccountsCreateInputSchema
-} from '../../../generated-zod';
+} from '$lib/generated-zod';
+import { z } from 'zod';
 
 export const signUpRegister = z.object({
 	donatorData: DonatorsCreateWithoutMedical_AccountInputSchema,

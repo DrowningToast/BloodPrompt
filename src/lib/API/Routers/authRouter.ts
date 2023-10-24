@@ -1,7 +1,7 @@
 import { createRouter } from '../TRPC/context';
 import { publicProcedure } from '../TRPC/context';
 import { z } from 'zod';
-import prisma from '$lib/server/ORM';
+import prisma from '$lib/ORM';
 import { TRPCError } from '@trpc/server';
 import { sessionController } from '../../DatabaseController/sessionController';
 import { decryptPassword } from '$lib/utils';

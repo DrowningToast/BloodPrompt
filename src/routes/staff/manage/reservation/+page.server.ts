@@ -1,4 +1,4 @@
-import { trpcOnServer } from '$lib/server/API/TRPC/trpc';
+import { trpcOnServer } from '$lib/API/TRPC/trpc';
 import type { PageServerLoad } from '../reward/$types';
 
 export const load = (async ({ fetch }) => {

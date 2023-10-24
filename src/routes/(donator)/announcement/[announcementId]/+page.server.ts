@@ -1,6 +1,6 @@
 import type { PageServerLoad } from './$types';
 import kmitlLogo from '$lib/images/home/kmitl_logo.png';
-import { trpcOnServer } from '$lib/server/API/TRPC/trpc';
+import { trpcOnServer } from '$lib/API/TRPC/trpc';
 import { redirect } from '@sveltejs/kit';
 
 export const load = (async ({ params, fetch }) => {

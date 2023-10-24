@@ -3,13 +3,13 @@ import prisma, { Prisma, type Reservations } from '../ORM';
 import {
 	checkEquivalenceDate,
 	get24HoursTimeString
-} from '../../../routes/(donator)/reservation/[placeId]/date/utils';
+} from '../../routes/(donator)/reservation/[placeId]/date/utils';
 import {
 	DEFAULT_TIME_SLOT,
 	getDatesFrom,
 	MAX_SEAT_PER_TIME_SLOT,
 	type HospitalAvailability
-} from '../../../routes/(donator)/reservation/[placeId]/utils';
+} from '../../routes/(donator)/reservation/[placeId]/utils';
 import { placeController } from './placeController';
 import { sessionController } from './sessionController';
 

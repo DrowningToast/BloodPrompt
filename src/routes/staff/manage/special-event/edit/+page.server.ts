@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types';
-import { trpcOnServer } from '$lib/server/API/TRPC/trpc';
+import { trpcOnServer } from '$lib/API/TRPC/trpc';
 
 export const load = (async ({ fetch }) => {
 	const trpc = trpcOnServer(fetch);

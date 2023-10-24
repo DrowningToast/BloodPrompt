@@ -7,7 +7,7 @@
 	import AlertDialog from '../alert/AlertDialog.svelte';
 	import { browser } from '$app/environment';
 	import type { Donators } from '../../../../../generated-zod';
-	import { TRPCServerlessFunctionHandler } from '$lib/server/API/TRPC/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/API/TRPC/trpc';
 	export let open: boolean = false;
 	export let onClose: () => void;
 

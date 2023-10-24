@@ -5,7 +5,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { TRPCServerlessFunctionHandler } from '$lib/server/API/TRPC/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/API/TRPC/trpc';
 
 	export let data: PageData;
 	let videoSource: any = null;
