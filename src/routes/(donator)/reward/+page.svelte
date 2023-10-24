@@ -103,7 +103,7 @@
 									amount_left: reward.amount_left,
 									created_at: new Date(reward.created_at),
 									deleted_at: null,
-									updated_at: null,
+									updated_at: new Date(reward.updated_at),
 									name: reward.name,
 									description: reward.description,
 									id: reward.id,

@@ -31,8 +31,7 @@
 			await trpc.reward.cancelRedeem
 				.mutate({
 					donatorId: redemptionHistory?.donator_id,
-					redemptionHistoryId: redemptionHistory?.id,
-					rewardId: redemptionHistory?.reward_id
+					redemptionHistoryId: redemptionHistory?.id
 				})
 				.then(() => {
 					alert('ระบบยกเลิกรายการแลกของรางวัลของคุณแล้ว');

@@ -14,11 +14,14 @@ export const load = (async ({ fetch }) => {
 		throw redirect(307, '/login');
 	}
 
-	const reservationLog = await trpc.reservationSlot.getLog.query();
-	const donationHistoryData = await trpc.donationHistory.getDonationHistories.query();
-	const pendingFeedback = await trpc.postFeedback.checkPendingFeedback.query({
-		id: userContext.user.id
-	});
+	// promise all
+	const [reservationLog, donationHistoryData, pendingFeedback] = await Promise.all([
+		trpc.reservation.getLog.query(),
+		trpc.donationHistory.getDonationHistories.query(),
+		trpc.postFeedback.checkPendingFeedback.query({
+			id: userContext.user.id
+		})
+	]);
 
 	console.log(pendingFeedback);
 

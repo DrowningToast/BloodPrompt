@@ -4,15 +4,11 @@
 	import {
 		Home,
 		LogOut,
-		MapPin,
-		UserCircle2,
-		Lock,
 		Gift,
 		CalendarHeart,
 		FileText,
 		User,
 		Search,
-		Wallet,
 		Heart,
 		User2,
 		Cake,
@@ -30,22 +26,18 @@
 	let filteredReservationData = allReservation;
 	import { Input } from '$lib/components/ui/input';
 
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Button } from '$lib/components/ui/button';
 	import * as Select from '$lib/components/ui/select';
 	import * as Table from '$lib/components/ui/table';
 	let position = 'bottom';
 	import { buttonVariants } from '$lib/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog';
-	import { Label } from '$lib/components/ui/label';
-	import wallet from '$lib/images/wallet.png';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 	import Dropdown from '../../../moderator/home/dropdown.svelte';
 	import { toDateString } from '$lib/utils';
 	import { trpc } from '$lib/trpc';
-	import type { Reservations } from '../../../../../generated-zod';
 	import type { DonationStatus } from '@prisma/client';
 
 	let selectedBloodQuality = '';
@@ -104,8 +96,8 @@
 	};
 </script>
 
-<div class="flex flex-row">
-	<div class="flex flex-col bg-[#191F2F] w-3/12 h-full">
+<div class="flex flex-row w-screen h-full">
+	<div class="flex flex-col bg-[#191F2F] w-3/12 h-100%">
 		<div class="flex flex-row px-8 py-16 justify-center">
 			<img src={bloodPromptLogo} alt="" class="w-16" />
 			<h1 class="translate-y-4 text-xl font-bold text-white px-3">BLOODPROMPT</h1>
@@ -204,7 +196,7 @@
 					<div class=" text-white">ค้นหา</div>
 				</button>
 			</div>
-			<div class="bg-white w-auto h-[84vh] rounded-xl mt-8 px-8">
+			<div class="flex flex-col flex-wrap py-6 bg-white w-auto h-[84vh] rounded-xl mt-8 px-6">
 				<Table.Root>
 					<Table.Header>
 						<Table.Row>

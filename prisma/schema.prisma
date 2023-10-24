@@ -23,34 +23,24 @@ model Medical_Accounts {
 }
 
 model Donators {
-  id                  String                @id @unique @default(cuid())
-  medical_account_id  String
-  image_src           String?
-  first_name          String
-  last_name           String
-  phone_number        String                @unique
-  gender              Gender
-  dob                 DateTime
-  address             String
-  email               String?               @unique
-  password            String
-  reward_point        Int                   @default(0)
-  created_at          DateTime              @default(now())
-  updated_at          DateTime              @updatedAt
-  Medical_Account     Medical_Accounts      @relation(fields: [medical_account_id], references: [id])
-  Redemption_History  Redemption_History[]
-  Reservations        Reservations[]
-  Reward_Transactions Reward_Transactions[]
-  Session             Session[]
-}
-
-model Reward_Transactions {
-  id         String   @id @unique @default(cuid())
-  donator_id String
-  points     Int
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  Donator    Donators @relation(fields: [donator_id], references: [id])
+  id                 String               @id @unique @default(cuid())
+  medical_account_id String
+  image_src          String?
+  first_name         String
+  last_name          String
+  phone_number       String               @unique
+  gender             Gender
+  dob                DateTime
+  address            String
+  email              String?              @unique
+  password           String
+  reward_point       Int                  @default(0)
+  created_at         DateTime             @default(now())
+  updated_at         DateTime             @updatedAt
+  Medical_Account    Medical_Accounts     @relation(fields: [medical_account_id], references: [id])
+  Redemption_History Redemption_History[]
+  Reservations       Reservations[]
+  Session            Session[]
 }
 
 model Redemption_History {

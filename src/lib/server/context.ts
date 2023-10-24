@@ -84,8 +84,9 @@ export const createSvelteKitContext =
 		};
 	};
 
-const t = initTRPC.context<ReturnType<typeof createSvelteKitContext>>().create({
+export const t = initTRPC.context<ReturnType<typeof createSvelteKitContext>>().create({
 	transformer: superjson
 });
+
 export const createRouter = t.router;
 export const publicProcedure = t.procedure;

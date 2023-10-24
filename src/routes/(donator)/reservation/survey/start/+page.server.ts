@@ -1,7 +1,7 @@
 import prisma, { Survey_ChoicesSchema } from '$lib/server/database';
-import { writable } from 'svelte/store';
 import type { PageServerLoad } from './$types';
 import { z } from 'zod';
+import { preFeedbackController } from '$lib/server/database/controllers/preDonationFeedbackController';
 
 const validatePreSurveyQuestion = z.object({
 	id: z.string(),
@@ -14,12 +14,9 @@ const validatePreSurveyQuestion = z.object({
 export type PreSurveyQuestion = z.infer<typeof validatePreSurveyQuestion>;
 
 export const load = (async () => {
-	const surveyQuestion = await prisma.survey_Questions.findMany({
-		include: {
-			Survey_Choices: true
-		}
-	});
-	const preSurveyQuestion = await surveyQuestion
+	const surveyQuestion = await preFeedbackController.getAllQuestions();
+
+	const preSurveyQuestion = surveyQuestion
 		.filter((question) => question.type === 'PRE_SURVEY')
 		.sort((q1, q2) => q1.order - q2.order)
 		.map((questions) => ({

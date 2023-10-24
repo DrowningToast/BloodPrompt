@@ -38,8 +38,7 @@
 		await trpc.reward.cancelRedeem
 			.mutate({
 				donatorId: data.donator_id,
-				redemptionHistoryId: data.id,
-				rewardId: data.reward_id
+				redemptionHistoryId: data.id
 			})
 			.then(() => {
 				alert('ระบบยกเลิกการแลกของรางวัล และคืนแต้มสะสมไปยังผู้ใช้ที่ทำการแลกแล้ว');
@@ -71,7 +70,7 @@
 	};
 </script>
 
-<div class="flex flex-row">
+<div class="flex flex-row h-full">
 	<div class="flex flex-col bg-[#191F2F] w-3/12 h-full">
 		<div class="flex flex-row px-8 py-16 justify-center">
 			<img src={bloodPromptLogo} alt="" class="w-16" />

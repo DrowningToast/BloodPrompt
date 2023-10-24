@@ -19,5 +19,9 @@ export const sessionController = {
 			}
 		});
 		return res;
+	},
+	get: async (args: Prisma.SessionFindUniqueArgs) => {
+		const session = await prisma.session.findUnique(args);
+		return session;
 	}
 };

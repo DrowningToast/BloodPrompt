@@ -11,39 +11,43 @@
 
 	const handleRouteChange = (route: string) => {
 		currentRoute.set(route);
-		goto(route);
+		// goto(route);
 	};
 </script>
 
 <div class="rounded-3xl bg-[#F5222D] fixed bottom-4 w-full max-w-[90%]">
 	<div class="py-5 flex flex-row gap-4 items-center justify-between px-10 text-white">
-		<button
+		<a
+			href="/home"
 			on:click={() => {
 				handleRouteChange('/home');
 			}}
 		>
 			<Home size={28} class={`${$isHomeRoute ? 'text-white' : 'opacity-50'}`} />
-		</button>
-		<button
+		</a>
+		<a
+			href="/reservation/survey"
 			on:click={() => {
 				handleRouteChange('/reservation/survey');
 			}}
 		>
 			<CalendarClock size={28} class={`${$isReservationRoute ? 'text-white' : 'opacity-40'}`} />
-		</button>
-		<button
+		</a>
+		<a
+			href="/history"
 			on:click={() => {
 				handleRouteChange('/history');
 			}}
 		>
 			<FileClock size={28} class={`${$isHistoryRoute ? 'text-white' : 'opacity-50'}`} />
-		</button>
-		<button
+		</a>
+		<a
+			href="/reward"
 			on:click={() => {
 				handleRouteChange('/reward');
 			}}
 		>
 			<Gift size={28} class={`${$isRewardRoute ? 'text-white' : 'opacity-50'}`} />
-		</button>
+		</a>
 	</div>
 </div>

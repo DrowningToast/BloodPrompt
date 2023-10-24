@@ -13,8 +13,8 @@
 	const { dateTime, hospitalData } = data;
 
 	const handleClick = async () => {
-		const response = await trpc.reservationSlot.reserve.mutate({
-			placeId: hospitalData.id,
+		const response = await trpc.reservation.reserve.mutate({
+			placeId: hospitalData!.id,
 			timeSlotInMillisecond: dateTime.getTime(),
 			preFeedback: $preFeedbackStore
 		});

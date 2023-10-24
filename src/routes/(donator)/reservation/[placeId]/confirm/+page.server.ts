@@ -1,6 +1,5 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { mock_hospitalData } from '../utils';
 import { get24HoursTimeString } from '../date/utils';
 import { trpcOnServer } from '$lib/trpc';
 import reservationController from '$lib/server/database/controllers/reservationController';
@@ -21,14 +20,15 @@ export const load = (async ({ url, params, fetch }) => {
 
 	const selectedDate = new Date(+date);
 
-	// check for valid available dates
-	const hospital = await trpcServer.places.findById.query({ placeId: placeId });
+	// promise all
+	const [hospital, availableDates] = await Promise.all([
+		trpcServer.places.findById.query({ placeId: placeId }),
+		reservationController.getAvailbleTimeSlots(placeId)
+	]);
+
 	if (!hospital) {
 		throw redirect(307, `/reservation`);
 	}
-
-	// get available dates
-	const availableDates = await reservationController.getAvailbleTimeSlots(placeId, selectedDate);
 
 	const filteredByDate = availableDates.find((d) => {
 		// check date only

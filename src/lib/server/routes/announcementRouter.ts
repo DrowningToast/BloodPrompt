@@ -7,6 +7,8 @@ import prisma, {
 	type PostTypeType
 } from '../database';
 import { announcementsController } from '../database/controllers/announcementController';
+import { medicalStaffProcedure } from '../procedures';
+import { TRPCError } from '@trpc/server';
 
 export const announcementsRouter = createRouter({
 	getAnnouncements: publicProcedure
@@ -51,7 +53,7 @@ export const announcementsRouter = createRouter({
 			});
 			return announcement;
 		}),
-	update: publicProcedure
+	update: medicalStaffProcedure
 		.input(
 			z.object({
 				data: z.object({
@@ -67,23 +69,32 @@ export const announcementsRouter = createRouter({
 		)
 		.mutation(async ({ input }) => {
 			const { data, announcementId } = input;
-			const announcement = await prisma.announcements.update({
-				where: {
-					id: announcementId
-				},
-				data: {
-					content: data.content,
-					post_type: data.post_type as PostTypeType,
-					title: data.title,
-					blood_type: data.blood_type as BloodType,
-					image_src: data.image_src,
-					created_at: new Date(new Date().getTime())
-				},
-				include: {
-					Place: true
-				}
-			});
-			return announcement;
+
+			try {
+				const announcement = await announcementsController.update({
+					filter: {
+						id: announcementId
+					},
+					data: {
+						content: data.content,
+						post_type: data.post_type as PostTypeType,
+						title: data.title,
+						blood_type: data.blood_type as BloodType,
+						image_src: data.image_src,
+						created_at: new Date(new Date().getTime())
+					},
+					include: {
+						Place: true
+					}
+				});
+
+				return announcement;
+			} catch (e) {
+				throw new TRPCError({
+					code: 'BAD_REQUEST',
+					cause: e
+				});
+			}
 		}),
 	getById: publicProcedure
 		.input(

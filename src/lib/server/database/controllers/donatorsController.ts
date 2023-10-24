@@ -25,5 +25,25 @@ export const donatorsController = {
 			}
 		});
 		return res;
+	},
+	getDonator: async (args: Prisma.DonatorsWhereUniqueInput) => {
+		const donator = await prisma.donators.findUnique({
+			where: args,
+			include: {
+				Medical_Account: true
+			}
+		});
+		return donator;
+	},
+	updatePoints: async (filter: Prisma.DonatorsWhereUniqueInput, points: number) => {
+		const donator = await prisma.donators.update({
+			where: filter,
+			data: {
+				reward_point: {
+					increment: points
+				}
+			}
+		});
+		return donator;
 	}
 };
