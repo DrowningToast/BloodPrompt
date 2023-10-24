@@ -224,7 +224,7 @@ export const rewardRouter = createRouter({
 						id: input.redemptionHistoryId
 					}
 				});
-				return redemptionHistory;
+				return redemptionHistory[0];
 			} catch (error) {
 				throw new TRPCError({
 					code: 'BAD_REQUEST',
