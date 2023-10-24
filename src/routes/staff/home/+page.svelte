@@ -15,7 +15,7 @@
 	import Dropdown from '../../moderator/home/dropdown.svelte';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import {
 		BarChartSimple,
 		DonutChart,
@@ -65,7 +65,7 @@
 	};
 
 	const handleLogout = async () => {
-		await trpc.auth.logout
+		await TRPCServerlessFunctionHandler.auth.logout
 			.mutate()
 			.then((res) => {
 				goto('/staff/login');

@@ -6,7 +6,9 @@ export const load = (async ({ fetch }) => {
 	const user = await trpc.auth.getUser.query();
 	let currentUser;
 	if (user) {
-		currentUser = await trpc.donators.findById.query({ donatorId: user?.user.id });
+		currentUser = await trpc.donators.findById.query({
+			donatorId: user?.user.id
+		});
 	}
 	return {
 		user: currentUser

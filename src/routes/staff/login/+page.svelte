@@ -4,7 +4,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { Label } from '$lib/components/ui/label';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import { goto } from '$app/navigation';
 	let checked = false;
 
@@ -12,7 +12,7 @@
 	let password: string = '';
 
 	const handleLogin = async () => {
-		await trpc.auth.staffLogin
+		await TRPCServerlessFunctionHandler.auth.staffLogin
 			.mutate({ email: email, password: password })
 			.then((res) => {
 				if (res.session.medical_staff_id) {

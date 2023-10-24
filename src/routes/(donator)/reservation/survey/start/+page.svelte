@@ -8,7 +8,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Button } from '$lib/components/ui/button';
 	import AlertDialog from '$lib/components/svelte/alert/AlertDialog.svelte';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import { preFeedbackStore } from '$lib/stores/preFeedback';
 
 	export let data: PageData;
@@ -62,7 +62,7 @@
 			};
 		});
 
-		const pass = await trpc.preFeedback.checkFeedBack.query(payload);
+		const pass = await TRPCServerlessFunctionHandler.preFeedback.checkFeedBack.query(payload);
 		$preFeedbackStore = { Pre_Feedback_Answers: payload };
 
 		isQualified = pass;

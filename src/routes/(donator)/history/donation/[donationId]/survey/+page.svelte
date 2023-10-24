@@ -18,7 +18,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Button } from '$lib/components/ui/button';
 	import AlertDialog from '$lib/components/svelte/alert/AlertDialog.svelte';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import { mock_hospitalData } from '../../../../reservation/[placeId]/utils';
 
 	export let data: PageData;
@@ -74,7 +74,7 @@
 				};
 			});
 
-			const res = await trpc.postFeedback.createFeedback.mutate({
+			const res = await TRPCServerlessFunctionHandler.postFeedback.createFeedback.mutate({
 				data: {
 					Donation_History: {
 						connect: {
@@ -91,7 +91,7 @@
 
 			// if the user rated the place
 			if (rating !== undefined) {
-				await trpc.places.createReview.mutate({
+				await TRPCServerlessFunctionHandler.places.createReview.mutate({
 					Place: {
 						connect: {
 							id: placeData.id

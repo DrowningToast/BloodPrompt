@@ -19,7 +19,7 @@
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import Dropdown from '../../../../../moderator/home/dropdown.svelte';
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 	import type { PageData } from './$types';
@@ -93,7 +93,7 @@
 	};
 
 	const handleDeleteAnnouncement = async () => {
-		trpc.announcement.delete
+		TRPCServerlessFunctionHandler.announcement.delete
 			.query({ announcementId: announcement?.id || '' })
 			.then(() => {
 				alert('ระบบลบประกาศของคุณแล้ว');
@@ -104,7 +104,7 @@
 
 	const handleUpdateAnnouncement = async () => {
 		if (!isEmergency) {
-			await trpc.announcement.update
+			await TRPCServerlessFunctionHandler.announcement.update
 				.mutate({
 					data: {
 						post_type: 'NORMAL',
@@ -122,7 +122,7 @@
 					console.error(error);
 				});
 		} else {
-			await trpc.announcement.update
+			await TRPCServerlessFunctionHandler.announcement.update
 				.mutate({
 					data: {
 						blood_type: (selectedBloodType + '_' + bloodRhValue).toUpperCase(),

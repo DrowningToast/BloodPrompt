@@ -19,7 +19,7 @@
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 
 	let fileInput: HTMLInputElement;
@@ -47,7 +47,7 @@
 			amount_left: parseInt(amount_left),
 			image_src: reward
 		};
-		await trpc.reward.create
+		await TRPCServerlessFunctionHandler.reward.create
 			.mutate(temptData)
 			.catch((error) => {
 				alert('ไม่สามารถเพิ่มของรางวัลได้ โปรดตรวจสอบข้อมูลการเพิ่มของรางวัล');

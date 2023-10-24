@@ -24,7 +24,7 @@
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 
 	export let data: PageData;
 	const { place, placeId } = data;
@@ -65,7 +65,7 @@
 	};
 
 	const handleAddDonationPlace = () => {
-		trpc.places.update
+		TRPCServerlessFunctionHandler.places.update
 			.mutate({
 				data: {
 					address: placeData.address,
@@ -90,7 +90,7 @@
 	};
 
 	const handleDeletePlace = () => {
-		trpc.places.delete
+		TRPCServerlessFunctionHandler.places.delete
 			.mutate({ placeId: placeId })
 			.then((res) => {
 				alert('ลบสถานที่ของคุณแล้ว !');

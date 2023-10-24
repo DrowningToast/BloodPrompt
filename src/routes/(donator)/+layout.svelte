@@ -1,10 +1,10 @@
 <script lang="ts">
 	import BottomNavBar from '$lib/components/svelte/navbar/BottomNavBar.svelte';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import type { LayoutData } from './$types';
 	import { goto } from '$app/navigation';
 
-	trpc.auth.getUser
+	TRPCServerlessFunctionHandler.auth.getUser
 		.query()
 		.then((res) => {
 			if (!res) {

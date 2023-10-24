@@ -2,12 +2,12 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { Button } from '$lib/components/ui/button';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 
 	export let data: any;
 
 	const deleteHandling = () => {
-		trpc.reward.delete.mutate(data.id).then(() => {
+		TRPCServerlessFunctionHandler.reward.delete.mutate(data.id).then(() => {
 			window.location.reload();
 		});
 	};

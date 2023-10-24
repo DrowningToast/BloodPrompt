@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import type { LayoutData } from './$types';
 
 	export let data: LayoutData;
 
-	trpc.auth.getUser
+	TRPCServerlessFunctionHandler.auth.getUser
 		.query()
 		.then((res) => {
 			if (!res) {

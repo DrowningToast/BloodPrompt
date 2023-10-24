@@ -16,17 +16,19 @@
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import Dropdown from '../../../moderator/home/dropdown.svelte';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import { page } from '$app/stores';
 	let data = $page.data;
 	const currentEvent = data.eventNow;
 
 	const deleteEventHandler = async () => {
-		await trpc.specialEvent.delete.mutate(data.eventNow?.id || '').then(() => {
-			if (browser) {
-				window.location.reload();
-			}
-		});
+		await TRPCServerlessFunctionHandler.specialEvent.delete
+			.mutate(data.eventNow?.id || '')
+			.then(() => {
+				if (browser) {
+					window.location.reload();
+				}
+			});
 	};
 </script>
 

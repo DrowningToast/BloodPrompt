@@ -4,7 +4,7 @@
 	import Input from '$lib/components/ui/input/input.svelte';
 	import { Eye, EyeOff, KeyRound, Loader2, Smartphone } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import { goto } from '$app/navigation';
 
 	let showPassword: boolean = false;
@@ -21,7 +21,7 @@
 
 	const handleLogin = async () => {
 		isLoading = true;
-		await trpc.auth.donatorLogin
+		await TRPCServerlessFunctionHandler.auth.donatorLogin
 			.mutate({ phone_number: phoneNumber, password })
 			.then(async (res) => {
 				await goto('/home');

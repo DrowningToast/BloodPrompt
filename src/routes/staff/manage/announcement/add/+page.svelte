@@ -19,7 +19,7 @@
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import Dropdown from '../../../../moderator/home/dropdown.svelte';
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 
@@ -91,12 +91,12 @@
 	};
 
 	const handleAddNewAnnouncement = async () => {
-		const currentUser = await trpc.auth.getUser.query();
-		const medicalStaff = await trpc.medicalStaff.findById.query({
+		const currentUser = await TRPCServerlessFunctionHandler.auth.getUser.query();
+		const medicalStaff = await TRPCServerlessFunctionHandler.medicalStaff.findById.query({
 			medicalStaffId: currentUser?.user.id || ''
 		});
 		if (!isEmergencyType) {
-			await trpc.announcement.create
+			await TRPCServerlessFunctionHandler.announcement.create
 				.mutate({
 					data: {
 						post_type: 'NORMAL',
@@ -114,7 +114,7 @@
 					console.error(error);
 				});
 		} else {
-			await trpc.announcement.create
+			await TRPCServerlessFunctionHandler.announcement.create
 				.mutate({
 					data: {
 						blood_type: (selectedBloodType + '_' + bloodRhValue).toUpperCase(),

@@ -25,7 +25,7 @@
 	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
 	import { toDateString, toDateTimeString } from '$lib/utils';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import type { Redemption_History } from '../../../../../../generated-zod';
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 
@@ -35,7 +35,7 @@
 	$: searchKeyword = '';
 
 	const handleCancelRedeemReward = async (data: Redemption_History) => {
-		await trpc.reward.cancelRedeem
+		await TRPCServerlessFunctionHandler.reward.cancelRedeem
 			.mutate({
 				donatorId: data.donator_id,
 				redemptionHistoryId: data.id
@@ -48,7 +48,7 @@
 	};
 
 	const handleUpdateRedemtionStatus = async (data: Redemption_History) => {
-		await trpc.reward.markAsReceived
+		await TRPCServerlessFunctionHandler.reward.markAsReceived
 			.mutate({ redemptionHistoryId: data.id })
 			.then(() => {
 				alert('ระบบบันทึกการอัพเดทสถานะของคุณแล้ว');

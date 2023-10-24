@@ -7,7 +7,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import type { PageData } from './$types';
 
 	import {
@@ -21,7 +21,7 @@
 	export let data: PageData;
 
 	const handleLogout = async () => {
-		await trpc.auth.logout
+		await TRPCServerlessFunctionHandler.auth.logout
 			.mutate()
 			.then((res) => {
 				goto('/staff/login');

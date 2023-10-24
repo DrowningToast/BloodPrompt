@@ -7,7 +7,7 @@
 	import AlertDialog from '../alert/AlertDialog.svelte';
 	import { browser } from '$app/environment';
 	import type { Donators } from '../../../../../generated-zod';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	export let open: boolean = false;
 	export let onClose: () => void;
 
@@ -15,7 +15,7 @@
 	export let donatorData: Donators;
 
 	const handleRedeemReward = async () => {
-		await trpc.reward.redeem
+		await TRPCServerlessFunctionHandler.reward.redeem
 			.mutate({
 				rewardId: $selectedReward?.rewardData.id || '',
 				donatorId: donatorData.id

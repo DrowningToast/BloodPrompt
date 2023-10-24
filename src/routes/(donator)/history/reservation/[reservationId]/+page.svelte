@@ -8,14 +8,14 @@
 	import { getFormattedOpeningDate, toDateTimeString, toDateString } from '$lib/utils';
 	import { Button } from '$lib/components/ui/button';
 	import QRCode from '@castlenine/svelte-qrcode';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 
 	export let data: PageData;
 	const { reservationData, donatorData, placeData } = data;
 	let showCancelConfirmDialog: boolean = false;
 
 	const handleCancelReservation = async () => {
-		trpc.reservation.cancelReservation
+		TRPCServerlessFunctionHandler.reservation.cancelReservation
 			.query({ reservationId: reservationData.id })
 			.then(() => {
 				alert('ระบบยกเลิกการจองของคุณแล้ว !');

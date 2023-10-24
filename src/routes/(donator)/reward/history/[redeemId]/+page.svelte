@@ -19,7 +19,7 @@
 	import { getFormattedOpeningDate } from '$lib/utils';
 	import { Button } from '$lib/components/ui/button';
 	import AlertDialog from '$lib/components/svelte/alert/AlertDialog.svelte';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 
 	export let data: PageData;
 	const { redemptionHistory, place } = data;
@@ -28,7 +28,7 @@
 
 	const handleCancelRedeem = async () => {
 		if (redemptionHistory) {
-			await trpc.reward.cancelRedeem
+			await TRPCServerlessFunctionHandler.reward.cancelRedeem
 				.mutate({
 					donatorId: redemptionHistory?.donator_id,
 					redemptionHistoryId: redemptionHistory?.id

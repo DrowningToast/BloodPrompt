@@ -20,11 +20,11 @@
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 
 	const handleLogout = async () => {
-		await trpc.auth.logout
+		await TRPCServerlessFunctionHandler.auth.logout
 			.mutate()
 			.then((res) => {
 				goto('/staff/login');
@@ -45,7 +45,7 @@
 	let image_src_value: any = currentReward?.image_src;
 
 	const saveDataHandler = async () => {
-		await trpc.reward.update
+		await TRPCServerlessFunctionHandler.reward.update
 			.mutate({
 				data: {
 					name: name_value || '',

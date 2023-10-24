@@ -2,11 +2,11 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Button } from '$lib/components/ui/button';
 	import { ChevronDown, LogOut } from 'lucide-svelte';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import { goto } from '$app/navigation';
 
 	const handleLogout = async () => {
-		await trpc.auth.logout
+		await TRPCServerlessFunctionHandler.auth.logout
 			.mutate()
 			.then((res) => {
 				goto('/staff/login');

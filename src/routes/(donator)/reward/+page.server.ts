@@ -10,7 +10,9 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		trpc.auth.getUser.query()
 	]);
 
-	const donator = await trpc.donators.findById.query({ donatorId: currentUser?.user.id || '' });
+	const donator = await trpc.donators.findById.query({
+		donatorId: currentUser?.user.id || ''
+	});
 
 	if (currentUser?.type !== 'DONATOR') {
 		throw redirect(307, '/login');

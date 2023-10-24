@@ -37,7 +37,7 @@
 	import { medicalStaffName, placeName } from '$lib/stores/staffStores';
 	import Dropdown from '../../../moderator/home/dropdown.svelte';
 	import { toDateString } from '$lib/utils';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import type { DonationStatus } from '@prisma/client';
 
 	let selectedBloodQuality = '';
@@ -52,7 +52,7 @@
 	};
 
 	const handleUpdateDonationData = async (bloodType: any, reservationId: string) => {
-		trpc.donationHistory.submitBloodDonation
+		TRPCServerlessFunctionHandler.donationHistory.submitBloodDonation
 			.mutate({
 				data: {
 					blood_quality_status: selectedBloodQuality,
@@ -72,7 +72,7 @@
 	};
 
 	const handleCancelReservation = async (reservationId: string) => {
-		trpc.reservation.cancelReservation
+		TRPCServerlessFunctionHandler.reservation.cancelReservation
 			.query({ reservationId: reservationId })
 			.then(() => {
 				alert('ระบบยกเลิกการจองนี้เรียบร้อยแล้ว');

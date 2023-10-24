@@ -5,7 +5,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 
 	export let data: PageData;
 	let videoSource: any = null;
@@ -33,7 +33,7 @@
 
 	const handleSubmit = async () => {
 		isLoading = true;
-		await trpc.auth.setAsVerifyUser.mutate();
+		await TRPCServerlessFunctionHandler.auth.setAsVerifyUser.mutate();
 		isLoading = false;
 		goto('/verification/success');
 	};

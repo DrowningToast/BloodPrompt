@@ -10,7 +10,7 @@
 	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
 	import { Label } from '$lib/components/ui/label';
 	import { browser } from '$app/environment';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import type { BloodType, Gender } from '$lib/server/database';
 	import { goto } from '$app/navigation';
 
@@ -119,7 +119,7 @@
 		const blood_type =
 			((selectedBloodType + '_' + bloodRhValue).toUpperCase() as BloodType) || 'A_POSITIVE';
 
-		await trpc.donators.signUp
+		await TRPCServerlessFunctionHandler.donators.signUp
 			.mutate({
 				donatorData: {
 					image_src: '',

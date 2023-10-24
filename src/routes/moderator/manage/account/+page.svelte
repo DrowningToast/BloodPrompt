@@ -19,7 +19,7 @@
 	import { browser } from '$app/environment';
 	import type { PageData } from './$types';
 	import type { Moderators } from '../../../../../generated-zod';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import Dropdown from '../../home/dropdown.svelte';
 
 	export let data: PageData;
@@ -36,7 +36,7 @@
 
 	const handleUpdateModeratorData = async () => {
 		const [first_name, last_name] = moderatorData.name.split(' ');
-		trpc.moderator.update
+		TRPCServerlessFunctionHandler.moderator.update
 			.mutate({
 				data: {
 					first_name: first_name,
@@ -54,7 +54,7 @@
 				console.error(error);
 			});
 
-		const newModeratorData = await trpc.moderator.get.query();
+		const newModeratorData = await TRPCServerlessFunctionHandler.moderator.get.query();
 		moderatorData = {
 			name: newModeratorData.first_name + ' ' + newModeratorData.last_name,
 			phone_number: newModeratorData.phone_number,

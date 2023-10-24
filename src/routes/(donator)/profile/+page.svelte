@@ -8,7 +8,7 @@
 	import Input from '$lib/components/ui/input/input.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import AlertDialog from '$lib/components/svelte/alert/AlertDialog.svelte';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import { encodePassword, toDateString } from '$lib/utils';
 
 	export let data: PageData;
@@ -36,7 +36,7 @@
 
 		if (oldPassword) {
 			if (newPassword && confirmNewPassword && newPassword === confirmNewPassword) {
-				await trpc.donators.updateById.mutate({
+				await TRPCServerlessFunctionHandler.donators.updateById.mutate({
 					data: {
 						address: donatorData.address!,
 						email: donatorData.email!,
@@ -49,7 +49,7 @@
 				return alert('ไม่สามารถเปลี่ยนรหัสผ่านได้ เนื่องจากคุณกรอกรหัสผ่านไม่ครบ หรือไม่ถูกต้อง');
 			}
 		} else {
-			await trpc.donators.updateById.mutate({
+			await TRPCServerlessFunctionHandler.donators.updateById.mutate({
 				data: {
 					address: donatorData.address!,
 					email: donatorData.email!
@@ -73,7 +73,7 @@
 	}}
 	secondaryLabel="ออกจากระบบ"
 	onSecondaryAction={() => {
-		trpc.auth.logout
+		TRPCServerlessFunctionHandler.auth.logout
 			.mutate()
 			.then(() => {
 				goto('/login');

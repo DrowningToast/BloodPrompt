@@ -24,7 +24,7 @@
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 
 	const days = [
 		{ value: 'MONDAY', label: 'วันจันทร์' },
@@ -70,7 +70,7 @@
 	};
 
 	const handleAddDonationPlace = async () => {
-		const place = await trpc.places.create.mutate({
+		const place = await TRPCServerlessFunctionHandler.places.create.mutate({
 			address: placeData.address,
 			closing_time: parseInt(placeData.closing_time),
 			name: placeData.name,
@@ -82,7 +82,7 @@
 			image_src: selectedImage
 		});
 
-		trpc.medicalStaff.createMany
+		TRPCServerlessFunctionHandler.medicalStaff.createMany
 			.mutate({
 				staffAccounts: staffAccounts,
 				placeId: place.id

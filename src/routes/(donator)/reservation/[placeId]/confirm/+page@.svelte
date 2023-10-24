@@ -4,7 +4,7 @@
 	import type { PageData } from './$types';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { get24HoursTimeString } from '../date/utils';
-	import { trpc } from '$lib/trpc';
+	import { TRPCServerlessFunctionHandler } from '$lib/trpc';
 	import { goto } from '$app/navigation';
 	import { preFeedbackStore } from '$lib/stores/preFeedback';
 	import { onMount } from 'svelte';
@@ -13,7 +13,7 @@
 	const { dateTime, hospitalData } = data;
 
 	const handleClick = async () => {
-		const response = await trpc.reservation.reserve.mutate({
+		const response = await TRPCServerlessFunctionHandler.reservation.reserve.mutate({
 			placeId: hospitalData!.id,
 			timeSlotInMillisecond: dateTime.getTime(),
 			preFeedback: $preFeedbackStore
